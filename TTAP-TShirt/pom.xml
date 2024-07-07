@@ -8,20 +8,12 @@
         <version>3.3.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-<<<<<<<< HEAD:trung-anh/pom.xml
-    <groupId>demo</groupId>
-    <artifactId>ttap</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
-    <name>ttap</name>
-    <description>Demo project for Spring Boot</description>
-========
+
     <groupId>com.example</groupId>
     <artifactId>TTAP-TShirt</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>TTAP-TShirt</name>
     <description>TTAP-TShirt</description>
->>>>>>>> 4b91d4149f7230006873cee95aeceb1dde5f071f:TTAP-TShirt/pom.xml
     <url/>
     <licenses>
         <license/>
@@ -45,47 +37,14 @@
         </dependency>
 
         <dependency>
-<<<<<<<< HEAD:trung-anh/pom.xml
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-========
->>>>>>>> 4b91d4149f7230006873cee95aeceb1dde5f071f:TTAP-TShirt/pom.xml
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-<<<<<<<< HEAD:trung-anh/pom.xml
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-========
             <artifactId>spring-boot-starter-web</artifactId>
->>>>>>>> 4b91d4149f7230006873cee95aeceb1dde5f071f:TTAP-TShirt/pom.xml
         </dependency>
         <dependency>
-<<<<<<<< HEAD:trung-anh/pom.xml
-            <groupId>jakarta.servlet.jsp.jstl</groupId>
-            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-            <version>3.0.1</version>
-========
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
@@ -95,7 +54,6 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <scope>runtime</scope>
->>>>>>>> 4b91d4149f7230006873cee95aeceb1dde5f071f:TTAP-TShirt/pom.xml
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -112,6 +70,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
     </dependencies>
 
     <build>
