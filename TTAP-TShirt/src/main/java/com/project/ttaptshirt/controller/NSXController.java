@@ -1,7 +1,7 @@
 
 package com.project.ttaptshirt.controller;
 
-// comment o day
+package com.project.ttaptshirt.controller;
 
 import com.project.ttaptshirt.entity.NSX;
 import com.project.ttaptshirt.repository.NSXInterface;
