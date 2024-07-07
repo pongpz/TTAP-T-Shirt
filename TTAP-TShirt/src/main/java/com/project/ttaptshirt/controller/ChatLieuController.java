@@ -1,8 +1,9 @@
-package demo.ttap.controller;
 
-import demo.ttap.entity.ChatLieu;
-import demo.ttap.entity.ThuongHieu;
-import demo.ttap.service.ChatLieuInterface;
+package com.project.ttaptshirt.controller;
+
+
+import com.project.ttaptshirt.entity.ChatLieu;
+import com.project.ttaptshirt.repository.ChatLieuInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

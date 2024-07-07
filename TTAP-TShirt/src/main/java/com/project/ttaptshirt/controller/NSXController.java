@@ -1,8 +1,9 @@
-package demo.ttap.controller;
 
-import demo.ttap.entity.ChatLieu;
-import demo.ttap.entity.NSX;
-import demo.ttap.service.NSXInterface;
+package com.project.ttaptshirt.controller;
+
+
+import com.project.ttaptshirt.entity.NSX;
+import com.project.ttaptshirt.repository.NSXInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
