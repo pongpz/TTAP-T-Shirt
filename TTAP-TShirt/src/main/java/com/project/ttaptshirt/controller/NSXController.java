@@ -1,8 +1,6 @@
 
 package com.project.ttaptshirt.controller;
 
-package com.project.ttaptshirt.controller;
-
 import com.project.ttaptshirt.entity.NSX;
 import com.project.ttaptshirt.repository.NSXInterface;
 import org.springframework.beans.factory.annotation.Autowired;
