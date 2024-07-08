@@ -27,19 +27,19 @@ public class ChucVuController {
     public String home(Model mol){
         List<ChucVu> cvList = serCv.findAll();
         mol.addAttribute("cvLst",cvList);
-        return"/chucvu/index";
+        return"/admin/chucvu/index";
     }
 
     @GetMapping("new")
     public String add(Model mol){
         mol.addAttribute("chucvu", new ChucVu());
-        return "/chucvu/dangky";
+        return "/admin/chucvu/dangky";
     }
 
     @PostMapping("save")
     public String createUser(@Valid @ModelAttribute ChucVu cv, BindingResult result, Model mol) {
         if (result.hasErrors()) {
-            return "chucvu/dangky";
+            return "/admin/chucvu/dangky";
         }
         serCv.save(cv);
         return "redirect:home";
@@ -65,7 +65,7 @@ public class ChucVuController {
     public String updateUser(@Valid ChucVu cv,BindingResult result, Model mol){
         if (result.hasErrors()){
           cv.setId(cv.getId());
-            return "/chucvu/update";
+            return "/admin/chucvu/update";
         }
         serCv.save(cv);
         return "redirect:/TTAP/ChucVu/home";
