@@ -28,19 +28,19 @@ public class DiaChiController {
     public String home(Model mol){
         List<DiaChi> dcList = serDc.findAll();
         mol.addAttribute("dcLst",dcList);
-        return"/user/diachi/index";
+        return"/diachi/index";
     }
 
     @GetMapping("new")
     public String add(Model mol){
         mol.addAttribute("diachi", new DiaChi());
-        return "/user/diachi/dangky";
+        return "/diachi/dangky";
     }
 
     @PostMapping("save")
     public String createUser(@Valid @ModelAttribute DiaChi dc, BindingResult result, Model mol) {
         if (result.hasErrors()) {
-            return "/user/diachi/dangky";
+            return "/diachi/dangky";
         }
         dc.setNgayTao(LocalDate.now());
         dc.setNgaySua(LocalDate.now());
@@ -61,14 +61,14 @@ public class DiaChiController {
         DiaChi dc = serDc.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
         mol.addAttribute("diachi",dc);
-        return "/user/diachi/update";
+        return "/diachi/update";
     }
 
     @PostMapping("update")
     public String updateUser(@Valid DiaChi dc,BindingResult result, Model mol){
         if (result.hasErrors()){
             dc.setId(dc.getId());
-            return "/user/diachi/update";
+            return "/diachi/update";
         }
         DiaChi existDc = serDc.findById(dc.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + dc.getId()));
