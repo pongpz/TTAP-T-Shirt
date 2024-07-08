@@ -16,31 +16,31 @@ public class ChatLieuController {
     @Autowired
     ChatLieuInterface cli;
 
-    @GetMapping("/chat-lieu/view")
+    @GetMapping("/admin/chat-lieu/view")
     public String viewChatLieu(Model model){
         model.addAttribute("listChatLieu",cli.findAll());
         return "viewChatLieu";
     }
 
-    @PostMapping("/chat-lieu/add")
+    @PostMapping("/admin/chat-lieu/add")
     public String addChatLieu(ChatLieu cl){
         cli.save(cl);
         return "redirect:/chat-lieu/view";
     }
 
-    @PostMapping("/chat-lieu/update")
+    @PostMapping("/admin/chat-lieu/update")
     public String updateChatLieu(ChatLieu cl){
         cli.save(cl);
         return "redirect:/chat-lieu/view";
     }
 
-    @GetMapping("/chat-lieu/delete")
+    @GetMapping("/admin/chat-lieu/delete")
     public String deleteChatLieu(@RequestParam("id") Integer id){
         cli.delete(cli.getReferenceById(id));
         return "redirect:/chat-lieu/view";
     }
 
-    @GetMapping("/chat-lieu/detail")
+    @GetMapping("/admin/chat-lieu/detail")
     public String detailChatLieu(@RequestParam("id") Integer id, Model model){
         model.addAttribute("detailChatLieu",cli.getReferenceById(id));
         model.addAttribute("listChatLieu",cli.findAll());

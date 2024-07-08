@@ -15,31 +15,31 @@ public class NSXController {
     @Autowired
     NSXInterface nsxi;
 
-    @GetMapping("/nsx/view")
+    @GetMapping("/admin/nsx/view")
     public String viewChatLieu(Model model){
         model.addAttribute("listNSX",nsxi.findAll());
         return "viewNSX";
     }
 
-    @PostMapping("/nsx/add")
+    @PostMapping("/admin/nsx/add")
     public String addChatLieu(NSX nsx){
         nsxi.save(nsx);
         return "redirect:/nsx/view";
     }
 
-    @PostMapping("/nsx/update")
+    @PostMapping("/admin/nsx/update")
     public String updateChatLieu(NSX nsx){
         nsxi.save(nsx);
         return "redirect:/nsx/view";
     }
 
-    @GetMapping("/nsx/delete")
+    @GetMapping("/admin/nsx/delete")
     public String deleteChatLieu(@RequestParam("id") Integer id){
         nsxi.delete(nsxi.getReferenceById(id));
         return "redirect:/nsx/view";
     }
 
-    @GetMapping("/nsx/detail")
+    @GetMapping("/admin/nsx/detail")
     public String detailChatLieu(@RequestParam("id") Integer id, Model model){
         model.addAttribute("detailNSX",nsxi.getReferenceById(id));
         model.addAttribute("listNSX",nsxi.findAll());

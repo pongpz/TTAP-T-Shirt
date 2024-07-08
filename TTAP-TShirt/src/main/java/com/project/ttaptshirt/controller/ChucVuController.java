@@ -58,7 +58,7 @@ public class ChucVuController {
         ChucVu cv = serCv.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
         mol.addAttribute("chucvu",cv);
-        return "/chucvu/update";
+        return "/admin/chucvu/update";
     }
 
     @PostMapping("update")
