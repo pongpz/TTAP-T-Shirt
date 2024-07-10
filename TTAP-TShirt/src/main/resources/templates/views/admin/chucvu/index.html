@@ -7,34 +7,25 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<a class="btn btn-primary" href="/TTAP/DiaChi/new">Them</a>
+<a class="btn btn-primary" href="/TTAP/Admin/ChucVu/new">Them</a>
 <div class="container">
     <div>
         <h1>Danhh sách người dùng</h1>
         <table border="1" class="table">
             <thead>
                 <th>#</th>
-                <th>So nha</th>
-                <th>Ten duong</th>
-                <th>Ten quan huyen</th>
-                <th>Ten duong pho</th>
-                <th>ngày tạo</th>
-                <th>ngày tạo</th>
+                <th>Mã</th>
+                <th>Tên Chức vụ</th>
                 <th>Thao tác</th>
             </thead>
             <tbody>
-                <tr th:each="dc, stt : ${dcLst}">
+                <tr th:each="cv, stt : ${cvLst}">
                     <td th:text="${stt.index + 1}"></td>
-                    <td th:text="${dc.soNha}"></td>
-                    <td th:text="${dc.tenDuong}"></td>
-                    <td th:text="${dc.tenQuanhuyen}"></td>
-                    <td th:text="${dc.tenThanhpho}"></td>
-                    <td th:text="${dc.trangThai}"></td>
-                    <td th:text="${dc.ngayTao}"></td>
-                    <td th:text="${dc.ngaySua}"></td>
+                    <td th:text="${cv.ma}"></td>
+                    <td th:text="${cv.ten}"></td>
                     <td>
-                        <a class="btn btn-danger" th:href="@{/TTAP/DiaChi/delete/{id}(id = ${dc.id})}">Xóa</a>
-                        <a class="btn btn-primary" th:href="@{/TTAP/DiaChi/detail/{id}(id = ${dc.id})}">Thông tin chi tiết</a>
+                        <a class="btn btn-danger" th:href="@{/TTAP/Admin/ChucVu/delete/{id}(id = ${cv.id})}">Xóa</a>
+                        <a class="btn btn-primary" th:href="@{/TTAP/Admin/ChucVu/detail/{id}(id = ${cv.id})}">Thông tin chi tiết</a>
                     </td>
                 </tr>
             </tbody>
