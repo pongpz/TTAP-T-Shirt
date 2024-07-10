@@ -2,7 +2,7 @@
 package com.project.ttaptshirt.controller;
 
 import com.project.ttaptshirt.entity.NSX;
-import com.project.ttaptshirt.repository.NSXInterface;
+import com.project.ttaptshirt.repository.NSXRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class NSXController {
     @Autowired
-    NSXInterface nsxi;
+    NSXRepository nsxi;
 
     @GetMapping("/admin/nsx/view")
     public String viewChatLieu(Model model){
         model.addAttribute("listNSX",nsxi.findAll());
-        return "viewNSX";
+        return "admin/chatlieu/viewNSX";
     }
 
     @PostMapping("/admin/nsx/add")
@@ -43,6 +43,6 @@ public class NSXController {
     public String detailChatLieu(@RequestParam("id") Integer id, Model model){
         model.addAttribute("detailNSX",nsxi.getReferenceById(id));
         model.addAttribute("listNSX",nsxi.findAll());
-        return "viewNSX";
+        return "admin/chatlieu/viewNSX";
     }
 }

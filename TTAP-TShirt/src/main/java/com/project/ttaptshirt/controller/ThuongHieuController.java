@@ -3,7 +3,7 @@ package com.project.ttaptshirt.controller;
 
 
 import com.project.ttaptshirt.entity.ThuongHieu;
-import com.project.ttaptshirt.repository.ThuongHieuInterface;
+import com.project.ttaptshirt.repository.ThuongHieuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ThuongHieuController {
     @Autowired
-    ThuongHieuInterface thi;
+    ThuongHieuRepository thi;
 
     @GetMapping("/admin/thuong-hieu/view")
     public String viewThuongHieu(Model model){
         model.addAttribute("listThuongHieu",thi.findAll());
-        return "viewThuongHieu";
+        return "admin/chatlieu/viewThuongHieu";
     }
 
     @PostMapping("/admin/thuong-hieu/add")
@@ -44,6 +44,6 @@ public class ThuongHieuController {
     public String detailThuongHieu(@RequestParam("id") Integer id, Model model){
         model.addAttribute("detailThuongHieu",thi.getReferenceById(id));
         model.addAttribute("listThuongHieu",thi.findAll());
-        return "viewThuongHieu";
+        return "admin/chatlieu/viewThuongHieu";
     }
 }

@@ -3,7 +3,7 @@ package com.project.ttaptshirt.controller;
 
 
 import com.project.ttaptshirt.entity.ChatLieu;
-import com.project.ttaptshirt.repository.ChatLieuInterface;
+import com.project.ttaptshirt.repository.ChatLieuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ChatLieuController {
     @Autowired
-    ChatLieuInterface cli;
+    ChatLieuRepository cli;
 
     @GetMapping("/admin/chat-lieu/view")
     public String viewChatLieu(Model model){
         model.addAttribute("listChatLieu",cli.findAll());
-        return "viewChatLieu";
+        return "admin/chatlieu/viewChatLieu";
     }
 
     @PostMapping("/admin/chat-lieu/add")
@@ -44,6 +44,6 @@ public class ChatLieuController {
     public String detailChatLieu(@RequestParam("id") Integer id, Model model){
         model.addAttribute("detailChatLieu",cli.getReferenceById(id));
         model.addAttribute("listChatLieu",cli.findAll());
-        return "viewChatLieu";
+        return "admin/chatlieu/viewChatLieu";
     }
 }
