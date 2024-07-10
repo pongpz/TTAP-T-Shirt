@@ -32,10 +32,12 @@ public class ChiTietSanPhamController {
     @Autowired
     KichCoService kichCoService;
 
-    @GetMapping
-    public String index(Model model) {
+    @GetMapping("{id}")
+    public String index(@PathVariable("id") Long id,Model model) {
+        SanPham sp = sanPhamService.findById(id);
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
-        model.addAttribute("listSP", sanPhamService.findAll());
+        model.addAttribute("listSP",sp);
+//        model.addAttribute("listSP", sanPhamService.findAll());
         model.addAttribute("listMauSac", mauSacService.findAll());
         model.addAttribute("listKichCo", kichCoService.findAll());
         model.addAttribute("listCTSP", listCTSP);

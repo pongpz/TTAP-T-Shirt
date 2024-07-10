@@ -14,7 +14,7 @@
         <div class="mb-3">
             <label class="form-label">San Pham</label>
             <select class="form-select" name="idSanPham">
-                <option th:each="sanPham : ${listSP}" th:value="${sanPham.id}" th:text="${sanPham.ten}"></option>
+                <option th:each="sanPham : ${listSP}" th:value="${sanPham.id}" th:text="${sanPham.ten}" ></option>
             </select>
         </div>
 
