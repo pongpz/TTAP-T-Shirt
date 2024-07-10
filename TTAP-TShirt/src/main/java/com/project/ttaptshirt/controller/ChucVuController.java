@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/TTAP/ChucVu/")
+@RequestMapping("/TTAP/Admin/ChucVu/")
 public class ChucVuController {
 
     @Autowired
@@ -50,7 +50,7 @@ public class ChucVuController {
         ChucVu cv = serCv.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
         serCv.deleteById(id);
-        return "redirect:/TTAP/ChucVu/home";
+        return "redirect:/TTAP/Admin/ChucVu/home";
     }
 
     @GetMapping("detail/{id}")
@@ -68,7 +68,7 @@ public class ChucVuController {
             return "/admin/chucvu/update";
         }
         serCv.save(cv);
-        return "redirect:/TTAP/ChucVu/home";
+        return "redirect:/TTAP/Admin/ChucVu/home";
     }
 
 }

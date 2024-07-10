@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/TTAP/DiaChi/")
+@RequestMapping("/TTAP/User/DiaChi/")
 public class DiaChiController {
 
     @Autowired
@@ -28,19 +28,19 @@ public class DiaChiController {
     public String home(Model mol){
         List<DiaChi> dcList = serDc.findAll();
         mol.addAttribute("dcLst",dcList);
-        return"/diachi/index";
+        return"/user/diachi/index";
     }
 
     @GetMapping("new")
     public String add(Model mol){
         mol.addAttribute("diachi", new DiaChi());
-        return "/diachi/dangky";
+        return "/user/diachi/dangky";
     }
 
     @PostMapping("save")
     public String createUser(@Valid @ModelAttribute DiaChi dc, BindingResult result, Model mol) {
         if (result.hasErrors()) {
-            return "/diachi/dangky";
+            return "/user/diachi/dangky";
         }
         dc.setNgayTao(LocalDate.now());
         dc.setNgaySua(LocalDate.now());
@@ -53,7 +53,7 @@ public class DiaChiController {
         DiaChi dc = serDc.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
         serDc.deleteById(id);
-        return "redirect:/TTAP/DiaChi/home";
+        return "redirect:/TTAP/User/DiaChi/home";
     }
 
     @GetMapping("detail/{id}")
@@ -61,21 +61,21 @@ public class DiaChiController {
         DiaChi dc = serDc.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
         mol.addAttribute("diachi",dc);
-        return "/diachi/update";
+        return "/user/diachi/update";
     }
 
     @PostMapping("update")
     public String updateUser(@Valid DiaChi dc,BindingResult result, Model mol){
         if (result.hasErrors()){
             dc.setId(dc.getId());
-            return "/diachi/update";
+            return "/user/diachi/update";
         }
         DiaChi existDc = serDc.findById(dc.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + dc.getId()));
         dc.setNgayTao(existDc.getNgayTao());
         dc.setNgaySua(LocalDate.now());
         serDc.save(dc);
-        return "redirect:/TTAP/DiaChi/home";
+        return "redirect:/TTAP/User/DiaChi/home";
     }
 
 }
