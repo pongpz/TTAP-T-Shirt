@@ -1,6 +1,7 @@
 package com.project.ttaptshirt.controller;
 
 
+import com.project.ttaptshirt.entity.DiaChi;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.service.ChucVuService;
 import com.project.ttaptshirt.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
@@ -70,6 +72,7 @@ public class UserController {
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
         mol.addAttribute("user",user);
         mol.addAttribute("cv",serCv.findAll());
+        mol.addAttribute("diaChi",user.getDc() != null ? user.getDc() : new DiaChi());
         return "/user/update";
     }
 
@@ -87,6 +90,10 @@ public class UserController {
         return "redirect:/TTAP/User/home";
     }
 
-
+    @PostMapping("/{id}/DiaChi")
+    public String getupdateDiachi(@PathVariable("id") Long id, @ModelAttribute DiaChi diaChi,Model mol){
+        serUser.updateDiachi(id,diaChi);
+        return "redirect:/TTAP/User/detail/"+ id;
+    }
 
 }

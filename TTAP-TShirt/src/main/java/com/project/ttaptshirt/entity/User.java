@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -78,7 +79,7 @@ public class User {
     @JoinColumn(name = "id_chuc_vu")
     private ChucVu cv;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_dia_chi")
     private DiaChi dc;
 }
