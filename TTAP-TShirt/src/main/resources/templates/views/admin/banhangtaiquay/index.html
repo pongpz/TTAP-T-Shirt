@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="path/to/bootstrap.css">
+</head>
+<body>
+<div th:replace="layout/navbar.html ::navbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="layout/sidebar.html ::sidebar"></div>
+        <div th:replace="banhangtaiquay/banhang.html ::mainContent"></div>
+    </div>
+</div>
+<script src="path/to/bootstrap.bundle.js"></script>
+</body>
+</html>
