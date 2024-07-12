@@ -1,17 +1,16 @@
+
+<!-- src/main/resources/templates/views/admin/banhangtaiquay/index.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="path/to/bootstrap.css">
-</head>
+<head th:replace="~{/fragment/head :: head}"></head>
 <body>
-<div th:replace="layout/navbar.html ::navbar"></div>
+<div th:replace="~{/fragment/navbar :: navbar}"></div>
+<div th:replace="~{/fragment/sidebar :: sidebar}"></div>
 <div class="container-fluid">
     <div class="row">
-        <div th:replace="layout/sidebar.html ::sidebar"></div>
-        <div th:replace="banhangtaiquay/banhang.html ::mainContent"></div>
+        <div th:replace="~{/admin/banhangtaiquay/banhang ::banHang}"></div>
     </div>
 </div>
-<script src="path/to/bootstrap.bundle.js"></script>
+<div th:replace="~{/fragment/foot :: foot}"></div>
 </body>
 </html>
