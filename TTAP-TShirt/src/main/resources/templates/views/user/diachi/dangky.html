@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<h1>Them/sua User</h1>
+<form class="row g-3" th:action="@{/TTAP/User/DiaChi/save}" th:object="${diachi}" method="post">
+
+    <div class="col-md-6">
+        <label  class="form-label">So nha</label>
+        <input type="text" class="form-control" th:field="*{soNha}" >
+        <span th:if="${#fields.hasErrors('soNha')}" th:errors="*{soNha}"></span>
+    </div>
+    <div class="col-md-6">
+        <label  class="form-label">ten duong</label>
+        <input type="text" class="form-control" th:field="*{tenDuong}" >
+        <span th:if="${#fields.hasErrors('tenDuong')}" th:errors="*{tenDuong}"></span>
+    </div>
+    <div class="col-md-6">
+        <label  class="form-label">Ten quan huyen</label>
+        <input type="text" class="form-control" th:field="*{tenQuanhuyen}" >
+        <span th:if="${#fields.hasErrors('tenQuanhuyen')}" th:errors="*{tenQuanhuyen}"></span>
+    </div>
+    <div class="col-md-6">
+        <label  class="form-label">Ten thanh pho</label>
+        <input type="text" class="form-control" th:field="*{tenThanhpho}" >
+        <span th:if="${#fields.hasErrors('tenThanhpho')}" th:errors="*{tenThanhpho}"></span>
+    </div>
+    <div class="col-md-6">
+        <label  class="form-label">Trang thai</label>
+        <input type="text" class="form-control" th:field="*{trangThai}">
+        <span th:if="${#fields.hasErrors('trangThai')}" th:errors="*{trangThai}"></span>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Them</button>
+    </div>
+</form>
+</body>
+</html>

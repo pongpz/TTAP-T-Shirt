@@ -1,0 +1,113 @@
+<!-- src/main/resources/templates/banhang.html -->
+<div th:fragment="banHang">
+    <div class="col-10 row">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-white">
+            <div class="container-fluid" style="justify-content: end;">
+                <label style="margin-right: 50px;">Chào: tên!</label>
+<!--                <img th:src="@{/images/agirl.jpg}" alt="" style="border-radius: 50%; height: 50px; width: 50px;">-->
+            </div>
+        </nav>
+        <aside class="col-1"></aside>
+        <article class="col-10">
+            <article class="col-10">
+                <div style="margin-top: 10ch; border: 1px solid rgb(182, 172, 172); padding: 5ch; border-radius: 0.5cap; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230);">
+                    <div style="display: flex;">
+                        <div class="mt-3 col-8">
+                            <label for="exampleInputText" style="font-weight: bold;">Thông tin hóa đơn</label>
+                            <input type="text" class="form-control mt-3" id="exampleInputText" placeholder="Tìm kiếm hóa đơn">
+                        </div>
+
+                        <div class="col-5 mt-5" style="margin-left: 5%;">
+                            <div class="btn-group mt-2" role="group" aria-label="Basic mixed styles example">
+                                <button type="button" class="btn btn-outline-success">Tạo hóa đơn</button>
+                                <button type="button" class="btn btn-outline-secondary">Làm mới</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã hóa đơn</th>
+                                <th scope="col">Nhân viên</th>
+                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Khách hàng</th>
+                                <th scope="col">Loại đơn</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Thao tác</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><a class="btn btn-outline-danger">Hủy</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3ch; border: 1px solid rgb(182, 172, 172); padding: 5ch; border-radius: 0.5cap; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230);">
+                    <div style="display: flex;">
+                        <label for="exampleInputText" style="font-weight: bold;">Thông tin sản phẩm</label>
+                        <a href="" class="btn btn-primary" style="margin-left: 60%;">Chọn sản phẩm</a>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+<!--                        <img th:src="@{/images/giohangrong.png}" alt="gio hang rong" class="col-10 mt-5">-->
+                    </div>
+                    <label class="text-center col-12 mt-3">Giỏ hàng rỗng</label>
+                </div>
+
+                <div style="margin-top: 3ch; border: 1px solid rgb(182, 172, 172); padding: 5ch; border-radius: 0.5cap; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230); display: flex;">
+                    <div class="col-6">
+                        <div>
+                            <div style="display: flex;">
+                                <label for="exampleInputText" style="font-weight: bold;">Thông tin khách hàng</label>
+                                <label for="exampleInputText" style="font-weight: bold;">HD-0000001 - 12/12/2024</label>
+                            </div>
+                            <div class="mt-3 d-flex">
+                                <input type="text" class="form-control" id="exampleInputKhahHang" disabled placeholder="Khách lẻ">
+                                <a href="" style="margin-left: 1ch;" class="btn btn-primary col-5">Chọn khách hàng</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div>
+                            <div style="display: flex;">
+                                <label for="exampleInputText" style="font-weight: bold;">Thông tin thanh toán</label>
+                                <label for="exampleInputText" style="font-weight: bold;">HD-0000001 - 12/12/2024</label>
+                            </div>
+                            <div class="mt-3 d-flex">
+                                <input type="text" class="form-control" disabled placeholder="VOUCHER_123123">
+                                <a href="" style="margin-left: 1ch;" class="btn btn-primary col-5">Chọn voucher</a>
+                            </div>
+                            <div style="display: flex;" class="mt-5">
+                                <label for="flexSwitchCheckChecked" style="font-weight: bold;">Giao hàng</label>
+                                <div class="form-check form-switch">
+                                    <input style="margin-left: 10ch;" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                                </div>
+                            </div>
+                            <div style="display: flex;" class="mt-3">
+                                <label style="font-weight: bold;">Tiền hàng</label>
+                                <label style="font-weight: bold; margin-left: 15ch;">100.000đ</label>
+                            </div>
+                            <div style="display: flex;" class="mt-3">
+                                <label style="font-weight: bold;">Tiền giảm giá voucher</label>
+                                <label style="font-weight: bold; margin-left: 5ch;">20.000đ</label>
+                            </div>
+                            <div style="display: flex;" class="mt-3">
+                                <label style="font-weight: bold;">Tổng tiền</label>
+                                <label style="font-weight: bold; margin-left: 15ch;">80.000đ</label>
+                            </div>
+                            <a href="" class="btn btn-primary mt-3" style="margin-left: 20cap;">Xác nhận thanh toán</a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </article>
+        <aside class="col-1"></aside>
+    </div>
+</div>

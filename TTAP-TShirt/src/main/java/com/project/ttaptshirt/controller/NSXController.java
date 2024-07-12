@@ -1,0 +1,48 @@
+
+package com.project.ttaptshirt.controller;
+
+import com.project.ttaptshirt.entity.NSX;
+import com.project.ttaptshirt.repository.NSXRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class NSXController {
+    @Autowired
+    NSXRepository nsxi;
+
+    @GetMapping("/admin/nsx/view")
+    public String viewChatLieu(Model model){
+        model.addAttribute("listNSX",nsxi.findAll());
+        return "admin/chatlieu/viewNSX";
+    }
+
+    @PostMapping("/admin/nsx/add")
+    public String addChatLieu(NSX nsx){
+        nsxi.save(nsx);
+        return "redirect:/nsx/view";
+    }
+
+    @PostMapping("/admin/nsx/update")
+    public String updateChatLieu(NSX nsx){
+        nsxi.save(nsx);
+        return "redirect:/nsx/view";
+    }
+
+    @GetMapping("/admin/nsx/delete")
+    public String deleteChatLieu(@RequestParam("id") Integer id){
+        nsxi.delete(nsxi.getReferenceById(id));
+        return "redirect:/nsx/view";
+    }
+
+    @GetMapping("/admin/nsx/detail")
+    public String detailChatLieu(@RequestParam("id") Integer id, Model model){
+        model.addAttribute("detailNSX",nsxi.getReferenceById(id));
+        model.addAttribute("listNSX",nsxi.findAll());
+        return "admin/chatlieu/viewNSX";
+    }
+}
