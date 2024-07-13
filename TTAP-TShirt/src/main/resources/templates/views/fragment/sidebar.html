@@ -1,30 +1,29 @@
-
-<div class="col-2" th:fragment="sidebar">
+<div class="col-2" th:fragment="sidebar" style=" position: fixed;">
     <!-- Nội dung Sidebar -->
-    <div class="" style="border: 1px solid rgb(167, 167, 167); border-radius: 0.5cap; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230); height: auto;">
-        <img src="images/logo2tap.jpg" class="col-7 auto">
+    <div class="" style=" border: 1px solid rgb(167, 167, 167); border-radius: 0.5em; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230); height: 100vh;">
+        <img th:src="@{/images/logo2tap.jpg}" class="col-7 auto">
         <br>
         <div class="mt-1 btn col-12" style="display: flex;">
-            <img src="images/giohang.png" class="col-2 ">
+            <img th:src="@{/images/giohang.png}" class="col-2">
             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Bán hàng tại quầy</label>
         </div>
         <div class="mt-1 btn col-12" style="display: flex;">
-            <img src="images/thongke.png" class="col-2 ">
+            <img th:src="@{/images/thongke.png}" class="col-2">
             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Thống kê</label>
         </div>
         <div class="mt-1 btn col-12" style="display: flex;">
-            <img src="images/hoadon.png" class="col-2 ">
+            <img th:src="@{/images/hoadon.png}" class="col-2">
             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Hóa đơn</label>
         </div>
         <div class="mt-1 btn col-12" style="display: flex;">
-            <img src="images/khuyenmai.png" class="col-2 ">
+            <img th:src="@{/images/khuyenmai.png}" class="col-2">
             <label class="fs-6 mt-1 fw-bold" style="margin-left: 5%;">Quản lý khuyến mãi</label>
         </div>
         <div class="accordion" id="accordionPanelsStayOpenExample">
             <div class="accordion-item border-0">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                        <img src="images/sanpham.png" class="col-2 ">
+                        <img th:src="@{/images/sanpham.png}" class="col-2">
                         <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý sản phẩm</span>
                     </button>
                 </h2>
@@ -52,7 +51,7 @@
             <div class="accordion-item border-0" style="padding-bottom: 10ch;">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                        <img src="images/person.jpg" class="col-2 ">
+                        <img th:src="@{/images/person.jpg}" class="col-2">
                         <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý tài khoản</span>
                     </button>
                 </h2>
@@ -70,4 +69,3 @@
         </div>
     </div>
 </div>
-
