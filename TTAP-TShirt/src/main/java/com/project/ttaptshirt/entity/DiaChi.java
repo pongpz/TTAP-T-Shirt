@@ -47,7 +47,7 @@ public class DiaChi {
     @Column(name = "ten_thanh_pho")
     private String tenThanhpho;
 
-    @NotBlank(message = " không được phép trống")
+
     @Column(name = "trang_thai")
     private String trangThai;
 
