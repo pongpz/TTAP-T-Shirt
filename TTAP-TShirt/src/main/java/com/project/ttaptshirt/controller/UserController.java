@@ -7,6 +7,7 @@ import com.project.ttaptshirt.service.ChucVuService;
 import com.project.ttaptshirt.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -94,6 +97,50 @@ public class UserController {
     public String getupdateDiachi(@PathVariable("id") Long id, @ModelAttribute DiaChi diaChi,Model mol){
         serUser.updateDiachi(id,diaChi);
         return "redirect:/TTAP/User/detail/"+ id;
+    }
+
+    @PostMapping("register")
+    public String registerUser(@Valid @ModelAttribute User user,BindingResult result,Model mol) {
+        if (result.hasErrors()){
+            mol.addAttribute("cv",serCv.findAll());
+            return "/user/dangky";
+        }
+        user.setNgayTao(LocalDate.now());
+        user.setNgaySua(LocalDate.now());
+        serUser.createUser(user);
+        mol.addAttribute("message", "Chi tiết tài khoản đã đc gửi.");
+        return "redirect:/TTAP/User/home";
+    }
+
+//    @PostMapping(value = "create")
+//    public ResponseEntity<String> create(
+//            @Valid @ModelAttribute User user, BindingResult result, Model mol
+//    ) {
+//        if (result.hasErrors()) {
+//            mol.addAttribute("cv", serCv.findAll());
+//            return ResponseEntity.badRequest().body("Validation errors occurred");
+//        }
+//        user.setNgayTao(LocalDate.now());
+//        user.setNgaySua(LocalDate.now());
+//        serUser.registerUser(user);
+//        return ResponseEntity.ok().body();
+//    }
+
+    @PostMapping("/create")
+    public String registerUser(
+            @Valid @ModelAttribute("user") User user, BindingResult result,
+            Model model, RedirectAttributes redirectAttributes
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("cvList",serCv.findAll());
+            return "user/register"; // Trả về lại form nếu có lỗi
+        }
+
+        user.setNgayTao(LocalDate.now());
+        user.setNgaySua(LocalDate.now());
+        serUser.registerUser(user);
+
+        return "redirect:/TTAP/User/home";
     }
 
 }
