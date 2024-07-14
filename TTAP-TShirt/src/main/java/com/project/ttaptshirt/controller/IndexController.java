@@ -8,7 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/TTAP/")
 public class IndexController {
     @GetMapping("home")
-    public String login(){
+    public String home(){
         return "/index";
+    }
+
+    @GetMapping("login")
+    public String login(){
+        return "/user/login";
     }
 }
