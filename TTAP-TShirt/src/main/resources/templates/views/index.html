@@ -1,26 +1,45 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-
-<!--head chứa các thư viện + css link source-->
-<head th:replace="~{/fragment/head :: head}"></head>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <div th:replace="~{/fragment/head :: head}"></div>
+</head>
 <body>
-<!--fragment navbar-->
-<div th:replace="~{/fragment/navbar :: navbar}"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const links = document.querySelectorAll('a.nav-link');
 
-<!--sidebar-->
-<div th:replace="~{/fragment/sidebar :: sidebar}"></div>
+        links.forEach(link => {
+            link.addEventListener('click', function () {
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                updateMainContent(link.getAttribute('data-url'));
+            });
+        });
 
-<div align="Center">
-    <h1>Quản lý User</h1>
-    <h2>
-        <a class="btn btn-primary" href="/TTAP/User/home">User</a>
-    </h2>
+        function updateMainContent(url) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    $('#main-content').html(response);
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
+            });
+        }
+
+        updateMainContent('/admin/ban-hang');
+    });
+</script>
+
+
+<div class="row">
+    <div class="col-2" th:replace="~{/fragment/sidebar :: sidebar}"></div>
+    <div class="main-content col-10" id="main-content">
+    </div>
 </div>
 
-
-<!--foot dùng để chứa các js source-->
 <div th:replace="~{/fragment/foot :: foot}"></div>
-
 </body>
 </html>

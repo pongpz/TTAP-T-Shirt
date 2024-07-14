@@ -1,50 +1,59 @@
-<div class="col-2" th:fragment="sidebar" style=" position: fixed;">
+<div class="col-2" th:fragment="sidebar" style="position: fixed;">
     <!-- Nội dung Sidebar -->
-    <div class="" style=" border: 1px solid rgb(167, 167, 167); border-radius: 0.5em; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230); height: 100vh;">
+    <div class="" style="border: 1px solid rgb(114,68,68); border-radius: 0.5em; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230); height: 100vh;">
         <img th:src="@{/images/logo2tap.jpg}" class="col-7 auto">
         <br>
-        <div class="mt-1 btn col-12" style="display: flex;">
+        <a href="javascript:void(0)" data-url="/admin/ban-hang" class="mt-1 btn col-12 nav-link" style="display: flex;">
             <img th:src="@{/images/giohang.png}" class="col-2">
             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Bán hàng tại quầy</label>
-        </div>
-        <div class="mt-1 btn col-12" style="display: flex;">
+        </a>
+
+        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
             <img th:src="@{/images/thongke.png}" class="col-2">
             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Thống kê</label>
-        </div>
-        <div class="mt-1 btn col-12" style="display: flex;">
+        </a>
+
+        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
             <img th:src="@{/images/hoadon.png}" class="col-2">
             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Hóa đơn</label>
-        </div>
-        <div class="mt-1 btn col-12" style="display: flex;">
+        </a>
+
+        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
             <img th:src="@{/images/khuyenmai.png}" class="col-2">
-            <label class="fs-6 mt-1 fw-bold" style="margin-left: 5%;">Quản lý khuyến mãi</label>
-        </div>
+            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý khuyến mãi</label>
+        </a>
+
         <div class="accordion" id="accordionPanelsStayOpenExample">
             <div class="accordion-item border-0">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
                         <img th:src="@{/images/sanpham.png}" class="col-2">
                         <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý sản phẩm</span>
                     </button>
                 </h2>
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
                     <div class="accordion-body">
-                        <a href="/admin/san-pham" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Sản phẩm</a>
-                        <br>
-                        <a href="#" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Size</a>
-                        <br>
-                        <a href="#" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Chất liệu</a>
-                        <br>
-                        <a href="#" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Kích cỡ</a>
-                        <br>
-                        <a href="#" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Màu sắc</a>
-                        <br>
-                        <a href="#" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Nhà sản xuất</a>
-                        <br>
-                        <a href="#" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Thương hiệu</a>
-                        <br>
-                        <a href="#" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Kiểu dáng</a>
-                        <br>
+                        <a href="javascript:void(0)" data-url="/admin/san-pham" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Sản phẩm</label>
+                        </a>
+                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Kích cỡ</label>
+                        </a>
+                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Chất liệu</label>
+                        </a>
+                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Màu sắc</label>
+                        </a>
+                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Nhà sản xuất</label>
+                        </a>
+                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Thương hiệu</label>
+                        </a>
+                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Kiểu dáng</label>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -57,10 +66,12 @@
                 </h2>
                 <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
                     <div class="accordion-body">
-                        <a href="#" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Nhân viên</a>
-                        <br>
-                        <a href="#" style="text-decoration: none; color: rgb(83, 83, 83); margin-left: 25%;" class="fs-6 mt-2 fw-bold btn">Khách hàng</a>
-                        <br>
+                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Nhân viên</label>
+                        </a>
+                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khách hàng</label>
+                        </a>
                     </div>
                 </div>
             </div>
