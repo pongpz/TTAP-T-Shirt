@@ -51,6 +51,8 @@ public class UserService {
         return repoUser.findAll();
     }
 
+    public List<User> findByCv(String cv){return repoUser.findByCv_Ten(cv);}
+
     public Optional<User> findById(Long id){
         return repoUser.findById(id);
     }
