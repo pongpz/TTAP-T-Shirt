@@ -54,17 +54,12 @@ public class SanPham {
     @JoinColumn(name = "id_nsx")
     private NSX nsx;
 
-    @ManyToOne
-    @JoinColumn(name = "id_chat_lieu")
-    private ChatLieu chatLieu;
 
     @ManyToOne
     @JoinColumn(name = "id_thuong_hieu")
     private ThuongHieu thuongHieu;
 
-    @ManyToOne
-    @JoinColumn(name = "id_kieu_dang")
-    private KieuDang kieuDang;
+
 
     @ManyToOne
     @JoinColumn(name = "id_hinh_anh")

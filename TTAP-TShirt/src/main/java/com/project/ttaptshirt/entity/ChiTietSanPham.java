@@ -39,6 +39,15 @@ public class ChiTietSanPham {
     private KichCo kichCo;
 
     @ManyToOne
+    @JoinColumn(name = "id_chat_lieu")
+    private ChatLieu chatLieu;
+
+    @ManyToOne
+    @JoinColumn(name = "id_kieu_dang")
+    private KieuDang kieuDang;
+
+
+    @ManyToOne
     @JoinColumn(name = "id_khuyen_mai")
     private KhuyenMai khuyenMai;
 

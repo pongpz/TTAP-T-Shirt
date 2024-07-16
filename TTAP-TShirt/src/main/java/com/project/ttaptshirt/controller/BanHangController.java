@@ -1,6 +1,8 @@
 package com.project.ttaptshirt.controller;
 
+import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.HoaDon;
+import com.project.ttaptshirt.service.ChiTietSanPhamService;
 import com.project.ttaptshirt.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +20,17 @@ public class BanHangController {
 
     @Autowired
     HoaDonService hoaDonService;
+
+    @Autowired
+    ChiTietSanPhamService chiTietSanPhamService;
+
     @GetMapping("")
     public String openBanHangPage(Model model){
         List<HoaDon> listHoaDon = hoaDonService.findAll();
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         model.addAttribute("listHoaDon",listHoaDon);
+        model.addAttribute("listCTSP", listCTSP);
+
         return "admin/banhangtaiquay/banhang";
     }
 
@@ -33,7 +42,7 @@ public class BanHangController {
         hoaDon.setLoaiDon(0);
         hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
-        return "redirect:/admin/ban-hang";
+        return "redirect:/admin/ttap-tshirt";
 
     }
 }
