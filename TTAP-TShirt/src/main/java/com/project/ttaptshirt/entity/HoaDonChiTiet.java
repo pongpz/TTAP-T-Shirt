@@ -16,7 +16,6 @@ import java.sql.Date;
 @Entity
 @Table(name = "hoa_don_chi_tiet")
 public class HoaDonChiTiet {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
