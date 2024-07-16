@@ -1,6 +1,7 @@
 package com.project.ttaptshirt.controller;
 
 
+import com.project.ttaptshirt.entity.ChucVu;
 import com.project.ttaptshirt.entity.DiaChi;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.service.ChucVuService;
@@ -42,6 +43,31 @@ public class UserController {
         return"/user/index";
     }
 
+    @GetMapping("employee")
+    public String employee(Model mol){
+        List<User> employeeList = serUser.findByCv("employee");
+        mol.addAttribute("empoLst",employeeList);
+        return "/User/nhanvien/index";
+    }
+    @GetMapping("customer")
+    public String customer(Model mol){
+        List<User> customerList = serUser.findByCv("customer");
+        mol.addAttribute("cusLst",customerList);
+        return "/User/khachhang/index";
+    }
+
+    @GetMapping("newNv")
+    public String addNv(Model mol){
+        mol.addAttribute("user", new User());
+        mol.addAttribute("cv",serCv.findAll());
+        return "/user/nhanvien/dangky";
+    }
+    @GetMapping("newKh")
+    public String addKh(Model mol){
+        mol.addAttribute("user", new User());
+        mol.addAttribute("cv",serCv.findAll());
+        return "/user/khachhang/dangky";
+    }
     @GetMapping("new")
     public String add(Model mol){
         mol.addAttribute("user", new User());
@@ -66,9 +92,15 @@ public class UserController {
         User user = serUser.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
         serUser.deleteById(id);
-        return "redirect:/TTAP/User/home";
+        return "redirect:/TTAP/User/employee";
     }
-
+    @GetMapping("deletekh/{id}")
+    public String deleteKh(@PathVariable("id") Long id,Model mol){
+        User user = serUser.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
+        serUser.deleteById(id);
+        return "redirect:/TTAP/User/customer";
+    }
     @GetMapping("detail/{id}")
     public String showDetail(@PathVariable("id") Long id,Model mol){
         User user = serUser.findById(id)
@@ -76,7 +108,17 @@ public class UserController {
         mol.addAttribute("user",user);
         mol.addAttribute("cv",serCv.findAll());
         mol.addAttribute("diaChi",user.getDc() != null ? user.getDc() : new DiaChi());
-        return "/user/update";
+        return "/user/nhanvien/update";
+    }
+
+    @GetMapping("detailKh/{id}")
+    public String showDetailKh(@PathVariable("id") Long id,Model mol){
+        User user = serUser.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
+        mol.addAttribute("user",user);
+        mol.addAttribute("cv",serCv.findAll());
+        mol.addAttribute("diaChi",user.getDc() != null ? user.getDc() : new DiaChi());
+        return "/user/khachhang/update/";
     }
 
     @PostMapping("update")
@@ -97,6 +139,12 @@ public class UserController {
     public String getupdateDiachi(@PathVariable("id") Long id, @ModelAttribute DiaChi diaChi,Model mol){
         serUser.updateDiachi(id,diaChi);
         return "redirect:/TTAP/User/detail/"+ id;
+    }
+
+    @PostMapping("/{id}/DiaChiKh")
+    public String getupdateDiachiKh(@PathVariable("id") Long id, @ModelAttribute DiaChi diaChi,Model mol){
+        serUser.updateDiachi(id,diaChi);
+        return "redirect:/TTAP/User/detailKh/"+ id;
     }
 
     @PostMapping("register")
@@ -141,6 +189,40 @@ public class UserController {
         serUser.registerUser(user);
 
         return "redirect:/TTAP/User/home";
+    }
+
+    @PostMapping("/createNv")
+    public String registerNv(
+            @Valid @ModelAttribute("user") User user, BindingResult result,
+            Model model, RedirectAttributes redirectAttributes
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("cvList",serCv.findAll());
+            return "user/register"; // Trả về lại form nếu có lỗi
+        }
+
+        user.setNgayTao(LocalDate.now());
+        user.setNgaySua(LocalDate.now());
+        serUser.registerUser(user);
+
+        return "redirect:/TTAP/User/employee";
+    }
+
+    @PostMapping("/createKh")
+    public String registerKh(
+            @Valid @ModelAttribute("user") User user, BindingResult result,
+            Model model, RedirectAttributes redirectAttributes
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("cvList",serCv.findAll());
+            return "user/register"; // Trả về lại form nếu có lỗi
+        }
+
+        user.setNgayTao(LocalDate.now());
+        user.setNgaySua(LocalDate.now());
+        serUser.registerUser(user);
+
+        return "redirect:/TTAP/User/customer";
     }
 
 }
