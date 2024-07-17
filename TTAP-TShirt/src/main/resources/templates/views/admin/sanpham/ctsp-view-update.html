@@ -12,37 +12,37 @@
 
     <form th:action="@{/admin/chi-tiet-san-pham/update/{id}(id=${ctsp.id})}" method="post">
         <div class="mb-3">
-            <label class="form-label">San Pham</label>
+            <label class="form-label">Sản Phẩm</label>
             <select class="form-select" name="idSanPham">
                 <option th:each="sanPham : ${listSP}" th:value="${sanPham.id}" th:text="${sanPham.ten}"></option>
             </select>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Mau Sac</label>
+            <label class="form-label">Màu sắc</label>
             <select class="form-select" name="idMauSac">
                 <option th:each="mauSac : ${listMauSac}" th:value="${mauSac.id}" th:text="${mauSac.ten}"></option>
             </select>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Kich Co</label>
+            <label class="form-label">Kích cỡ</label>
             <select class="form-select" name="idKichCo">
                 <option th:each="kichCo : ${listKichCo}" th:value="${kichCo.id}" th:text="${kichCo.ten}"></option>
             </select>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Gia Ban</label>
+            <label class="form-label">Giá bán</label>
             <input type="number" class="form-control" name="giaBan" th:value="${ctsp.giaBan}">
         </div>
 
         <div class="mb-3">
-            <label class="form-label">So Luong</label>
+            <label class="form-label">Số lượng</label>
             <input type="number" class="form-control" name="soLuong" th:value="${ctsp.soLuong}">
         </div>
 
-        <button type="submit" class="btn btn-warning">Update</button>
+        <button type="submit" class="btn btn-warning">Cập nhật</button>
     </form>
 
     <br>
