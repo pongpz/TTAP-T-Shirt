@@ -12,6 +12,7 @@
 
     <form th:action="@{/admin/chi-tiet-san-pham/add}" method="post">
         <div class="mb-3">
+
             <label class="form-label">Sản Phẩm</label>
             <select class="form-select" name="idSanPham">
                 <option th:each="sanPham : ${listSP}" th:value="${sanPham.id}" th:text="${sanPham.ten}"></option>
@@ -19,6 +20,7 @@
         </div>
 
         <div class="mb-3">
+
             <label class="form-label">Màu Sắc</label>
             <select class="form-select" name="idMauSac">
                 <option th:each="mauSac : ${listMauSac}" th:value="${mauSac.id}" th:text="${mauSac.ten}"></option>
@@ -26,6 +28,7 @@
         </div>
 
         <div class="mb-3">
+
             <label class="form-label">Kích Cỡ</label>
             <select class="form-select" name="idKichCo">
                 <option th:each="kichCo : ${listKichCo}" th:value="${kichCo.id}" th:text="${kichCo.ten}"></option>
@@ -33,22 +36,24 @@
         </div>
 
         <div class="mb-3">
+
             <label class="form-label">Giá Bán</label>
             <input type="number" class="form-control" name="giaBan">
         </div>
 
         <div class="mb-3">
+
             <label class="form-label">Số Lượng</label>
             <input type="number" class="form-control" name="soLuong">
         </div>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Thêm</button>
     </form>
 
     <br>
     <table class="table">
         <thead>
         <tr>
+
             <th scope="col">Id</th>
             <th scope="col">Giá Bán</th>
             <th scope="col">Tên Sản Phẩm</th>
@@ -71,7 +76,7 @@
             <td th:text="${ctsp.kichCo.ten}"></td>
             <td th:text="${ctsp.mauSac.ten}"></td>
             <td>
-                <a class="btn btn-danger" th:href="@{/admin/chi-tiet-san-pham/delete/{id}(id=${ctsp.id})}">Delete</a>
+                <a class="btn btn-danger" th:href="@{/admin/chi-tiet-san-pham/delete/{id}(id=${ctsp.id})}">Xóa</a>
                 <a class="btn btn-primary" th:href="@{/admin/chi-tiet-san-pham/detail/{id}(id=${ctsp.id})}">Detail</a>
             </td>
         </tr>
