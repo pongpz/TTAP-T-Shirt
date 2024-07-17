@@ -40,7 +40,6 @@
         <select class="form-select" th:field="*{cv}" >
             <option th:each="cv : ${cv}" th:value="${cv.id}" th:text="${cv.ten}"></option>
         </select>
-        <a href="/TTAP/Admin/ChucVu/new">*</a>
     </div>
     <div class="col-md-6">
         <label  class="form-label">Ten tai khoan</label>
