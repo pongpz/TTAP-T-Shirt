@@ -29,7 +29,7 @@
                             <button class="btn btn-warning">
                                 Làm mới
                             </button>
-                            <a href="" class="btn btn-danger">Lịch sử thao tác</a>
+<!--                            <a href="" class="btn btn-danger">Lịch sử thao tác</a>-->
                         </div>
                     </div>
                     <div class="form-group col-md-3 text-end">
@@ -91,47 +91,43 @@
                     </div>
                 </div>
             </div>
-            <span class="d-block text-center mt-3">Không có sản phẩm nào</span>
-            <div>
+            <span class="d-block text-center mt-3" th:if="${listSP.isEmpty()}">Không có sản phẩm nào</span>
+            <div th:if="${not listSP.isEmpty()}">
                 <table class="table table-borderless table-hover mt-3">
-                    <thead>
-                    <tr style="border: 1px solid #ccc; background-color: lightskyblue">
-                        <th>STT</th>
-                        <th>Ảnh</th>
-                        <th>Mã sản phẩm</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Giá</th>
-                        <th>Ngày tạo</th>
-                        <th>Trạng thái</th>
-                        <th>Hành động</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="sanPham : ${listSP}">
+                        <thead>
+                        <tr style="border: 1px solid #ccc; background-color: lightskyblue">
+                            <th>STT</th>
+                            <th>Ảnh</th>
+                            <th>Mã sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Ngày tạo</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="sanPham, iterStat : ${listSP}">
+                            <td th:text="${iterStat.index + 1}"></td>
+                            <td>
+                                    <img width="50px" src="" alt="" />
+                            </td>
                             <td th:text="${sanPham.ma}"></td>
+
+                            <td th:text="${sanPham.ten}"></td>
+
+                            <td th:text="${sanPham.ngayTao}"></td>
+                            <td>
+                                <span th:class="'badge ' + (${sanPham.trangThai} == 1 ? 'bg-info text-dark' : 'bg-secondary text-light')"
+                                      th:text="${sanPham.trangThai} == 1 ? 'Đang bán' : 'Hết hàng'">
+                                </span>
+                            </td>
                         <td>
-                            <img width="50px" src="" alt="" />
-                        </td>
-                        <td th:text="${sanPham.ten}"></td>
-                        <td></td>
-                        <td>
-                    <span>
-                      1.000.000đ
-                      <strike style="color: red">1.500.000đ</strike>
-                    </span>
-                        </td>
-                        <td>
-                    <span
-                            class="badge bg-info text-dark">
-                      Đang bán
-                    </span>
-                        </td>
-                        <td>
-                            <a href="#/product-detail/1" class="btn btn-primary">Chi tiết</a>
+                            <a th:href="@{'chi-tiet-san-pham/' + ${sanPham.id} }" class="btn btn-primary">Chi tiết</a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+
                 <nav aria-label="Page navigation example" class="d-flex justify-content-center">
                     <ul class="pagination">
                         <li class="page-item">
