@@ -12,52 +12,51 @@
 
     <form th:action="@{/admin/chi-tiet-san-pham/add}" method="post">
         <div class="mb-3">
-            <label class="form-label">San Pham</label>
+            <label class="form-label">Tên sản phẩm</label>
             <select class="form-select" name="idSanPham">
                 <option th:each="sanPham : ${listSP}" th:value="${sanPham.id}" th:text="${sanPham.ten}" ></option>
             </select>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Mau Sac</label>
+            <label class="form-label">Màu sắc</label>
             <select class="form-select" name="idMauSac">
                 <option th:each="mauSac : ${listMauSac}" th:value="${mauSac.id}" th:text="${mauSac.ten}"></option>
             </select>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Kich Co</label>
+            <label class="form-label">Kích cỡ</label>
             <select class="form-select" name="idKichCo">
                 <option th:each="kichCo : ${listKichCo}" th:value="${kichCo.id}" th:text="${kichCo.ten}"></option>
             </select>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Gia Ban</label>
+            <label class="form-label">Giá bán</label>
             <input type="number" class="form-control" name="giaBan">
         </div>
 
         <div class="mb-3">
-            <label class="form-label">So Luong</label>
+            <label class="form-label">Số lượng</label>
             <input type="number" class="form-control" name="soLuong">
         </div>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Thêm</button>
     </form>
 
     <br>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Ma San Pham</th>
-            <th scope="col">Ten San Pham</th>
-            <th scope="col">Thuong Hieu</th>
+            <th scope="col">ID</th>
+            <th scope="col">Mã sản phẩm</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Thương hiệu</th>
             <th scope="col">NSX</th>
-            <th scope="col">Chat Lieu</th>
-            <th scope="col">Kich Co</th>
-            <th scope="col">Mau Sac</th>
-            <th scope="col">Action</th>
+            <th scope="col">Chất hiệu</th>
+            <th scope="col">Kích cỡ</th>
+            <th scope="col">Màu sắc</th>
+            <th scope="col">Hành động</th>
         </tr>
         </thead>
         <tbody>
@@ -71,7 +70,7 @@
             <td th:text="${ctsp.kichCo.ten}"></td>
             <td th:text="${ctsp.mauSac.ten}"></td>
             <td>
-                <a class="btn btn-danger" th:href="@{/admin/chi-tiet-san-pham/delete/{id}(id=${ctsp.id})}">Delete</a>
+                <a class="btn btn-danger" th:href="@{/admin/chi-tiet-san-pham/delete/{id}(id=${ctsp.id})}">Xóa</a>
                 <a class="btn btn-primary" th:href="@{/admin/chi-tiet-san-pham/detail/{id}(id=${ctsp.id})}">Detail</a>
             </td>
         </tr>

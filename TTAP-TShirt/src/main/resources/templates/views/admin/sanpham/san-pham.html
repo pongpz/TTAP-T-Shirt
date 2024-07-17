@@ -12,13 +12,13 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Ma San Pham</th>
-            <th scope="col">Ten San Pham</th>
-            <th scope="col">Thuong Hieu</th>
+            <th scope="col">Mã sản phẩm</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Thương hiệu</th>
             <th scope="col">NSX</th>
-            <th scope="col">Chat Lieu</th>
-            <th scope="col">Trang Thai</th>
-            <th scope="col">Action</th>
+            <th scope="col">Chất liệu</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Hành động</th>
         </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@
             <td th:text="${sanPham.chatLieu.ten}"></td>
             <td th:text="${sanPham.trangThai}"></td>
             <td>
-                <a class="btn btn-primary" th:href="@{/admin/chi-tiet-san-pham/{id}(id=${sanPham.id})}">Them ctsp</a>
+                <a class="btn btn-primary" th:href="@{/admin/chi-tiet-san-pham/{id}(id=${sanPham.id})}">Thêm SPCT</a>
             </td>
         </tr>
         </tbody>
