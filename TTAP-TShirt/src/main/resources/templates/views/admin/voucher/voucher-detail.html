@@ -12,8 +12,18 @@
     <h1 class="text-center">Khuyến mãi</h1>
     <form th:action="@{/admin/khuyen-mai/update/{id}(id=${listDetail.id})}" method="post">
         <div class="mb-3">
-            <label class="form-label">Tên khuyến mãi</label>
+            <label class="form-label">Tên voucher</label>
             <input type="text" class="form-control" th:field="*{listDetail.ten}" id="ten">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mã voucher</label>
+            <input type="text" class="form-control" th:field="*{listDetail.ma}" id="ma">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Số lượng</label>
+            <input type="text" class="form-control" th:field="*{listDetail.soLuong}" id="soLuong">
         </div>
 
         <div class="mb-3">
@@ -44,6 +54,11 @@
                 </select>
             </div>
 
+        </div>
+
+        <div class="mb-3 col-8">
+            <label class="form-label">Điều kiện</label>
+            <input type="number" class="form-control" th:field="*{listDetail.dieuKien}" id="dieuKien">
         </div>
 
         <label class="form-label">Trạng thái</label>
@@ -80,18 +95,18 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="km : ${listKM}">
-            <td th:text="${km.ten}"></td>
-            <td th:text="${km.ngayBatDau}"></td>
-            <td th:text="${km.ngayKetThuc}"></td>
-            <td th:text="${km.giaTriGiam}"></td>
-            <td th:text="${km.hinhThuc}"></td>
-            <td th:text="${km.trangThai}"></td>
-            <td th:text="${km.ngayTao}"></td>
-            <td th:text="${km.ngaySua}"></td>
+        <tr th:each="vc : ${list}">
+            <td th:text="${vc.ten}"></td>
+            <td th:text="${vc.ngayBatDau}"></td>
+            <td th:text="${vc.ngayKetThuc}"></td>
+            <td th:text="${vc.giaTriGiam}"></td>
+            <td th:text="${vc.hinhThuc}"></td>
+            <td th:text="${vc.trangThai}"></td>
+            <td th:text="${vc.ngayTao}"></td>
+            <td th:text="${vc.ngaySua}"></td>
             <td>
-                <a class="btn btn-danger" th:href="@{/admin/khuyen-mai/delete/{id}(id=${km.id})}">Đổi trạng thái</a>
-                <a class="btn btn-primary"  th:href="|/admin/khuyen-mai/detail/${km.id}|">Detail</a>
+                <a class="btn btn-danger" th:href="@{/admin/khuyen-mai/delete/{id}(id=${vc.id})}">Đổi trạng thái</a>
+                <a class="btn btn-primary"  th:href="|/admin/khuyen-mai/detail/${vc.id}|">Detail</a>
             </td>
         </tr>
         </tbody>

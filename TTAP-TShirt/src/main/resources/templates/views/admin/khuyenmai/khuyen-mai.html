@@ -61,7 +61,7 @@
         </div>
 
         <a href="/admin/ttap-tshirt" class="btn btn-primary">Quay lại</a>
-        <button onclick="return submit()" class="btn btn-primary">Thêm</button>
+        <button class="btn btn-primary">Thêm</button>
     </form>
 
     <br>
@@ -90,7 +90,7 @@
             <td th:text="${km.ngayTao}"></td>
             <td th:text="${km.ngaySua}"></td>
             <td>
-                <a class="btn btn-danger" th:href="|/admin/khuyen-mai/delete/${km.id}|">Delete</a>
+                <a class="btn btn-danger" th:href="|/admin/khuyen-mai/delete/${km.id}|">Đổi trạng thái</a>
                 <a class="btn btn-primary" th:href="|/admin/khuyen-mai/detail/${km.id}|">Detail</a>
 
             </td>
@@ -100,19 +100,19 @@
 </div>
 
 </body>
-<script>
-    function submit(){
-        let ten = document.getElementById("ten").value()
-        let ngayBatDau = document.getElementById("ngayBatDau").value()
-        let ngayKetThuc = document.getElementById("ngayKetThuc").value()
-        let giaTriGiam = document.getElementById("giaTriGiam").value()
+<!--<script>-->
+<!--    function submit(){-->
+<!--        let ten = document.getElementById("ten").value()-->
+<!--        let ngayBatDau = document.getElementById("ngayBatDau").value()-->
+<!--        let ngayKetThuc = document.getElementById("ngayKetThuc").value()-->
+<!--        let giaTriGiam = document.getElementById("giaTriGiam").value()-->
 
-        if(ten==""||ngayBatDau==""||ngayKetThuc==""||giaTriGiam==""){
-            alert("Vui lòng điền đủ trường")
-            return false
-        }else {
-            return true
-        }
-    }
-</script>
+<!--        if(ten==""||ngayBatDau==""||ngayKetThuc==""||giaTriGiam==""){-->
+<!--            alert("Vui lòng điền đủ trường")-->
+<!--            return false-->
+<!--        }else {-->
+<!--            return true-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
 </html>

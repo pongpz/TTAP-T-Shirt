@@ -10,27 +10,37 @@
 
 <div class="container">
     <h1 class="text-center">Khuyến mãi</h1>
-    <form th:action="@{/admin/khuyen-mai/update/{id}(id=${listDetail.id})}" method="post">
+    <form th:action="@{/admin/voucher/add}" method="post">
         <div class="mb-3">
             <label class="form-label">Tên khuyến mãi</label>
-            <input type="text" class="form-control" th:field="*{listDetail.ten}" id="ten">
+            <input type="text" class="form-control" name="ten" id="ten">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mã khuyến mãi</label>
+            <input type="text" class="form-control" name="ma" id="ma">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Số lượng</label>
+            <input type="text" class="form-control" name="soLuong" id="soLuong">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Ngày bắt đầu</label>
-            <input type="date" class="form-control" th:field="*{listDetail.ngayBatDau}" id="ngayBatDau">
+            <input type="date" class="form-control" name="ngayBatDau" id="ngayBatDau">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Ngày kết thúc</label>
-            <input type="date" class="form-control" th:field="*{listDetail.ngayKetThuc}" id="ngayKetThuc">
+            <input type="date" class="form-control" name="ngayKetThuc" id="ngayKetThuc">
         </div>
 
         <div class=" d-flex">
 
             <div class="mb-3 col-8">
                 <label class="form-label">Giá trị giảm</label>
-                <input type="number" class="form-control" th:field="*{listDetail.giaTriGiam}" id="giaTriGiam">
+                <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam">
             </div>
             <div class="col-1">
 
@@ -38,7 +48,7 @@
 
             <div class="mb-3 col-3">
                 <label class="form-label">Hình thức</label>
-                <select class="form-select" th:field="*{listDetail.hinhThuc}">
+                <select class="form-select" name="hinhThuc">
                     <option value="VND">VND</option>
                     <option value="%">%</option>
                 </select>
@@ -46,22 +56,27 @@
 
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Điều kiện(Hóa đơn trên)</label>
+            <input type="number" class="form-control" name="dieuKien" id="dieuKien">
+        </div>
+
         <label class="form-label">Trạng thái</label>
         <div class="form-check">
-            <input class="form-check-input" type="radio" th:field="*{listDetail.trangThai}" id="flexRadioDefault1" value="Hoạt động" checked>
+            <input class="form-check-input" type="radio" name="trangThai" id="flexRadioDefault1" value="Hoạt động" checked>
             <label class="form-check-label" for="flexRadioDefault1">
                 Hoạt động
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" th:field="*{listDetail.trangThai}" id="flexRadioDefault2" value="Ngưng hoạt động">
+            <input class="form-check-input" type="radio" name="trangThai" id="flexRadioDefault2" value="Ngưng hoạt động">
             <label class="form-check-label" for="flexRadioDefault2">
                 Ngưng hoạt động
             </label>
         </div>
 
         <a href="/admin/ttap-tshirt" class="btn btn-primary">Quay lại</a>
-        <button class="btn btn-primary">Sửa</button>
+        <button class="btn btn-primary">Thêm</button>
     </form>
 
     <br>
@@ -69,10 +84,13 @@
         <thead>
         <tr>
             <th scope="col">Tên</th>
+            <th scope="col">Mã</th>
+            <th scope="col">Số lượng</th>
             <th scope="col">Ngày bắt đầu</th>
             <th scope="col">Ngày kết thúc</th>
             <th scope="col">Giá trị giảm</th>
             <th scope="col">Hình thức</th>
+            <th scope="col">Điều kiện</th>
             <th scope="col">Trạng thái</th>
             <th scope="col">Ngày tạo</th>
             <th scope="col">Ngày sửa</th>
@@ -80,18 +98,22 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="km : ${listKM}">
-            <td th:text="${km.ten}"></td>
-            <td th:text="${km.ngayBatDau}"></td>
-            <td th:text="${km.ngayKetThuc}"></td>
-            <td th:text="${km.giaTriGiam}"></td>
-            <td th:text="${km.hinhThuc}"></td>
-            <td th:text="${km.trangThai}"></td>
-            <td th:text="${km.ngayTao}"></td>
-            <td th:text="${km.ngaySua}"></td>
+        <tr th:each="vc : ${list}">
+            <td th:text="${vc.ten}"></td>
+            <td th:text="${vc.ma}"></td>
+            <td th:text="${vc.soLuong}"></td>
+            <td th:text="${vc.ngayBatDau}"></td>
+            <td th:text="${vc.ngayKetThuc}"></td>
+            <td th:text="${vc.giaTriGiam}"></td>
+            <td th:text="${vc.hinhThuc}"></td>
+            <td th:text="${vc.dieuKien}"></td>
+            <td th:text="${vc.trangThai}"></td>
+            <td th:text="${vc.ngayTao}"></td>
+            <td th:text="${vc.ngaySua}"></td>
             <td>
-                <a class="btn btn-danger" th:href="@{/admin/khuyen-mai/delete/{id}(id=${km.id})}">Đổi trạng thái</a>
-                <a class="btn btn-primary"  th:href="|/admin/khuyen-mai/detail/${km.id}|">Detail</a>
+                <a class="btn btn-danger" th:href="|/admin/voucher/delete/${vc.id}|">Đổi trạng thái</a>
+                <a class="btn btn-primary" th:href="|/admin/voucher/detail/${vc.id}|">Detail</a>
+
             </td>
         </tr>
         </tbody>
@@ -106,7 +128,7 @@
 <!--        let ngayKetThuc = document.getElementById("ngayKetThuc").value()-->
 <!--        let giaTriGiam = document.getElementById("giaTriGiam").value()-->
 
-<!--        if(ten===""||ngayBatDau===""||ngayKetThuc===""||giaTriGiam===""){-->
+<!--        if(ten==""||ngayBatDau==""||ngayKetThuc==""||giaTriGiam==""){-->
 <!--            alert("Vui lòng điền đủ trường")-->
 <!--            return false-->
 <!--        }else {-->
