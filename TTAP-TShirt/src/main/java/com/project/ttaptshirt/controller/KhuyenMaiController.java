@@ -38,7 +38,7 @@ public class KhuyenMaiController {
     @PostMapping("/update/{idKM}")
     public String sua(KhuyenMai km, @PathVariable("idKM") Long id){
         km.setNgaySua(Date.valueOf(LocalDate.now()));
-        km.setNgayTao(kmrp.getReferenceById(id.intValue()).getNgayTao());
+        km.setNgayTao(kmrp.getReferenceById(id).getNgayTao());
         km.setId(id);
         kmrp.save(km);
         return "redirect:/admin/khuyen-mai/hien-thi";
@@ -47,14 +47,23 @@ public class KhuyenMaiController {
     @GetMapping("/detail/{idKM}")
     public String detail(Model model, @PathVariable("idKM") Long id){
         model.addAttribute("listKM",kmrp.findAll());
-        model.addAttribute("listDetail",kmrp.getReferenceById(id.intValue()));
+        model.addAttribute("listDetail",kmrp.getReferenceById(id));
         return "admin/khuyenmai/khuyen-mai-detail";
     }
 
 
     @GetMapping("/delete/{idKM}")
-    public String delete(Model model, @PathVariable("idKM") Long id){
-        kmrp.delete(kmrp.getReferenceById(id.intValue()));
+    public String delete(@PathVariable("idKM") Long id){
+        KhuyenMai km = kmrp.getReferenceById(id);
+
+        if (km.getTrangThai().equals("Hoạt động")){
+            km.setTrangThai("Ngưng hoạt động");
+            km.setNgaySua(Date.valueOf(LocalDate.now()));
+        }else {
+            km.setTrangThai("Hoạt động");
+            km.setNgaySua(Date.valueOf(LocalDate.now()));
+        }
+        kmrp.save(km);
         return "redirect:/admin/khuyen-mai/hien-thi";
     }
 }
