@@ -24,7 +24,7 @@ public class ChiTietSanPham {
     private Long id;
 
     @Column(name = "gia_ban")
-    private Float giaBan;
+    private Double giaBan;
 
     @ManyToOne
     @JoinColumn(name = "id_san_pham")
@@ -37,6 +37,15 @@ public class ChiTietSanPham {
     @ManyToOne
     @JoinColumn(name = "id_kich_co")
     private KichCo kichCo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_chat_lieu")
+    private ChatLieu chatLieu;
+
+    @ManyToOne
+    @JoinColumn(name = "id_kieu_dang")
+    private KieuDang kieuDang;
+
 
     @ManyToOne
     @JoinColumn(name = "id_khuyen_mai")
@@ -53,5 +62,16 @@ public class ChiTietSanPham {
 
     @Column(name = "so_luong")
     private Integer soLuong;
+
+    @ManyToOne
+    @JoinColumn(name = "id_nsx")
+    private NSX nsx;
+
+
+    @ManyToOne
+    @JoinColumn(name = "id_thuong_hieu")
+    private ThuongHieu thuongHieu;
+
+
     // Getters and setters (omitted for brevity)
 }

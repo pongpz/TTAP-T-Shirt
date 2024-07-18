@@ -42,7 +42,7 @@ public class ChucVuController {
             return "/admin/chucvu/dangky";
         }
         serCv.save(cv);
-        return "redirect:home";
+        return "redirect:/TTAP/User/new";
     }
 
     @GetMapping("delete/{id}")
