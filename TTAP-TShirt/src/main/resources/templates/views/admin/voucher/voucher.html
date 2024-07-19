@@ -92,8 +92,6 @@
             <th scope="col">Hình thức</th>
             <th scope="col">Điều kiện</th>
             <th scope="col">Trạng thái</th>
-            <th scope="col">Ngày tạo</th>
-            <th scope="col">Ngày sửa</th>
             <th scope="col">Hành động</th>
         </tr>
         </thead>
@@ -108,8 +106,6 @@
             <td th:text="${vc.hinhThuc}"></td>
             <td th:text="${vc.dieuKien}"></td>
             <td th:text="${vc.trangThai}"></td>
-            <td th:text="${vc.ngayTao}"></td>
-            <td th:text="${vc.ngaySua}"></td>
             <td>
                 <a class="btn btn-danger" th:href="|/admin/voucher/delete/${vc.id}|">Đổi trạng thái</a>
                 <a class="btn btn-primary" th:href="|/admin/voucher/detail/${vc.id}|">Detail</a>
