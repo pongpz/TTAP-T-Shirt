@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -47,13 +48,38 @@ public class UserController {
     public String employee(Model mol){
         List<User> employeeList = serUser.findByCv("employee");
         mol.addAttribute("empoLst",employeeList);
-        return "/User/nhanvien/index";
+        return "/user/nhanvien/index";
     }
+
+    @GetMapping("employee/find")
+    public String findUser(@RequestParam(value = "name", required = false) String name, Model mol){
+        List<User> users;
+        if (name == null || name.isEmpty()) {
+            users = serUser.findByCv("employee"); // Assuming you have a method to retrieve all users
+        } else {
+            users = serUser.findByUsers(name);
+        }
+        mol.addAttribute("empoLst",users);
+        return "/user/nhanvien/index";
+    }
+
+    @GetMapping("customer/find")
+    public String findCos(@RequestParam(value = "name", required = false) String name, Model mol){
+        List<User> users;
+        if (name == null || name.isEmpty()) {
+            users = serUser.findByCv("customer"); // ko tim dc la back ve ban dau
+        } else {
+            users = serUser.findByUsers(name);// neu bị trùng tên là vẫn hiện lên table
+        }
+        mol.addAttribute("cusLst",users);
+        return "/user/khachhang/index";
+    }
+
     @GetMapping("customer")
     public String customer(Model mol){
         List<User> customerList = serUser.findByCv("customer");
         mol.addAttribute("cusLst",customerList);
-        return "/User/khachhang/index";
+        return "/user/khachhang/index";
     }
 
     @GetMapping("newNv")
