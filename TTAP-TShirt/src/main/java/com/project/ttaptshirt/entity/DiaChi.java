@@ -24,7 +24,7 @@ import java.time.LocalDate;
 @Builder
 @Table(name = "dia_chi")
 @Entity
-public class DiaChi {
+public class DiaChi{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

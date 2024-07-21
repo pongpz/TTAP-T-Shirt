@@ -34,11 +34,9 @@
                         </div>
                     </div>
                     <div class="form-group col-md-3 text-end">
-                        <div class="form-outline">
-                            <a href="">
-                                <button class="btn btn-primary">Tạo sản phẩm</button>
-                            </a>
-                        </div>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
+                                    Thêm Sản Phẩm
+                                </button>
                     </div>
                     <div class="form-group col-md-4 mt-3">
                         <span>Danh mục: </span>
@@ -146,6 +144,49 @@
                         </li>
                     </ul>
                 </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal thêm sản phẩm -->
+<div class="modal fade" th:id="'modal-themsp-'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModqalLabel">Thêm Sản Phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/admin/san-pham/add" method="post">
+                    <div class="mb-3">
+                        <label for="ma" class="form-label">Mã Sản Phẩm</label>
+                        <input type="text" class="form-control" id="ma" name="ma" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ten" class="form-label">Tên Sản Phẩm</label>
+                        <input type="text" class="form-control" id="ten" name="ten" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="moTa" class="form-label">Mô Tả</label>
+                        <textarea class="form-control" id="moTa" name="moTa" rows="2"></textarea>
+<!--                    <input type="text" class="form-control" id="moTa" name="moTa" required>-->
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Trạng Thái</label>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" id="trangThaiDangBan" name="trangThai" value="1" required>
+                            <label class="form-check-label" for="trangThaiDangBan">Còn Hàng</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" id="trangThaiHetHang" name="trangThai" value="0" required>
+                            <label class="form-check-label" for="trangThaiHetHang">Hết Hàng</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

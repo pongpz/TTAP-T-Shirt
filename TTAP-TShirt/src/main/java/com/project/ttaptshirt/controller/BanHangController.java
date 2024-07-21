@@ -118,7 +118,6 @@ public class BanHangController {
         hoaDonChiTiet.setHoaDon(hoaDon);
         hoaDonChiTiet.setChiTietSanPham(chiTietSanPham);
         hoaDonChiTiet.setSoLuong(soLuong);
-        hoaDonChiTiet.setNgayTao(new java.sql.Date(new Date().getTime()));
         hoaDonChiTietService.save(hoaDonChiTiet);
         return "redirect:/admin/ban-hang";
     }
