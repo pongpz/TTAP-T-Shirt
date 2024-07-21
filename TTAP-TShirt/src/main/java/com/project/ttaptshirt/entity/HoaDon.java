@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,7 +26,7 @@ public class HoaDon {
 
     @ManyToOne
     @JoinColumn(name = "id_users")
-    private Users khachHang;
+    private User khachHang;
 
 
     @Column(name = "ma")
@@ -34,7 +36,7 @@ public class HoaDon {
     private Date ngayTao;
 
     @Column(name = "ngay_thanh_toan")
-    private Date ngayThanhToan;
+    private LocalDateTime ngayThanhToan;
 
     @Column(name = "ghi_chu")
     private String ghiChu;
@@ -47,5 +49,10 @@ public class HoaDon {
 
     @Column(name = "trang_thai")
     private Integer trangThai;
+
+    @PreUpdate
+    protected  void onUpdate(){
+        ngayThanhToan = LocalDateTime.now();
+    }
     // Getters and setters (omitted for brevity)
 }

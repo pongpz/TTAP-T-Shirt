@@ -31,4 +31,15 @@ public class HoaDonServiceImpl implements HoaDonService {
     public List<HoaDon> findAll() {
         return hoaDonRepository.findAll();
     }
+
+
+    @Override
+    public void updateTrangThaiHD(int trangThai, Long id) {
+         hoaDonRepository.updateHoaDonStatus(trangThai,id);
+    }
+
+    @Override
+    public List<HoaDon> getListHDChuaThanhToan() {
+        return hoaDonRepository.getListHDChuaThanhToan();
+    }
 }

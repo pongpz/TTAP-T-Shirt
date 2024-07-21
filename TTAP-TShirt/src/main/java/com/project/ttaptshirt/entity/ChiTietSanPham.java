@@ -17,7 +17,7 @@ import java.sql.Date;
 @ToString
 @Entity
 @Table(name = "chi_tiet_san_pham")
-public class ChiTietSanPham {
+public class ChiTietSanPham extends CreatedUpdatedAt{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,11 +54,11 @@ public class ChiTietSanPham {
     @Column(name = "trang_thai")
     private String trangThai;
 
-    @Column(name = "ngay_tao")
-    private Date ngayTao;
-
-    @Column(name = "ngay_sua")
-    private Date ngaySua;
+//    @Column(name = "ngay_tao")
+//    private Date ngayTao;
+//
+//    @Column(name = "ngay_sua")
+//    private Date ngaySua;
 
     @Column(name = "so_luong")
     private Integer soLuong;
