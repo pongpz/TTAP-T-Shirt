@@ -24,7 +24,8 @@ public class HoaDon {
 
     @ManyToOne
     @JoinColumn(name = "id_users")
-    private Users users;
+    private User khachHang;
+
 
     @Column(name = "ma")
     private String ma;
@@ -41,5 +42,10 @@ public class HoaDon {
     @Column(name = "tong_tien")
     private Float tongTien;
 
+    @Column(name = "loai_don")
+    private Integer loaiDon;
+
+    @Column(name = "trang_thai")
+    private Integer trangThai;
     // Getters and setters (omitted for brevity)
 }

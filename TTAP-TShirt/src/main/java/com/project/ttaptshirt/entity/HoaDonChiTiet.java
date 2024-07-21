@@ -16,7 +16,6 @@ import java.sql.Date;
 @Entity
 @Table(name = "hoa_don_chi_tiet")
 public class HoaDonChiTiet {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +30,7 @@ public class HoaDonChiTiet {
 
     @ManyToOne
     @JoinColumn(name = "id_khuyen_mai")
-    private KhuyenMai khuyenMai;
+    private Voucher khuyenMai;
 
     @Column(name = "don_gia")
     private Float donGia;
