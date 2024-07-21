@@ -51,7 +51,7 @@
                             <td th:text="${hoaDon.ngayTao}"></td>
                             <td th:text="${hoaDon.khachHang}"></td>
                             <td th:text="${hoaDon.ngayTao}"></td>
-                            <td th:text="${hoaDon.trangThai}"></td>
+                            <td th:text="${hoaDon.trangThai==0?'Chưa Thanh Toán':''}"></td>
                             <td>
                                 <a th:href="@{/admin/ban-hang/huy(hoadonId=${hoaDon.id})}" class="btn btn-outline-danger">Hủy</a>
                                 <a th:href="@{/admin/ban-hang/hoa-don/chi-tiet(hoadonId=${hoaDon.id})}" class="btn btn-outline-warning chitiethd" >chi tiết</a>

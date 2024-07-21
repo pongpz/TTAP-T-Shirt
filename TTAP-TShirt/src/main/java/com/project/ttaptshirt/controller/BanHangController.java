@@ -36,7 +36,7 @@ public class BanHangController {
 
     @GetMapping("")
     public String openBanHangPage(Model model){
-        List<HoaDon> listHoaDon = hoaDonService.findAll();
+        List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         model.addAttribute("listHoaDon",listHoaDon);
         model.addAttribute("listCTSP", listCTSP);
@@ -46,13 +46,23 @@ public class BanHangController {
 
     @GetMapping("hoa-don/chi-tiet")
     public String viewHDCT (@RequestParam("hoadonId") Long id,Model model){
-        List<HoaDon> listHoaDon = hoaDonService.findAll();
+        List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         model.addAttribute("listHoaDon",listHoaDon);
         model.addAttribute("listCTSP", listCTSP);
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(id);
         model.addAttribute("listHDCT",listHDCT);
-        return  "admin/banhangtaiquay/banhang";
+        return  "/admin/banhangtaiquay/banhang";
+    }
+
+    @GetMapping("/huy")
+    public String huyHD(@RequestParam("hoadonId") Long idhd,Model model){
+        List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
+        model.addAttribute("listHoaDon",listHoaDon);
+        model.addAttribute("listCTSP", listCTSP);
+        hoaDonService.updateTrangThaiHD(1,idhd);
+        return  "redirect:/admin/ban-hang";
     }
 
     @PostMapping("/newHoaDon")
@@ -81,7 +91,16 @@ public class BanHangController {
         hoaDonChiTiet.setSoLuong(soLuong);
         hoaDonChiTiet.setNgayTao(new java.sql.Date(new Date().getTime()));
         hoaDonChiTietService.save(hoaDonChiTiet);
-        return "redirect:/admin/ban-hang";
+        ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
+        int soLuongSauUpdate;
+        if (chiTietSanPham1.getSoLuong()<soLuong){
+            soLuongSauUpdate = chiTietSanPham1.getSoLuong();
+        } else {
+            soLuongSauUpdate = chiTietSanPham1.getSoLuong()-soLuong;
+        }
+        chiTietSanPham1.setSoLuong(soLuongSauUpdate);
+        chiTietSanPhamService.save(chiTietSanPham1);
+        return "redirect:/admin/ttap-tshirt";
     }
 
 
