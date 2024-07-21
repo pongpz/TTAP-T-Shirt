@@ -279,7 +279,7 @@
                             <label style="font-weight: bold;">Tổng tiền: <span th:text="${totalPrice != null ? totalPrice : 0} +' vnd'"></span> </label>
                         </div>
                         <form th:action="@{/admin/ban-hang/hoa-don/xac-nhan-thanh-toan}" method="get">
-                            <input type="hidden" name="idhd" th:value="${hoadon1.id}" />
+                            <input type="hidden" name="idhd" th:if="${hoadon1 != null}" th:value="${hoadon1.id}" />
                             <button type="submit" class="btn btn-primary mt-3" style="margin-left: auto;">Xác nhận thanh toán</button>
                         </form>
                     </div>

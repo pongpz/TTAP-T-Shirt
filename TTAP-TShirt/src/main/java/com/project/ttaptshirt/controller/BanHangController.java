@@ -152,7 +152,7 @@ public class BanHangController {
     public String xacNhanThanhToan(@RequestParam("idhd") Long id) {
         HoaDon hoaDon = hoaDonService.findById(id);
         if (hoaDon != null) {
-            hoaDon.setTrangThai(1); // Đổi trạng thái hóa đơn sang 1
+            hoaDon.setTrangThai(1);
             hoaDonService.save(hoaDon);
         }
         return "redirect:/admin/ban-hang";
