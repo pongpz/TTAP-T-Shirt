@@ -39,7 +39,7 @@
                             <th scope="col">Mã hóa đơn</th>
                             <th scope="col">Ngày tạo</th>
                             <th scope="col">Khách hàng</th>
-                            <th scope="col">Thao tác</th>
+                            <th scope="col">Trạng Thái</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -47,7 +47,7 @@
                             <td th:text="${hoaDon.id}"></td>
                             <td th:text="${hoaDon.ma}"></td>
                             <td th:text="${hoaDon.ngayTao}"></td>
-                            <td th:text="${hoaDon.khachHang}"></td>
+                            <td th:text="${hoaDon.khachHang != null ? hoaDon.khachHang.hoTen : 'chưa có'}"></td>
                             <td th:text="${hoaDon.trangThai==0?'Chưa Thanh Toán':''}"></td>
 
                             <td>

@@ -28,11 +28,11 @@
             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khuyến mãi hóa đơn</label>
         </a>
 
-
+<!-- data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne" -->
         <div class="accordion" id="accordionPanelsStayOpenExample">
             <div class="accordion-item border-0">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                    <button id="showPanelsStayOpen" class="accordion-button collapsed bg-white" type="button" >
                         <img th:src="@{/images/sanpham.png}" class="col-2">
                         <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý sản phẩm</span>
                     </button>
@@ -63,9 +63,9 @@
                     </div>
                 </div>
             </div>
-            <div class="accordion-item border-0" style="padding-bottom: 10ch;">
+            <div class="accordion-item border-0">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                    <button id="showPanelsStayOpen1" class="accordion-button collapsed bg-white" type="button">
                         <img th:src="@{/images/person.jpg}" class="col-2">
                         <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý tài khoản</span>
                     </button>
@@ -83,4 +83,6 @@
             </div>
         </div>
     </div>
+
+    <script th:src="@{/js/sidebar.js}"></script>
 </div>
