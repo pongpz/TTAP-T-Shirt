@@ -30,7 +30,7 @@ public class HoaDonChiTiet {
 
     @ManyToOne
     @JoinColumn(name = "id_khuyen_mai")
-    private KhuyenMai khuyenMai;
+    private Voucher voucher;
 
     @Column(name = "don_gia")
     private Float donGia;
