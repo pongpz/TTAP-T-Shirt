@@ -36,4 +36,9 @@ public class HoaDonChiTietImpl implements HoaDonChiTietService {
     public List<HoaDonChiTiet> getHDCTByIdHD(Long id) {
         return hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id);
     }
+
+    @Override
+    public void updateSoLuongHdct(Integer soLuong, Long idHdct) {
+        hoaDonChiTietRepository.updateSoLuongSpHdct(soLuong,idHdct);
+    }
 }

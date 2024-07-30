@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface HoaDonChiTietService extends CommonService<HoaDonChiTiet> {
     public List<HoaDonChiTiet> getHDCTByIdHD(Long id);
+    public void updateSoLuongHdct(Integer soLuong,Long idHdct);
 }

@@ -32,4 +32,9 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
     public List<ChiTietSanPham> findAll() {
         return chiTietSanPhamRepository.findAll();
     }
+
+    @Override
+    public void updateSoLuongCtsp(Integer soLuong, Long id) {
+        chiTietSanPhamRepository.updateSoLuongCTSP(soLuong,id);
+    }
 }
