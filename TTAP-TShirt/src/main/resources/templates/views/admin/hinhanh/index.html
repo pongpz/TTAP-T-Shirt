@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Product Image</title>
+</head>
+<body>
+<h2>Upload Product Image</h2>
+<form th:action="@{/admin/image/uploadImage}" enctype="multipart/form-data" th:object="${hinhanh}" method="post">
+    <label for="name">Ma:</label>
+    <input type="text" id="name" th:field="${hinhanh.ma}"><br><br>
+    <label for="file"> Image:</label>
+    <input type="file" id="file" th:field="${hinhanh.ten}" name="file" accept="image/png, image/jpeg"><br><br>
+    <button type="submit">submit</button>
+</form>
+</body>
+</html>
