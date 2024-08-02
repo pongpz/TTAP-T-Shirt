@@ -4,8 +4,22 @@
     <div th:replace="~{/fragment/head :: head}"></div>
 </head>
 <body>
+
 <script>
-    // T vẫn chưa hiểu lắm về cái sidebar của b
+    function updateMainContent(url) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response) {
+                $('#main-content').html(response);
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+
+    updateMainContent('/admin/ban-hang');
     document.addEventListener('DOMContentLoaded', function () {
         const links = document.querySelectorAll('a.nav-link');
 
@@ -29,18 +43,19 @@
                 }
             });
         }
+})
 
-        updateMainContent('/admin/ban-hang');
-    });
 </script>
-
 
 <div class="row">
     <div class="col-2" th:replace="~{/fragment/sidebar :: sidebar}"></div>
     <div class="main-content col-10" id="main-content">
+
+        </div>
     </div>
 </div>
-
-<div th:replace="~{/fragment/foot :: foot}"></div>
+<script th:src="@{/js/sidebar.js}"></script>
+<script th:src="@{/js/banhang.js}"></script>
+<!--<div th:replace="~{/fragment/foot :: foot}"></div>-->
 </body>
 </html>
