@@ -11,21 +11,21 @@
 <form th:action="@{/admin/hoa-don/tim-kiem}" method="get" class="d-flex row">
     <div class="mb-3 col-5">
         <label for="timKiem" class="form-label">Tìm kiếm</label>
-        <input type="text" class="form-control" id="timKiem" name="keyword" placeholder="Mã, Tên KH, SĐT">
+        <input type="text" class="form-control" id="timKiem" name="keyword" placeholder="Mã, Tên KH, Số điện thoại">
     </div>
     <div class="col-1"></div>
     <div class="col-5">
     <label class="form-label">Trạng thái</label>
     <select class="form-select" aria-label="Default select example" name="trangThai">
-        <option selected value="0">Tất cả</option>
-        <option value="1">Đã thanh toán</option>
-        <option value="2">Chưa thanh toán</option>
+        <option selected value="">Tất cả</option>
+        <option value="1">Chưa thanh toán</option>
+        <option value="2">Đã thanh toán</option>
     </select>
     </div>
     <div class="col-5">
     <label class="form-label">Loại hóa đơn</label>
     <select class="form-select" aria-label="Default select example" name="loaiDon">
-        <option selected value="0">Tất cả</option>
+        <option selected value="">Tất cả</option>
         <option value="1">Tại quầy</option>
         <option value="2">Online</option>
     </select>
@@ -46,7 +46,7 @@
         <tr>
             <th scope="col">Mã hóa đơn</th>
             <th scope="col">Tổng tiền</th>
-            <th scope="col">Người tạo</th>
+            <th scope="col">Khách hàng</th>
             <th scope="col">Ngày thanh toán</th>
             <th scope="col">Loại đơn</th>
             <th scope="col">Ghi chú</th>
@@ -58,11 +58,11 @@
         <tr th:each="hd : ${listHD}" >
             <td th:text="${hd.ma}"></td>
             <td th:text="${hd.tongTien}"></td>
-            <td th:text="${hd.khachHang}"></td>
+            <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen : 'chưa có'}"></td>
             <td th:text="${hd.ngayThanhToan}"></td>
-            <td th:text="${hd.loaiDon}"></td>
+            <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"></td>
             <td th:text="${hd.ghiChu}"></td>
-            <td th:text="${hd.trangThai}"></td>
+            <td th:text="${hd.trangThai == 1 ? 'Chưa thanh toán' : 'Đã thanh toán'}"></td>
             <td>
                 <a th:href="|/admin/hoa-don-chi-tiet/hien-thi/${hd.id}|" class="btn btn-info">Chi tiết</a>
             </td>
