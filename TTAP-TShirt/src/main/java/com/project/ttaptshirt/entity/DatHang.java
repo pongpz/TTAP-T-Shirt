@@ -22,7 +22,7 @@ public class DatHang {
 
     @ManyToOne
     @JoinColumn(name = "id_users")
-    private Users users;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "id_khuyen_mai")

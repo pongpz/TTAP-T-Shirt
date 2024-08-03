@@ -20,13 +20,13 @@ public class KichCoController {
     KichCoService kichCoService;
     @GetMapping("/test")
     public String test(){
-        return "/admin/test";
+        return "admin/thuoctinhsanpham/kich-co";
     }
 
     @GetMapping("")
     public String openSizePage(Model model){
         model.addAttribute("listKichCo",kichCoService.findAll());
-        return "/admin/kich-co";
+        return "admin/thuoctinhsanpham/kich-co";
     }
 
     @GetMapping("/delete-kich-co/{id}")
@@ -51,7 +51,7 @@ public class KichCoController {
     public String openPageUpdate(@PathVariable("id") Long id,Model model ){
         KichCo kichCo = kichCoService.findById(id);
         model.addAttribute("kichCo",kichCo);
-        return "/admin/kich-co-update";
+        return "admin/thuoctinhsanpham/update-kich-co";
     }
 
 

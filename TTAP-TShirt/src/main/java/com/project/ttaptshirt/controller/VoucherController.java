@@ -1,6 +1,5 @@
 package com.project.ttaptshirt.controller;
 
-import com.project.ttaptshirt.entity.KhuyenMai;
 import com.project.ttaptshirt.entity.Voucher;
 import com.project.ttaptshirt.repository.VoucherRepo;
 import org.springframework.beans.factory.annotation.Autowired;

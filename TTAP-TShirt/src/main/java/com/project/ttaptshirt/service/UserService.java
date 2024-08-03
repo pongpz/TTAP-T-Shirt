@@ -53,6 +53,8 @@ public class UserService {
 
     public List<User> findByCv(String cv){return repoUser.findByCv_Ten(cv);}
 
+    public List<User> findByUsers(String name){return repoUser.findByHoTenContainingIgnoreCase(name);}
+
     public Optional<User> findById(Long id){
         return repoUser.findById(id);
     }

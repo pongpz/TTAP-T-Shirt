@@ -20,19 +20,19 @@
 
         <a href="javascript:void(0)" data-url="/admin/khuyen-mai/hien-thi" class="mt-1 btn col-12 nav-link" style="display: flex;">
             <img th:src="@{/images/khuyenmai.png}" class="col-2">
-            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý khuyến mãi</label>
+            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khuyến mãi sản phẩm</label>
         </a>
 
         <a href="javascript:void(0)" data-url="/admin/voucher/hien-thi" class="mt-1 btn col-12 nav-link" style="display: flex;">
             <img th:src="@{/images/khuyenmai.png}" class="col-2">
-            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý khuyến mãi</label>
+            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khuyến mãi hóa đơn</label>
         </a>
 
-
+<!-- data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne" -->
         <div class="accordion" id="accordionPanelsStayOpenExample">
             <div class="accordion-item border-0">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                    <button id="showPanelsStayOpen" class="accordion-button collapsed bg-white" type="button" >
                         <img th:src="@{/images/sanpham.png}" class="col-2">
                         <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý sản phẩm</span>
                     </button>
@@ -42,40 +42,40 @@
                         <a href="javascript:void(0)" data-url="/admin/san-pham" class="mt-1 btn col-12 nav-link" style="display: flex;">
                             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Sản phẩm</label>
                         </a>
-                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                        <a href="javascript:void(0)" data-url="/admin/kich-co" class="mt-1 btn col-12 nav-link" style="display: flex;">
                             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Kích cỡ</label>
                         </a>
-                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                        <a href="javascript:void(0)" data-url="/admin/chat-lieu/view" class="mt-1 btn col-12 nav-link" style="display: flex;">
                             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Chất liệu</label>
                         </a>
-                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                        <a href="javascript:void(0)" data-url="/admin/mau-sac" class="mt-1 btn col-12 nav-link" style="display: flex;">
                             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Màu sắc</label>
                         </a>
-                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                        <a href="javascript:void(0)" data-url="/admin/nsx/view" class="mt-1 btn col-12 nav-link" style="display: flex;">
                             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Nhà sản xuất</label>
                         </a>
-                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                        <a href="javascript:void(0)" data-url="/admin/thuong-hieu/view" class="mt-1 btn col-12 nav-link" style="display: flex;">
                             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Thương hiệu</label>
                         </a>
-                        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                        <a href="javascript:void(0)" data-url="/admin/kieu-dang/view" class="mt-1 btn col-12 nav-link" style="display: flex;">
                             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Kiểu dáng</label>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="accordion-item border-0" style="padding-bottom: 10ch;">
+            <div class="accordion-item border-0">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                    <button id="showPanelsStayOpen1" class="accordion-button collapsed bg-white" type="button">
                         <img th:src="@{/images/person.jpg}" class="col-2">
                         <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý tài khoản</span>
                     </button>
                 </h2>
                 <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
                     <div class="accordion-body">
-                        <a href="/TTAP/User/employee" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                        <a href="javascript:void(0)" data-url="/user/nhanvien/index" class="mt-1 btn col-12 nav-link" style="display: flex;">
                             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Nhân viên</label>
                         </a>
-                        <a href="/TTAP/User/customer" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
+                        <a href="javascript:void(0)" data-url="/user/khachhang/index" class="mt-1 btn col-12 nav-link" style="display: flex;">
                             <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khách hàng</label>
                         </a>
                     </div>
@@ -83,4 +83,6 @@
             </div>
         </div>
     </div>
+
+    <script th:src="@{/js/sidebar.js}"></script>
 </div>
