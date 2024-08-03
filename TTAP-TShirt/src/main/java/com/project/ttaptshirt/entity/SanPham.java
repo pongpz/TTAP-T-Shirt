@@ -49,9 +49,4 @@ public class SanPham extends CreatedUpdatedAt{
 //    @Column(name = "ngay_sua")
 //    private Date ngaySua;
 
-
-
-    @ManyToOne
-    @JoinColumn(name = "id_hinh_anh")
-    private HinhAnh hinhAnh;
 }

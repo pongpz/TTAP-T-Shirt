@@ -13,82 +13,24 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="form-group col-md-5">
-                        <div class="form-outline">
-                            <input
-                                    type="search"
-                                    id="form1"
-                                    placeholder="Tìm kiếm"
-                                    class="form-control" />
+                    <form th:action="@{/admin/chi-tiet-san-pham/search}" method="get" class="row mb-3">
+                        <div class="form-group col-md-5">
+                            <div class="form-outline">
+                                <input type="search" id="form1" name="searchTerm" placeholder="Tìm kiếm" class="form-control" th:value="${searchTerm}" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <div class="form-outline">
-                            <button class="btn btn-primary">
-                                Tìm kiếm
-                            </button>
-                            <button class="btn btn-warning">
-                                Làm mới
-                            </button>
-<!--                            <a href="" class="btn btn-danger">Lịch sử thao tác</a>-->
+                        <div class="form-group col-md-4">
+                            <div class="form-outline">
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group col-md-3 text-end">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
-                                    Thêm Sản Phẩm
-                                </button>
-                    </div>
-                    <div class="form-group col-md-4 mt-3">
-                        <span>Danh mục: </span>
-                        <select
-                                style="color: green"
-                                class="form-select">
-                            <option value="">Tất cả</option>
-                            <option value="danhMuc1">Danh mục 1</option>
-                            <option value="danhMuc2">Danh mục 2</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-4 mt-3">
-                        <span>Thương hiệu: </span>
-                        <select
-                                style="color: green"
-                                class="form-select">
-                            <option value="">Tất cả</option>
-                            <option value="thuongHieu1">Thương hiệu 1</option>
-                            <option value="thuongHieu2">Thương hiệu 2</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-4 mt-3">
-                        <span>Xuất xứ: </span>
-                        <select
-                                style="color: green"
-                                class="form-select">
-                            <option value="">Tất cả</option>
-                            <option value="xuatXu1">Xuất xứ 1</option>
-                            <option value="xuatXu2">Xuất xứ 2</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-4 mt-3">
-                        <span>Kiểu đế: </span>
-                        <select
-                                style="color: green"
-                                class="form-select">
-                            <option value="">Tất cả</option>
-                            <option value="kieuDe1">Kiểu đế 1</option>
-                            <option value="kieuDe2">Kiểu đế 2</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-4 mt-3">
-                        <span>Trạng thái: </span>
-                        <select
-                                style="color: green"
-                                class="form-select">
-                            <option value="">Tất cả</option>
-                            <option value="1">Đang bán</option>
-                            <option value="2">Ngừng bán</option>
-                        </select>
-                    </div>
-                </div>
+
+                        <div class="form-group col-md-3 text-end">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
+                                Thêm Sản Phẩm
+                            </button>
+                        </div>
+                    </form>
             </div>
             <span class="d-block text-center mt-3" th:if="${listSP.isEmpty()}">Không có sản phẩm nào</span>
             <div th:if="${not listSP.isEmpty()}">
@@ -96,7 +38,6 @@
                         <thead>
                         <tr style="border: 1px solid #ccc; background-color: lightskyblue">
                             <th>STT</th>
-                            <th>Ảnh</th>
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th>Ngày tạo</th>
@@ -107,9 +48,6 @@
                         <tbody>
                         <tr th:each="sanPham, iterStat : ${listSP}">
                             <td th:text="${iterStat.index + 1}"></td>
-                            <td>
-                                    <img width="50px" src="" alt="" />
-                            </td>
                             <td th:text="${sanPham.ma}"></td>
 
                             <td th:text="${sanPham.ten}"></td>
@@ -148,6 +86,7 @@
         </div>
     </div>
 </div>
+</div>
 <!-- Modal thêm sản phẩm -->
 <div class="modal fade" th:id="'modal-themsp-'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -165,6 +104,12 @@
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên Sản Phẩm</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nhà Sản Xuất</label>
+                        <select class="form-select" name="idNSX">
+                            <option th:each="nsx : ${listNSX}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="moTa" class="form-label">Mô Tả</label>
@@ -194,5 +139,6 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </body>
 </html>
