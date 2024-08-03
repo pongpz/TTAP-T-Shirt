@@ -1,19 +1,8 @@
-const $ = document.querySelector.bind(document);
-const $$ = document.querySelectorAll.bind(document);
 
-const deleteSpBtn = $('#deleteSpBtn');
-const deleteSpBtns = $$(".deleteSpBtn");
-
-deleteSpBtns.forEach((element)=>{
-    element.onclick = (event)=>{
         const userConfirmed = confirm('bạn có chắc chắn muốn xóa ?');
         if (!userConfirmed) {
             event.preventDefault();
         }
-    }
-})
-
-
 const closeModal = $('.close');
 const quantityForm = $('#quantityForm');
 
@@ -24,7 +13,6 @@ function editbtnOnClick(id) {
     //xu ly logic
     const quantityModal = $(modalId);
     console.log({quantityModal});
-    quantityModal.style.display = 'block';
 
 }
 
@@ -33,12 +21,6 @@ function editbtnOnClick(id) {
 //     bootstrap.Modal.getInstance(modal).hide();
 // }
 
-window.addEventListener('click', function(event) {
-    // if (event.target === quantityModal) {
-    //     // quantityModal.style.display = 'none';
-    // }
-});
-const quantityForms = $$(".quantityForm");
 
 function handleSubmitUpdateQuantity(id, event) {
     event.preventDefault(); // Prevent default form submission behavior
@@ -52,29 +34,3 @@ function handleSubmitUpdateQuantity(id, event) {
 }
 
 
-// quantityForms.forEach((quantityForm)=>{
-//     quantityForm.addEventListener('submit', function(event) {
-//         event.preventDefault();
-//         const quantity = $('#quantity').value;
-//         const modalValue = quantity;
-//         const detailInvoiceId = $("")
-//
-//         // Assuming you're using Thymeleaf, you can update the form's action dynamically
-//         quantityForm.action = `/admin/hoa-don/sua-so-luong?soLuongSua=${modalValue}?idSpSua=`;
-//
-//         // Submit the form
-//         quantityForm.submit();
-//     });
-// })
-// quantityForm.addEventListener('submit', function(event) {
-//     event.preventDefault();
-//     const quantity = $('#quantity').value;
-//     const modalValue = quantity;
-//     const detailInvoiceId = $("")
-//
-//     // Assuming you're using Thymeleaf, you can update the form's action dynamically
-//     quantityForm.action = `/admin/hoa-don/sua-so-luong?soLuongSua=${modalValue}?idSpSua=`;
-//
-//     // Submit the form
-//     quantityForm.submit();
-// });
