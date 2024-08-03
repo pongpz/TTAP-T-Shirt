@@ -15,3 +15,5 @@ $(function() {
             panelsStayOpen.classList.add("show");
         }
     });
+})
+
