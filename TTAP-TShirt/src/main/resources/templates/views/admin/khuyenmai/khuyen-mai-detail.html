@@ -74,8 +74,6 @@
             <th scope="col">Giá trị giảm</th>
             <th scope="col">Hình thức</th>
             <th scope="col">Trạng thái</th>
-            <th scope="col">Ngày tạo</th>
-            <th scope="col">Ngày sửa</th>
             <th scope="col">Hành động</th>
         </tr>
         </thead>
@@ -87,8 +85,6 @@
             <td th:text="${km.giaTriGiam}"></td>
             <td th:text="${km.hinhThuc}"></td>
             <td th:text="${km.trangThai}"></td>
-            <td th:text="${km.ngayTao}"></td>
-            <td th:text="${km.ngaySua}"></td>
             <td>
                 <a class="btn btn-danger" th:href="@{/admin/khuyen-mai/delete/{id}(id=${km.id})}">Đổi trạng thái</a>
                 <a class="btn btn-primary"  th:href="|/admin/khuyen-mai/detail/${km.id}|">Detail</a>
