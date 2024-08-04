@@ -62,6 +62,20 @@ public class BanHangController {
         return "admin/banhangtaiquay/banhang";
     }
 
+    @GetMapping("/index")
+    public String openBanHangPageindex(Model model) {
+        List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
+        List<Voucher> listKM = voucherRepo.findAll();
+        List<User> listKH = userRepo.findAll();
+        model.addAttribute("listKH", listKH);
+        model.addAttribute("listKM", listKM);
+        model.addAttribute("listHoaDon", listHoaDon);
+        model.addAttribute("listCTSP", listCTSP);
+
+        return "admin/banhangtaiquay/index";
+    }
+
     @GetMapping("hoa-don/chi-tiet")
     public String viewHDCT(@RequestParam("hoadonId") Long id, Model model) {
         List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
@@ -99,7 +113,7 @@ public class BanHangController {
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listCTSP", listCTSP);
         hoaDonService.updateTrangThaiHD(1, idhd);
-        return "redirect:/admin/ban-hang";
+        return "redirect:/admin/ttap-tshirt";
     }
 
 
@@ -137,7 +151,8 @@ public class BanHangController {
         }
         chiTietSanPham1.setSoLuong(soLuongSauUpdate);
         chiTietSanPhamService.save(chiTietSanPham1);
-        return "redirect:/admin/ban-hang";
+        return "redirect:/admin/ttap-tshirt";
+
     }
 
 
@@ -197,6 +212,7 @@ public class BanHangController {
         Integer chenhLechSl = soLuongSua - soLuongHienTai;
         Integer soLuongKho = hoaDonChiTiet.getChiTietSanPham().getSoLuong() - chenhLechSl;
         chiTietSanPhamService.updateSoLuongCtsp(soLuongKho,hoaDonChiTiet.getChiTietSanPham().getId());
-        return "redirect:/admin/ban-hang";
+        return "redirect:/admin/ttap-tshirt";
+
     }
 }

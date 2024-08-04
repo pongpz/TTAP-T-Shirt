@@ -1,19 +1,14 @@
-const $ = document.querySelector.bind(document);
-const $$ = document.querySelectorAll.bind(document);
+const deleteSpBtns = document.querySelectorAll(".deleteSpBtn");
 
-const deleteSpBtn = $('#deleteSpBtn');
-const deleteSpBtns = $$(".deleteSpBtn");
-
-deleteSpBtns.forEach((element)=>{
-    element.onclick = (event)=>{
+console.log("hello world")
+deleteSpBtns.forEach((element) => {
+    element.addEventListener("click", (event) => {
         const userConfirmed = confirm('bạn có chắc chắn muốn xóa ?');
         if (!userConfirmed) {
             event.preventDefault();
         }
-    }
-})
-
-
+    });
+});
 const closeModal = $('.close');
 const quantityForm = $('#quantityForm');
 
@@ -24,7 +19,7 @@ function editbtnOnClick(id) {
     //xu ly logic
     const quantityModal = $(modalId);
     console.log({quantityModal});
-    quantityModal.style.display = 'block';
+    $(quantityModal).css('display', 'block');
 
 }
 
@@ -33,12 +28,6 @@ function editbtnOnClick(id) {
 //     bootstrap.Modal.getInstance(modal).hide();
 // }
 
-window.addEventListener('click', function(event) {
-    // if (event.target === quantityModal) {
-    //     // quantityModal.style.display = 'none';
-    // }
-});
-const quantityForms = $$(".quantityForm");
 
 function handleSubmitUpdateQuantity(id, event) {
     event.preventDefault(); // Prevent default form submission behavior
@@ -52,29 +41,42 @@ function handleSubmitUpdateQuantity(id, event) {
 }
 
 
-// quantityForms.forEach((quantityForm)=>{
-//     quantityForm.addEventListener('submit', function(event) {
-//         event.preventDefault();
-//         const quantity = $('#quantity').value;
-//         const modalValue = quantity;
-//         const detailInvoiceId = $("")
-//
-//         // Assuming you're using Thymeleaf, you can update the form's action dynamically
-//         quantityForm.action = `/admin/hoa-don/sua-so-luong?soLuongSua=${modalValue}?idSpSua=`;
-//
-//         // Submit the form
-//         quantityForm.submit();
-//     });
-// })
-// quantityForm.addEventListener('submit', function(event) {
-//     event.preventDefault();
-//     const quantity = $('#quantity').value;
-//     const modalValue = quantity;
-//     const detailInvoiceId = $("")
-//
-//     // Assuming you're using Thymeleaf, you can update the form's action dynamically
-//     quantityForm.action = `/admin/hoa-don/sua-so-luong?soLuongSua=${modalValue}?idSpSua=`;
-//
-//     // Submit the form
-//     quantityForm.submit();
-// });
+function updateMainContent(url) {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function(response) {
+            $('#main-content').html(response);
+        },
+        error: function(error) {
+            console.log('Error:', error);
+        }
+    });
+}
+
+updateMainContent('/admin/ban-hang');
+
+function handleCTHD(event,idHD){
+    var btnCthdId = "#chiTietHd-"+idHD;
+    var btnCthd = $(btnCthdId);
+        event.preventDefault();
+     var urlCTHD =   btnCthd.attr("href");
+    updateMainContent(urlCTHD);
+
+}
+
+function handleXoaSpKhoiHdct(event,idHD){
+    var btnCtspId = "#btnXoaSpKhoiGioHang-"+idHD;
+    var btnCthd = $(btnCtspId);
+    event.preventDefault();
+    var urlCTHD =   btnCthd.attr("href");
+    updateMainContent(urlCTHD);
+
+}
+
+function btnSubmitHandle(idhdct){
+
+    var idForm = "#quantityForm-"+idhdct;
+    var form = $(idForm);
+    form.submit();
+}
