@@ -1,183 +1,115 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head">
-    <meta charset="UTF-8">
-    <title>TTAP Shop</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="icon" th:href="@{/images/logo2tap.jpg}" type="image/jpg">
-    <style>
-        a.nav-link:hover {
-            background-color: #adf2ff;
-        }
-        a.nav-link.active {
-            background-color: #00e1ff;
-            color: white;
-        }
-        .main-content {
-            margin-left: 16%;
-        }
-    </style>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragment/head :: head}"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
 
-</head>
-<body>
+    <div th:replace="~{/fragment/header :: header}"></div>
 
-<div th:fragment="navbar">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-white">
-        <div class="container-fluid" style="justify-content: end;">
-            <label style="margin-right: 50px;">Chào: tên!</label>
-            <img src="../../../static/images/agirl.jpg" alt="" style="border-radius: 50%; height: 50px; width: 50px;">
-        </div>
-    </nav>
-</div>
-<div class="col-2" th:fragment="sidebar" style="position: fixed;">
-    <!-- Nội dung Sidebar -->
-    <div class="" style="border: 1px solid rgb(114,68,68); border-radius: 0.5em; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230); height: 100vh;">
-        <img th:src="@{/images/logo2tap.jpg}" class="col-7 auto">
-        <br>
-        <a href="javascript:void(0)" data-url="/admin/ban-hang" class="mt-1 btn col-12 nav-link" style="display: flex;">
-            <img th:src="@{/images/giohang.png}" class="col-2">
-            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Bán hàng tại quầy</label>
-        </a>
+    <!-- =============================================== -->
 
-        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
-            <img th:src="@{/images/thongke.png}" class="col-2">
-            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Thống kê</label>
-        </a>
+    <!-- Left side column. contains the sidebar -->
+    <div th:replace="~{/fragment/aside :: aside}"></div>
 
-        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">
-            <img th:src="@{/images/hoadon.png}" class="col-2">
-            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Hóa đơn</label>
-        </a>
+    <!-- =============================================== -->
 
-        <a href="javascript:void(0)" data-url="/admin/khuyen-mai/hien-thi" class="mt-1 btn col-12 nav-link" style="display: flex;">
-            <img th:src="@{/images/khuyenmai.png}" class="col-2">
-            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khuyến mãi sản phẩm</label>
-        </a>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Quản lý user
+                <small>it all starts here</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+        </section>
 
-        <a href="javascript:void(0)" data-url="/admin/voucher/hien-thi" class="mt-1 btn col-12 nav-link" style="display: flex;">
-            <img th:src="@{/images/khuyenmai.png}" class="col-2">
-            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khuyến mãi hóa đơn</label>
-        </a>
+        <!-- Main content -->
+        <section class="content">
 
-        <!-- data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne" -->
-        <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item border-0">
-                <h2 class="accordion-header">
-                    <button id="showPanelsStayOpen" class="accordion-button collapsed bg-white" type="button" >
-                        <img th:src="@{/images/sanpham.png}" class="col-2">
-                        <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý sản phẩm</span>
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <a href="javascript:void(0)" data-url="/admin/san-pham" class="mt-1 btn col-12 nav-link" style="display: flex;">
-                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Sản phẩm</label>
-                        </a>
-                        <a href="javascript:void(0)" data-url="/admin/kich-co" class="mt-1 btn col-12 nav-link" style="display: flex;">
-                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Kích cỡ</label>
-                        </a>
-                        <a href="javascript:void(0)" data-url="/admin/chat-lieu/view" class="mt-1 btn col-12 nav-link" style="display: flex;">
-                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Chất liệu</label>
-                        </a>
-                        <a href="javascript:void(0)" data-url="/admin/mau-sac" class="mt-1 btn col-12 nav-link" style="display: flex;">
-                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Màu sắc</label>
-                        </a>
-                        <a href="javascript:void(0)" data-url="/admin/nsx/view" class="mt-1 btn col-12 nav-link" style="display: flex;">
-                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Nhà sản xuất</label>
-                        </a>
-                        <a href="javascript:void(0)" data-url="/admin/thuong-hieu/view" class="mt-1 btn col-12 nav-link" style="display: flex;">
-                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Thương hiệu</label>
-                        </a>
-                        <a href="javascript:void(0)" data-url="/admin/kieu-dang/view" class="mt-1 btn col-12 nav-link" style="display: flex;">
-                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Kiểu dáng</label>
-                        </a>
+            <!-- Default box -->
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Quản lý Nhân viên</h3>
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
+                                <form th:action="@{/TTAP/User/employee/find}" method="get" th:border="1">
+                                    <input type="text" placeholder="tìm kiếm" name="name">
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="accordion-item border-0">
-                <h2 class="accordion-header">
-                    <button id="showPanelsStayOpen1" class="accordion-button collapsed bg-white" type="button">
-                        <img th:src="@{/images/person.jpg}" class="col-2">
-                        <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý tài khoản</span>
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <a href="javascript:void(0)" data-url="/user/nhanvien/index" class="mt-1 btn col-12 nav-link" style="display: flex;">
-                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Nhân viên</label>
-                        </a>
-                        <a href="javascript:void(0)" data-url="/user/khachhang/index" class="mt-1 btn col-12 nav-link" style="display: flex;">
-                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khách hàng</label>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script th:src="@{/js/sidebar.js}"></script>
-</div>
-<article>
-    <div style="margin-top: 0px; border: 1px solid rgb(182, 172, 172); padding: 5ch; border-radius: 0.5cap; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230);">
-
-            <a class="btn btn-primary" href="/TTAP/User/newNv">Them</a>
-            <div class="row justify-content-end">
-                <div class="col-4">
-                    <form th:action="@{/TTAP/User/employee/find}" method="get">
-                        <input type="text" placeholder="tìm kiếm" name="name">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Tìm kiếm</button>
-                    </form>
-                </div>
-            </div>
-
-            <div>
-                <h1>Danhh sách người dùng</h1>
-                <table border="1" class="table">
-                    <thead>
-                    <th>#</th>
-                    <th>Họ và tên</th>
-                    <th>Giới tính</th>
-                    <th>Số điện thoại</th>
-                    <th>Email</th>
-                    <th>Chức vụ</th>
-                    <th>Trạng thái</th>
-                    <th>ngày tạo</th>
-                    <th>ngày tạo</th>
-                    <th>Thao tác</th>
-                    </thead>
-                    <tbody>
-                    <tr th:each="user, stt : ${empoLst}">
-                        <td th:text="${stt.index + 1}"></td>
-                        <td th:text="${user.hoTen}"></td>
-                        <td>
+                    <a class="btn btn-primary" href="/TTAP/User/newNv">Them</a>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <thead>
+                            <th>#</th>
+                            <th>Họ và tên</th>
+                            <th>Giới tính</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Chức vụ</th>
+                            <th>Trạng thái</th>
+                            <th>ngày tạo</th>
+                            <th>ngày tạo</th>
+                            <th>Thao tác</th>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user, stt : ${empoLst}">
+                                <td th:text="${stt.index + 1}"></td>
+                                <td th:text="${user.hoTen}"></td>
+                                <td>
                         <span th:switch="${user.gioiTinh}">
                             <span th:case="true">Nam</span>
                             <span th:case="false">Nu</span>
                         </span>
-                        </td>
-                        <td th:text="${user.soDienthoai}"></td>
-                        <td th:text="${user.email}"></td>
-                        <td th:text="${user.cv.ten}"></td>
-                        <td th:text="${user.trangThai}"></td>
-                        <td th:text="${user.ngayTao}"></td>
-                        <td th:text="${user.ngaySua}"></td>
-                        <td>
-                            <a class="btn btn-danger" th:href="@{/TTAP/User/delete/{id}(id = ${user.id})}">Xóa</a>
-                            <a class="btn btn-primary" th:href="@{/TTAP/User/detail/{id}(id = ${user.id})}">Thông tin chi tiết</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-    </div>
-</article>
+                                </td>
+                                <td th:text="${user.soDienthoai}"></td>
+                                <td th:text="${user.email}"></td>
+                                <td th:text="${user.cv.ten}"></td>
+                                <td th:text="${user.trangThai}"></td>
+                                <td th:text="${user.ngayTao}"></td>
+                                <td th:text="${user.ngaySua}"></td>
+                                <td>
+                                    <a class="btn btn-danger" th:href="@{/TTAP/User/deletekh/{id}(id = ${user.id})}">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                    <a class="btn btn-primary" th:href="@{/TTAP/User/detailKh/{id}(id = ${user.id})}">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-</body>
-<div th:fragment="foot">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="path/to/bootstrap.bundle.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+                </div>
+            </div>
+            <!-- /.box -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div th:replace="~{/fragment/footer :: footer}"></div>
 </div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+<div th:replace="~{/fragment/script :: script}"></div>
+</body>
 </html>
+
+

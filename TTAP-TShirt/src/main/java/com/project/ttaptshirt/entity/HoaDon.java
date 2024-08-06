@@ -28,7 +28,6 @@ public class HoaDon {
     @JoinColumn(name = "id_users")
     private User khachHang;
 
-
     @Column(name = "ma")
     private String ma;
 

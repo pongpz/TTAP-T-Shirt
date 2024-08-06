@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 @Repository
 public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet,Long> {
-    @Query(value = "select h from HoaDonChiTiet h where h.hoaDon.id = :id ")
+    @Query("select h from HoaDonChiTiet h where h.hoaDon.id = :id ")
     List<HoaDonChiTiet> getHoaDonChiTietByHoaDonId(@Param("id") Long id);
 
     @Transactional

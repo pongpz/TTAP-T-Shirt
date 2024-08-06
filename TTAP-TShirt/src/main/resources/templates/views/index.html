@@ -5,9 +5,32 @@
 <!-- Site wrapper -->
 <div class="wrapper">
 
+<<<<<<< HEAD
     <div th:replace="~{/fragment/header :: header}"></div>
 
     <!-- =============================================== -->
+=======
+<script>
+<<<<<<< HEAD
+=======
+    function updateMainContent(url) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response) {
+                $('#main-content').html(response);
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+
+    updateMainContent('/admin/ban-hang');
+>>>>>>> 6e5df077246d89f70c3beaa8b36784c23f916334
+    document.addEventListener('DOMContentLoaded', function () {
+        const links = document.querySelectorAll('a.nav-link');
+>>>>>>> 77c25a81ae2ef33ee1dac21b75644e968b38b1e1
 
     <!-- Left side column. contains the sidebar -->
     <div th:replace="~{/fragment/aside :: aside}"></div>

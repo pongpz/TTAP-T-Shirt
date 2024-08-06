@@ -32,7 +32,6 @@ public class HoaDonServiceImpl implements HoaDonService {
         return hoaDonRepository.findAll();
     }
 
-
     @Override
     public void updateTrangThaiHD(int trangThai, Long id) {
          hoaDonRepository.updateHoaDonStatus(trangThai,id);
@@ -42,4 +41,5 @@ public class HoaDonServiceImpl implements HoaDonService {
     public List<HoaDon> getListHDChuaThanhToan() {
         return hoaDonRepository.getListHDChuaThanhToan();
     }
+
 }

@@ -37,4 +37,5 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
     public void updateSoLuongCtsp(Integer soLuong, Long id) {
         chiTietSanPhamRepository.updateSoLuongCTSP(soLuong,id);
     }
+
 }

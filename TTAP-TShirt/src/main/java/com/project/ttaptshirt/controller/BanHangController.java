@@ -57,6 +57,7 @@ public class BanHangController {
         model.addAttribute("listKH", listKH);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
+        model.addAttribute("listHD", listHoaDon);
         model.addAttribute("listCTSP", listCTSP);
 
         return "admin/banhangtaiquay/banhang";

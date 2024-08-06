@@ -28,5 +28,11 @@ public class HinhAnh {
     @Column(name = "ten")
     private String ten;
 
+    @Transient
+        public String getphotoPath(){
+        if(ten == null) return null;
+        return "/images/"+ id +"/"+ten;
+    }
+
     // Getters and Setters
 }

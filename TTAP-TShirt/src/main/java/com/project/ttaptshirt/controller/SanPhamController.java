@@ -36,4 +36,5 @@ public class SanPhamController {
         sanPhamRepository.save(sanPham);
         return "redirect:/admin/san-pham";
     }
+
 }

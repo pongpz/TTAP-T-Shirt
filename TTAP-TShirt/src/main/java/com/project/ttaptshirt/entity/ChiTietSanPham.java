@@ -72,6 +72,8 @@ public class ChiTietSanPham extends CreatedUpdatedAt{
     @JoinColumn(name = "id_thuong_hieu")
     private ThuongHieu thuongHieu;
 
+    @ManyToOne
+    @JoinColumn(name = "id_hinh_anh")
+    private HinhAnh hinhAnh;
 
-    // Getters and setters (omitted for brevity)
 }
