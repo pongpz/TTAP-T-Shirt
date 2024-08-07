@@ -4,7 +4,32 @@
   <title>Upload Product Image</title>
 </head>
 <body>
-
+<div>
+  <h2>Upload Product Image</h2>
+  <form th:action="@{/admin/image/uploadImage}" enctype="multipart/form-data" th:object="${hinhanh}" method="post">
+    <label for="name">Ma:</label>
+    <input type="text" id="name" th:field="${hinhanh.ma}"><br><br>
+    <label for="file"> Image:</label>
+    <input type="file" id="file"  name="image" accept="image/png, image/jpeg"><br><br>
+    <button type="submit">submit</button>
+  </form>
+</div>
+<div>
+  <table>
+    <thead>
+    <th>STT</th>
+    <th>Mô tả</th>
+    <th>Ảnh</th>
+    </thead>
+    <tbody>
+    <tr th:each="image, stt :${image}">
+      <td th:text="${stt.index+1}"></td>
+      <td th:text="${image.ma}"></td>
+      <td><img th:src="${image.getphotoPath}" class="img-circle" alt="No pic" width="50" height="50"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
 
 </body>

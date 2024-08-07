@@ -63,6 +63,20 @@ public class BanHangController {
         return "admin/banhangtaiquay/banhang";
     }
 
+    @GetMapping("/index")
+    public String openBanHangPageindex(Model model) {
+        List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
+        List<Voucher> listKM = voucherRepo.findAll();
+        List<User> listKH = userRepo.findAll();
+        model.addAttribute("listKH", listKH);
+        model.addAttribute("listKM", listKM);
+        model.addAttribute("listHoaDon", listHoaDon);
+        model.addAttribute("listCTSP", listCTSP);
+
+        return "admin/banhangtaiquay/index";
+    }
+
     @GetMapping("hoa-don/chi-tiet")
     public String viewHDCT(@RequestParam("hoadonId") Long id, Model model) {
         List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();

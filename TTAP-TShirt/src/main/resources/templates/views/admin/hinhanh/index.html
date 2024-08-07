@@ -1,17 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Upload Product Image</title>
-</head>
-<body>
-<h2>Upload Product Image</h2>
-<form th:action="@{/admin/image/uploadImage}" enctype="multipart/form-data" th:object="${hinhanh}" method="post">
-    <label for="name">Ma:</label>
-    <input type="text" id="name" th:field="${hinhanh.ma}"><br><br>
-    <label for="file"> Image:</label>
-    <input type="file" id="file" th:field="${hinhanh.ten}" name="file" accept="image/png, image/jpeg"><br><br>
-    <button type="submit">submit</button>
-</form>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragment/head :: head}"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <div th:replace="~{/fragment/header :: header}"></div>
+
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <div th:replace="~{/fragment/aside :: aside}"></div>
+
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Bán hàng tại quầy
+                <small>it all starts here</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Ảnh sản phẩm</h3>
+                </div>
+                <form th:action="@{/admin/image/uploadImage}" enctype="multipart/form-data" th:object="${hinhanh}" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Ma</label>
+                            <input type="text" th:field="${hinhanh.ma}" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">File input</label>
+                            <input type="file" id="exampleInputFile" name="image" accept="image/png, image/jpeg">
+                            <p class="help-block">Example block-level help text here.</p>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div th:replace="~{/fragment/footer :: footer}"></div>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+<div th:replace="~{/fragment/script :: script}"></div>
 </body>
 </html>
