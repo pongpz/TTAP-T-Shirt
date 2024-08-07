@@ -49,6 +49,10 @@ public class HoaDon {
     @Column(name = "trang_thai")
     private Integer trangThai;
 
+    @ManyToOne
+    @JoinColumn(name = "id_khuyen_mai")
+    private Voucher khuyenMai;
+
     @PreUpdate
     protected  void onUpdate(){
         ngayThanhToan = LocalDateTime.now();

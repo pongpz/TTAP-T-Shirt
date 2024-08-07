@@ -40,7 +40,7 @@ public class Voucher {
     private Date ngayKetThuc;
     @NotBlank
     @Column(name = "hinh_thuc")
-    private String hinhThuc;
+    private int hinhThuc;
     @NotBlank
     @Column(name = "gia_tri_giam")
     private Float giaTriGiam;
@@ -53,12 +53,6 @@ public class Voucher {
     @NotBlank
     @Column(name = "ngay_sua")
     private Date ngaySua;
-    @NotBlank
-    @Column(name = "dieu_kien")
-    private Float dieuKien;
-
-//    @Column(name = "dieu_kien_loai")
-//    private String dieuKienLoai;
     @NotBlank
     @Column(name = "ma")
     private String ma;

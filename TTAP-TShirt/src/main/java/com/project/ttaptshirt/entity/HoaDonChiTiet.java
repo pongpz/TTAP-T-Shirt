@@ -28,10 +28,6 @@ public class HoaDonChiTiet extends CreatedUpdatedAt{
     @JoinColumn(name = "id_hoa_don")
     private HoaDon hoaDon;
 
-    @ManyToOne
-    @JoinColumn(name = "id_khuyen_mai")
-    private Voucher khuyenMai;
-
     @Column(name = "don_gia")
     private Float donGia;
 
