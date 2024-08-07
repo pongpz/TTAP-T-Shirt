@@ -1,47 +1,4 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragment/head :: head}"></head>
-<body class="hold-transition skin-blue sidebar-mini">
-<!-- Site wrapper -->
-<div class="wrapper">
 
-    <div th:replace="~{/fragment/header :: header}"></div>
-
-    <!-- =============================================== -->
-
-    <!-- Left side column. contains the sidebar -->
-    <div th:replace="~{/fragment/aside :: aside}"></div>
-
-    <!-- =============================================== -->
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h1>
-                Bán hàng tại quầy
-                <small>it all starts here</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Examples</a></li>
-                <li class="active">Blank page</li>
-            </ol>
-        </section>
-
-        <!-- Main content -->
-        <section class="content">
-
-            <!-- Default box -->
-            <div class="col-xs-12">
-                <div class="row">
-                    <article>
-                        <div style="margin-top: 0px; border: 1px solid rgb(182, 172, 172); padding: 5ch; border-radius: 0.5cap; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230);">
-                            <div style="display: flex;">
-                                <div class="mt-3 col-8">
-                                    <label for="exampleInputText" style="font-weight: bold;">Thông tin hóa đơn</label>
-                                    <input type="text" class="form-control mt-3" id="exampleInputText"
-                                           placeholder="Tìm kiếm hóa đơn">
                                 </div>
                                 <div class="col-5 mt-5" style="margin-left: 5%;">
                                     <div class="btn-group mt-2" role="group" aria-label="Basic mixed styles example">
@@ -370,23 +327,7 @@
                                         <label for="exampleInputText" style="font-weight: bold;"></label>
                                     </div>
 
-                                    <div style="display: flex;" class="mt-3">
-                                        <label style="font-weight: bold;">Tiền hàng: <span
-                                                th:text="${totalPrice != null ? totalPrice : 0} +' vnd'"></span></label>
-                                    </div>
-                                    <div style="display: flex;" class="mt-3">
-                                        <label style="font-weight: bold;">Khuyến Mãi:</label>
-                                        <label style="font-weight: bold; margin-left: 5ch;">0 vnd</label>
-                                    </div>
-                                    <div style="display: flex;" class="mt-3">
-                                        <label style="font-weight: bold;">Tổng tiền: <span
-                                                th:text="${totalPrice != null ? totalPrice : 0} +' vnd'"></span> </label>
-                                    </div>
-                                    <form th:action="@{/admin/ban-hang/hoa-don/xac-nhan-thanh-toan}" method="get">
-                                        <input type="hidden" name="idhd" th:if="${hoadon1 != null}" th:value="${hoadon1.id}"/>
-                                        <button type="submit" class="btn btn-primary mt-3" style="margin-left: auto;">Xác nhận thanh
-                                            toán
-                                        </button>
+
                                     </form>
                                 </div>
                             </div>
@@ -451,8 +392,6 @@
             </div>
             <!-- /.box -->
 
-        </section>
-        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 

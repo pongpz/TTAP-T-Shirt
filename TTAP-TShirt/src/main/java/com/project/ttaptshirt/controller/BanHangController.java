@@ -90,7 +90,7 @@ public class BanHangController {
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(id);
         model.addAttribute("listHDCT", listHDCT);
 
-        double totalPrice = listHDCT.stream()
+        double totalMoneyBefore = listHDCT.stream()
                 .mapToDouble(hdct -> {
                     int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
                     double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null) ? hdct.getChiTietSanPham().getGiaBan() : 0.0;
@@ -98,13 +98,72 @@ public class BanHangController {
                 })
                 .sum();
 
+        HoaDon hoaDon = hoaDonRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + id));
+        Voucher voucher = hoaDon.getKhuyenMai();
+
+        double discount = 0.0;
+
+        if (voucher != null) {
+            if (voucher.getHinhThuc() == 1) {
+                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+            }
+            else if (voucher.getHinhThuc() == 0) {
+                discount = voucher.getGiaTriGiam();
+            }
+        }
+
+        double totalMoneyAfter = totalMoneyBefore - discount;
+
+        totalMoneyAfter = Math.max(totalMoneyAfter, 0);
+
+        double moneyVoucher = totalMoneyBefore - totalMoneyAfter;
+
         NumberFormat currencyFormatter = NumberFormat.getNumberInstance(Locale.US);
-        String formattedTotalPrice = currencyFormatter.format(totalPrice);
-        model.addAttribute("totalPrice", formattedTotalPrice);
+        String formattedTotalMoneyBefore = currencyFormatter.format(totalMoneyBefore);
+        String formattedTotalMoneyAfter = currencyFormatter.format(totalMoneyAfter);
+        String moneyVoucher1 = currencyFormatter.format(moneyVoucher);
+        model.addAttribute("totalMoneyBefore", formattedTotalMoneyBefore);
+        model.addAttribute("totalMoneyAfter", formattedTotalMoneyAfter);
+        model.addAttribute("moneyVoucher", moneyVoucher1);
 
         HoaDon hoadon = hoaDonRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + id));
         model.addAttribute("hoadon1", hoadon);
         return "admin/banhangtaiquay/banhang";
+    }
+
+    @GetMapping("/hoa-don/xac-nhan-thanh-toan")
+    public String xacNhanThanhToan(@RequestParam("idhd") Long id) {
+        HoaDon hoaDon = hoaDonService.findById(id);
+
+        List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(id);
+        double totalMoneyBefore = listHDCT.stream()
+                .mapToDouble(hdct -> {
+                    int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
+                    double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null) ? hdct.getChiTietSanPham().getGiaBan() : 0.0;
+                    return soLuong * giaBan;
+                })
+                .sum();
+
+        Voucher voucher = hoaDon.getKhuyenMai();
+        double discount = 0.0;
+
+        if (voucher!= null){
+            if (voucher.getHinhThuc() == 1) {
+                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+            }
+            else if (voucher.getHinhThuc() == 0) {
+                discount = voucher.getGiaTriGiam();
+            }
+        }
+
+        double totalMoneyAfter = totalMoneyBefore - discount;
+        totalMoneyAfter = Math.max(totalMoneyAfter, 0);
+
+
+        hoaDon.setTongTien((float) totalMoneyAfter);
+        hoaDon.setTrangThai(1);
+        hoaDonService.save(hoaDon);
+        return "redirect:/admin/ban-hang";
     }
 
     @GetMapping("/huy")
@@ -171,26 +230,15 @@ public class BanHangController {
     @PostMapping("/chon-khuyen-mai")
     public String chonKhuyenMai(@RequestParam("idhd") Long idhd,
                                 @RequestParam("idkm") Long idkm) {
-        HoaDon hoaDon = new HoaDon();
-        HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+        HoaDon existingHoaDon = hoaDonRepository.findById(idhd).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idhd));
         Voucher voucher = new Voucher();
         voucher.setId(idkm);
-        hoaDon.setId(idhd);
-        hoaDonChiTiet.setHoaDon(hoaDon);
-        hoaDonChiTiet.setKhuyenMai(voucher);
-        hoaDonChiTietService.save(hoaDonChiTiet);
+        existingHoaDon.setKhuyenMai(voucher);
+        hoaDonService.save(existingHoaDon);
         return "redirect:/admin/ban-hang";
     }
 
-    @GetMapping("/hoa-don/xac-nhan-thanh-toan")
-    public String xacNhanThanhToan(@RequestParam("idhd") Long id) {
-        HoaDon hoaDon = hoaDonService.findById(id);
-        if (hoaDon != null) {
-            hoaDon.setTrangThai(1);
-            hoaDonService.save(hoaDon);
-        }
-        return "redirect:/admin/ban-hang";
-    }
+
 
     @GetMapping("/hoa-don/xoa-sp")
     public String deleteSpctInHoaDon(@RequestParam("idHdct") Long idHdct) {
