@@ -10,27 +10,27 @@
 
 <div class="container">
     <h1 class="text-center">Khuyến mãi</h1>
-    <form th:action="@{/admin/khuyen-mai/update/{id}(id=${listDetail.id})}" method="post">
+    <form th:action="@{/admin/khuyen-mai/add}" method="post">
         <div class="mb-3">
             <label class="form-label">Tên khuyến mãi</label>
-            <input type="text" class="form-control" th:field="*{listDetail.ten}" id="ten">
+            <input type="text" class="form-control" name="ten" id="ten">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Ngày bắt đầu</label>
-            <input type="date" class="form-control" th:field="*{listDetail.ngayBatDau}" id="ngayBatDau">
+            <input type="date" class="form-control" name="ngayBatDau" id="ngayBatDau">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Ngày kết thúc</label>
-            <input type="date" class="form-control" th:field="*{listDetail.ngayKetThuc}" id="ngayKetThuc">
+            <input type="date" class="form-control" name="ngayKetThuc" id="ngayKetThuc">
         </div>
 
         <div class=" d-flex">
 
             <div class="mb-3 col-8">
                 <label class="form-label">Giá trị giảm</label>
-                <input type="number" class="form-control" th:field="*{listDetail.giaTriGiam}" id="giaTriGiam">
+                <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam">
             </div>
             <div class="col-1">
 
@@ -38,7 +38,7 @@
 
             <div class="mb-3 col-3">
                 <label class="form-label">Hình thức</label>
-                <select class="form-select" th:field="*{listDetail.hinhThuc}">
+                <select class="form-select" name="hinhThuc">
                     <option value="VND">VND</option>
                     <option value="%">%</option>
                 </select>
@@ -48,20 +48,20 @@
 
         <label class="form-label">Trạng thái</label>
         <div class="form-check">
-            <input class="form-check-input" type="radio" th:field="*{listDetail.trangThai}" id="flexRadioDefault1" value="Hoạt động" checked>
+            <input class="form-check-input" type="radio" name="trangThai" id="flexRadioDefault1" value="Hoạt động" checked>
             <label class="form-check-label" for="flexRadioDefault1">
                 Hoạt động
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" th:field="*{listDetail.trangThai}" id="flexRadioDefault2" value="Ngưng hoạt động">
+            <input class="form-check-input" type="radio" name="trangThai" id="flexRadioDefault2" value="Ngưng hoạt động">
             <label class="form-check-label" for="flexRadioDefault2">
                 Ngưng hoạt động
             </label>
         </div>
 
         <a th:href="@{/admin/khuyen-mai/hien-thi}" class="btn btn-primary">Quay lại</a>
-        <button class="btn btn-warning">Sửa</button>
+        <button class="btn btn-primary">Thêm</button>
     </form>
 </div>
 
@@ -73,7 +73,7 @@
 <!--        let ngayKetThuc = document.getElementById("ngayKetThuc").value()-->
 <!--        let giaTriGiam = document.getElementById("giaTriGiam").value()-->
 
-<!--        if(ten===""||ngayBatDau===""||ngayKetThuc===""||giaTriGiam===""){-->
+<!--        if(ten==""||ngayBatDau==""||ngayKetThuc==""||giaTriGiam==""){-->
 <!--            alert("Vui lòng điền đủ trường")-->
 <!--            return false-->
 <!--        }else {-->

@@ -51,6 +51,11 @@ public class KhuyenMaiController {
         return "admin/khuyenmai/khuyen-mai-detail";
     }
 
+    @GetMapping("/form-add")
+    public String formAdd(){
+        return "admin/khuyenmai/formAddKM";
+    }
+
 
     @GetMapping("/delete/{idKM}")
     public String delete(@PathVariable("idKM") Long id){
