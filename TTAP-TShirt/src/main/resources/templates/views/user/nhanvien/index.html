@@ -81,10 +81,10 @@
                                 <td th:text="${user.ngayTao}"></td>
                                 <td th:text="${user.ngaySua}"></td>
                                 <td>
-                                    <a class="btn btn-danger" th:href="@{/TTAP/User/deletekh/{id}(id = ${user.id})}">
+                                    <a class="btn btn-danger" th:href="@{/TTAP/User/delete/{id}(id = ${user.id})}">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
-                                    <a class="btn btn-primary" th:href="@{/TTAP/User/detailKh/{id}(id = ${user.id})}">
+                                    <a class="btn btn-primary" th:href="@{/TTAP/User/detail/{id}(id = ${user.id})}">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
                                 </td>
