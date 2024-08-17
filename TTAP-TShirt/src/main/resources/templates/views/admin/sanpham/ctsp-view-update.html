@@ -68,93 +68,94 @@
 
                             <!-- Main content -->
                             <section class="content">
+                                <div class="box box-default">
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <form th:action="@{/admin/chi-tiet-san-pham/update/{idCTSP}(idCTSP=${ctsp.id})}" method="post">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Sản Phẩm</label>
+                                                        <input type="text" class="form-control" id="sanPhamTen" th:value="${ctsp.sanPham.ten}" readonly>
+                                                        <input type="hidden" name="idSanPham" th:value="${ctsp.sanPham.id}">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Màu Sắc</label>
+                                                        <select class="form-select" name="idMauSac">
+                                                            <option th:each="mauSac : ${listMauSac}" th:value="${mauSac.id}" th:text="${mauSac.ten}"
+                                                                    th:selected="${mauSac.id == ctsp.mauSac.id}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-                                <!-- Default box -->
-                                <div class="col-xs-12">
-                                    <div class=" box">
-                                        <form th:action="@{/admin/chi-tiet-san-pham/update/{idCTSP}(idCTSP=${ctsp.id})}" method="post">
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Sản Phẩm</label>
-                                                    <input type="text" class="form-control" id="sanPhamTen" th:value="${ctsp.sanPham.ten}" readonly>
-                                                    <input type="hidden" name="idSanPham" th:value="${ctsp.sanPham.id}">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Chất Liệu</label>
+                                                        <select class="form-select" name="idChatLieu">
+                                                            <option th:each="chatLieu : ${listChatLieu}" th:value="${chatLieu.id}" th:text="${chatLieu.ten}"
+                                                                    th:selected="${chatLieu.id == ctsp.chatLieu.id}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Kiểu Dáng</label>
+                                                        <select class="form-select" name="idKieuDang">
+                                                            <option th:each="kieuDang : ${listKieuDang}" th:value="${kieuDang.id}" th:text="${kieuDang.ten}"
+                                                                    th:selected="${kieuDang.id == ctsp.kieuDang.id}"></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Màu Sắc</label>
-                                                    <select class="form-select" name="idMauSac">
-                                                        <option th:each="mauSac : ${listMauSac}" th:value="${mauSac.id}" th:text="${mauSac.ten}"
-                                                                th:selected="${mauSac.id == ctsp.mauSac.id}"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
 
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Chất Liệu</label>
-                                                    <select class="form-select" name="idChatLieu">
-                                                        <option th:each="chatLieu : ${listChatLieu}" th:value="${chatLieu.id}" th:text="${chatLieu.ten}"
-                                                                th:selected="${chatLieu.id == ctsp.chatLieu.id}"></option>
-                                                    </select>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Khuyến Mãi</label>
+                                                        <select class="form-select" name="idKhuyenMai">
+                                                            <option value="">không chọn</option>
+                                                            <option th:each="khuyenMai : ${listKhuyenMai}" th:value="${khuyenMai.id}" th:text="${khuyenMai.ten}"
+                                                                    th:selected="${ctsp.khuyenMai != null and khuyenMai.id == ctsp.khuyenMai.id}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Nhà Sản Xuất</label>
+                                                        <select class="form-select" name="idNSX">
+                                                            <option th:each="nsx : ${listNSX}" th:value="${nsx.id}" th:text="${nsx.ten}"
+                                                                    th:selected="${nsx.id == ctsp.nsx.id}"></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Kiểu Dáng</label>
-                                                    <select class="form-select" name="idKieuDang">
-                                                        <option th:each="kieuDang : ${listKieuDang}" th:value="${kieuDang.id}" th:text="${kieuDang.ten}"
-                                                                th:selected="${kieuDang.id == ctsp.kieuDang.id}"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
 
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Khuyến Mãi</label>
-                                                    <select class="form-select" name="idKhuyenMai">
-                                                        <option value="">không chọn</option>
-                                                        <option th:each="khuyenMai : ${listKhuyenMai}" th:value="${khuyenMai.id}" th:text="${khuyenMai.ten}"
-                                                                th:selected="${ctsp.khuyenMai != null and khuyenMai.id == ctsp.khuyenMai.id}"></option>
-                                                    </select>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Thương Hiệu</label>
+                                                        <select class="form-select" name="idThuongHieu">
+                                                            <option th:each="thuongHieu : ${listThuongHieu}" th:value="${thuongHieu.id}" th:text="${thuongHieu.ten}"
+                                                                    th:selected="${thuongHieu.id == ctsp.thuongHieu.id}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Kích Cỡ</label>
+                                                        <select class="form-select" name="idKichCo">
+                                                            <option th:each="kichCo : ${listKichCo}" th:value="${kichCo.id}" th:text="${kichCo.ten}"
+                                                                    th:selected="${kichCo.id == ctsp.kichCo.id}"></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Nhà Sản Xuất</label>
-                                                    <select class="form-select" name="idNSX">
-                                                        <option th:each="nsx : ${listNSX}" th:value="${nsx.id}" th:text="${nsx.ten}"
-                                                                th:selected="${nsx.id == ctsp.nsx.id}"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
 
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Thương Hiệu</label>
-                                                    <select class="form-select" name="idThuongHieu">
-                                                        <option th:each="thuongHieu : ${listThuongHieu}" th:value="${thuongHieu.id}" th:text="${thuongHieu.ten}"
-                                                                th:selected="${thuongHieu.id == ctsp.thuongHieu.id}"></option>
-                                                    </select>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Giá Bán</label>
+                                                        <input type="number" class="form-control" name="giaBan" th:value="${ctsp.giaBan}" step="0.01">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Số Lượng</label>
+                                                        <input type="number" class="form-control" name="soLuong" th:value="${ctsp.soLuong}">
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Kích Cỡ</label>
-                                                    <select class="form-select" name="idKichCo">
-                                                        <option th:each="kichCo : ${listKichCo}" th:value="${kichCo.id}" th:text="${kichCo.ten}"
-                                                                th:selected="${kichCo.id == ctsp.kichCo.id}"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
 
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Giá Bán</label>
-                                                    <input type="number" class="form-control" name="giaBan" th:value="${ctsp.giaBan}" step="0.01">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Số Lượng</label>
-                                                    <input type="number" class="form-control" name="soLuong" th:value="${ctsp.soLuong}">
-                                                </div>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-warning">Cập nhật</button>
-                                        </form>
+                                                <button type="submit" class="btn btn-warning">Cập nhật</button>
+                                            </form>`
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Default box -->
                                 <!-- /.box -->
 
                             </section>
