@@ -31,109 +31,68 @@
 
         <!-- Main content -->
         <section class="content">
-
-            <!-- Default box -->
-            <div class="col-xs-12">
-                <div class=" box">
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="card shadow mb-4">
-                                <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <input type="search" id="form1" class="form-control" placeholder="Tìm kiếm màu sắc" />
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-primary">Tìm kiếm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Danh sách màu sắc</h3>
                         </div>
-                    </div>
 
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="row align-items-center my-4">
-                                        <div class="col">
-                                            <span style="font-size: 20px;">Danh sách màu sắc</span>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="input-group-append ml-3">
-                                                <button class="btn btn-primary rounded" data-bs-toggle="modal" data-bs-target="#sizeModal">
-                                                    Tạo màu sắc
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <table class="table table-borderless table-hover">
-                                        <thead>
-                                        <tr style="background-color: lightskyblue">
-                                            <th>STT</th>
-                                            <th>Mã màu</th>
-                                            <th>Tên màu sắc</th>
-                                            <th>Hành động</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="mausac, i : ${listMauSac}">
-                                            <td th:text="${i.index + 1}"></td>
-                                            <td th:text="${mausac.ma}"></td>
-                                            <td th:text="${mausac.ten}"></td>
-                                            <td>
-                                                <a class="btn btn-success" th:href="@{/admin/mau-sac/update-mau-sac/{id}(id=${mausac.id})}">Sửa</a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <nav aria-label="Table Paging" class="my-3 d-flex justify-content-center">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link"><<</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link">1</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link">>></a>
-                                    </li>
-                                </ul>
-                            </nav>
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr style="background-color: lightskyblue">
+                                    <th>STT</th>
+                                    <th>Mã màu</th>
+                                    <th>Tên màu sắc</th>
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="mausac, i : ${listMauSac}">
+                                    <td th:text="${i.index + 1}"></td>
+                                    <td th:text="${mausac.ma}"></td>
+                                    <td th:text="${mausac.ten}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/admin/mau-sac/update-mau-sac/{id}(id=${mausac.id})}">Sửa</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-                    <!-- Thêm -->
-                    <div class="modal fade" id="sizeModal" tabindex="-1" aria-labelledby="sizeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="sizeModalLabel">Thêm mới màu sắc</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form th:action="@{/admin/mau-sac/save-mau-sac}" th:object="${mauSac}" method="post">
-                                        <div class="form-group">
-                                            <label for="ma">Mã màu sắc:</label>
-                                            <input type="text" class="form-control" id="ma" name="ma" placeholder="Nhập mã màu sắc" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="ten">Tên màu sắc:</label>
-                                            <input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên màu sắc" />
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                            <button type="submit" class="btn btn-primary">Thêm</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
+                        <div class="box-footer clearfix">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                <li><a href="#">«</a></li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class=" box">
+                        <!-- Thêm -->
+                        <form th:action="@{/admin/mau-sac/save-mau-sac}" th:object="${mauSac}" method="post">
+                            <div class="form-group">
+                                <label for="ma">Mã màu sắc:</label>
+                                <input type="text" class="form-control" id="ma" name="ma" placeholder="Nhập mã màu sắc" />
+                            </div>
+                            <div class="form-group">
+                                <label for="ten">Tên màu sắc:</label>
+                                <input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên màu sắc" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
+            <!-- Default box -->
             <!-- /.box -->
 
         </section>

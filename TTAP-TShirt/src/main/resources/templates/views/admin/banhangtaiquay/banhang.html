@@ -65,8 +65,8 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="hoaDon : ${listHoaDon}">
-                                        <td th:text="${hoaDon.id}"></td>
+                                    <tr th:each="hoaDon,i : ${listHoaDon}">
+                                        <td th:text="${i.index+1}"></td>
                                         <td th:text="${hoaDon.ma}"></td>
                                         <td th:text="${hoaDon.ngayTao}"></td>
                                         <td th:text="${hoaDon.khachHang != null ? hoaDon.khachHang.hoTen : 'chưa có'}"></td>

@@ -31,109 +31,68 @@
 
         <!-- Main content -->
         <section class="content">
-
-            <!-- Default box -->
-            <div class="col-xs-12">
-                <div class=" box">
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="card shadow mb-4">
-                                <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <input type="search" id="form1" class="form-control" placeholder="Tìm kiếm kiểu dáng" />
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-primary">Tìm kiếm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Danh sách kiểu dáng</h3>
                         </div>
-                    </div>
 
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="row align-items-center my-4">
-                                        <div class="col">
-                                            <span style="font-size: 20px;">Danh sách kiểu dáng</span>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="input-group-append ml-3">
-                                                <button class="btn btn-primary rounded" data-bs-toggle="modal" data-bs-target="#sizeModal">
-                                                    Tạo kiểu dáng
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <table class="table table-borderless table-hover">
-                                        <thead>
-                                        <tr style="background-color: lightskyblue">
-                                            <th>STT</th>
-                                            <th>Mã màu</th>
-                                            <th>Tên kiểu dáng</th>
-                                            <th>Hành động</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="mausac, i : ${listKieuDang}">
-                                            <td th:text="${i.index + 1}"></td>
-                                            <td th:text="${mausac.ma}"></td>
-                                            <td th:text="${mausac.ten}"></td>
-                                            <td>
-                                                <a class="btn btn-success" th:href="@{/admin/kieu-dang/update/{id}(id=${mausac.id})}">Sửa</a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <nav aria-label="Table Paging" class="my-3 d-flex justify-content-center">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link"><<</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link">1</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link">>></a>
-                                    </li>
-                                </ul>
-                            </nav>
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr style="background-color: lightskyblue">
+                                    <th>STT</th>
+                                    <th>Mã màu</th>
+                                    <th>Tên kiểu dáng</th>
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="mausac, i : ${listKieuDang}">
+                                    <td th:text="${i.index + 1}"></td>
+                                    <td th:text="${mausac.ma}"></td>
+                                    <td th:text="${mausac.ten}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/admin/kieu-dang/update/{id}(id=${mausac.id})}">Sửa</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-                    <!-- Thêm -->
-                    <div class="modal fade" id="sizeModal" tabindex="-1" aria-labelledby="sizeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="sizeModalLabel">Thêm mới kiểu dáng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form th:action="@{/admin/kieu-dang/add}" th:object="${kieuDang}" method="post">
-                                        <div class="form-group">
-                                            <label for="ma">Mã kiểu dáng:</label>
-                                            <input type="text" class="form-control" id="ma" name="ma" placeholder="Nhập mã kiểu dáng" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="ten">Tên kiểu dáng:</label>
-                                            <input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên kiểu dángkiểu dáng" />
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                            <button type="submit" class="btn btn-primary">Thêm</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
+                        <div class="box-footer clearfix">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                <li><a href="#">«</a></li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class=" box">
+                        <!-- Thêm -->
+                        <form th:action="@{/admin/kich-co/save-kich-co}" th:object="${kichCo}" method="post">
+                            <div class="form-group">
+                                <label for="ma">Mã kích cỡ:</label>
+                                <input type="text" class="form-control" id="ma" name="ma" placeholder="Nhập mã kích cỡ" />
+                            </div>
+                            <div class="form-group">
+                                <label for="ten">Tên kích cỡ:</label>
+                                <input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên kích cỡ" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
+            <!-- Default box -->
             <!-- /.box -->
 
         </section>
