@@ -1,0 +1,78 @@
+<footer th:fragment="footer-customer" class="footer spad" style="background-color:#c5c5c5;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="footer__about">
+          <div class="footer__about__logo">
+            <a href="#"><img th:src="@{/images/logo2tap.jpg}"
+                             alt="" width="119px" /></a>
+          </div>
+          <ul>
+            <li>Địa chỉ: 07 - Trịnh Văn Bô - Bắc Từ Liêm - Hà Nội</li>
+            <li>Phone: 0913383655</li>
+            <li>Email: ttap.t-shirt@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+        <div class="footer__widget">
+          <h6>Dịch vụ khách hàng</h6>
+          <ul>
+            <li><a th:href="@{/TTAP/chinh-sach-van-chuyen}">Chính sách vận chuyển
+              và giao nhận</a></li>
+            <li><a th:href="@{/TTAP/chinh-sach-doi-tra}">Chính sách đổi, trả và
+              bảo hành</a></li>
+            <li><a th:href="@{/TTAP/chinh-sach-bao-mat}">Chính sách bảo mật</a>
+            </li>
+            <li><a th:href="@{/TTAP/chinh-sach-xu-ly-khieu-lai}">Chính sách xử lý
+              khiếu nại</a></li>
+          </ul>
+
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12">
+        <div class="footer__widget">
+          <h6>Hỗ trợ</h6>
+          <ul>
+            <li><a th:href="@{/TTAP/huong-dan-mua-hang}">Hướng dẫn mua hàng</a></li>
+            <li><a th:href="@{/TTAP/hinh-thuc-thanh-toan}">Hình thức thanh toán</a></li>
+            <li><a href="/src/customer/index-customer.html#/lien-he">Liên hệ</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<style>
+  .footer {
+    font-family: 'Roboto', sans-serif; /* Chọn font chữ */
+    color: #333; /* Màu chữ chính */
+    background-color: white; /* Màu nền */
+
+    /* Khoảng cách và định dạng khoảng cách */
+    padding: 40px 0;
+    margin-top: 20px;
+
+    /* Định dạng đường viền (nếu cần) */
+    border-top: 1px solid #ddd;
+  }
+
+  .footer ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer ul li {
+    margin-bottom: 10px; /* Khoảng cách giữa các mục trong danh sách */
+  }
+
+  .footer a {
+    text-decoration: none;
+    color: #007bff; /* Màu chữ cho các liên kết */
+  }
+
+  .footer a:hover {
+    text-decoration: underline; /* Gạch chân khi di chuột qua liên kết */
+  }
+
+</style>
