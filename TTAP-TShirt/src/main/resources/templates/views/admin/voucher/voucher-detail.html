@@ -49,8 +49,8 @@
             <div class="mb-3 col-3">
                 <label class="form-label">Hình thức</label>
                 <select class="form-select" th:field="*{listDetail.hinhThuc}">
-                    <option value="VND">VND</option>
-                    <option value="%">%</option>
+                    <option value="2">VND</option>
+                    <option value="1">%</option>
                 </select>
             </div>
 
@@ -102,7 +102,7 @@
             <td th:text="${vc.trangThai}"></td>
             <td>
                 <a class="btn btn-danger" th:href="@{/admin/khuyen-mai/delete/{id}(id=${vc.id})}">Đổi trạng thái</a>
-                <a class="btn btn-primary"  th:href="|/admin/khuyen-mai/detail/${vc.id}|">Detail</a>
+                <a class="btn btn-primary"  th:href="@{/admin/khuyen-mai/detail/{id}(id=${vc.id})}|">Detail</a>
             </td>
         </tr>
         </tbody>

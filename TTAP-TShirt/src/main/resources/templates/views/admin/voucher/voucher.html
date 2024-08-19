@@ -103,12 +103,12 @@
             <td th:text="${vc.ngayBatDau}"></td>
             <td th:text="${vc.ngayKetThuc}"></td>
             <td th:text="${vc.giaTriGiam}"></td>
-            <td th:text="${vc.hinhThuc}"></td>
+            <td th:text="${vc.hinhThuc== 1 ? 'VND' : '%'}"></td>
             <td th:text="${vc.dieuKien}"></td>
             <td th:text="${vc.trangThai}"></td>
             <td>
-                <a class="btn btn-danger" th:href="|/admin/voucher/delete/${vc.id}|">Đổi trạng thái</a>
-                <a class="btn btn-primary" th:href="|/admin/voucher/detail/${vc.id}|">Detail</a>
+                <a class="btn btn-danger" th:href="@{/admin/voucher/delete/{id}(id=${vc.id})}">Đổi trạng thái</a>
+                <a class="btn btn-primary" th:href="@{/admin/voucher/detail/{id}(id=${vc.id})}">Detail</a>
 
             </td>
         </tr>

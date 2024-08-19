@@ -30,7 +30,7 @@
 
             <div class="mb-3 col-8">
                 <label class="form-label">Giá trị giảm</label>
-                <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam">
+                <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam" min="1">
             </div>
             <div class="col-1">
 
@@ -39,8 +39,8 @@
             <div class="mb-3 col-3">
                 <label class="form-label">Hình thức</label>
                 <select class="form-select" name="hinhThuc">
-                    <option value="VND">VND</option>
-                    <option value="%">%</option>
+                    <option value="1">VND</option>
+                    <option value="2">%</option>
                 </select>
             </div>
 
@@ -59,26 +59,11 @@
                 Ngưng hoạt động
             </label>
         </div>
-
+        <h5 class="text-danger mt-3 mb-3 errorMessage">[[${errorMessage}]]</h5>
         <a th:href="@{/admin/khuyen-mai/hien-thi}" class="btn btn-primary">Quay lại</a>
-        <button class="btn btn-primary">Thêm</button>
+        <button class="btn btn-success myButton">Thêm</button>
     </form>
 </div>
 
 </body>
-<!--<script>-->
-<!--    function submit(){-->
-<!--        let ten = document.getElementById("ten").value()-->
-<!--        let ngayBatDau = document.getElementById("ngayBatDau").value()-->
-<!--        let ngayKetThuc = document.getElementById("ngayKetThuc").value()-->
-<!--        let giaTriGiam = document.getElementById("giaTriGiam").value()-->
-
-<!--        if(ten==""||ngayBatDau==""||ngayKetThuc==""||giaTriGiam==""){-->
-<!--            alert("Vui lòng điền đủ trường")-->
-<!--            return false-->
-<!--        }else {-->
-<!--            return true-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
 </html>

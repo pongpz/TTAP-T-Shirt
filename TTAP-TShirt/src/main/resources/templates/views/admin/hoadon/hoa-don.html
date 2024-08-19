@@ -58,7 +58,7 @@
         <tr th:each="hd : ${listHD}" >
             <td th:text="${hd.ma}"></td>
             <td th:text="${hd.tongTien}"></td>
-            <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen : 'chưa có'}"></td>
+            <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen : 'Chưa có'}"></td>
             <td th:text="${hd.ngayThanhToan}"></td>
             <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"></td>
             <td th:text="${hd.ghiChu}"></td>
@@ -87,13 +87,13 @@
         </thead>
         <tbody>
         <tr th:each="hdct : ${listHDCT}">
-            <td th:text="${hdct.hoaDon.ma}"></td>
-            <td th:text="${hdct.chiTietSanPham.sanPham.ten}"></td>
-            <td th:text="${hdct.chiTietSanPham.mauSac.ten}"></td>
-            <td th:text="${hdct.chiTietSanPham.kichCo.ten}"></td>
-            <td th:text="${hdct.donGia}"></td>
-            <td th:text="${hdct.soLuong}"></td>
-            <td th:text="${hdct.voucher.ten}"></td>
+            <td th:text="${hdct.hoaDon.ma != null ? hdct.hoaDon.ma : ''}"></td>
+            <td th:text="${hdct.chiTietSanPham.sanPham.ten != null ? hdct.chiTietSanPham.sanPham.ten : ''}"></td>
+            <td th:text="${hdct.chiTietSanPham.mauSac.ten != null ? hdct.chiTietSanPham.mauSac.ten : ''}"></td>
+            <td th:text="${hdct.chiTietSanPham.kichCo.ten != null ? hdct.chiTietSanPham.kichCo.ten : ''}"></td>
+            <td th:text="${hdct.donGia != null ? hdct.donGia : ''}"></td>
+            <td th:text="${hdct.soLuong != null ? hdct.soLuong : ''}"></td>
+            <td th:text="${hdct?.hoaDon?.khuyenMai?.ten != null ? hdct.hoaDon.khuyenMai.ten : ''}"></td>
         </tr>
         </tbody>
     </table>
