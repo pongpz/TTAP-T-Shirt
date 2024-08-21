@@ -1,6 +1,7 @@
 package com.project.ttaptshirt.repository;
 
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,5 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet,Lon
     @Modifying
     @Query(value = "update hoa_don_chi_tiet set so_luong = ?1 where id = ?2",nativeQuery = true)
     void updateSoLuongSpHdct(Integer soLuong,Long idHdct);
+
 }

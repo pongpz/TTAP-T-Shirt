@@ -3,6 +3,7 @@ package com.project.ttaptshirt.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,25 +26,25 @@ public class KhuyenMai {
     @NotBlank
     @Column(name = "ten")
     private String ten;
-    @NotBlank
+    @NotNull
     @Column(name = "ngay_bat_dau")
     private Date ngayBatDau;
-    @NotBlank
+    @NotNull
     @Column(name = "ngay_ket_thuc")
     private Date ngayKetThuc;
-    @NotBlank
+    @NotNull
     @Column(name = "hinh_thuc")
-    private String hinhThuc;
-    @NotBlank
+    private Integer hinhThuc;
+    @NotNull
     @Column(name = "gia_tri_giam")
     private Float giaTriGiam;
     @NotBlank
     @Column(name = "trang_thai")
     private String trangThai;
-    @NotBlank
+    @NotNull
     @Column(name = "ngay_tao")
     private Date ngayTao;
-    @NotBlank
+    @NotNull
     @Column(name = "ngay_sua")
     private Date ngaySua;
 

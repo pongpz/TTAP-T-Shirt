@@ -32,16 +32,16 @@ public class Voucher {
     @NotBlank
     @Column(name = "ten")
     private String ten;
-    @NotBlank
+    @NotNull
     @Column(name = "ngay_bat_dau")
     private Date ngayBatDau;
-    @NotBlank
+    @NotNull
     @Column(name = "ngay_ket_thuc")
     private Date ngayKetThuc;
     @NotBlank
     @Column(name = "hinh_thuc")
-    private int hinhThuc;
-    @NotBlank
+    private Integer hinhThuc;
+    @NotNull
     @Column(name = "gia_tri_giam")
     private Float giaTriGiam;
     @NotBlank

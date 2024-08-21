@@ -66,6 +66,38 @@
                     </form>
 
 
+<<<<<<< HEAD
+<div class="container">
+    <h1 class="text-center">Hóa đơn</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Mã hóa đơn</th>
+            <th scope="col">Tổng tiền</th>
+            <th scope="col">Khách hàng</th>
+            <th scope="col">Ngày thanh toán</th>
+            <th scope="col">Loại đơn</th>
+            <th scope="col">Ghi chú</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="hd : ${listHD}" >
+            <td th:text="${hd.ma}"></td>
+            <td th:text="${hd.tongTien}"></td>
+            <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen : 'Chưa có'}"></td>
+            <td th:text="${hd.ngayThanhToan}"></td>
+            <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"></td>
+            <td th:text="${hd.ghiChu}"></td>
+            <td th:text="${hd.trangThai == 1 ? 'Chưa thanh toán' : 'Đã thanh toán'}"></td>
+            <td>
+                <a th:href="|/admin/hoa-don-chi-tiet/hien-thi/${hd.id}|" class="btn btn-info">Chi tiết</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+=======
                     <div class="container">
                         <h1 class="text-center">Hóa đơn</h1>
                         <table class="table table-hover">
@@ -135,10 +167,41 @@
     <!-- /.content-wrapper -->
 
     <div th:replace="~{/fragment/footer :: footer}"></div>
+>>>>>>> 5e5648ab6385899cbc178225e07e3234ec261780
 </div>
 <!-- ./wrapper -->
 
+<<<<<<< HEAD
+<div class="container">
+    <h1 class="text-center">Hóa đơn chi tiết</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Mã hóa đơn</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Màu sắc</th>
+            <th scope="col">Kích cỡ</th>
+            <th scope="col">Đơn giá</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Tên khuyến mãi</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="hdct : ${listHDCT}">
+            <td th:text="${hdct.hoaDon.ma != null ? hdct.hoaDon.ma : ''}"></td>
+            <td th:text="${hdct.chiTietSanPham.sanPham.ten != null ? hdct.chiTietSanPham.sanPham.ten : ''}"></td>
+            <td th:text="${hdct.chiTietSanPham.mauSac.ten != null ? hdct.chiTietSanPham.mauSac.ten : ''}"></td>
+            <td th:text="${hdct.chiTietSanPham.kichCo.ten != null ? hdct.chiTietSanPham.kichCo.ten : ''}"></td>
+            <td th:text="${hdct.donGia != null ? hdct.donGia : ''}"></td>
+            <td th:text="${hdct.soLuong != null ? hdct.soLuong : ''}"></td>
+            <td th:text="${hdct?.hoaDon?.khuyenMai?.ten != null ? hdct.hoaDon.khuyenMai.ten : ''}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+=======
 <!-- jQuery 3 -->
+>>>>>>> 5e5648ab6385899cbc178225e07e3234ec261780
 
 <div th:replace="~{/fragment/script :: script}"></div>
 </body>

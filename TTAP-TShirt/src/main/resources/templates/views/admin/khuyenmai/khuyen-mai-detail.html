@@ -129,7 +129,37 @@
     </div>
     <!-- /.content-wrapper -->
 
+<<<<<<< HEAD
+            <div class="mb-3 col-3">
+                <label class="form-label">Hình thức</label>
+                <select class="form-select" th:field="*{listDetail.hinhThuc}">
+                    <option value="1">VND</option>
+                    <option value="2">%</option>
+                </select>
+            </div>
+
+        </div>
+
+        <label class="form-label">Trạng thái</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:field="*{listDetail.trangThai}" id="flexRadioDefault1" value="Hoạt động" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+                Hoạt động
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:field="*{listDetail.trangThai}" id="flexRadioDefault2" value="Ngưng hoạt động">
+            <label class="form-check-label" for="flexRadioDefault2">
+                Ngưng hoạt động
+            </label>
+        </div>
+        <h5 class="text-danger mt-3 mb-3 errorMessage">[[${errorMessage}]]</h5>
+        <a th:href="@{/admin/khuyen-mai/hien-thi}" class="btn btn-primary">Quay lại</a>
+        <button class="btn btn-warning">Sửa</button>
+    </form>
+=======
     <div th:replace="~{/fragment/footer :: footer}"></div>
+>>>>>>> 5e5648ab6385899cbc178225e07e3234ec261780
 </div>
 <!-- ./wrapper -->
 
