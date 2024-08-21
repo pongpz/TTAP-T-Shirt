@@ -60,32 +60,32 @@ public class KhuyenMaiController {
             }
     }
 
-//    @PostMapping("/update/{idKM}")
-//    public String sua(@Valid KhuyenMai km, @PathVariable("idKM") Long id, Errors errors, Model model){
-//        String errorMessage;
-//        if(errors.hasErrors()){
-//            if (km.getTen().trim().isEmpty() || km.getNgayBatDau() == null || km.getNgayKetThuc() == null || km.getGiaTriGiam() == null) {
-//                errorMessage = "Vui lòng điền đủ trường";
-//                model.addAttribute("errorMessage", errorMessage);
-//                return "admin/khuyenmai/khuyen-mai-detail/"+id;
-//            }
-//        }
-//        if(km.getNgayBatDau().compareTo(km.getNgayKetThuc()) > 0 || km.getNgayKetThuc().compareTo(Date.valueOf(LocalDate.now())) < 0){
-//            errorMessage = "Ngày bắt đầu hoặc ngày kết thúc không hợp lệ";
-//            model.addAttribute("errorMessage", errorMessage);
-//            return "admin/khuyenmai/khuyen-mai-detail/"+id;
-//        }else if(km.getGiaTriGiam() >= 100 && km.getHinhThuc() == 2 || km.getGiaTriGiam().isNaN() || km.getGiaTriGiam() <0){
-//            errorMessage = "Giá trị giảm không hợp lệ";
-//            model.addAttribute("errorMessage",errorMessage);
-//            return "admin/khuyenmai/khuyen-mai-detail/"+id;
-//        }else {
-//            km.setNgaySua(Date.valueOf(LocalDate.now()));
-//            km.setNgayTao(kmrp.getReferenceById(id).getNgayTao());
-//            km.setId(id);
-//            kmrp.save(km);
-//            return "redirect:/admin/khuyen-mai/hien-thi";
-//        }
-//    }
+    @PostMapping("/update/{idKM}")
+    public String sua(@Valid KhuyenMai km, @PathVariable("idKM") Long id, Errors errors, Model model){
+        String errorMessage;
+        if(errors.hasErrors()){
+            if (km.getTen().trim().isEmpty() || km.getNgayBatDau() == null || km.getNgayKetThuc() == null || km.getGiaTriGiam() == null) {
+                errorMessage = "Vui lòng điền đủ trường";
+                model.addAttribute("errorMessage", errorMessage);
+                return "admin/khuyenmai/khuyen-mai-detail/"+id;
+            }
+        }
+        if(km.getNgayBatDau().compareTo(km.getNgayKetThuc()) > 0 || km.getNgayKetThuc().compareTo(Date.valueOf(LocalDate.now())) < 0){
+            errorMessage = "Ngày bắt đầu hoặc ngày kết thúc không hợp lệ";
+            model.addAttribute("errorMessage", errorMessage);
+            return "admin/khuyenmai/khuyen-mai-detail/"+id;
+        }else if(km.getGiaTriGiam() >= 100 && km.getHinhThuc() == 2 || km.getGiaTriGiam().isNaN() || km.getGiaTriGiam() <0){
+            errorMessage = "Giá trị giảm không hợp lệ";
+            model.addAttribute("errorMessage",errorMessage);
+            return "admin/khuyenmai/khuyen-mai-detail/"+id;
+        }else {
+            km.setNgaySua(Date.valueOf(LocalDate.now()));
+            km.setNgayTao(kmrp.getReferenceById(id).getNgayTao());
+            km.setId(id);
+            kmrp.save(km);
+            return "redirect:/admin/khuyen-mai/hien-thi";
+        }
+    }
 
     @GetMapping("/detail/{idKM}")
     public String detail(Model model, @PathVariable("idKM") Long id){

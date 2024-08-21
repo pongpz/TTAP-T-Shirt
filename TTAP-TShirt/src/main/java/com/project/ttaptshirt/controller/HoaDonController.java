@@ -27,21 +27,6 @@ public class HoaDonController {
         return"admin/hoadon/hoa-don";
     }
 
-//    @GetMapping("/admin/hoa-don/tim-kiem")
-//    public String timKiem(@RequestParam(required = false, value="keyword") String keyword,
-//                          @RequestParam(required = false, value="trangThai") Integer trangThai,
-//                          @RequestParam(required = false, value="loaiDon") Integer loaiDon,
-//                          @RequestParam(required = false, value="ngayThanhToan") @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayThanhToan,
-//                          Model model){
-//        List<HoaDon> ls = new ArrayList<>();
-//        if(keyword.trim().isEmpty() && trangThai == null && loaiDon == null && ngayThanhToan == null){
-//            model.addAttribute("listHD",hr.findAll());
-//        }else{
-//            model.addAttribute("listHD",hr.search(keyword,trangThai,loaiDon,ngayThanhToan));
-//        }
-//        return"admin/hoadon/hoa-don";
-//    }
-
     @GetMapping("/admin/hoa-don/tim-kiem")
     public String timKiem(@RequestParam(required = false, value="keyword") String keyword,
                           @RequestParam(required = false, value="trangThai") Integer trangThai,

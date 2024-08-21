@@ -144,7 +144,7 @@ public class UserController {
         mol.addAttribute("user",user);
         mol.addAttribute("cv",serCv.findAll());
         mol.addAttribute("diaChi",user.getDc() != null ? user.getDc() : new DiaChi());
-        return "/user/khachhang/update/";
+        return "/user/khachhang/update";
     }
 
     @PostMapping("update")
@@ -158,7 +158,21 @@ public class UserController {
         user.setNgayTao(existingUser.getNgayTao());
         user.setNgaySua(LocalDate.now());
         serUser.save(user);
-        return "redirect:/TTAP/User/home";
+        return "redirect:/TTAP/User/employee";
+    }
+
+    @PostMapping("updateKh")
+    public String updateKh(@Valid User user,BindingResult result, Model mol){
+        if (result.hasErrors()){
+            user.setId(user.getId());
+            return "/user/update";
+        }
+        User existingUser = serUser.findById(user.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + user.getId()));
+        user.setNgayTao(existingUser.getNgayTao());
+        user.setNgaySua(LocalDate.now());
+        serUser.save(user);
+        return "redirect:/TTAP/User/employee";
     }
 
     @PostMapping("/{id}/DiaChi")

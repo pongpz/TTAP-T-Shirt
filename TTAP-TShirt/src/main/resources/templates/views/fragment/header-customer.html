@@ -1,0 +1,90 @@
+<header th:fragment="header-customer" class="header" style="background: #F3F6FA">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="header__logo">
+          <a href="#"><img th:src="@{/images/logo2tap.jpg}"
+                           style="width: 125px" alt="" /></a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <nav class="header__menu">
+          <ul>
+            <li class="active">
+              <a th:href="@{/TTAP/trang-chu}">Trang chủ</a>
+            </li>
+            <li>
+              <a href="#/shop">Sản phẩm</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-3">
+        <div class="header__cart">
+          <ul>
+            <li class="open-cart">
+              <a href="#/check-out"><i class="fa fa-shopping-bag"></i>
+                <span></span></a>
+              <div class="container-cart" style="position: absolute; z-index: 9999; right: 70px;">
+                <div class="shopping-cart" style="max-height: 270px; overflow-y: auto;">
+                  <div class="row">
+                    <div class="col-md-4" style="margin-top: 5px; margin-bottom: 5px">
+                      <img width="300px" src="/assets/ảnh giày/your-image.jpg" alt="Tên sản phẩm" />
+                      <p style="font-size: 0.7em; margin: 0"></p>
+                      <hr />
+                    </div>
+                    <div class="col-md-8">
+                      <span style="font-size: 0.7em; margin: 0">Tên sản phẩm</span>
+                      <div>
+                        <span>0</span>đ
+                        <span style="text-decoration: line-through; color: crimson">
+                                                    <strike>0</strike> <br>
+                                                </span>
+                      </div>
+                      <p style="font-size: 0.7em; margin: 0">Số lượng: 1</p>
+                      <span class="icon_close"></span>
+                      <hr />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-4">
+                    <span style="font-weight: bolder;" class="main-color-text">Tổng tiền:</span>
+                  </div>
+                  <div class="col-md-3">
+                    <span style="color: rgb(91, 80, 80); font-weight: bolder; margin-left: -20px;">0</span>đ
+                  </div>
+                </div>
+                <a href="#/check-out" style="width: 80%; margin-left: 30px;" class="button">Thanh toán</a>
+              </div>
+            </li>
+            <li class="account-hover">
+              <div class="header__top__right__auth">
+                <a href="#"><i class="fa fa-user"></i> Tên người dùng</a>
+                <div class="account-form">
+                  <a href="#/dia-chi" class="d-flex align-items-center gap-2 dropdown-item">
+                    <i class="fa fa-user fs-6"></i>
+                    <p class="mb-0 fs-3">Tài khoản của tôi</p>
+                  </a>
+                  <a href="#/don-hang" class="d-flex align-items-center gap-2 dropdown-item">
+                    <i class="ti ti-list-check fs-6"></i>
+                    <p class="mb-0 fs-3">Đơn hàng</p>
+                  </a>
+                  <a href="#/login" class="d-flex align-items-center gap-2 dropdown-item">
+                    <i class="ti ti-list-check fs-6"></i>
+                    <p class="mb-0 fs-3">Đăng nhập</p>
+                  </a>
+                  <button onclick="logout()" class="d-flex align-items-center gap-2 dropdown-item">
+                    <i class="fa fa-sign-out fs-6"></i>
+                    <p class="mb-0 fs-3">Đăng xuất</p>
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

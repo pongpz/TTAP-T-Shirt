@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -108,21 +109,146 @@
 </body>
 </html>
 
+=======
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragment/head :: head}"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
 
+    <div th:replace="~{/fragment/header :: header}"></div>
+
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <div th:replace="~{/fragment/aside :: aside}"></div>
+
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Bán hàng tại quầy
+                <small>it all starts here</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="col-xs-12">
+                <div class=" box">
+                    <div class="container">
+                        <h1 class="text-center">Khuyến mãi</h1>
+                        <form th:action="@{/admin/khuyen-mai/add}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Tên khuyến mãi</label>
+                                <input type="text" class="form-control" name="ten" id="ten">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Ngày bắt đầu</label>
+                                <input type="date" class="form-control" name="ngayBatDau" id="ngayBatDau">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Ngày kết thúc</label>
+                                <input type="date" class="form-control" name="ngayKetThuc" id="ngayKetThuc">
+                            </div>
+
+                            <div class=" d-flex">
+
+                                <div class="mb-3 col-8">
+                                    <label class="form-label">Giá trị giảm</label>
+                                    <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam">
+                                </div>
+                                <div class="col-1">
+
+                                </div>
+
+                                <div class="mb-3 col-3">
+                                    <label class="form-label">Hình thức</label>
+                                    <select class="form-select" name="hinhThuc">
+                                        <option value="VND">VND</option>
+                                        <option value="%">%</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <label class="form-label">Trạng thái</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="trangThai" id="flexRadioDefault1" value="Hoạt động" checked>
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Hoạt động
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="trangThai" id="flexRadioDefault2" value="Ngưng hoạt động">
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    Ngưng hoạt động
+                                </label>
+                            </div>
+
+                            <a href="/admin/ttap-tshirt" class="btn btn-primary">Quay lại</a>
+                            <button class="btn btn-primary">Thêm</button>
+                        </form>
+
+                        <br>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Ngày bắt đầu</th>
+                                <th scope="col">Ngày kết thúc</th>
+                                <th scope="col">Giá trị giảm</th>
+                                <th scope="col">Hình thức</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="km : ${listKM}">
+                                <td th:text="${km.ten}"></td>
+                                <td th:text="${km.ngayBatDau}"></td>
+                                <td th:text="${km.ngayKetThuc}"></td>
+                                <td th:text="${km.giaTriGiam}"></td>
+                                <td th:text="${km.hinhThuc}"></td>
+                                <td th:text="${km.trangThai}"></td>
+                                <td>
+                                    <a class="btn btn-danger" th:href="|/admin/khuyen-mai/delete/${km.id}|">Đổi trạng thái</a>
+                                    <a class="btn btn-primary" th:href="|/admin/khuyen-mai/detail/${km.id}|">Detail</a>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div th:replace="~{/fragment/footer :: footer}"></div>
+</div>
+<!-- ./wrapper -->
+>>>>>>> 5e5648ab6385899cbc178225e07e3234ec261780
+
+<!-- jQuery 3 -->
+
+<div th:replace="~{/fragment/script :: script}"></div>
 </body>
-<!--<script>-->
-<!--    function submit(){-->
-<!--        let ten = document.getElementById("ten").value()-->
-<!--        let ngayBatDau = document.getElementById("ngayBatDau").value()-->
-<!--        let ngayKetThuc = document.getElementById("ngayKetThuc").value()-->
-<!--        let giaTriGiam = document.getElementById("giaTriGiam").value()-->
-
-<!--        if(ten==""||ngayBatDau==""||ngayKetThuc==""||giaTriGiam==""){-->
-<!--            alert("Vui lòng điền đủ trường")-->
-<!--            return false-->
-<!--        }else {-->
-<!--            return true-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
 </html>
