@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.DecimalFormat;
@@ -50,12 +51,19 @@ public class HomeCustomerController {
             System.out.println("ID Chi Tiet SP: " + map.get("id_chi_tiet_sp") + ", So Luong: " + map.get("so_luong"));
         });
         List<ChiTietSanPham> lsCTSP = new ArrayList<>();
-        for (int i = 0 ; i < 6 ; i++){
-            lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
+        if (newList.size() < 6){
+            for (int i = 0 ; i < newList.size() ; i++){
+                lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
+            }
+            model.addAttribute("lsSPCT",lsCTSP);
+            return "user/home/trangchu";
+        }else {
+            for (int i = 0 ; i < 6 ; i++){
+                lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
+            }
+            model.addAttribute("lsSPCT",lsCTSP);
+            return "user/home/trangchu";
         }
-        model.addAttribute("lsSPCT",lsCTSP);
-        return "user/home/trangchu";
-
     }
 
     @GetMapping("/chinh-sach-van-chuyen")
