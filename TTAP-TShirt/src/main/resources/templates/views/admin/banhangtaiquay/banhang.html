@@ -31,11 +31,9 @@
 
         <!-- Main content -->
         <section class="content">
-
             <!-- Default box -->
             <div class="col-xs-12">
                 <div class="row">
-                    <article>
                         <div style="margin-top: 0px; border: 1px solid rgb(182, 172, 172); padding: 5ch; border-radius: 0.5cap; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230);">
                             <div style="display: flex;">
                                 <div class="mt-3 col-8">
@@ -96,7 +94,7 @@
                                             </button>
 
                                             <!-- Modal Sản Phẩm -->
-                                            <div class="modal fade" th:id="'modal-sanpham-' + ${hoaDon.id}" tabindex="-1"
+                                            <div class="modal  " th:id="'modal-sanpham-' + ${hoaDon.id}" tabindex="-1"
                                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog">
                                                     <div class="modal-content">
@@ -178,7 +176,7 @@
                                                 </div>
                                             </div>
                                             <!-- Modal Khách Hàng -->
-                                            <div class="modal fade" th:id="'modal-khachhang-' + ${hoaDon.id}" tabindex="-1"
+                                            <div class="modal " th:id="'modal-khachhang-' + ${hoaDon.id}" tabindex="-1"
                                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-xl modal-dialog-centered">
                                                     <div class="modal-content">
@@ -225,7 +223,7 @@
                                                 </div>
                                             </div>
                                             <!-- Modal Khuyến Mãi -->
-                                            <div class="modal fade" th:id="'modal-khuyenmai-' + ${hoaDon.id}" tabindex="-1"
+                                            <div class="modal " th:id="'modal-khuyenmai-' + ${hoaDon.id}" tabindex="-1"
                                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-xl modal-dialog-centered">
                                                     <div class="modal-content">
@@ -333,28 +331,23 @@
                                     </td>
 
                                     <!--                         Modal sua so luong -->
-
-
-                                    <div class="modal fade" th:id="'modal-suaSoLuong-' + ${hdct.id}" tabindex="-1"
+                                    <div class="modal " th:id="'modal-suaSoLuong-' + ${hdct.id}" tabindex="-1"
                                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-xl modal-dialog-centered">
                                             <div class="modal-content">
                                                 <span class="closeModal" data-bs-dismiss="modal">&times;</span>
                                                 <h2>Sửa số lượng</h2>
-                                                <form th:id="'quantityForm-'+${hdct.id}" th:onsubmit="'handleSubmitUpdateQuantity(' + ${hdct.id} + ', event)'" method="post">
+                                                <form th:action="@{/admin/ban-hang/hoa-don/sua-so-luong}" th:id="'quantityForm-'+${hdct.id}" th:onsubmit="'handleSubmitUpdateQuantity(' + ${hdct.id} + ', event)'" method="post">
                                                     <div>
-                                                        <input type="hidden" th:id="'detailInvoiceId-'+${hdct.id}" th:value="${hdct.id}">
+                                                        <input type="hidden" th:id="'detailInvoiceId-'+${hdct.id}" name="idHdctSua" th:value="${hdct.id}">
                                                         <label>Số lượng:</label>
-                                                        <input type="number" th:id="'quantityModal-'+${hdct.id}" name="quantity" min="1" required>
+                                                        <input type="number" th:id="'quantityModal-'+${hdct.id}" name="soLuongSua" th:value="${hdct.soLuong}" min="1" required>
                                                         <button th:onclick="|btnSubmitHandle(${hdct.id})|" type="submit" class="btn btn-primary">Cập nhật</button>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                 </tr>
                                 </tbody>
                             </table>
@@ -371,16 +364,16 @@
                                     </div>
 
                                     <div style="display: flex;" class="mt-3">
-                                        <label style="font-weight: bold;">Tiền hàng: <span
-                                                th:text="${totalPrice != null ? totalPrice : 0} +' vnd'"></span></label>
+                                        <label class="info-label">Tiền hàng:</label>
+                                        <span class="info-value" th:text="${totalMoneyBefore != null ? totalMoneyBefore : 0} +' vnd'"></span>
                                     </div>
                                     <div style="display: flex;" class="mt-3">
-                                        <label style="font-weight: bold;">Khuyến Mãi:</label>
-                                        <label style="font-weight: bold; margin-left: 5ch;">0 vnd</label>
+                                        <label class="info-label">Khuyến Mãi:</label>
+                                        <span class="info-value" th:text="${moneyVoucher != null ? moneyVoucher : 0} +' vnd'"></span>
                                     </div>
                                     <div style="display: flex;" class="mt-3">
                                         <label style="font-weight: bold;">Tổng tiền: <span
-                                                th:text="${totalPrice != null ? totalPrice : 0} +' vnd'"></span> </label>
+                                                th:text="${totalMoneyAfter != null ? totalMoneyAfter : 0} +' vnd'"></span> </label>
                                     </div>
                                     <form th:action="@{/admin/ban-hang/hoa-don/xac-nhan-thanh-toan}" method="get">
                                         <input type="hidden" name="idhd" th:if="${hoadon1 != null}" th:value="${hoadon1.id}"/>
@@ -391,7 +384,6 @@
                                 </div>
                             </div>
                         </div>
-                    </article>
                 </div>
             </div>
             <!-- /.box -->
@@ -408,5 +400,9 @@
 <!-- jQuery 3 -->
 
 <div th:replace="~{/fragment/script :: script}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

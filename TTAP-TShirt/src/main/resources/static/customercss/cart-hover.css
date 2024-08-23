@@ -1,0 +1,144 @@
+@import "https://fonts.googleapis.com/css?family=Lato:300,400,700";
+@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css";
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+
+.shopping-cart {
+    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    border-radius: 3px;
+    float: right;
+    margin: 20px 0;
+    padding: 20px;
+    position: relative;
+    width: 320px;
+    border: 1px solid  rgb(232, 232, 232);
+}
+.shopping-cart .shopping-cart-header {
+    border-bottom: 1px solid rgb(232, 232, 232);
+    padding-bottom: 15px;
+}
+.shopping-cart .shopping-cart-header .shopping-cart-total {
+    float: right;
+}
+
+
+.shopping-cart .shopping-cart-items {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.shopping-cart .shopping-cart-items li {
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+}
+.shopping-cart .shopping-cart-items img {
+    margin-right: 10px;
+}
+
+
+.shopping-cart .shopping-cart-items .item-name {
+    display: block;
+    font-size: 13px;
+    padding-top: 10px;
+}
+.shopping-cart .shopping-cart-items .item-price {
+    color: rgb(99, 148, 248);
+    font-size: 15px;
+    padding-top: 5px;
+    display: block;
+}
+.shopping-cart .shopping-cart-items .item-quantity {
+    color: rgb(171, 176, 190);
+    font-size: 13px;
+    display: block;
+    padding-top: 5px;
+}
+.shopping-cart::after {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgb(255, 255, 255);
+    border-image: none;
+    border-style: solid;
+    border-width: 8px;
+    bottom: 100%;
+    content: " ";
+    height: 0;
+    left: 89%;
+    margin-left: -8px;
+    pointer-events: none;
+    position: absolute;
+    width: 0;
+}
+.cart-icon {
+    color: rgb(81, 87, 131);
+    float: left;
+    font-size: 24px;
+    margin-right: 7px;
+}
+.button {
+    background: #7fad39 none repeat scroll 0 0;
+    border-radius: 30px;
+    box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.15);
+    color: rgb(255, 255, 255);
+    display: block;
+    font-size: 16px;
+    margin: 25px 0 15px;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .button_viewcart {
+    background: rgb(255, 93, 93) none repeat scroll 0 0;
+    border-radius: 30px;
+    box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.15);
+    color: rgb(255, 255, 255);
+    display: block;
+    font-size: 16px;
+    margin: 25px 0 15px;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .button:hover {
+    background: #90d626 none repeat scroll 0 0;
+  }
+.button_viewcart:hover {
+    background: rgb(255, 80, 70) none repeat scroll 0 0;
+}
+.clearfix::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+
+.container-cart{
+    display: none;
+
+}
+
+.open-cart:hover .container-cart {
+    display: block;
+
+}
+.custom-radio {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Khoảng cách giữa radio button và label */
+}
+
+.custom-radio input[type="radio"] {
+    margin-right: 5px; /* Khoảng cách giữa radio button và label */
+}
+
+.custom-radio label {
+    font-weight: normal; /* Loại bỏ đậm */
+    font-size: 16px; /* Điều chỉnh kích thước văn bản */
+}

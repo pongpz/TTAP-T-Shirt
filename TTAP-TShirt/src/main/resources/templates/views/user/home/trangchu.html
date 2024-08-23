@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>TTAP T-SHIRT</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="shortcut icon" type="image/png"
+          th:href="@{/images/logo2tap.jpg}" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link th:href="@{/customercss/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/elegant-icons.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/nice-select.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/jquery-ui.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/owl.carousel.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/slicknav.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/style.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/style-customer.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/cart-hover.css}" rel="stylesheet" type="text/css" />
+</head>
+
+<style>
+</style>
+
+<body>
+
+<header th:replace="~{/fragment/header-customer :: header-customer}"></header>
+<style>
+    #carouselExampleSlidesOnly .carousel-inner .carousel-item img {
+        width: 100%;
+        height: 430px;
+        object-fit: cover;
+    }
+</style>
+<section class="featured spad container">
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" >
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="5000">
+                <img src="/images/logo2tap.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/images/sanpham.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/images/giohang.png" class="d-block w-100" alt="...">
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Sản phẩm bán chạy</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter">
+            <div class="col-md-3">
+                <div class="card mb-3">
+                    <img src="/assets/ảnh giày/image.jpg" class="card-img-top" alt="...">
+                    <div class="card-body d-flex flex-column justify-content-between text-center">
+                        <p class="card-text">Tên sản phẩm</p>
+                        <div class="text-center">
+                            <h5>
+                                <span>0</span>đ
+                                <strike style="color: red;">
+                                    <span>0</span>đ
+                                </strike>
+                            </h5>
+                            <a class="abc" style="margin-left: 20px;" href="#/shop/detail/ten-san-pham">
+                                <span>Xem sản phẩm</span>
+                            </a>
+                            <a class="abc" onclick="addToCart(1)">
+                                <span>Thêm vào giỏ hàng</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Footer Section Begin -->
+<footer th:replace="~{/fragment/footer-customer :: footer-customer}"></footer>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+
+</html>
