@@ -6,17 +6,14 @@ import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.SanPhamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,6 +61,15 @@ public class HomeCustomerController {
             model.addAttribute("lsSPCT",lsCTSP);
             return "user/home/trangchu";
         }
+    }
+
+    @GetMapping("/san-pham/{idSP}")
+    public String detailSP(Model model, @PathVariable Long idSP,
+    @RequestParam(required = false) Long idKichCo, @RequestParam(required = false) Long idMauSac){
+        model.addAttribute("sanpham",spr.getReferenceById(idSP));
+        ChiTietSanPham ctsp = ctspr.findByIDSanPham(idSP,idKichCo,idMauSac).get(0);
+        model.addAttribute("spct",ctsp);
+        return "user/home/sanphamdetail";
     }
 
     @GetMapping("/chinh-sach-van-chuyen")
