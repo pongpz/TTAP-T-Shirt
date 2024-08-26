@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>TTAP T-SHIRT</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+  <link rel="shortcut icon" type="image/png"
+        th:href="@{/images/logo2tap.jpg}" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link th:href="@{/customercss/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/customercss/elegant-icons.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/customercss/nice-select.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/customercss/jquery-ui.min.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/customercss/owl.carousel.min.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/customercss/slicknav.min.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/customercss/style.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/customercss/style-customer.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/customercss/cart-hover.css}" rel="stylesheet" type="text/css" />
+</head>
+
+<style>
+</style>
+
+<body>
+
+<header th:replace="~{/fragment/header-customer :: header-customer}"></header>
+
+<section class="product spad" style="margin-top: -50px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-5">
+        <input style="width: 100%;text-align: center;" type="text" class="next-input" ng-model="tenSanPham"
+               ng-change="searchProductKey()" placeholder="Nhập tên sản phẩm cần tìm" /> <br>
+        <style>
+
+        </style>
+        <div class="filter__item">
+          <div class="row">
+            <div class="sidebar__item" style="margin-top: -20px;">
+              <h4 class="card-title fw-semibold">Chọn khoảng giá:</h4>
+              <select style="width: 200px;" id="price-range" ng-change="searchProductByPriceRange()"
+                      ng-model="selectedPriceRange" class="form-select" ng-init="selectedPriceRange = '0-1000000000'">
+                <option value="" disabled hidden>Chọn khoảng giá</option>
+                <option value="0-1000000000">Tất cả</option>
+                <option value="100000-500000">100.000 - 500.000</option>
+                <option value="500000-1000000">500.000 - 1.000.000</option>
+                <option value="1000000-2000000">1.000.000 - 2.000.000</option>
+                <option value="2000000-5000000">2.000.000 - 5.000.000</option>
+                <option value="5000000-1000000000">Trên 5.000.000</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar" style="margin-top: -40px;">
+          <div class="sidebar__item">
+            <h4 class="card-title fw-semibold" ng-click="showTH = !showTH">
+              Thương hiệu
+              <i ng-class="{'fal fa-chevron-down': showTH, 'fal fa-chevron-up': !showTH}" class="fa"
+                 style="font-size: 0.7em;"></i>
+              <hr>
+            </h4>
+            <select ng-show="showTH" ng-model="locBrand" ng-change="searchProductThuongHieu()" class="form-select"
+                    style="width: 200px;;">
+              <option value="">Tất cả</option>
+              <option ng-repeat="dm in listThuongHieu" ng-value="dm.id">{{dm.tenThuongHieu}}</option>
+            </select>
+          </div>
+          <div class="sidebar__item">
+            <h4 class="card-title fw-semibold"  ng-click="showKD = !showKD">
+              Kiểu đế
+              <i ng-class="{'fal fa-chevron-down': showKD, 'fal fa-chevron-up': !showKD}" class="fa"
+                 style="font-size: 0.7em;"></i>
+              <hr>
+            </h4>
+            <select ng-show="showKD" ng-model="locKieuDe" ng-change="searchProductKieuDe()" class="form-select"
+                    style="width: 200px;;">
+              <option value="">Tất cả</option>
+              <option ng-repeat="kd in listKieuDe" ng-value="kd.id">{{kd.tenDe}}</option>
+            </select>
+          </div>
+          <div class="sidebar__item">
+            <h4 class="card-title fw-semibold"  ng-click="showXX = !showXX">
+              Xuất xứ
+              <i ng-class="{'fal fa-chevron-down': showXX, 'fal fa-chevron-up': !showXX}" class="fa"
+                 style="font-size: 0.7em;"></i>
+              <hr>
+            </h4>
+            <select ng-show="showXX" ng-model="locXuatXu" ng-change="searchProductXuatXu()" class="form-select"
+                    style="width: 200px;;">
+              <option value="">Tất cả</option>
+              <option ng-repeat="s in listXuatXu" ng-value="s.id">{{s.tenXuatXu}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-7">
+        <div class="row featured__filter">
+          <div class="col-lg-4 col-md-6 col-sm-6 custom-margin" th:each="sp : ${listctsp}"> <br>
+            <div class="card">
+              <img ng-if="sp.imgage" src="/assets/ảnh giày/{{sp.imgage}}" class="card-img-top" alt="...">
+              <div class=" justify-content-between text-center">
+                <span th:text="${sp.sanPham.ten}"></span>
+                <div class="text-center">
+                  <b th:text="${@sanPhamCustomerController.formatCurrency(sp.giaBan)+' vnđ'}"></b>
+                  <div class="d-flex flex-column justify-content-center align-items-center mt-2">
+                    <a class="abc " th:href="@{/TTAP/san-pham/{id}(id=${sp.sanPham.id})}">
+                      <span>Xem sản phẩm</span>
+                    </a>
+                    <a class="abc my-2">
+                      <span>Thêm vào giỏ hàng</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <br>
+        <nav aria-label="Page navigation example" style="margin-left: 400px" ng-if="listSanPhamShop.length != 0">
+          <ul class="pagination">
+            <li class="page-item" ng-show="pageNumber > 0">
+              <a class="page-link" href="" ng-click="previous()"><img src="/assets/images/chevron-left.svg" height="15px" alt=""></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link">{{pageNumber + 1}}</a>
+            </li>
+            <li class="page-item" ng-show="showNextButton">
+              <a class="page-link" href="" ng-click="nextPage()"><img src="/assets/images/chevron-right.svg" height="15px" alt=""></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- Footer Section Begin -->
+<footer th:replace="~{/fragment/footer-customer :: footer-customer}"></footer>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+
+</html>

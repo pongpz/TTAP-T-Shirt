@@ -10,12 +10,12 @@
       <div class="col-lg-6">
         <nav class="header__menu">
           <ul>
-            <li class="active">
+            <li th:classappend="${requestURI == '/TTAP/trang-chu'} ? 'active'">
               <a th:href="@{/TTAP/trang-chu}">Trang chủ</a>
             </li>
-            <li>
-              <a href="#/shop">Sản phẩm</a>
-            </li>
+            <li th:classappend="${requestURI == '/TTAP/san-pham'} ? 'active'">
+            <a th:href="@{/TTAP/san-pham}">Sản phẩm</a>
+          </li>
           </ul>
         </nav>
       </div>
@@ -65,19 +65,19 @@
                 <div class="account-form">
                   <a href="#/dia-chi" class="d-flex align-items-center gap-2 dropdown-item">
                     <i class="fa fa-user fs-6"></i>
-                    <p class="mb-0 fs-3">Tài khoản của tôi</p>
+                    Tài khoản của tôi
                   </a>
                   <a href="#/don-hang" class="d-flex align-items-center gap-2 dropdown-item">
                     <i class="ti ti-list-check fs-6"></i>
-                    <p class="mb-0 fs-3">Đơn hàng</p>
+                    Đơn hàng
                   </a>
                   <a href="#/login" class="d-flex align-items-center gap-2 dropdown-item">
                     <i class="ti ti-list-check fs-6"></i>
-                    <p class="mb-0 fs-3">Đăng nhập</p>
+                    Đăng nhập
                   </a>
                   <button onclick="logout()" class="d-flex align-items-center gap-2 dropdown-item">
                     <i class="fa fa-sign-out fs-6"></i>
-                    <p class="mb-0 fs-3">Đăng xuất</p>
+                    Đăng xuất
                   </button>
                 </div>
               </div>

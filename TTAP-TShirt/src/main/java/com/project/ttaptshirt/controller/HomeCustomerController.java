@@ -5,6 +5,7 @@ import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.SanPhamRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,8 @@ public class HomeCustomerController {
     ChiTietSanPhamRepository ctspr;
 
     @GetMapping("/trang-chu")
-    public String home(Model model) {
+    public String home(HttpServletRequest request, Model model) {
+        model.addAttribute("requestURI", request.getRequestURI());
         List<HoaDonChiTiet> ls = hdctrp.findAll();
               List<?> newList = ls.stream()
                 .collect(Collectors.groupingBy(hd -> hd.getChiTietSanPham().getId(),Collectors.summingInt(HoaDonChiTiet::getSoLuong)))
