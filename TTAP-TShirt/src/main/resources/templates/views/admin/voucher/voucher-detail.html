@@ -144,7 +144,71 @@
     </div>
     <!-- /.content-wrapper -->
 
+<<<<<<< HEAD
+            <div class="mb-3 col-3">
+                <label class="form-label">Hình thức</label>
+                <select class="form-select" th:field="*{listDetail.hinhThuc}">
+                    <option value="2">VND</option>
+                    <option value="1">%</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="mb-3 col-8">
+            <label class="form-label">Điều kiện</label>
+            <input type="number" class="form-control" th:field="*{listDetail.dieuKien}" id="dieuKien">
+        </div>
+
+        <label class="form-label">Trạng thái</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:field="*{listDetail.trangThai}" id="flexRadioDefault1" value="Hoạt động" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+                Hoạt động
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:field="*{listDetail.trangThai}" id="flexRadioDefault2" value="Ngưng hoạt động">
+            <label class="form-check-label" for="flexRadioDefault2">
+                Ngưng hoạt động
+            </label>
+        </div>
+
+        <a href="/admin/ttap-tshirt" class="btn btn-primary">Quay lại</a>
+        <button class="btn btn-primary">Sửa</button>
+    </form>
+
+    <br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Tên</th>
+            <th scope="col">Ngày bắt đầu</th>
+            <th scope="col">Ngày kết thúc</th>
+            <th scope="col">Giá trị giảm</th>
+            <th scope="col">Hình thức</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vc : ${list}">
+            <td th:text="${vc.ten}"></td>
+            <td th:text="${vc.ngayBatDau}"></td>
+            <td th:text="${vc.ngayKetThuc}"></td>
+            <td th:text="${vc.giaTriGiam}"></td>
+            <td th:text="${vc.hinhThuc}"></td>
+            <td th:text="${vc.trangThai}"></td>
+            <td>
+                <a class="btn btn-danger" th:href="@{/admin/khuyen-mai/delete/{id}(id=${vc.id})}">Đổi trạng thái</a>
+                <a class="btn btn-primary"  th:href="@{/admin/khuyen-mai/detail/{id}(id=${vc.id})}|">Detail</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+=======
     <div th:replace="~{/fragment/footer :: footer}"></div>
+>>>>>>> 5e5648ab6385899cbc178225e07e3234ec261780
 </div>
 <!-- ./wrapper -->
 
