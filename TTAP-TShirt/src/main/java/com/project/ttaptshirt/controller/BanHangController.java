@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,12 +52,14 @@ public class BanHangController {
     @GetMapping("")
     public String openBanHangPage(Model model) {
         List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
+        List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<Voucher> listKM = voucherRepo.findAll();
         List<User> listKH = userRepo.findAll();
         model.addAttribute("listKH", listKH);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
+        model.addAttribute("listLs", listHd);
         model.addAttribute("listHD", listHoaDon);
         model.addAttribute("listCTSP", listCTSP);
 
@@ -80,12 +83,14 @@ public class BanHangController {
     @GetMapping("hoa-don/chi-tiet")
     public String viewHDCT(@RequestParam("hoadonId") Long id, Model model) {
         List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
+        List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<Voucher> listKM = voucherRepo.findAll();
         List<User> listKH = userRepo.findAll();
         model.addAttribute("listKH", listKH);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
+        model.addAttribute("listHD", listHd);
         model.addAttribute("listCTSP", listCTSP);
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(id);
         model.addAttribute("listHDCT", listHDCT);
@@ -173,6 +178,16 @@ public class BanHangController {
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listCTSP", listCTSP);
         hoaDonService.updateTrangThaiHD(1, idhd);
+        return "redirect:/admin/ban-hang";
+    }
+
+    @GetMapping("/xoa/{id}")
+    public String xoaHD(@PathVariable("id") Long idhd, Model model) {
+        List<HoaDon> listHoaDon = hoaDonService.getListHDDaThanhToan();
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
+        model.addAttribute("listHoaDon", listHoaDon);
+        model.addAttribute("listCTSP", listCTSP);
+        hoaDonService.deleteById(idhd);
         return "redirect:/admin/ban-hang";
     }
 

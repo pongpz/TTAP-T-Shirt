@@ -42,4 +42,8 @@ public class HoaDonServiceImpl implements HoaDonService {
         return hoaDonRepository.getListHDChuaThanhToan();
     }
 
+    @Override
+    public List<HoaDon> getListHDDaThanhToan() {
+        return hoaDonRepository.getListHDDaThanhToan();
+    }
 }
