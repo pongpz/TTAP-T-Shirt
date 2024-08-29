@@ -33,70 +33,133 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-3 col-md-5">
-        <input style="width: 100%;text-align: center;" type="text" class="next-input" ng-model="tenSanPham"
-               ng-change="searchProductKey()" placeholder="Nhập tên sản phẩm cần tìm" /> <br>
-        <style>
+        <!-- Input for searching product by name -->
+        <form th:action="@{/TTAP/san-pham}" method="get">
+          <input style="width: 100%; text-align: center;"
+                 type="text"
+                 class="next-input"
+                 th:value="${ten}"
+                 placeholder="Nhập tên sản phẩm cần tìm"
+                 name="ten" />
+          <br><br>
 
-        </style>
-        <div class="filter__item">
+          <div class="row">
+              <div class="sidebar__item" style="margin-top: -20px;">
+                <h5>Chọn khoảng giá:</h5>
+                <!-- Select for price range -->
+                <select style="width: 200px;"
+                        id="price-range"
+                        class="form-select"
+                        name="priceRangerId"
+                        th:onchange="this.form.submit()">
+                  <option th:each="priceRanger : ${priceRangerList}"
+                          th:value="${priceRanger.id}"
+                          th:selected="${priceRangerId == priceRanger.id}"
+                          th:text="${priceRanger.display}">
+                  </option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="sidebar__item" style="margin-top: -20px;">
+                <h5 >Chọn thương hiệu:</h5>
+                <select style="width: 200px;"
+                        id="thuonghieu"
+                        class="form-select"
+                        name="thuongHieuId"
+                        th:onchange="this.form.submit()">
+                  <option th:value="0">không chọn</option>
+                  <option th:each="thuonghieu : ${thuongHieuList}"
+                          th:value="${thuonghieu.id}"
+                          th:selected="${thuongHieuId == thuonghieu.id}"
+                          th:text="${thuonghieu.ten}">
+                  </option>
+                </select>
+              </div>
+            </div>
+          <br>
+
           <div class="row">
             <div class="sidebar__item" style="margin-top: -20px;">
-              <h4 class="card-title fw-semibold">Chọn khoảng giá:</h4>
-              <select style="width: 200px;" id="price-range" ng-change="searchProductByPriceRange()"
-                      ng-model="selectedPriceRange" class="form-select" ng-init="selectedPriceRange = '0-1000000000'">
-                <option value="" disabled hidden>Chọn khoảng giá</option>
-                <option value="0-1000000000">Tất cả</option>
-                <option value="100000-500000">100.000 - 500.000</option>
-                <option value="500000-1000000">500.000 - 1.000.000</option>
-                <option value="1000000-2000000">1.000.000 - 2.000.000</option>
-                <option value="2000000-5000000">2.000.000 - 5.000.000</option>
-                <option value="5000000-1000000000">Trên 5.000.000</option>
+              <h5 >Chọn kiểu dáng:</h5>
+              <select style="width: 200px;"
+                      id="kieudang"
+                      class="form-select"
+                      name="kieuDangId"
+                      th:onchange="this.form.submit()">
+                <option th:value="0">không chọn</option>
+                <option th:each="kieudang : ${kieuDangList}"
+                        th:value="${kieudang.id}"
+                        th:selected="${kieuDangId == kieudang.id}"
+                        th:text="${kieudang.ten}">
+                </option>
               </select>
             </div>
           </div>
-        </div>
+          <br>
 
-        <div class="sidebar" style="margin-top: -40px;">
-          <div class="sidebar__item">
-            <h4 class="card-title fw-semibold" ng-click="showTH = !showTH">
-              Thương hiệu
-              <i ng-class="{'fal fa-chevron-down': showTH, 'fal fa-chevron-up': !showTH}" class="fa"
-                 style="font-size: 0.7em;"></i>
-              <hr>
-            </h4>
-            <select ng-show="showTH" ng-model="locBrand" ng-change="searchProductThuongHieu()" class="form-select"
-                    style="width: 200px;;">
-              <option value="">Tất cả</option>
-              <option ng-repeat="dm in listThuongHieu" ng-value="dm.id">{{dm.tenThuongHieu}}</option>
-            </select>
+          <div class="row">
+            <div class="sidebar__item" style="margin-top: -20px;">
+              <h5 >Chọn nhà sản xuất:</h5>
+              <select style="width: 200px;"
+                      id="nsx"
+                      class="form-select"
+                      name="nsxId"
+                      th:onchange="this.form.submit()">
+                <option th:value="0">không chọn</option>
+                <option th:each="nsx : ${nsxList}"
+                        th:value="${nsx.id}"
+                        th:selected="${nsxId == nsx.id}"
+                        th:text="${nsx.ten}">
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="sidebar__item">
-            <h4 class="card-title fw-semibold"  ng-click="showKD = !showKD">
-              Kiểu đế
-              <i ng-class="{'fal fa-chevron-down': showKD, 'fal fa-chevron-up': !showKD}" class="fa"
-                 style="font-size: 0.7em;"></i>
-              <hr>
-            </h4>
-            <select ng-show="showKD" ng-model="locKieuDe" ng-change="searchProductKieuDe()" class="form-select"
-                    style="width: 200px;;">
-              <option value="">Tất cả</option>
-              <option ng-repeat="kd in listKieuDe" ng-value="kd.id">{{kd.tenDe}}</option>
-            </select>
+          <br>
+
+          <div class="row">
+            <div class="sidebar__item" style="margin-top: -20px;">
+              <h5 >Chọn kích cỡ:</h5>
+              <select style="width: 200px;"
+                      id="kichco"
+                      class="form-select"
+                      name="kichCoId"
+                      th:onchange="this.form.submit()">
+                <option th:value="0">không chọn</option>
+                <option th:each="kichco : ${kichCoList}"
+                        th:value="${kichco.id}"
+                        th:selected="${kichCoId == kichco.id}"
+                        th:text="${kichco.ten}">
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="sidebar__item">
-            <h4 class="card-title fw-semibold"  ng-click="showXX = !showXX">
-              Xuất xứ
-              <i ng-class="{'fal fa-chevron-down': showXX, 'fal fa-chevron-up': !showXX}" class="fa"
-                 style="font-size: 0.7em;"></i>
-              <hr>
-            </h4>
-            <select ng-show="showXX" ng-model="locXuatXu" ng-change="searchProductXuatXu()" class="form-select"
-                    style="width: 200px;;">
-              <option value="">Tất cả</option>
-              <option ng-repeat="s in listXuatXu" ng-value="s.id">{{s.tenXuatXu}}</option>
-            </select>
+          <br>
+
+          <div class="row">
+            <div class="sidebar__item" style="margin-top: -20px;">
+              <h5 >Chọn chất liệu:</h5>
+              <select style="width: 200px;"
+                      id="chatlieu"
+                      class="form-select"
+                      name="chatLieuId"
+                      th:onchange="this.form.submit()">
+                <option th:value="0">không chọn</option>
+                <option th:each="chatlieu : ${chatLieuList}"
+                        th:value="${chatlieu.id}"
+                        th:selected="${chatLieuId == chatlieu.id}"
+                        th:text="${chatlieu.ten}">
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
+          <br>
+
+        </form>
+
+
       </div>
       <div class="col-lg-9 col-md-7">
         <div class="row featured__filter">
@@ -120,19 +183,19 @@
             </div>
           </div>
         </div> <br>
-        <nav aria-label="Page navigation example" style="margin-left: 400px" ng-if="listSanPhamShop.length != 0">
-          <ul class="pagination">
-            <li class="page-item" ng-show="pageNumber > 0">
-              <a class="page-link" href="" ng-click="previous()"><img src="/assets/images/chevron-left.svg" height="15px" alt=""></a>
-            </li>
-            <li class="page-item">
-              <a class="page-link">{{pageNumber + 1}}</a>
-            </li>
-            <li class="page-item" ng-show="showNextButton">
-              <a class="page-link" href="" ng-click="nextPage()"><img src="/assets/images/chevron-right.svg" height="15px" alt=""></a>
-            </li>
-          </ul>
-        </nav>
+<!--        <nav aria-label="Page navigation example" style="margin-left: 400px" ng-if="listSanPhamShop.length != 0">-->
+<!--          <ul class="pagination">-->
+<!--            <li class="page-item" ng-show="pageNumber > 0">-->
+<!--              <a class="page-link" href="" ng-click="previous()"><img src="/assets/images/chevron-left.svg" height="15px" alt=""></a>-->
+<!--            </li>-->
+<!--            <li class="page-item">-->
+<!--              <a class="page-link">{{pageNumber + 1}}</a>-->
+<!--            </li>-->
+<!--            <li class="page-item" ng-show="showNextButton">-->
+<!--              <a class="page-link" href="" ng-click="nextPage()"><img src="/assets/images/chevron-right.svg" height="15px" alt=""></a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </nav>-->
       </div>
     </div>
   </div>
