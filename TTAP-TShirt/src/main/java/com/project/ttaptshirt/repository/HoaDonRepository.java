@@ -18,6 +18,9 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Query(value = "select * from hoa_don where trang_thai = 0",nativeQuery = true)
     List<HoaDon> getListHDChuaThanhToan();
 
+    @Query(value = "select * from hoa_don where trang_thai = 1",nativeQuery = true)
+    List<HoaDon> getListHDDaThanhToan();
+
     @Modifying
     @Query(value = "update hoa_don set  trang_thai = ?1 where id = ?2",nativeQuery = true)
     void updateHoaDonStatus(int status,Long id);
