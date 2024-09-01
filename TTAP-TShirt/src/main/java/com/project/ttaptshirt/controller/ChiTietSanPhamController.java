@@ -3,6 +3,7 @@ package com.project.ttaptshirt.controller;
 
 import com.project.ttaptshirt.entity.ChatLieu;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
+import com.project.ttaptshirt.entity.HinhAnh;
 import com.project.ttaptshirt.entity.KhuyenMai;
 import com.project.ttaptshirt.entity.KichCo;
 import com.project.ttaptshirt.entity.KieuDang;
@@ -17,6 +18,7 @@ import com.project.ttaptshirt.repository.KieuDangRepository;
 import com.project.ttaptshirt.repository.NSXRepository;
 import com.project.ttaptshirt.repository.ThuongHieuRepository;
 import com.project.ttaptshirt.service.ChiTietSanPhamService;
+import com.project.ttaptshirt.service.HinhAnhService;
 import com.project.ttaptshirt.service.KichCoService;
 import com.project.ttaptshirt.service.MauSacService;
 import com.project.ttaptshirt.service.SanPhamService;
@@ -55,6 +57,8 @@ public class ChiTietSanPhamController {
     ThuongHieuRepository thuongHieuRepository;
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
+    @Autowired
+    HinhAnhService hinhAnhService;
 
     @GetMapping("{id}")
     public String index(@PathVariable("id") Long id,Model model) {
@@ -68,6 +72,7 @@ public class ChiTietSanPhamController {
         model.addAttribute("listKhuyenMai", khuyenMaiRepo.findAll());
         model.addAttribute("listThuongHieu", thuongHieuRepository.findAll());
         model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listHinhAnh", hinhAnhService.findAll());
         model.addAttribute("listKichCo", kichCoService.findAll());
         model.addAttribute("listCTSP", listCTSP);
         return "admin/sanpham/chi-tiet-san-pham";
@@ -102,6 +107,7 @@ public class ChiTietSanPhamController {
             @RequestParam("idSanPham") Long idSanPham,
             @RequestParam("idMauSac") Long idMauSac,
             @RequestParam("idKichCo") Long idKichCo,
+            @RequestParam("idHinhAnh") Long idHinhAnh,
             @RequestParam("idChatLieu") Long idChatLieu,
             @RequestParam("idKieuDang") Long idKieuDang,
             @RequestParam("idNSX") Long idNSX,
@@ -137,6 +143,10 @@ public class ChiTietSanPhamController {
         ThuongHieu thuongHieu = new ThuongHieu();
         thuongHieu.setId(idThuongHieu);
         chiTietSanPham.setThuongHieu(thuongHieu);
+
+        HinhAnh anh = new HinhAnh();
+        anh.setId(idHinhAnh);
+        chiTietSanPham.setHinhAnh(anh);
 
         if (idKhuyenMai != null) {
             KhuyenMai khuyenMai = new KhuyenMai();

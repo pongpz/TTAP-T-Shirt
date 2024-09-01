@@ -93,6 +93,12 @@
                                         <option th:each="kichCo : ${listKichCo}" th:value="${kichCo.id}" th:text="${kichCo.ten}"></option>
                                     </select>
                                 </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">hinh anh</label>
+                                    <select class="form-select" name="idHinhAnh">
+                                        <option th:each="hinhAnh : ${listHinhAnh}" th:value="${hinhAnh.id}" th:text="${hinhAnh.ma}"></option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="row mb-3">
@@ -142,6 +148,7 @@
                                 <th scope="col">Chất Liệu</th>
                                 <th scope="col">Kích Cỡ</th>
                                 <th scope="col">Màu Sắc</th>
+                                <th scope="col">Ảnh</th>
                                 <th scope="col">Action</th>
                             </tr>
                             </thead>
@@ -162,6 +169,10 @@
                                 <td th:text="${ctsp.chatLieu.ten}"></td>
                                 <td th:text="${ctsp.kichCo.ten}"></td>
                                 <td th:text="${ctsp.mauSac.ten}"></td>
+                                <td>
+                                    <img th:src="${ctsp.hinhAnh?.getphotoPath() ?: ''}" alt="Image" style="width: 100px; height: auto;">
+                                </td>
+
                                 <td>
                                     <a class="btn btn-primary" th:href="@{/admin/chi-tiet-san-pham/detail/{id}(id=${ctsp.id})}">Sửa</a>
                                     <a class="btn btn-danger" th:href="@{/admin/chi-tiet-san-pham/delete/{id}(id=${ctsp.id})}">Xóa</a>
