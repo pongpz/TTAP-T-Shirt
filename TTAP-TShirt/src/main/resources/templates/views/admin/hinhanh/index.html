@@ -54,6 +54,33 @@
                     </div>
                 </form>
             </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Ảnh sản phẩm</h3>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr style="border: 1px solid #ccc; background-color: lightskyblue">
+                        <th>STT</th>
+                        <th>Mã sản phẩm</th>
+                        <th>Anh</th>
+                        <th>Thao tac</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="a, stt : ${image}">
+                        <td th:text="${stt.index + 1}"></td>
+                        <td th:text="${a.ma}"></td>
+                        <td><img th:src="@{${a.getphotoPath()}}" alt="Image" style="width: 100px; height: auto;"></td>
+                        <td>
+                            <a class="btn btn-danger" th:href="@{/admin/image/delete/{id}(id = ${a.id})}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <!-- /.box -->
 
         </section>

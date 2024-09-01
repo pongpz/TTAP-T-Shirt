@@ -193,6 +193,7 @@
                                                                     <th scope="col">Chat Lieu</th>
                                                                     <th scope="col">Kich Co</th>
                                                                     <th scope="col">Mau Sac</th>
+                                                                    <th scope="col">Anh</th>
                                                                     <th scope="col">Số Lượng Tồn</th>
                                                                     <th scope="col">Giá bán</th>
                                                                     <th scope="col">Số lượng mua</th>
@@ -208,6 +209,9 @@
                                                                     <td th:text="${ctsp.chatLieu.ten}"></td>
                                                                     <td th:text="${ctsp.kichCo.ten}"></td>
                                                                     <td th:text="${ctsp.mauSac.ten}"></td>
+                                                                    <td>
+                                                                        <img th:src="${ctsp.hinhAnh?.getphotoPath() ?: ''}" alt="Image" style="width: 100px; height: auto;">
+                                                                    </td>
                                                                     <td th:text="${ctsp.soLuong}"></td>
                                                                     <td th:text="${ctsp.giaBan} + '$'"></td>
                                                                     <td>

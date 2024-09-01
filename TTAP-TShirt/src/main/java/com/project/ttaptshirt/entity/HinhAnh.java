@@ -31,7 +31,7 @@ public class HinhAnh {
     @Transient
         public String getphotoPath(){
         if(ten == null) return null;
-        return "/images/"+ id +"/"+ten;
+        return "/images/"+ten;
     }
 
     // Getters and Setters

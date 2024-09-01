@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,6 +51,14 @@ public class HinhAnhController {
         return "/admin/hinhanh/index";
     }
 
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable("id") Long id, Model mol){
+        HinhAnh anh = serImage.findByid(id)
+                .orElseThrow();
+        serImage.delete(id);
+        return "redirect:/admin/image/showuploadFrom";
+    }
+
     @PostMapping("/uploadImage")
     public RedirectView uploadImage(@ModelAttribute("hinhanh") HinhAnh hinhAnh,
                               @RequestParam("image") MultipartFile miMultipartFile)throws IOException  {
@@ -58,28 +67,9 @@ public class HinhAnhController {
         hinhAnh.setTen(filename);
 
         HinhAnh saveHinhAnh1 = serImage.save(hinhAnh);
-        String uploadDir = "image/"+saveHinhAnh1.getId();
+        String uploadDir = "image/"+saveHinhAnh1.getphotoPath();
         FileUploadUtil.savefile(uploadDir,filename,miMultipartFile);
 
-//        Date cretaDate = new Date();
-//        String storagePath = cretaDate.getTime()+"_"+image.getOriginalFilename();
-//        try {
-//            String uploadDir = "public/images/";
-//            Path upPath = Paths.get(uploadDir);
-//            if (!Files.exists(upPath)){
-//                Files.createDirectories(upPath);
-//            }
-//            try(InputStream inputStream = image.getInputStream()) {
-//                Files.copy(inputStream,Paths.get(uploadDir+storagePath),
-//                        StandardCopyOption.REPLACE_EXISTING);
-//            }
-//        }catch (Exception ex){
-//            System.out.println("Exception: "+ex.getMessage());
-//        }
-//
-//        HinhAnh anh = new HinhAnh();
-//        anh.setMa(hinhAnh.getMa());
-//        anh.setTen(storagePath);
         return new RedirectView("/admin/image/showuploadFrom", true);
     }
 
