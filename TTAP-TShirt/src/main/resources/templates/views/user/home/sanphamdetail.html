@@ -27,28 +27,25 @@
 <header th:replace="~{/fragment/header-customer :: header-customer}"></header>
 
 <div class="container">
-    <div class="row mt-3" style="display: flex" th:object="${spct}">
-    <img th:src="${spct != null && spct.hinhAnh != null ? spct.hinhAnh.getphotoPath() : ''}" alt="image" class="col-5">
+    <div class="row mt-3" style="display: flex">
+    <img src="/images/person.jpg" alt="" class="col-5">
 
         <div class="col-1"></div>
         <div class="col-6">
         <div class="col-12" >
             <span style="font-size: xxx-large; font-weight: bold">
-                [[${spct.sanPham.ten}]]
+                [[${sanpham.ten}]]
             </span> <br>
             <div class="d-flex">
                 <h4 style="font-size: x-large; color: #0f6674">Số lượng: </h4>
-                <h4 style="font-size: x-large;"th:text="${spct != null && spct.soLuong != null ? spct.soLuong : ''}"></h4>
+                <h4 style="font-size: x-large;"th:text="${spct.soLuong != null ? spct.soLuong : ''}"></h4>
             </div>
-            <span style="font-size: xx-large; font-weight: bold ; color: red" class="mt-3"
-                  th:text="${spct != null && spct.giaBan != null ? spct.giaBan : ''} + ' đ'"></span>
+            <span style="font-size: xx-large; font-weight: bold ; color: red" class="mt-3">[[${spct.giaBan}]] đ</span>
             <br>
             <div class="d-flex">
             <h4 style=" color: #0f6674">Mã giảm giá: </h4>
-                <span style="font-size: x-large; font-weight: bold"
-                      th:text="${spct != null && spct.khuyenMai != null ? spct.khuyenMai.giaTriGiam : ''}"></span>
-                <span style="font-size: x-large; font-weight: bold"
-                      th:text="${spct != null && spct.khuyenMai != null ? spct.khuyenMai.hinhThuc : ''}"></span>
+            <span style="font-size: x-large; font-weight: bold "th:text="${spct.khuyenMai != null ? spct.khuyenMai.giaTriGiam : ''}"></span>
+            <span style="font-size: x-large; font-weight: bold "th:text="${spct.khuyenMai != null ? spct.khuyenMai.hinhThuc : ''}"></span>
             </div>
             <div class="d-flex mt-3">
                 <h4 style="font-size: x-large; color: #0f6674; margin-right: 3ch">Kích cỡ: </h4>
@@ -82,7 +79,7 @@
             <h4>[[${sanpham.moTa?:''}]]</h4>
         </div>
 </div>
-</div>
+
 
 <!-- Footer Section Begin -->
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}"></footer>
