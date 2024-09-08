@@ -54,15 +54,22 @@ public class HomeCustomerController {
             for (int i = 0 ; i < newList.size() ; i++){
                 lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
             }
-            model.addAttribute("lsSPCT",lsCTSP);
-            return "user/home/trangchu";
         }else {
             for (int i = 0 ; i < 6 ; i++){
                 lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
             }
-            model.addAttribute("lsSPCT",lsCTSP);
-            return "user/home/trangchu";
         }
+        List<ChiTietSanPham> listSPMoi = new ArrayList<>();
+        if (ctspr.sanPhamMoi().size() < 6){
+            listSPMoi = ctspr.sanPhamMoi();
+        }else {
+            for (int i = 0; i < 6 ; i ++){
+                listSPMoi.add(ctspr.sanPhamMoi().get(i));
+            }
+        }
+        model.addAttribute("lsSPMoi",listSPMoi);
+        model.addAttribute("lsSPCT",lsCTSP);
+        return "user/home/trangchu";
     }
 
     @GetMapping("/san-pham/{idSP}")
