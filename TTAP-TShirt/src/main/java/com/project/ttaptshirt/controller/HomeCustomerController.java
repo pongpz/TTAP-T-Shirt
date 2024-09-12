@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -64,15 +65,27 @@ public class HomeCustomerController {
             return "user/home/trangchu";
         }
     }
+    @GetMapping("/san-pham/{id}")
+    public String detailSP(Model model, @PathVariable Long id){
+//    @RequestParam(required = false) Long idKichCo, @RequestParam(required = false) Long idMauSac){
 
-    @GetMapping("/san-pham/{idSP}")
-    public String detailSP(Model model, @PathVariable Long idSP,
-    @RequestParam(required = false) Long idKichCo, @RequestParam(required = false) Long idMauSac){
-        model.addAttribute("sanpham",spr.getReferenceById(idSP));
-        ChiTietSanPham ctsp = ctspr.findByIDSanPham(idSP,idKichCo,idMauSac).get(0);
-        model.addAttribute("spct",ctsp);
+//        ChiTietSanPham ctsp = ctspr.findByIDSanPham(idSP,idKichCo,idMauSac).get(0);
+        // Kiểm tra danh sách trả về từ findByIDSanPham trước khi truy cập phần tử
+        // Tìm sản phẩm chi tiết theo id
+        Optional<ChiTietSanPham> ctspOptional = ctspr.findById(id);
+
+        // Kiểm tra và xử lý kết quả
+        if (ctspOptional.isPresent()) {
+            ChiTietSanPham ctsp = ctspOptional.get();  // Lấy đối tượng nếu tồn tại
+            model.addAttribute("spct", ctsp);          // Thêm vào model
+        } else {
+            // Xử lý khi không tìm thấy sản phẩm chi tiết
+            model.addAttribute("spct", null);          // Hoặc trả về thông báo lỗi
+            model.addAttribute("errorMessage", "Không tìm thấy sản phẩm chi tiết.");
+        }
         return "user/home/sanphamdetail";
     }
+
 
     @GetMapping("/chinh-sach-van-chuyen")
     public String chinhSachVanChuyen(){
