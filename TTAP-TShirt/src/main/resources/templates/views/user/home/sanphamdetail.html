@@ -52,36 +52,34 @@
             </div>
             <div class="d-flex mt-3">
                 <h4 style="font-size: x-large; color: #0f6674; margin-right: 3ch">Kích cỡ: </h4>
-                <div th:each="ct:${spct}">
-                <input type="radio" class="btn-check btn-sm" name="chech-size" id="${ct.kichCo.id}" autocomplete="off">
-                <label class="btn btn-outline-dark" for="${ct.kichCo.id}">[[${ct.kichCo.ten}]]</label>
-                </div>
+                    <input type="radio" class="btn-check btn-sm" th:value="${spct.kichCo.id}" name="sizeId" id="size-${spct.kichCo.id}" autocomplete="off" required>
+                    <label class="btn btn-outline-dark" for="size-${spct.kichCo.id}">[[${spct.kichCo.ten}]]</label>
             </div>
             <br>
-            <div class="d-flex">
+            <div class="d-flex mt-3">
                 <h4 style="font-size: x-large; color: #0f6674; margin-right: 3ch">Màu sắc: </h4>
-                <div th:each="ct:${spct}">
-                    <input type="radio" class="btn-check btn-sm" name="check-color" id="${ct.mauSac.id}" autocomplete="off">
-                    <label class="btn btn-outline-dark" for="${ct.mauSac.id}">[[${ct.mauSac.ten}]]</label>
-                </div>
+                    <input type="radio" class="btn-check btn-sm" th:value="${spct.mauSac.id}" name="colorId" id="color-${spct.mauSac.id}" autocomplete="off" required>
+                    <label class="btn btn-outline-dark" for="color-${spct.mauSac.id}">[[${spct.mauSac.ten}]]</label>
             </div>
             <br>
             <div class="input-group mb-3">
                 <h4 style="font-size: x-large; color: #0f6674; margin-right: 2ch">Số lượng: </h4>
-                <button type="button" class="btn btn-outline-secondary">-</button>
-                <input type="number" class="form-control col-2" aria-label="Text input with segmented dropdown button">
-                <button type="button" class="btn btn-outline-secondary">+</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">-</button>
+                <input type="number" name="quantity" class="form-control col-2" min="1" value="1" id="quantityInput">
+                <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
             </div>
             <br>
+            <form action="" method="post"></form>
             <button class="btn btn-outline-danger">Thêm vào giỏ hàng</button>
             <button class="btn btn-danger">Mua ngay</button>
         </div>
     </div>
         <div class="mt-5 mb-5">
             <h2 style="font-weight: bold; color: #0f6674">Mô tả</h2>
-            <h4>[[${sanpham.moTa?:''}]]</h4>
+            <h4>[[${spct.sanPham.moTa?:''}]]</h4>
         </div>
 </div>
+
 </div>
 
 
@@ -95,6 +93,19 @@
 <script src="/js/mixitup.min.js"></script>
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
+<script>
+    function increaseQuantity() {
+        var quantityInput = document.getElementById('quantityInput');
+        quantityInput.value = parseInt(quantityInput.value) + 1;
+    }
+
+    function decreaseQuantity() {
+        var quantityInput = document.getElementById('quantityInput');
+        if (parseInt(quantityInput.value) > 1) {
+            quantityInput.value = parseInt(quantityInput.value) - 1;
+        }
+    }
+</script>
 </body>
 
 </html>

@@ -32,7 +32,7 @@ public class DatHangChiTiet {
     private Integer soLuong;
 
     @Column(name = "tong_tien")
-    private Float tongTien;
+    private Double tongTien;
 
     // Getters and Setters
 }
