@@ -37,4 +37,9 @@ public class ChucVu{
     @Column(name = "ten")
     private String ten;
 
+    @Column(name = "trang_thai")
+    private int trangThai;
+
+
+
 }

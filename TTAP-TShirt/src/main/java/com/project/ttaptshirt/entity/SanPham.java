@@ -37,16 +37,27 @@ public class SanPham extends CreatedUpdatedAt{
     @Column(name = "mo_ta")
     private String moTa;
 
+    @ManyToOne
+    @JoinColumn(name = "id_nsx")
+    private NSX nsx;
+
+
+    @ManyToOne
+    @JoinColumn(name = "id_thuong_hieu")
+    private ThuongHieu thuongHieu;
+
+    @ManyToOne
+    @JoinColumn(name = "id_chat_lieu")
+    private ChatLieu chatLieu;
+
+    @ManyToOne
+    @JoinColumn(name = "id_kieu_dang")
+    private KieuDang kieuDang;
+
 
     @Column(name = "trang_thai")
     private String trangThai;
 
-//
-//    @Column(name = "ngay_tao")
-//    private Date ngayTao;
-//
-//
-//    @Column(name = "ngay_sua")
-//    private Date ngaySua;
+
 
 }

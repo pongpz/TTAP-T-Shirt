@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -26,7 +27,7 @@ public class HoaDon {
 
     @ManyToOne
     @JoinColumn(name = "id_users")
-    private User khachHang;
+    private User NhanVien;
 
     @Column(name = "ma")
     private String ma;
@@ -43,15 +44,40 @@ public class HoaDon {
     @Column(name = "tong_tien")
     private Float tongTien;
 
-    @Column(name = "loai_don")
-    private Integer loaiDon;
+    @ManyToOne
+    @JoinColumn(name = "id_ma_giam_gia")
+    private MaGiamGia maGiamGia;
+
+    @ManyToOne
+    @JoinColumn(name = "id_khach_hang")
+    private KhachHang khachHang;
+
+    @Column(name = "dia_chi_giao_hang")
+    private String diaChiGiaoHang;
+
+    @Column(name = "sdt_nguoi_nhan")
+    private String sdtNguoiNhan;
+
+    @Column(name = "ngay_ship")
+    private LocalDate ngayShip;
+
+    @Column(name = "tien_ship")
+    private float tienShip;
+
+    @Column(name = "tien_coc")
+    private float tienCoc;
+
+    @Column(name = "ngay_nhan")
+    private LocalDate ngayNhan;
+
+    @Column(name = "tien_thu")
+    private float tienThu;
+
+    @Column(name = "so_tien_giam_gia")
+    private float soTienGiamGia;
 
     @Column(name = "trang_thai")
     private Integer trangThai;
-
-    @ManyToOne
-    @JoinColumn(name = "id_khuyen_mai")
-    private Voucher khuyenMai;
 
     @PreUpdate
     protected  void onUpdate(){

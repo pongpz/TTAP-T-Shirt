@@ -26,5 +26,7 @@ public class ThuongHieu {
     @Column(name = "ten")
     private String ten;
 
+    @Column(name = "trang_thai")
+    private int trangThai;
     // Getters and Setters
 }

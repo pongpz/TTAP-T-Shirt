@@ -22,8 +22,8 @@ import java.sql.Date;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "khuyen_mai_hoa_don")
-public class Voucher {
+@Table(name = "ma_giam_gia")
+public class MaGiamGia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -44,6 +44,15 @@ public class Voucher {
     @NotNull
     @Column(name = "gia_tri_giam")
     private Float giaTriGiam;
+
+    @NotNull
+    @Column(name = "gia_tri_toi_thieu")
+    private Float giaTriToiThieu;
+
+    @NotNull
+    @Column(name = "gia_tri_toi_da")
+    private Float giaTriToiDa;
+
     @NotBlank
     @Column(name = "trang_thai")
     private String trangThai;
@@ -53,9 +62,7 @@ public class Voucher {
     @NotBlank
     @Column(name = "ngay_sua")
     private Date ngaySua;
-    @NotBlank
-    @Column(name = "ma")
-    private String ma;
+
     @NotNull
     @Column(name = "so_luong")
     private Integer soLuong;

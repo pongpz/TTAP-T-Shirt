@@ -1,7 +1,7 @@
 package com.project.ttaptshirt.repository;
 
-import com.project.ttaptshirt.entity.Voucher;
+import com.project.ttaptshirt.entity.MaGiamGia;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface VoucherRepo extends JpaRepository<Voucher,Long> {
+public interface VoucherRepo extends JpaRepository<MaGiamGia,Long> {
 }
