@@ -38,7 +38,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Update</h3>
                     </div>
-                    <form class="row g-3" th:action="@{/TTAP/User/update}" th:object="${user}" method="post">
+                    <form class="row g-3" th:action="@{/TTAP/User/update}" th:object="${nhanVien}" method="post">
                         <div class="box-body">
                             <input type="hidden" th:field="*{id}"/>
                             <div class="col-md-6">
@@ -105,7 +105,7 @@
                         <h3 class="box-title">Địa chỉ</h3>
                     </div>
 
-                    <form class="modal-content" th:action="@{'/TTAP/User/' + ${user.id} + '/DiaChi'}" th:object="${diaChi}" method="post" >
+                    <form class="modal-content" th:action="@{'/TTAP/User/' + ${nhanVien.id} + '/DiaChi'}" th:object="${diaChi}" method="post" >
                         <div class="box-body">
                             <input type="hidden" th:field="*{id}">
                             <label><b>So nha</b></label>

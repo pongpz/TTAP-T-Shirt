@@ -39,7 +39,7 @@
                         <h3 class="box-title">Quản lý Nhân viên</h3>
                         <div class="box-tools">
                             <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
-                                <form th:action="@{/TTAP/User/employee/find}" method="get" th:border="1">
+                                <form th:action="@{/TTAP/NhanVien/find}" method="get" th:border="1">
                                     <input type="text" placeholder="tìm kiếm" name="name">
                                     <div class="input-group-btn">
                                         <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary" href="/TTAP/User/newNv">Them</a>
+                    <a class="btn btn-primary" href="/TTAP/NhanVien/new">Them</a>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
                             <thead>
@@ -81,10 +81,10 @@
                                 <td th:text="${user.ngayTao}"></td>
                                 <td th:text="${user.ngaySua}"></td>
                                 <td>
-                                    <a class="btn btn-danger" th:href="@{/TTAP/User/delete/{id}(id = ${user.id})}">
+                                    <a class="btn btn-danger" th:href="@{/TTAP/NhanVien/delete/{id}(id = ${user.id})}">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
-                                    <a class="btn btn-primary" th:href="@{/TTAP/User/detail/{id}(id = ${user.id})}">
+                                    <a class="btn btn-primary" th:href="@{/TTAP/NhanVien/detail/{id}(id = ${user.id})}">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
                                 </td>
