@@ -38,7 +38,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Update</h3>
                     </div>
-                    <form class="row g-3" th:action="@{/TTAP/User/updateKh}" th:object="${user}" method="post">
+                    <form class="row g-3" th:action="@{/TTAP/KhachHang/update}" th:object="${khachHang}" method="post">
                         <div class="box-body">
                             <input type="hidden" th:field="*{id}"/>
                             <div class="col-md-6">
@@ -71,12 +71,6 @@
                                     Nu
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <label  class="form-label">Chuc vu</label>
-                                <select class="form-select" th:field="*{cv}" >
-                                    <option th:each="cv : ${cv}" th:value="${cv.id}" th:text="${cv.ten}"></option>
-                                </select>
-                            </div>
                             <div class="col-md-6">
                                 <label  class="form-label">Ten tai khoan</label>
                                 <input type="text" class="form-control" th:field="*{taiKhoan}" >
@@ -105,7 +99,7 @@
                         <h3 class="box-title">Địa chỉ</h3>
                     </div>
 
-                    <form class="modal-content" th:action="@{'/TTAP/User/' + ${user.id} + '/DiaChiKh'}" th:object="${diaChi}" method="post" >
+                    <form class="modal-content" th:action="@{'/TTAP/User/' + ${khachHang.id} + '/DiaChi'}" th:object="${diaChi}" method="post" >
                         <div class="box-body">
                             <input type="hidden" th:field="*{id}">
                             <label><b>So nha</b></label>
