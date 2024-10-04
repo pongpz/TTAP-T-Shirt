@@ -3,8 +3,12 @@ package com.project.ttaptshirt.controller;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
+import com.project.ttaptshirt.repository.DatHangRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.SanPhamRepository;
+import com.project.ttaptshirt.service.KichCoService;
+import com.project.ttaptshirt.service.MauSacService;
+import com.project.ttaptshirt.service.impl.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +36,22 @@ public class HomeCustomerController {
     @Autowired
     ChiTietSanPhamRepository ctspr;
 
+    @Autowired
+    MauSacService mauSacService;
+
+    @Autowired
+    KichCoService kichCoService;
+
+    @Autowired
+    CartService serDatHang;
+
+    @Autowired
+    DatHangRepository repoDathang;
+
     @GetMapping("/trang-chu")
     public String home(HttpServletRequest request, Model model) {
+        Long userId = 1L;
+//        DatHang datHang = c
         model.addAttribute("requestURI", request.getRequestURI());
         List<HoaDonChiTiet> ls = hdctrp.findAll();
               List<?> newList = ls.stream()
@@ -71,9 +88,10 @@ public class HomeCustomerController {
 
 //        ChiTietSanPham ctsp = ctspr.findByIDSanPham(idSP,idKichCo,idMauSac).get(0);
         // Kiểm tra danh sách trả về từ findByIDSanPham trước khi truy cập phần tử
+//        model.addAttribute("mauSac", mauSacService.findAll());
+//        model.addAttribute("kc", kichCoService.findAll());
         // Tìm sản phẩm chi tiết theo id
         Optional<ChiTietSanPham> ctspOptional = ctspr.findById(id);
-
         // Kiểm tra và xử lý kết quả
         if (ctspOptional.isPresent()) {
             ChiTietSanPham ctsp = ctspOptional.get();  // Lấy đối tượng nếu tồn tại

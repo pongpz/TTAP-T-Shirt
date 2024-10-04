@@ -1,6 +1,5 @@
 package com.project.ttaptshirt.entity;
 
-<<<<<<< HEAD
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,35 +20,21 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-=======
-
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
->>>>>>> 6505377234eea5ea0b4d9be23715edc11ec60dee
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-<<<<<<< HEAD
 @Builder
-@Table(name = "khach_hang")
+@Table(name = "nhan_vien")
 @Entity
-public class KhachHang {
+public class NhanVien {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column( name = "ma_khach_hang")
-    @NotBlank(message = "Mã khách hàng không được phép trống")
-    @Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]+$",message = "Họ tên chỉ được chứa các ký tự chữ và dấu cách")
-    private String maKhachhang;
 
     @Column( name = "ho_ten")
     @NotBlank(message = "Họ tên không được phép trống")
@@ -90,46 +75,11 @@ public class KhachHang {
     @Column(name = "ngay_sua")
     private LocalDate ngaySua;
 
+    @ManyToOne
+    @JoinColumn(name = "id_chuc_vu")
+    private ChucVu cv;
+
     @OneToOne
     @JoinColumn(name = "id_dia_chi")
     private DiaChi dc;
-=======
-@Entity
-@Table(name = "khách hàng")
-public class KhachHang extends CreatedUpdatedAt{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "ma_khach_hang")
-    private String maKhachHang;
-
-    @Column(name = "ho_ten")
-    private String hoTen;
-
-    @Column(name = "gioi_tinh")
-    private String gioiTinh;
-
-    @Column(name = "so_dien_thoai")
-    private String soDienThoai;
-
-    @Column(name = "ngay_sinh")
-    private LocalDate ngaySinh;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "tai_khoan")
-    private String taiKhoan;
-
-    @Column(name = "mat_khau")
-    private String matKhau;
-
-    @ManyToOne
-    @JoinColumn(name = "id_dia_chi")
-    private DiaChi diaChi;
-
-    @Column(name = "trang_thai")
-    private int trangThai;
->>>>>>> 6505377234eea5ea0b4d9be23715edc11ec60dee
 }
