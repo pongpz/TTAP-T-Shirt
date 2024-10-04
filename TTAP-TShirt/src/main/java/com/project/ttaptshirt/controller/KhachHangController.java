@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/TTAP/KhachHang/customer")
+@RequestMapping("/TTAP/KhachHang")
 public class KhachHangController {
 
     @Autowired
@@ -30,35 +30,35 @@ public class KhachHangController {
     @GetMapping("/home")
     public String home(Model mol){
         List<KhachHang> KhachHangList = serKhachHang.findAll();
-        mol.addAttribute("nvLst",KhachHangList);
-        return"/KhachHang/index";
+        mol.addAttribute("cusLst",KhachHangList);
+        return"/user/Khachhang/index";
+    }
+
+    @GetMapping("/find")
+    public String findKhachHang(@RequestParam(value = "name", required = false) String name, Model mol){
+        List<KhachHang> KhachHangs;
+        if (name == null || name.isEmpty()) {
+            KhachHangs = serKhachHang.findAll(); // Assuming you have a method to retrieve all KhachHangs
+        } else {
+            KhachHangs = serKhachHang.findByKhachHang(name);
+        }
+        mol.addAttribute("empoLst",KhachHangs);
+        return "/user/khachhang/index";
     }
 
 //    @GetMapping("/find")
-//    public String findKhachHang(@RequestParam(value = "name", required = false) String name, Model mol){
+//    public String findCos(@RequestParam(value = "name", required = false) String name, Model mol){
 //        List<KhachHang> KhachHangs;
-//        if (name == null || name.isEmpty()) {
-//            KhachHangs = serKhachHang.findAll(); // Assuming you have a method to retrieve all KhachHangs
-//        } else {
-//            KhachHangs = serKhachHang.findByKhachHang(name);
-//        }
-//        mol.addAttribute("empoLst",KhachHangs);
-//        return "/KhachHang/nhanvien/index";
+//        KhachHangs = serKhachHang.findByKhachHang(name);// neu bị trùng tên là vẫn hiện lên table
+//        mol.addAttribute("cusLst",KhachHangs);
+//        return "/KhachHang/khachhang/index";
 //    }
-
-    @GetMapping("/find")
-    public String findCos(@RequestParam(value = "name", required = false) String name, Model mol){
-        List<KhachHang> KhachHangs;
-        KhachHangs = serKhachHang.findByKhachHang(name);// neu bị trùng tên là vẫn hiện lên table
-        mol.addAttribute("cusLst",KhachHangs);
-        return "/KhachHang/khachhang/index";
-    }
 
 
     @GetMapping("/new")
     public String add(Model mol){
-        mol.addAttribute("KhachHang", new KhachHang());
-        return "/KhachHang/dangky";
+        mol.addAttribute("khachHang", new KhachHang());
+        return "/user/khachHang/dangky";
     }
 
     @PostMapping("/save")
@@ -74,16 +74,16 @@ public class KhachHangController {
         KhachHang KhachHang = serKhachHang.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
         serKhachHang.deleteById(id);
-        return "redirect:/TTAP/KhachHang/employee";
+        return "redirect:/TTAP/KhachHang/home";
     }
 
     @GetMapping("/detail/{id}")
     public String showDetail(@PathVariable("id") Long id,Model mol){
-        KhachHang KhachHang = serKhachHang.findById(id)
+        KhachHang khachHang = serKhachHang.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
-        mol.addAttribute("KhachHang",KhachHang);
-        mol.addAttribute("diaChi",KhachHang.getDc() != null ? KhachHang.getDc() : new DiaChi());
-        return "/KhachHang/nhanvien/update";
+        mol.addAttribute("khachHang",khachHang);
+        mol.addAttribute("diaChi",khachHang.getDc() != null ? khachHang.getDc() : new DiaChi());
+        return "/user/khachHang/update";
     }
 
     @PostMapping("/update")
@@ -97,7 +97,7 @@ public class KhachHangController {
         KhachHang.setNgayTao(existingKhachHang.getNgayTao());
         KhachHang.setNgaySua(LocalDate.now());
         serKhachHang.save(KhachHang);
-        return "redirect:/TTAP/KhachHang/employee";
+        return "redirect:/TTAP/KhachHang/home";
     }
 
     @PostMapping("/{id}/DiaChi")
@@ -131,12 +131,12 @@ public class KhachHangController {
 
     @PostMapping("/create")
     public String registerKhachHang(
-            @Valid @ModelAttribute("KhachHang") KhachHang KhachHang, BindingResult result,
+            @Valid @ModelAttribute("khachHang") KhachHang khachHang, BindingResult result,
             Model model, RedirectAttributes redirectAttributes
     ) {
-        KhachHang.setNgayTao(LocalDate.now());
-        KhachHang.setNgaySua(LocalDate.now());
-        serKhachHang.registerKhachHang(KhachHang);
+        khachHang.setNgayTao(LocalDate.now());
+        khachHang.setNgaySua(LocalDate.now());
+        serKhachHang.registerKhachHang(khachHang);
 
         return "redirect:/TTAP/KhachHang/home";
     }

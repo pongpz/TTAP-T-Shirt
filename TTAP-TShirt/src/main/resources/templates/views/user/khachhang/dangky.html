@@ -35,7 +35,7 @@
             <!-- Default box -->
             <div class="col-xs-12">
                 <div class="box box-primary">
-                    <form class="row g-3" th:action="@{/TTAP/User/create}" th:object="${user}" method="post">
+                    <form class="row g-3" th:action="@{/TTAP/KhachHang/create}" th:object="${khachHang}" method="post">
                         <div class="box-body">
                             <div class="col-md-6">
                                 <label  class="form-label">Ho va ten</label>
@@ -61,12 +61,6 @@
                                     <input type="radio" th:field="*{gioiTinh}" th:value="false">
                                     Nu
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label  class="form-label">Chuc vu</label>
-                                <select class="form-select" th:field="*{cv}" >
-                                    <option th:each="cv : ${cv}" th:value="${cv.id}" th:text="${cv.ten}" value="3"></option>
-                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label  class="form-label">Ten tai khoan</label>

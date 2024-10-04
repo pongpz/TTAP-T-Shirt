@@ -74,7 +74,7 @@ public class NhanVienController {
         NhanVien NhanVien = serNhanVien.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
         serNhanVien.deleteById(id);
-        return "redirect:/TTAP/NhanVien/employee";
+        return "redirect:/TTAP/NhanVien/homw";
     }
 
     @GetMapping("/detail/{id}")
@@ -131,12 +131,12 @@ public class NhanVienController {
 
     @PostMapping("/create")
     public String registerNhanVien(
-            @Valid @ModelAttribute("NhanVien") NhanVien NhanVien, BindingResult result,
+            @Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result,
             Model model, RedirectAttributes redirectAttributes
     ) {
-        NhanVien.setNgayTao(LocalDate.now());
-        NhanVien.setNgaySua(LocalDate.now());
-        serNhanVien.registerNhanVien(NhanVien);
+        nhanVien.setNgayTao(LocalDate.now());
+        nhanVien.setNgaySua(LocalDate.now());
+        serNhanVien.registerNhanVien(nhanVien);
 
         return "redirect:/TTAP/NhanVien/home";
     }
