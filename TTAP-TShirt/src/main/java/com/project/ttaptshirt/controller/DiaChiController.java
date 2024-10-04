@@ -42,8 +42,6 @@ public class DiaChiController {
         if (result.hasErrors()) {
             return "/user/diachi/dangky";
         }
-        dc.setNgayTao(LocalDate.now());
-        dc.setNgaySua(LocalDate.now());
         serDc.save(dc);
         return "redirect:home";
     }
@@ -72,8 +70,6 @@ public class DiaChiController {
         }
         DiaChi existDc = serDc.findById(dc.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + dc.getId()));
-        dc.setNgayTao(existDc.getNgayTao());
-        dc.setNgaySua(LocalDate.now());
         serDc.save(dc);
         return "redirect:/TTAP/User/DiaChi/home";
     }

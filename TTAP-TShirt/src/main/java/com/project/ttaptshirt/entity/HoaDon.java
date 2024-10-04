@@ -36,7 +36,7 @@ public class HoaDon {
     private Date ngayTao;
 
     @Column(name = "ngay_thanh_toan")
-    private LocalDateTime ngayThanhToan;
+    private LocalDate ngayThanhToan;
 
     @Column(name = "ghi_chu")
     private String ghiChu;
@@ -81,7 +81,7 @@ public class HoaDon {
 
     @PreUpdate
     protected  void onUpdate(){
-        ngayThanhToan = LocalDateTime.now();
+        ngayThanhToan = LocalDate.now();
     }
     // Getters and setters (omitted for brevity)
 }
