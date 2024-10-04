@@ -71,11 +71,7 @@ public class SanPhamCustomerController {
     public String sanPhamCustomer(HttpServletRequest request, Model model,
                                   @RequestParam(defaultValue = "") String ten,
                                   @RequestParam(defaultValue = "0") int priceRangerId,
-                                  @RequestParam(defaultValue = "0") int thuongHieuId,
-                                  @RequestParam(defaultValue = "0") int kieuDangId,
-                                  @RequestParam(defaultValue = "0") int nsxId,
                                   @RequestParam(defaultValue = "0") int kichCoId,
-                                  @RequestParam(defaultValue = "0") int chatLieuId,
                                   @RequestParam(defaultValue = "0") int page) {
 
         // Kiểm tra và xử lý giá trị của priceRanger
@@ -93,23 +89,11 @@ public class SanPhamCustomerController {
                 ten.isEmpty() ? null : ten,
                 minPrice,
                 maxPrice,
-                thuongHieuId == 0 ? null : thuongHieuId,
-                kieuDangId == 0 ? null : kieuDangId,
-                nsxId == 0 ? null : nsxId,
                 kichCoId == 0 ? null : kichCoId,
-                chatLieuId == 0 ? null : chatLieuId,
                 pageable);
 
-        model.addAttribute("thuongHieuList", thuongHieuRepository.findAll());
-        model.addAttribute("thuongHieuId", thuongHieuId);
-        model.addAttribute("kieuDangList", kieuDangRepository.findAll());
-        model.addAttribute("kieuDangId", kieuDangId);
-        model.addAttribute("nsxList", nsxRepository.findAll());
-        model.addAttribute("nsxId", nsxId);
         model.addAttribute("kichCoList", kichCoRepository.findAll());
         model.addAttribute("kichCoId", kichCoId);
-        model.addAttribute("chatLieuList", chatLieuRepository.findAll());
-        model.addAttribute("chatLieuId", chatLieuId);
         model.addAttribute("requestURI", request.getRequestURI());
         model.addAttribute("listctsp", sanPhamPage.getContent());
         model.addAttribute("totalPage", sanPhamPage.getTotalPages());
@@ -119,7 +103,6 @@ public class SanPhamCustomerController {
 
         return "user/home/sanpham";
     }
-
 
 
     public String formatCurrency(double amount) {

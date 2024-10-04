@@ -27,5 +27,12 @@ public class KichCo {
     @Column(name = "ten")
     private String ten;
 
-    // Getters and setters (omitted for brevity)
+    @Column(name = "chieu_cao")
+    private double chieuCao;
+
+    @Column(name = "can_nang")
+    private double canNang;
+
+    @Column(name = "trang_thai")
+    private double trangThai;
 }

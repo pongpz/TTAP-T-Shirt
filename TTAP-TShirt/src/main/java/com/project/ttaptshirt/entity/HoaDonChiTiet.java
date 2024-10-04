@@ -34,6 +34,9 @@ public class HoaDonChiTiet extends CreatedUpdatedAt{
     @Column(name = "so_luong")
     private Integer soLuong;
 
+    @Column(name = "trang_thai")
+    private Integer trangThai;
+
 //    @Column(name = "ngay_tao")
 //    private Date ngayTao;
 //

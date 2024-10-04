@@ -14,7 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "nsx")
+@Table(name = "nha_san_xuat")
 public class NSX {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +26,7 @@ public class NSX {
     @Column(name = "ten")
     private String ten;
 
+    @Column(name = "trang_thai")
+    private int trangThai;
     // Getters and Setters
 }

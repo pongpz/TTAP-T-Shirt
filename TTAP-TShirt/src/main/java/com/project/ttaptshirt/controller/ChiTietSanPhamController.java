@@ -128,31 +128,11 @@ public class ChiTietSanPhamController {
         kichCo.setId(idKichCo);
         chiTietSanPham.setKichCo(kichCo);
 
-        ChatLieu chatLieu = new ChatLieu();
-        chatLieu.setId(idChatLieu);
-        chiTietSanPham.setChatLieu(chatLieu);
-
-        KieuDang kieuDang = new KieuDang();
-        kieuDang.setId(idKieuDang);
-        chiTietSanPham.setKieuDang(kieuDang);
-
-        NSX nsx = new NSX();
-        nsx.setId(idNSX);
-        chiTietSanPham.setNsx(nsx);
-
-        ThuongHieu thuongHieu = new ThuongHieu();
-        thuongHieu.setId(idThuongHieu);
-        chiTietSanPham.setThuongHieu(thuongHieu);
 
         HinhAnh anh = new HinhAnh();
         anh.setId(idHinhAnh);
         chiTietSanPham.setHinhAnh(anh);
 
-        if (idKhuyenMai != null) {
-            KhuyenMai khuyenMai = new KhuyenMai();
-            khuyenMai.setId(idKhuyenMai);
-            chiTietSanPham.setKhuyenMai(khuyenMai);
-        }
 
         chiTietSanPhamService.save(chiTietSanPham);
 
@@ -196,38 +176,6 @@ public class ChiTietSanPhamController {
             KichCo kichCo = new KichCo();
             kichCo.setId(idKichCo);
             existingCTSP.setKichCo(kichCo);
-        }
-
-        if (idChatLieu != null) {
-            ChatLieu chatLieu = new ChatLieu();
-            chatLieu.setId(idChatLieu);
-            existingCTSP.setChatLieu(chatLieu);
-        }
-
-        if (idKieuDang != null) {
-            KieuDang kieuDang = new KieuDang();
-            kieuDang.setId(idKieuDang);
-            existingCTSP.setKieuDang(kieuDang);
-        }
-
-        if (idNSX != null) {
-            NSX nsx = new NSX();
-            nsx.setId(idNSX);
-            existingCTSP.setNsx(nsx);
-        }
-
-        if (idThuongHieu != null) {
-            ThuongHieu thuongHieu = new ThuongHieu();
-            thuongHieu.setId(idThuongHieu);
-            existingCTSP.setThuongHieu(thuongHieu);
-        }
-
-        if (idKhuyenMai != null && !idKhuyenMai.isEmpty()) {
-            KhuyenMai khuyenMai = new KhuyenMai();
-            khuyenMai.setId(Long.valueOf(idKhuyenMai));
-            existingCTSP.setKhuyenMai(khuyenMai);
-        } else {
-            existingCTSP.setKhuyenMai(null);
         }
 
         // Cập nhật các thuộc tính khác nếu có trong form

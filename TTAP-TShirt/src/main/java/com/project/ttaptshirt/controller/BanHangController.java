@@ -1,10 +1,6 @@
 package com.project.ttaptshirt.controller;
 
-import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.HoaDon;
-import com.project.ttaptshirt.entity.HoaDonChiTiet;
-import com.project.ttaptshirt.entity.User;
-import com.project.ttaptshirt.entity.Voucher;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.repository.UserRepo;
@@ -54,7 +50,7 @@ public class BanHangController {
         List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
         List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
-        List<Voucher> listKM = voucherRepo.findAll();
+        List<MaGiamGia> listKM = voucherRepo.findAll();
         List<User> listKH = userRepo.findAll();
         model.addAttribute("listKH", listKH);
         model.addAttribute("listKM", listKM);
@@ -70,7 +66,7 @@ public class BanHangController {
     public String openBanHangPageindex(Model model) {
         List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
-        List<Voucher> listKM = voucherRepo.findAll();
+        List<MaGiamGia> listKM = voucherRepo.findAll();
         List<User> listKH = userRepo.findAll();
         model.addAttribute("listKH", listKH);
         model.addAttribute("listKM", listKM);
@@ -85,7 +81,7 @@ public class BanHangController {
         List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
         List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
-        List<Voucher> listKM = voucherRepo.findAll();
+        List<MaGiamGia> listKM = voucherRepo.findAll();
         List<User> listKH = userRepo.findAll();
         model.addAttribute("listKH", listKH);
         model.addAttribute("listKM", listKM);
@@ -104,7 +100,7 @@ public class BanHangController {
                 .sum();
 
         HoaDon hoaDon = hoaDonRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + id));
-        Voucher voucher = hoaDon.getKhuyenMai();
+        MaGiamGia voucher = hoaDon.getMaGiamGia();
 
         double discount = 0.0;
 
@@ -149,7 +145,7 @@ public class BanHangController {
                 })
                 .sum();
 
-        Voucher voucher = hoaDon.getKhuyenMai();
+        MaGiamGia voucher = hoaDon.getMaGiamGia();
         double discount = 0.0;
 
         if (voucher!= null){
@@ -196,8 +192,6 @@ public class BanHangController {
     public String newHoaDon() {
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
-        hoaDon.setNgayTao(new java.sql.Date(new Date().getTime()));
-        hoaDon.setLoaiDon(0);
         hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
         return "redirect:/admin/ban-hang";
@@ -235,9 +229,9 @@ public class BanHangController {
     public String chonKhachHang(@RequestParam("idhd") Long idhd,
                                 @RequestParam("idkh") Long idkh) {
         HoaDon existingHoaDon = hoaDonRepository.findById(idhd).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idhd));
-        User user = new User();
-        user.setId(idkh);
-        existingHoaDon.setKhachHang(user);
+        KhachHang khachHang = new  KhachHang();
+        khachHang.setId(idkh);
+        existingHoaDon.setKhachHang(khachHang);
         hoaDonService.save(existingHoaDon);
         return "redirect:/admin/ban-hang";
     }
@@ -246,9 +240,9 @@ public class BanHangController {
     public String chonKhuyenMai(@RequestParam("idhd") Long idhd,
                                 @RequestParam("idkm") Long idkm) {
         HoaDon existingHoaDon = hoaDonRepository.findById(idhd).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idhd));
-        Voucher voucher = new Voucher();
+        MaGiamGia voucher = new MaGiamGia();
         voucher.setId(idkm);
-        existingHoaDon.setKhuyenMai(voucher);
+        existingHoaDon.setMaGiamGia(voucher);
         hoaDonService.save(existingHoaDon);
         return "redirect:/admin/ban-hang";
     }
