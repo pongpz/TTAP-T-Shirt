@@ -83,7 +83,7 @@ public class KhachHangController {
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
         mol.addAttribute("khachHang",khachHang);
         mol.addAttribute("diaChi",khachHang.getDc() != null ? khachHang.getDc() : new DiaChi());
-        return "/user/khachHang/update";
+        return "/user/khachHgitang/update";
     }
 
     @PostMapping("/update")
