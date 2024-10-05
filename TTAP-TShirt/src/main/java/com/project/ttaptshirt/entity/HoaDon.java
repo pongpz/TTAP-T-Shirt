@@ -26,8 +26,8 @@ public class HoaDon {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_users")
-    private User NhanVien;
+    @JoinColumn(name = "id_nhan_vien")
+    private NhanVien nhanVien;
 
     @Column(name = "ma")
     private String ma;
