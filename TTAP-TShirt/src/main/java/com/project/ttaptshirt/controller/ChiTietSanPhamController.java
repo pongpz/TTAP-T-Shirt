@@ -1,19 +1,13 @@
 package com.project.ttaptshirt.controller;
 
 
-import com.project.ttaptshirt.entity.ChatLieu;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.HinhAnh;
-import com.project.ttaptshirt.entity.KhuyenMai;
 import com.project.ttaptshirt.entity.KichCo;
-import com.project.ttaptshirt.entity.KieuDang;
 import com.project.ttaptshirt.entity.MauSac;
-import com.project.ttaptshirt.entity.NSX;
 import com.project.ttaptshirt.entity.SanPham;
-import com.project.ttaptshirt.entity.ThuongHieu;
 import com.project.ttaptshirt.repository.ChatLieuRepository;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
-import com.project.ttaptshirt.repository.KhuyenMaiRepo;
 import com.project.ttaptshirt.repository.KieuDangRepository;
 import com.project.ttaptshirt.repository.NSXRepository;
 import com.project.ttaptshirt.repository.ThuongHieuRepository;
@@ -52,8 +46,6 @@ public class ChiTietSanPhamController {
     @Autowired
     NSXRepository nsxRepository;
     @Autowired
-    KhuyenMaiRepo khuyenMaiRepo;
-    @Autowired
     ThuongHieuRepository thuongHieuRepository;
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
@@ -69,7 +61,6 @@ public class ChiTietSanPhamController {
         model.addAttribute("listChatLieu", chatLieuRepository.findAll());
         model.addAttribute("listKieuDang", kieuDangRepository.findAll());
         model.addAttribute("listNSX", nsxRepository.findAll());
-        model.addAttribute("listKhuyenMai", khuyenMaiRepo.findAll());
         model.addAttribute("listThuongHieu", thuongHieuRepository.findAll());
         model.addAttribute("listMauSac", mauSacService.findAll());
         model.addAttribute("listHinhAnh", hinhAnhService.findAll());
@@ -92,7 +83,6 @@ public class ChiTietSanPhamController {
         model.addAttribute("listChatLieu", chatLieuRepository.findAll());
         model.addAttribute("listKieuDang", kieuDangRepository.findAll());
         model.addAttribute("listNSX", nsxRepository.findAll());
-        model.addAttribute("listKhuyenMai", khuyenMaiRepo.findAll());
         model.addAttribute("listThuongHieu", thuongHieuRepository.findAll());
         model.addAttribute("listSP", sanPhamService.findAll());
         model.addAttribute("listMauSac", mauSacService.findAll());

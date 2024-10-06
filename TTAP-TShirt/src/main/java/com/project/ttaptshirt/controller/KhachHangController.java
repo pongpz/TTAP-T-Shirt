@@ -63,8 +63,6 @@ public class KhachHangController {
 
     @PostMapping("/save")
     public String createKhachHang(@Valid @ModelAttribute KhachHang KhachHang, BindingResult result,Model mol){
-        KhachHang.setNgayTao(LocalDate.now());
-        KhachHang.setNgaySua(LocalDate.now());
         serKhachHang.save(KhachHang);
         return "redirect:home";
     }
@@ -82,7 +80,7 @@ public class KhachHangController {
         KhachHang khachHang = serKhachHang.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
         mol.addAttribute("khachHang",khachHang);
-        mol.addAttribute("diaChi",khachHang.getDc() != null ? khachHang.getDc() : new DiaChi());
+        mol.addAttribute("diaChi",khachHang.getDiaChi() != null ? khachHang.getDiaChi() : new DiaChi());
         return "/user/khachHang/update";
     }
 
@@ -94,8 +92,6 @@ public class KhachHangController {
         }
         KhachHang existingKhachHang = serKhachHang.findById(KhachHang.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid KhachHang Id:" + KhachHang.getId()));
-        KhachHang.setNgayTao(existingKhachHang.getNgayTao());
-        KhachHang.setNgaySua(LocalDate.now());
         serKhachHang.save(KhachHang);
         return "redirect:/TTAP/KhachHang/home";
     }
@@ -108,8 +104,6 @@ public class KhachHangController {
 
     @PostMapping("/register")
     public String registerKhachHang(@Valid @ModelAttribute KhachHang KhachHang,BindingResult result,Model mol) {
-        KhachHang.setNgayTao(LocalDate.now());
-        KhachHang.setNgaySua(LocalDate.now());
         serKhachHang.createKhachHang(KhachHang);
         mol.addAttribute("message", "Chi tiết tài khoản đã đc gửi.");
         return "redirect:/TTAP/KhachHang/home";
@@ -134,8 +128,6 @@ public class KhachHangController {
             @Valid @ModelAttribute("khachHang") KhachHang khachHang, BindingResult result,
             Model model, RedirectAttributes redirectAttributes
     ) {
-        khachHang.setNgayTao(LocalDate.now());
-        khachHang.setNgaySua(LocalDate.now());
         serKhachHang.registerKhachHang(khachHang);
 
         return "redirect:/TTAP/KhachHang/home";
