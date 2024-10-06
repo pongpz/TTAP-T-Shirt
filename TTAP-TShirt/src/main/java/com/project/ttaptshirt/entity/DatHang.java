@@ -27,10 +27,6 @@ public class DatHang {
     @JoinColumn(name = "id_users")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "id_khuyen_mai")
-    private KhuyenMai khuyenMai;
-
     @Column(name = "ghi_chu")
     private String ghiChu;
 

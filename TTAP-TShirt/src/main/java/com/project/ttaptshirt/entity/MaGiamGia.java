@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate; // Sử dụng LocalDate thay cho java.sql.Date
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -25,56 +24,47 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ma_giam_gia")
 public class MaGiamGia {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column
-        private Long id;
+    @NotBlank
+    @Column(name = "ten")
+    private String ten;
+    @NotNull
+    @Column(name = "ngay_bat_dau")
+    private Date ngayBatDau;
+    @NotNull
+    @Column(name = "ngay_ket_thuc")
+    private Date ngayKetThuc;
+    @NotBlank
+    @Column(name = "hinh_thuc")
+    private Integer hinhThuc;
+    @NotNull
+    @Column(name = "gia_tri_giam")
+    private Float giaTriGiam;
 
-        @NotBlank
-        @Column(name = "ten")
-        private String ten;
+    @NotNull
+    @Column(name = "gia_tri_toi_thieu")
+    private Float giaTriToiThieu;
 
-        @NotNull
-        @Column(name = "ngay_bat_dau")
-        private LocalDateTime ngayBatDau;
+    @NotNull
+    @Column(name = "gia_tri_toi_da")
+    private Float giaTriToiDa;
 
-        @NotNull
-        @Column(name = "ngay_ket_thuc")
-        private LocalDateTime ngayKetThuc;
+    @NotBlank
+    @Column(name = "trang_thai")
+    private String trangThai;
+    @NotBlank
+    @Column(name = "ngay_tao")
+    private Date ngayTao;
+    @NotBlank
+    @Column(name = "ngay_sua")
+    private Date ngaySua;
 
-        @NotNull
-        @Column(name = "hinh_thuc")
-        private Boolean hinhThuc;
-
-        @NotNull
-        @Column(name = "gia_tri_giam")
-        private Long giaTriGiam;
-
-        @NotNull
-        @Column(name = "gia_tri_toi_thieu")
-        private Long giaTriToiThieu;
-
-        @NotNull
-        @Column(name = "gia_tri_toi_da")
-        private Long giaTriToiDa;
-
-        @NotNull
-        @Column(name = "trang_thai")
-        private Boolean trangThai;
-
-        @Column(name = "ngay_tao")
-        private LocalDateTime ngayTao;
-
-        @Column(name = "ngay_sua")
-        private LocalDateTime ngaySua;
-
-        @NotBlank
-        @Column(name = "ma")
-        private String ma;
-
-        @NotNull
-        @Column(name = "so_luong")
-        private Integer soLuong;
+    @NotNull
+    @Column(name = "so_luong")
+    private Integer soLuong;
 
 }
