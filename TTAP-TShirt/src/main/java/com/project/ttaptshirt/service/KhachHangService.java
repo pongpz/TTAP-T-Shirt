@@ -65,7 +65,7 @@ public class KhachHangService {
         if (khachHangOptional.isPresent()){
             KhachHang khachHang = khachHangOptional.get();
             repoDc.save(diaChi);
-            khachHang.setDiaChi(diaChi);
+            khachHang.setDc(diaChi);
             return repoKhachHang.save(khachHang);
         }else {
             throw new RuntimeException("KhachHang not found with id " + khachHangId);

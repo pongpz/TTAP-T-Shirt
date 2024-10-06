@@ -24,6 +24,8 @@ import java.sql.Date;
 @Entity
 @Table(name = "ma_giam_gia")
 public class MaGiamGia {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -32,22 +34,26 @@ public class MaGiamGia {
     @NotBlank
     @Column(name = "ten")
     private String ten;
+
     @NotNull
     @Column(name = "ngay_bat_dau")
     private Date ngayBatDau;
+
     @NotNull
     @Column(name = "ngay_ket_thuc")
     private Date ngayKetThuc;
+
     @NotBlank
     @Column(name = "hinh_thuc")
     private Integer hinhThuc;
+
     @NotNull
     @Column(name = "gia_tri_giam")
     private Float giaTriGiam;
 
     @NotNull
     @Column(name = "gia_tri_toi_thieu")
-    private Float giaTriToiThieu;
+    private Float giaTriGiamToiThieu;
 
     @NotNull
     @Column(name = "gia_tri_toi_da")
@@ -56,12 +62,19 @@ public class MaGiamGia {
     @NotBlank
     @Column(name = "trang_thai")
     private String trangThai;
+
     @NotBlank
     @Column(name = "ngay_tao")
     private Date ngayTao;
+
     @NotBlank
     @Column(name = "ngay_sua")
     private Date ngaySua;
+
+    @NotBlank
+    @Column(name = "ma")
+    private String ma;
+
 
     @NotNull
     @Column(name = "so_luong")
