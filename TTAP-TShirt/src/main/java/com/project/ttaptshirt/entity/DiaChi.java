@@ -24,7 +24,7 @@ import java.time.LocalDate;
 @Builder
 @Table(name = "dia_chi")
 @Entity
-public class DiaChi{
+public class DiaChi extends CreatedUpdatedAt{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,10 +51,5 @@ public class DiaChi{
     @Column(name = "trang_thai")
     private String trangThai;
 
-    @Column(name = "ngay_tao")
-    private LocalDate ngayTao;
-
-    @Column(name = "ngay_sua")
-    private LocalDate ngaySua;
 
 }

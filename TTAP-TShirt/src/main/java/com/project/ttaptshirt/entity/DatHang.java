@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +23,7 @@ public class DatHang {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_users")
     private User user;
 
@@ -35,7 +38,9 @@ public class DatHang {
     private String phuongThucThanhToan;
 
     @Column(name = "tong_tien")
-    private Float tongTien;
+    private Double tongTien;
 
+    @OneToMany(mappedBy = "datHang")
+    private Set<DatHangChiTiet> items;
     // Getters and Setters
 }

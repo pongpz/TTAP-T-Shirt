@@ -3,8 +3,12 @@ package com.project.ttaptshirt.controller;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
+import com.project.ttaptshirt.repository.DatHangRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.SanPhamRepository;
+import com.project.ttaptshirt.service.KichCoService;
+import com.project.ttaptshirt.service.MauSacService;
+import com.project.ttaptshirt.service.impl.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -32,8 +36,22 @@ public class HomeCustomerController {
     @Autowired
     ChiTietSanPhamRepository ctspr;
 
+    @Autowired
+    MauSacService mauSacService;
+
+    @Autowired
+    KichCoService kichCoService;
+
+    @Autowired
+    CartService serDatHang;
+
+    @Autowired
+    DatHangRepository repoDathang;
+
     @GetMapping("/trang-chu")
     public String home(HttpServletRequest request, Model model) {
+        Long userId = 1L;
+//        DatHang datHang = c
         model.addAttribute("requestURI", request.getRequestURI());
         List<HoaDonChiTiet> ls = hdctrp.findAll();
               List<?> newList = ls.stream()
@@ -54,32 +72,38 @@ public class HomeCustomerController {
             for (int i = 0 ; i < newList.size() ; i++){
                 lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
             }
+            model.addAttribute("lsSPCT",lsCTSP);
+            return "user/home/trangchu";
         }else {
             for (int i = 0 ; i < 6 ; i++){
                 lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
             }
+            model.addAttribute("lsSPCT",lsCTSP);
+            return "user/home/trangchu";
         }
-        List<ChiTietSanPham> listSPMoi = new ArrayList<>();
-        if (ctspr.sanPhamMoi().size() < 6){
-            listSPMoi = ctspr.sanPhamMoi();
-        }else {
-            for (int i = 0; i < 6 ; i ++){
-                listSPMoi.add(ctspr.sanPhamMoi().get(i));
-            }
-        }
-        model.addAttribute("lsSPMoi",listSPMoi);
-        model.addAttribute("lsSPCT",lsCTSP);
-        return "user/home/trangchu";
     }
+    @GetMapping("/san-pham/{id}")
+    public String detailSP(Model model, @PathVariable Long id){
+//    @RequestParam(required = false) Long idKichCo, @RequestParam(required = false) Long idMauSac){
 
-    @GetMapping("/san-pham/{idSP}")
-    public String detailSP(Model model, @PathVariable Long idSP,
-    @RequestParam(required = false) Long idKichCo, @RequestParam(required = false) Long idMauSac){
-        model.addAttribute("sanpham",spr.getReferenceById(idSP));
-        ChiTietSanPham ctsp = ctspr.findByIDSanPham(idSP,idKichCo,idMauSac).get(0);
-        model.addAttribute("spct",ctsp);
+//        ChiTietSanPham ctsp = ctspr.findByIDSanPham(idSP,idKichCo,idMauSac).get(0);
+        // Kiểm tra danh sách trả về từ findByIDSanPham trước khi truy cập phần tử
+//        model.addAttribute("mauSac", mauSacService.findAll());
+//        model.addAttribute("kc", kichCoService.findAll());
+        // Tìm sản phẩm chi tiết theo id
+        Optional<ChiTietSanPham> ctspOptional = ctspr.findById(id);
+        // Kiểm tra và xử lý kết quả
+        if (ctspOptional.isPresent()) {
+            ChiTietSanPham ctsp = ctspOptional.get();  // Lấy đối tượng nếu tồn tại
+            model.addAttribute("spct", ctsp);          // Thêm vào model
+        } else {
+            // Xử lý khi không tìm thấy sản phẩm chi tiết
+            model.addAttribute("spct", null);          // Hoặc trả về thông báo lỗi
+            model.addAttribute("errorMessage", "Không tìm thấy sản phẩm chi tiết.");
+        }
         return "user/home/sanphamdetail";
     }
+
 
     @GetMapping("/chinh-sach-van-chuyen")
     public String chinhSachVanChuyen(){
