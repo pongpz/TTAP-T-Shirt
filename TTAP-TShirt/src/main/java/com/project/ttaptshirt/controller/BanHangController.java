@@ -8,6 +8,7 @@ import com.project.ttaptshirt.repository.VoucherRepo;
 import com.project.ttaptshirt.service.ChiTietSanPhamService;
 import com.project.ttaptshirt.service.HoaDonChiTietService;
 import com.project.ttaptshirt.service.HoaDonService;
+import com.project.ttaptshirt.service.KhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +40,7 @@ public class BanHangController {
     VoucherRepo voucherRepo;
 
     @Autowired
-    UserRepo userRepo;
+    KhachHangService khachHangService;
 
     @Autowired
     HoaDonRepository hoaDonRepository;
@@ -51,7 +52,7 @@ public class BanHangController {
         List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<MaGiamGia> listKM = voucherRepo.findAll();
-        List<User> listKH = userRepo.findAll();
+        List<KhachHang> listKH = khachHangService.findAll();
         model.addAttribute("listKH", listKH);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
@@ -62,19 +63,19 @@ public class BanHangController {
         return "admin/banhangtaiquay/banhang";
     }
 
-    @GetMapping("/index")
-    public String openBanHangPageindex(Model model) {
-        List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
-        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
-        List<MaGiamGia> listKM = voucherRepo.findAll();
-        List<User> listKH = userRepo.findAll();
-        model.addAttribute("listKH", listKH);
-        model.addAttribute("listKM", listKM);
-        model.addAttribute("listHoaDon", listHoaDon);
-        model.addAttribute("listCTSP", listCTSP);
-
-        return "admin/banhangtaiquay/index";
-    }
+//    @GetMapping("/index")
+//    public String openBanHangPageindex(Model model) {
+//        List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
+//        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
+//        List<MaGiamGia> listKM = voucherRepo.findAll();
+//        List<User> listKH = userRepo.findAll();
+//        model.addAttribute("listKH", listKH);
+//        model.addAttribute("listKM", listKM);
+//        model.addAttribute("listHoaDon", listHoaDon);
+//        model.addAttribute("listCTSP", listCTSP);
+//
+//        return "admin/banhangtaiquay/index";
+//    }
 
     @GetMapping("hoa-don/chi-tiet")
     public String viewHDCT(@RequestParam("hoadonId") Long id, Model model) {
@@ -82,7 +83,7 @@ public class BanHangController {
         List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<MaGiamGia> listKM = voucherRepo.findAll();
-        List<User> listKH = userRepo.findAll();
+        List<KhachHang> listKH = khachHangService.findAll();
         model.addAttribute("listKH", listKH);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
