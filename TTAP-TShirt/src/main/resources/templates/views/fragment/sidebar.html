@@ -1,95 +1,64 @@
-<!--<div class="col-2" th:fragment="sidebar" style="position: fixed;">-->
-<!--    &lt;!&ndash; Nội dung Sidebar &ndash;&gt;-->
-<!--    <div class="" style="border: 1px solid rgb(114,68,68); border-radius: 0.5em; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230); height: 100vh;">-->
-<!--        <img th:src="@{/images/logo2tap.jpg}" class="col-7 auto">-->
-<!--        <br>-->
-<!--        <a href="javascript:void(0)" data-url="/admin/ban-hang" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--            <img th:src="@{/images/giohang.png}" class="col-2">-->
-<!--            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Bán hàng tại quầy</label>-->
-<!--        </a>-->
+<div  th:fragment="sidebar">
+    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white" style="position: fixed; top: 0; left: 0; width: 280px; height: 100vh;">
+        <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none">
+                <span class="fs-4"><img src="/images/logo2tap.jpg" alt="" style="width: 180px; height: 100px;"></span>
+            </a>
+            <hr class="text-light">
 
-<!--        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--            <img th:src="@{/images/thongke.png}" class="col-2">-->
-<!--            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Thống kê</label>-->
-<!--        </a>-->
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a class="nav-link link-light " >
+                        <i class="bi bi-table"></i> Thống kê
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/ban-hang" class="nav-link link-light" >
+                        <i class="bi bi-cart4"></i> Bán Hàng
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a class="nav-link link-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" >
+                        <i class="bi bi-box"></i> Quản Lý Sản Phẩm
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item " href="/admin/san-pham">Sản Phẩm</a></li>
+                        <li><a class="dropdown-item " href="/admin/mau-sac">Màu Sắc</a></li>
+                        <li><a class="dropdown-item " href="/admin/kich-co">Kích Cỡ</a></li>
+                        <li><a class="dropdown-item " href="/admin/nsx/view">Nhà Sản Xuất</a></li>
+                        <li><a class="dropdown-item " href="/admin/thuong-hieu/view">Thương Hiệu</a></li>
+                        <li><a class="dropdown-item " href="/admin/chat-lieu/view">Chất Liệu</a></li>
+                        <li><a class="dropdown-item " href="/admin/kieu-dang/view">Kiểu Dáng</a></li>
+                    </ul>
+                </li>
 
-<<<<<<< HEAD
-<!--        <a href="javascript:void(0)" data-url="#" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--            <img th:src="@{/images/hoadon.png}" class="col-2">-->
-<!--            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Hóa đơn</label>-->
-<!--        </a>-->
-=======
-        <a href="javascript:void(0)" data-url="/admin/hoa-don/hien-thi" class="mt-1 btn col-12 nav-link" style="display: flex;">
-            <img th:src="@{/images/hoadon.png}" class="col-2">
-            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Hóa đơn</label>
-        </a>
->>>>>>> 77c25a81ae2ef33ee1dac21b75644e968b38b1e1
+                <li class="nav-item">
+                    <a href="/admin/ma-giam-gia/hien-thi" class="nav-link link-light" >
+                        <i class="bi bi-percent"></i> Mã Giảm Giá
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/TTAP/KhachHang/home" class="nav-link link-light" >
+                        <i class="bi bi-people-fill"></i> Khách Hàng
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/TTAP/NhanVien/home" class="nav-link link-light" >
+                        <i class="bi bi-person-workspace"></i> Nhân Viên
+                    </a>
+                </li>
+            </ul>
 
-<!--        <a href="javascript:void(0)" data-url="/admin/khuyen-mai/hien-thi" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--            <img th:src="@{/images/khuyenmai.png}" class="col-2">-->
-<!--            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khuyến mãi sản phẩm</label>-->
-<!--        </a>-->
+            <div class="dropdown pb-4">
+                <a href="#" class="d-flex align-items-center text-light text-decoration-none dropdo wn-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
+                    <span class="d-none d-sm-inline mx-1">user name</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
 
-<!--        <a href="javascript:void(0)" data-url="/admin/voucher/hien-thi" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--            <img th:src="@{/images/khuyenmai.png}" class="col-2">-->
-<!--            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khuyến mãi hóa đơn</label>-->
-<!--        </a>-->
-
-<!--&lt;!&ndash; data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne" &ndash;&gt;-->
-<!--        <div class="accordion" id="accordionPanelsStayOpenExample">-->
-<!--            <div class="accordion-item border-0">-->
-<!--                <h2 class="accordion-header">-->
-<!--                    <button id="showPanelsStayOpen" class="accordion-button collapsed bg-white" type="button" >-->
-<!--                        <img th:src="@{/images/sanpham.png}" class="col-2">-->
-<!--                        <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý sản phẩm</span>-->
-<!--                    </button>-->
-<!--                </h2>-->
-<!--                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">-->
-<!--                    <div class="accordion-body">-->
-<!--                        <a href="javascript:void(0)" data-url="/admin/san-pham" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Sản phẩm</label>-->
-<!--                        </a>-->
-<!--                        <a href="javascript:void(0)" data-url="/admin/kich-co" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Kích cỡ</label>-->
-<!--                        </a>-->
-<!--                        <a href="javascript:void(0)" data-url="/admin/chat-lieu/view" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Chất liệu</label>-->
-<!--                        </a>-->
-<!--                        <a href="javascript:void(0)" data-url="/admin/mau-sac" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Màu sắc</label>-->
-<!--                        </a>-->
-<!--                        <a href="javascript:void(0)" data-url="/admin/nsx/view" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Nhà sản xuất</label>-->
-<!--                        </a>-->
-<!--                        <a href="javascript:void(0)" data-url="/admin/thuong-hieu/view" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Thương hiệu</label>-->
-<!--                        </a>-->
-<!--                        <a href="javascript:void(0)" data-url="/admin/kieu-dang/view" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Kiểu dáng</label>-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="accordion-item border-0">-->
-<!--                <h2 class="accordion-header">-->
-<!--                    <button id="showPanelsStayOpen1" class="accordion-button collapsed bg-white" type="button">-->
-<!--                        <img th:src="@{/images/person.jpg}" class="col-2">-->
-<!--                        <span class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Quản lý tài khoản</span>-->
-<!--                    </button>-->
-<!--                </h2>-->
-<!--                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">-->
-<!--                    <div class="accordion-body">-->
-<!--                        <a href="javascript:void(0)" data-url="/user/nhanvien/index" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Nhân viên</label>-->
-<!--                        </a>-->
-<!--                        <a href="javascript:void(0)" data-url="/user/khachhang/index" class="mt-1 btn col-12 nav-link" style="display: flex;">-->
-<!--                            <label class="fs-6 mt-2 fw-bold" style="margin-left: 5%;">Khách hàng</label>-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-
-<!--</div>-->
+                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
