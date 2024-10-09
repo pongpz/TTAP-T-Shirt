@@ -27,7 +27,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 @Builder
-@Table(name = "users")
+@Table(name = "nhan_vien")
 @Entity
 public class User {
 

@@ -41,7 +41,6 @@ public class SanPham extends CreatedUpdatedAt{
     @JoinColumn(name = "id_nha_san_xuat")
     private NSX nsx;
 
-
     @ManyToOne
     @JoinColumn(name = "id_thuong_hieu")
     private ThuongHieu thuongHieu;
