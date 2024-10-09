@@ -38,9 +38,8 @@ public class SanPham extends CreatedUpdatedAt{
     private String moTa;
 
     @ManyToOne
-    @JoinColumn(name = "id_nsx")
+    @JoinColumn(name = "id_nha_san_xuat")
     private NSX nsx;
-
 
     @ManyToOne
     @JoinColumn(name = "id_thuong_hieu")

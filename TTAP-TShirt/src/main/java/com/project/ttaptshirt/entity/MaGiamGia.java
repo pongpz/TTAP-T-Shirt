@@ -75,7 +75,6 @@ public class MaGiamGia {
     @Column(name = "ma")
     private String ma;
 
-
     @NotNull
     @Column(name = "so_luong")
     private Integer soLuong;

@@ -16,17 +16,17 @@ import lombok.ToString;
 @Builder
 @ToString
 @Entity
-@Table(name = "hinh_anh")
+@Table(name = "anh_san_pham")
 public class HinhAnh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ma")
-    private String ma;
-
     @Column(name = "ten")
     private String ten;
+
+    @Column(name = "ten_url")
+    private String tenUrl;
 
     @Transient
         public String getphotoPath(){
