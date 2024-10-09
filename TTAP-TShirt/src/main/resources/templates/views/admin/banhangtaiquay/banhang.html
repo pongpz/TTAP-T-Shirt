@@ -204,9 +204,9 @@
                                                                     <td th:text="${ctsp.id}"></td>
                                                                     <th scope="row" th:text="${ctsp.sanPham.ma}"></th>
                                                                     <td th:text="${ctsp.sanPham.ten}"></td>
-                                                                    <td th:text="${ctsp.thuongH      ieu.ten}"></td>
-                                                                    <td th:text="${ctsp.nsx.ten}"></td>
-                                                                    <td th:text="${ctsp.chatLieu.ten}"></td>
+                                                                    <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>
+                                                                    <td th:text="${ctsp.sanPham.nsx.ten}"></td>
+                                                                    <td th:text="${ctsp.sanPham.chatLieu.ten}"></td>
                                                                     <td th:text="${ctsp.kichCo.ten}"></td>
                                                                     <td th:text="${ctsp.mauSac.ten}"></td>
                                                                     <td>
@@ -381,9 +381,9 @@
                                 <tr th:each="hdct:${listHDCT}">
                                     <td th:text="${hdct.chiTietSanPham.id}"></td>
                                     <td th:text="${hdct.chiTietSanPham.sanPham.ten}"></td>
-                                    <td th:text="${hdct.chiTietSanPham.thuongHieu.ten}"></td>
-                                    <td th:text="${hdct.chiTietSanPham.nsx.ten}"></td>
-                                    <td th:text="${hdct.chiTietSanPham.chatLieu.ten}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.sanPham.thuongHieu.ten}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.sanPham.nsx.ten}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.sanPham.chatLieu.ten}"></td>
                                     <td th:text="${hdct.chiTietSanPham.kichCo.ten}"></td>
                                     <td th:text="${hdct.chiTietSanPham.mauSac.ten}"></td>
                                     <td th:text="${hdct.chiTietSanPham.giaBan}+' vnd'"></td>
