@@ -105,10 +105,10 @@ public class BanHangController {
         double discount = 0.0;
 
         if (voucher != null) {
-            if (voucher.getHinhThuc() == 1) {
+            if (voucher.getHinhThuc().equals("%")) {
                 discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
             }
-            else if (voucher.getHinhThuc() == 0) {
+            else if (voucher.getHinhThuc().equals(("VND"))) {
                 discount = voucher.getGiaTriGiam();
             }
         }
@@ -149,10 +149,10 @@ public class BanHangController {
         double discount = 0.0;
 
         if (voucher!= null){
-            if (voucher.getHinhThuc() == 1) {
+            if (voucher.getHinhThuc().equals("%")) {
                 discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
             }
-            else if (voucher.getHinhThuc() == 0) {
+            else if (voucher.getHinhThuc().equals("VND")) {
                 discount = voucher.getGiaTriGiam();
             }
         }

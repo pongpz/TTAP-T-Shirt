@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class VoucherController {
@@ -25,30 +27,29 @@ public class VoucherController {
 
     @PostMapping("/admin/voucher/add")
     public String add(MaGiamGia voucher){
-        voucher.setNgayTao(Date.valueOf(LocalDate.now()));
-        voucher.setNgaySua(Date.valueOf(LocalDate.now()));
+        voucher.setNgayTao(LocalDateTime.now());
+        voucher.setNgaySua(LocalDateTime.now());
         vr.save(voucher);
         return "redirect:/admin/voucher/hien-thi";
     }
 
     @GetMapping("/admin/voucher/detail/{idVC}")
     public String detaail(@PathVariable("idVC") Long id, Model model){
-        MaGiamGia voucher = vr.getReferenceById(id);
         model.addAttribute("list",vr.findAll());
         model.addAttribute("listDetail",vr.getReferenceById(id));
-        return "admin/voucher/voucher-detail";
+        return "/admin/voucher/voucher-detail";
     }
 
     @GetMapping("/admin/voucher/delete/{idVC}")
     public String delete(@PathVariable("idVC") Long id){
         MaGiamGia voucher = vr.getReferenceById(id);
 
-        if (voucher.getTrangThai().equals("Hoạt động")){
-            voucher.setTrangThai("Ngưng hoạt động");
-            voucher.setNgaySua(Date.valueOf(LocalDate.now()));
+        if (voucher.getTrangThai()){
+            voucher.setTrangThai(false);
+            voucher.setNgaySua(LocalDateTime.now());
         }else {
-            voucher.setTrangThai("Hoạt động");
-            voucher.setNgaySua(Date.valueOf(LocalDate.now()));
+            voucher.setTrangThai(true);
+            voucher.setNgaySua(LocalDateTime.now());
         }
         vr.save(voucher);
         return "redirect:/admin/voucher/hien-thi";
