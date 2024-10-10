@@ -27,14 +27,16 @@ public class VoucherController {
 
     @PostMapping("/admin/voucher/add")
     public String add(MaGiamGia voucher){
-        voucher.setNgayTao(LocalDateTime.now());
-        voucher.setNgaySua(LocalDateTime.now());
+        voucher.setNgayTao(Date.valueOf(LocalDate.now()));
+        voucher.setNgaySua(Date.valueOf(LocalDate.now()));
+
         vr.save(voucher);
         return "redirect:/admin/voucher/hien-thi";
     }
 
     @GetMapping("/admin/voucher/detail/{idVC}")
     public String detaail(@PathVariable("idVC") Long id, Model model){
+        MaGiamGia voucher = vr.getReferenceById(id);
         model.addAttribute("list",vr.findAll());
         model.addAttribute("listDetail",vr.getReferenceById(id));
         return "/admin/voucher/voucher-detail";

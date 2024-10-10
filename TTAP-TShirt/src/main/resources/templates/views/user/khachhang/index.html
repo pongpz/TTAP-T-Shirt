@@ -39,7 +39,7 @@
                         <h3 class="box-title">Quản lý Khách hàng</h3>
                         <div class="box-tools">
                             <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
-                                <form th:action="@{/TTAP/User/customer/find}" method="get" th:border="1">
+                                <form th:action="@{/TTAP/KhanhHang/find}" method="get" th:border="1">
                                     <input type="text" placeholder="tìm kiếm" name="name">
                                     <div class="input-group-btn">
                                         <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary" href="/TTAP/User/newKh">Them</a>
+                    <a class="btn btn-primary" href="/TTAP/KhachHang/new">Them</a>
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
                             <thead>
@@ -58,7 +58,6 @@
                             <th>Giới tính</th>
                             <th>Số điện thoại</th>
                             <th>Email</th>
-                            <th>Chức vụ</th>
                             <th>Trạng thái</th>
                             <th>ngày tạo</th>
                             <th>ngày tạo</th>
@@ -76,15 +75,14 @@
                                 </td>
                                 <td th:text="${user.soDienthoai}"></td>
                                 <td th:text="${user.email}"></td>
-                                <td th:text="${user.cv.ten}"></td>
                                 <td th:text="${user.trangThai}"></td>
                                 <td th:text="${user.ngayTao}"></td>
                                 <td th:text="${user.ngaySua}"></td>
                                 <td>
-                                    <a class="btn btn-danger" th:href="@{/TTAP/User/deletekh/{id}(id = ${user.id})}">
+                                    <a class="btn btn-danger" th:href="@{/TTAP/KhachHang/delete/{id}(id = ${user.id})}">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
-                                    <a class="btn btn-primary" th:href="@{/TTAP/User/detailKh/{id}(id = ${user.id})}">
+                                    <a class="btn btn-primary" th:href="@{/TTAP/KhachHang/detail/{id}(id = ${user.id})}">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
                                 </td>

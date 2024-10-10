@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate; // Sử dụng LocalDate thay cho java.sql.Date
+import java.time.LocalDate; 
 import java.time.LocalDateTime;
 
 @Getter
@@ -25,7 +25,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ma_giam_gia")
 public class MaGiamGia {
-
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column
@@ -78,3 +77,4 @@ public class MaGiamGia {
         private Integer soLuong;
 
 }
+
