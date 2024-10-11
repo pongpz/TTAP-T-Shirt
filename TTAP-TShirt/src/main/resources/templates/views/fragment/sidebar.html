@@ -1,8 +1,8 @@
 <div  th:fragment="sidebar">
     <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0">
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white" style="position: fixed; top: 0; left: 0; width: 280px; height: 100vh;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none">
-                <span class="fs-4"><img src="logo2tap.jpg" alt="" style="width: 180px; height: 100px;"></span>
+        <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none">
+                <span class="fs-4"><img src="/images/logo2tap.jpg" alt="" style="width: 180px; height: 100px;"></span>
             </a>
             <hr class="text-light">
 
@@ -13,7 +13,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link link-light" >
+                    <a href="/admin/ban-hang" class="nav-link link-light" >
                         <i class="bi bi-cart4"></i> Bán Hàng
                     </a>
                 </li>
@@ -22,13 +22,13 @@
                         <i class="bi bi-box"></i> Quản Lý Sản Phẩm
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item " href="#">Sản Phẩm</a></li>
-                        <li><a class="dropdown-item " href="#">Màu Sắc</a></li>
-                        <li><a class="dropdown-item " href="#">Kích Cỡ</a></li>
-                        <li><a class="dropdown-item " href="#">Nhà Sản Xuất</a></li>
-                        <li><a class="dropdown-item " href="#">Thương Hiệu</a></li>
-                        <li><a class="dropdown-item " href="#">Chất Liệu</a></li>
-                        <li><a class="dropdown-item " href="#">Kiểu Dáng</a></li>
+                        <li><a class="dropdown-item " href="/admin/san-pham">Sản Phẩm</a></li>
+                        <li><a class="dropdown-item " href="/admin/mau-sac">Màu Sắc</a></li>
+                        <li><a class="dropdown-item " href="/admin/kich-co">Kích Cỡ</a></li>
+                        <li><a class="dropdown-item " href="/admin/nsx/view">Nhà Sản Xuất</a></li>
+                        <li><a class="dropdown-item " href="/admin/thuong-hieu/view">Thương Hiệu</a></li>
+                        <li><a class="dropdown-item " href="/admin/chat-lieu/view">Chất Liệu</a></li>
+                        <li><a class="dropdown-item " href="/admin/kieu-dang/view">Kiểu Dáng</a></li>
                     </ul>
                 </li>
 
@@ -38,12 +38,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link link-light" >
+                    <a href="/TTAP/KhachHang/home" class="nav-link link-light" >
                         <i class="bi bi-people-fill"></i> Khách Hàng
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link link-light" >
+                    <a href="/TTAP/NhanVien/home" class="nav-link link-light" >
                         <i class="bi bi-person-workspace"></i> Nhân Viên
                     </a>
                 </li>
@@ -52,7 +52,7 @@
             <div class="dropdown pb-4">
                 <a href="#" class="d-flex align-items-center text-light text-decoration-none dropdo wn-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
-                    <span class="d-none d-sm-inline mx-1">loser</span>
+                    <span class="d-none d-sm-inline mx-1">user name</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                     <li><a class="dropdown-item" href="#">New project...</a></li>
