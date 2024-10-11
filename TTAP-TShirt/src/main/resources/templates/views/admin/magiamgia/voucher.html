@@ -131,10 +131,10 @@
 <script>
     let page = document.getElementById('input-page').value
     function changePage(page){
-        if (page < 1){
-            window.location.href = window.location.origin + '/admin/ma-giam-gia/hien-thi?page=0'
-        }else {
+        if (page >= 1){
             window.location.href = window.location.origin + '/admin/ma-giam-gia/hien-thi?page='+(page-1)
+        }else {
+            window.location.href = window.location.origin + '/admin/ma-giam-gia/hien-thi?page=0'
         }
     }
 </script>

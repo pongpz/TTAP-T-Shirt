@@ -84,3 +84,4 @@ public class KhachHang {
     @JoinColumn(name = "id_dia_chi")
     private DiaChi dc;
 }
+

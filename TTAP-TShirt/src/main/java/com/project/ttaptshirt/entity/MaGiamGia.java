@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,8 +25,6 @@ import java.sql.Date;
 @Entity
 @Table(name = "ma_giam_gia")
 public class MaGiamGia {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -37,39 +36,37 @@ public class MaGiamGia {
 
     @NotNull
     @Column(name = "ngay_bat_dau")
-    private Date ngayBatDau;
+    private LocalDateTime ngayBatDau;
 
     @NotNull
     @Column(name = "ngay_ket_thuc")
-    private Date ngayKetThuc;
+    private LocalDateTime ngayKetThuc;
 
-    @NotBlank
+    @NotNull
     @Column(name = "hinh_thuc")
-    private Integer hinhThuc;
+    private Boolean hinhThuc;
 
     @NotNull
     @Column(name = "gia_tri_giam")
-    private Float giaTriGiam;
+    private Long giaTriGiam;
 
     @NotNull
     @Column(name = "gia_tri_toi_thieu")
-    private Float giaTriGiamToiThieu;
+    private Long giaTriToiThieu;
 
     @NotNull
     @Column(name = "gia_tri_toi_da")
-    private Float giaTriToiDa;
+    private Long giaTriToiDa;
 
-    @NotBlank
+    @NotNull
     @Column(name = "trang_thai")
-    private String trangThai;
+    private Boolean trangThai;
 
-    @NotBlank
     @Column(name = "ngay_tao")
-    private Date ngayTao;
+    private LocalDateTime ngayTao;
 
-    @NotBlank
     @Column(name = "ngay_sua")
-    private Date ngaySua;
+    private LocalDateTime ngaySua;
 
     @NotBlank
     @Column(name = "ma")

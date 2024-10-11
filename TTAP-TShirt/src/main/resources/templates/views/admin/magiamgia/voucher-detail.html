@@ -17,7 +17,7 @@
                         <h1 class="text-center">Khuyến mãi</h1>
                         <form th:action="@{/admin/ma-giam-gia/update}" method="post" class="mb-5">
                             <input type="hidden" th:field="*{mgg.id}">
-                        <div class="mb-3">
+                            <div class="mb-3">
                                 <label class="form-label">Tên khuyến mãi</label>
                                 <input type="text" class="form-control" name="ten" id="ten" th:value="${mgg.ten}">
                             </div>
