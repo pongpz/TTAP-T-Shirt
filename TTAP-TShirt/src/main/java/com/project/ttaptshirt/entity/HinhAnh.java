@@ -23,10 +23,13 @@ public class HinhAnh {
     private Long id;
 
     @Column(name = "ten")
-    private String ten;
+    private String ma;
 
     @Column(name = "ten_url")
-    private String tenUrl;
+    private String ten;
+
+    @Column(name = "trang_thai")
+    private String trangThai;
 
     @Transient
         public String getphotoPath(){

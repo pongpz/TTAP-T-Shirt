@@ -40,7 +40,7 @@ public class SanPham extends CreatedUpdatedAt{
     @ManyToOne
     @JoinColumn(name = "id_nha_san_xuat")
     private NSX nsx;
-
+  
     @ManyToOne
     @JoinColumn(name = "id_thuong_hieu")
     private ThuongHieu thuongHieu;

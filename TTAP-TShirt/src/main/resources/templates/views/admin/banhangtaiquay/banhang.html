@@ -253,6 +253,191 @@
                                         </div>
                                     </div>
                                 </div>
+                                            <!-- Modal Sản Phẩm -->
+                                            <div class="modal  " th:id="'modal-sanpham-' + ${hoaDon.id}" tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn mua
+                                                                vào hóa đơn</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div>
+                                                                <form class="row" action="#">
+                                                                    <input class="col-7" type="text" name="tenSpSearch">
+                                                                    <button class="col-1 btn btn-primary" type="submit">Tìm kiếm
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                            <table class="table">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th scope="col">Id</th>
+                                                                    <th scope="col">Ma San Pham</th>
+                                                                    <th scope="col">Ten San Pham</th>
+                                                                    <th scope="col">Thuong Hieu</th>
+                                                                    <th scope="col">NSX</th>
+                                                                    <th scope="col">Chat Lieu</th>
+                                                                    <th scope="col">Kich Co</th>
+                                                                    <th scope="col">Mau Sac</th>
+                                                                    <th scope="col">Anh</th>
+                                                                    <th scope="col">Số Lượng Tồn</th>
+                                                                    <th scope="col">Giá bán</th>
+                                                                    <th scope="col">Số lượng mua</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr th:each="ctsp : ${listCTSP}">
+                                                                    <td th:text="${ctsp.id}"></td>
+                                                                    <th scope="row" th:text="${ctsp.sanPham.ma}"></th>
+                                                                    <td th:text="${ctsp.sanPham.ten}"></td>
+
+                                                                    <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>
+                                                                    <td th:text="${ctsp.sanPham.nsx.ten}"></td>
+                                                                    <td th:text="${ctsp.sanPham.chatLieu.ten}"></td>
+
+                                                                    <td th:text="${ctsp.kichCo.ten}"></td>
+                                                                    <td th:text="${ctsp.mauSac.ten}"></td>
+                                                                    <td>
+                                                                        <img th:src="${ctsp.hinhAnh?.getphotoPath() ?: ''}" alt="Image" style="width: 100px; height: auto;">
+                                                                    </td>
+                                                                    <td th:text="${ctsp.soLuong}"></td>
+                                                                    <td th:text="${ctsp.giaBan} + '$'"></td>
+                                                                    <td>
+                                                                        <form style="width: 240px"
+                                                                              th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
+                                                                              method="post" onsubmit="setQuantity(${ctsp.id})">
+                                                                            <input type="hidden" name="idctsp"
+                                                                                   th:value="${ctsp.id}"/>
+                                                                            <input type="hidden" name="idhd"
+                                                                                   th:value="${hoaDon.id}"/>
+                                                                            <input style="width: 28%" type="number"
+                                                                                   th:id="${'quantity-' + ctsp.id}" name="soLuong"
+                                                                                   value="0" min="1" max="${ctsp.soLuong}"/>
+                                                                            <button style="width: 68%" type="submit"
+                                                                                    class="btn btn-primary">Thêm vào hóa đơn
+                                                                            </button>
+                                                                        </form>
+                                                                        <script th:inline="javascript">
+                                                                            function setQuantity(ctspId) {
+                                                                                var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                            }
+                                                                        </script>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal Khách Hàng -->
+                                            <div class="modal " th:id="'modal-khachhang-' + ${hoaDon.id}" tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-xl modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModqalLabel">Chọn khách hàng vào hóa
+                                                                đơn</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <table class="table">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th scope="col">STT</th>
+                                                                    <th scope="col">Họ và tên</th>
+                                                                    <th scope="col">Số điện thoại</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr th:each="kh, i :${listKH}">
+                                                                    <td th:text="${i.index+1}"></td>
+                                                                    <td th:text="${kh.hoTen}"></td>
+                                                                    <td th:text="${kh.soDienthoai}"></td>
+                                                                    <td>
+                                                                        <form th:action="@{/admin/ban-hang/chon-khach-hang}"
+                                                                              method="post">
+                                                                            <input type="hidden" name="idkh" th:value="${kh.id}"/>
+                                                                            <input type="hidden" name="idhd"
+                                                                                   th:value="${hoaDon.id}"/>
+                                                                            <button type="submit" class="btn btn-primary">Chọn
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal Khuyến Mãi -->
+                                            <div class="modal " th:id="'modal-khuyenmai-' + ${hoaDon.id}" tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-xl modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleMsodalLabel">Chọn khuyến mãi vào hóa
+                                                                đơn</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <table class="table">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th scope="col">STT</th>
+                                                                    <th scope="col">Mã voucher</th>
+                                                                    <th scope="col">Giảm giá</th>
+                                                                    <th scope="col">Hạn sử dụng</th>
+                                                                    <th scope="col">Thao tác</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr th:each="km, i :${listKM}">
+                                                                    <td th:text="${i.index+1}"></td>
+                                                                    <td th:text="${km.ma}"></td>
+                                                                    <td th:text="${km.giaTriGiam}"></td>
+                                                                    <td th:text="${km.ngayKetThuc}"></td>
+                                                                    <td>
+                                                                        <form th:action="@{/admin/ban-hang/chon-khuyen-mai}"
+                                                                              method="post">
+                                                                            <input type="hidden" name="idkm" th:value="${km.id}"/>
+                                                                            <input type="hidden" name="idhd"
+                                                                                   th:value="${hoaDon.id}"/>
+                                                                            <button type="submit" class="btn btn-primary">Chọn
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
                             </td>
@@ -297,6 +482,35 @@
                         <td th:text="${hdct.soLuong}"></td>
                         <td th:text="${hdct.soLuong*hdct.chiTietSanPham.giaBan}+' vnd'"></td>
                         <td>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Ten San Pham</th>
+                                    <th scope="col">Thuong Hieu</th>
+                                    <th scope="col">NSX</th>
+                                    <th scope="col">Chat Lieu</th>
+                                    <th scope="col">Kich Co</th>
+                                    <th scope="col">Mau Sac</th>
+                                    <th scope="col">Giá bán</th>
+                                    <th scope="col">Số lượng mua</th>
+                                    <th scope="col">Thành Tiền</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="thongTinHoaDon">
+                                <tr th:each="hdct:${listHDCT}">
+                                    <td th:text="${hdct.chiTietSanPham.id}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.sanPham.ten}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.sanPham.thuongHieu.ten}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.sanPham.nsx.ten}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.sanPham.chatLieu.ten}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.kichCo.ten}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.mauSac.ten}"></td>
+                                    <td th:text="${hdct.chiTietSanPham.giaBan}+' vnd'"></td>
+                                    <td th:text="${hdct.soLuong}"></td>
+                                    <td th:text="${hdct.soLuong*hdct.chiTietSanPham.giaBan}+' vnd'"></td>
+                                    <td>
 
                             <a class="btn btn-danger deleteSpBtn"
                                th:href="@{/admin/ban-hang/hoa-don/xoa-sp(idHdct = ${hdct.id})}"
@@ -372,7 +586,11 @@
     </div>
 </div>
 </div>
+<!-- ./wrapper -->
 
+<!-- jQuery 3 -->
+
+<div th:replace="~{/fragment/script :: script}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
