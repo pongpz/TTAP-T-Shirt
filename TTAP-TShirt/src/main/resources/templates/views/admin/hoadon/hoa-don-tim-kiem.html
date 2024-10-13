@@ -15,9 +15,8 @@
 
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
     <div class="main-content content flex-grow-1 p-4">
-        <h2 class="text-center">Kuyến mãi</h2>
-        <hr>
         <form th:action="@{/admin/hoa-don/tim-kiem}" method="get" class="d-flex row">
+            <h5 class="text-center">Tìm kiếm/lọc</h5>
             <div class="mb-3 col-4">
                 <label for="ma" class="form-label">Mã hóa đơn</label>
                 <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}">
@@ -46,7 +45,7 @@
                 <label for="ngayThanhToan" class="form-label">Ngày thanh toán</label>
                 <input type="date" class="form-control" id="ngayThanhToan" name="ngayThanhToan" th:value="${ngayThanhToan}">
             </div>
-            <button type="submit" class="btn btn-primary justify-content-center col-3">Search</button>
+            <button type="submit" class="btn btn-primary justify-content-center col-3">Tìm kiếm</button>
         </form>
         <div class="container">
             <h1 class="text-center">Hóa đơn</h1>
