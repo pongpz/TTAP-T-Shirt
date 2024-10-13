@@ -86,12 +86,14 @@
         </table>
     </div>
     <div class="justify-content-center d-flex mb-5">
-        <a th:href="@{/admin/ma-giam-gia/hien-thi?page=${page <= 0 ? 0 : page - 1})}" class="btn btn-outline-primary">Trang trước</a>
+        <a th:href="@{/admin/ma-giam-gia/hien-thi?page=${page <= 0 ? 0 : page - 1}}" class="btn btn-outline-primary">Trang trước</a>
         <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
-        <a th:href="@{/admin/ma-giam-gia/?page=${page + 1})}" class="btn btn-outline-primary">Trang sau</a>
+        <a th:href="@{/admin/ma-giam-gia/hien-thi?page=${page + 1}}" class="btn btn-outline-primary">Trang sau</a>
     </div>
 </div>
 <div th:replace="~{/fragment/footer :: footer}"></div>
+    </div>
+</div>
 </body>
 <!--<script>-->
 <!--    function submit(){-->
