@@ -77,7 +77,10 @@ public class HoaDon {
     private float soTienGiamGia;
 
     @Column(name = "trang_thai")
-    private Integer trangThai;
+    private Boolean trangThai;
+
+    @Column(name = "ten_nguoi_nhan")
+    private String tenNguoiNhan;
 
     @PreUpdate
     protected  void onUpdate(){

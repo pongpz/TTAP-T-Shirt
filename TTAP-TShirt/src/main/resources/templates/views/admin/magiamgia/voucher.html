@@ -81,9 +81,9 @@
                     <a th:href="@{/admin/ma-giam-gia/detail/{id}(id=${vc.id})}" class="btn btn-primary mb-3">Xem chi tiết</a>
                 </td>
             </tr>
-            <h5 class="text-center">[[${nullmgg}]]</h5>
             </tbody>
         </table>
+        <h5 class="text-center">[[${nullmgg}]]</h5>
     </div>
     <div class="justify-content-center d-flex mb-5">
         <a th:href="@{/admin/ma-giam-gia/hien-thi?(page=${page <= 0 ? 0 : page - 1})}" class="btn btn-outline-primary">Trang trước</a>

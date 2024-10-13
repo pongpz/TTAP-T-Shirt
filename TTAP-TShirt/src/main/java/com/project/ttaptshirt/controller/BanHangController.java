@@ -164,7 +164,7 @@ public class BanHangController {
 
 
         hoaDon.setTongTien((float) totalMoneyAfter);
-        hoaDon.setTrangThai(1);
+        hoaDon.setTrangThai(true);
         hoaDonService.save(hoaDon);
         return "redirect:/admin/ban-hang";
     }
@@ -194,7 +194,7 @@ public class BanHangController {
     public String newHoaDon() {
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
-        hoaDon.setTrangThai(0);
+        hoaDon.setTrangThai(false);
         hoaDonService.save(hoaDon);
         return "redirect:/admin/ban-hang";
     }
