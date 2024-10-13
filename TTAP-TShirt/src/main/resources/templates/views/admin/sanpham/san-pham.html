@@ -46,6 +46,10 @@
                                     <th>STT</th>
                                     <th>Mã sản phẩm</th>
                                     <th>Tên sản phẩm</th>
+                                    <th>Nhà sản xuất</th>
+                                    <th>Chất liệu</th>
+                                    <th>Thương hiệu</th>
+                                    <th>Kiểu dáng</th>
                                     <th>Ngày tạo</th>
                                     <th>Trạng thái</th>
                                     <th>Hành động</th>
@@ -55,9 +59,11 @@
                                 <tr th:each="sanPham, iterStat : ${listSP}">
                                     <td th:text="${iterStat.index + 1}"></td>
                                     <td th:text="${sanPham.ma}"></td>
-
                                     <td th:text="${sanPham.ten}"></td>
-
+                                    <td th:text="${sanPham.nsx.ten}"></td>
+                                    <td th:text="${sanPham.chatLieu.ten}"></td>
+                                    <td th:text="${sanPham.thuongHieu.ten}"></td>
+                                    <td th:text="${sanPham.kieuDang.ten}"></td>
                                     <td th:text="${sanPham.ngayTao}"></td>
                                     <td>
                                 <span th:class="'badge ' + (${sanPham.trangThai} == 1 ? 'bg-info text-dark' : 'bg-secondary text-light')"
@@ -113,7 +119,28 @@
                             <div class="mb-3">
                                 <label class="form-label">Nhà Sản Xuất</label>
                                 <select class="form-select" name="idNSX">
-                                    <option th:each="nsx : ${listNSX}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
+                                    <option th:each="nsx : ${listNsx}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Chất Liệu</label>
+                                <select class="form-select" name="idNSX">
+                                    <option th:each="nsx : ${listChatLieu}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Thương Hiệu</label>
+                                <select class="form-select" name="idNSX">
+                                    <option th:each="nsx : ${listThuongHieu}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Kểu Dáng</label>
+                                <select class="form-select" name="idNSX">
+                                    <option th:each="nsx : ${listKieuDang}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
                                 </select>
                             </div>
                             <div class="mb-3">
