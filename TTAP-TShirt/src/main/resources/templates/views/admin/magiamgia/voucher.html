@@ -16,120 +16,108 @@
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
 
     <div class="main-content content flex-grow-1 p-4">
-        <h2 class="text-center">Khuyến Mãi</h2>
-        <hr>
 <div class="container">
-    <form th:action="@{/admin/ma-giam-gia/add}" method="post">
-        <div class="mb-3">
-            <label class="form-label">Tên khuyến mãi</label>
-            <input type="text" class="form-control" name="ten" id="ten" th:value="${mgg.ten}">
+    <h1 class="text-center mt-5">Khuyến mãi</h1>
+    <form th:action="@{/admin/ma-giam-gia/tim-kiem}" method="get" style="border: brown solid 1px; border-radius: 1ch" class="row justify-content-center d-flex">
+        <h6>Tìm kiếm/Lọc</h6>
+        <div class="col-4">
+            <div class="mb-3">
+                <label for="tenSearch" class="form-label">Tên giảm giá</label>
+                <input type="text" class="form-control" id="tenSearch" th:value="${tenSearch}" name="tenSearch">
+            </div>
+            <div class="mb-3">
+                <label for="maSearch" class="form-label">Mã giảm giá</label>
+                <input type="text" class="form-control" id="maSearch" th:value="${maSearch}" name="maSearch">
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label class="form-label">Mã khuyến mãi</label>
-            <input type="text" class="form-control" name="ma" id="ma" th:value="${mgg.ma}">
+        <div class="mb-3 col-4">
+            <label class="form-label">Hình thức giảm giá</label>
+            <select class="form-select mb-3" aria-label="Default select example" name="hinhThucSearch">
+                <option th:value="tat-ca" th:selected="${hinhThucSearch =='tat-ca'}">Tất cả</option>
+                <option th:value="VND" th:selected="${hinhThucSearch =='VND'}">VND</option>
+                <option th:value="phan-tram" th:selected="${hinhThucSearch =='phan-tram'}">%</option>
+            </select>
+            <label class="form-label">Thời hạn</label>
+            <select class="form-select mb-3" aria-label="Default select example" name="thoiHanSearch">
+                <option th:value="tat-ca" th:selected="${thoiHanSearch=='tat-ca'}">Tất cả</option>
+                <option th:value="con-han" th:selected="${thoiHanSearch == 'con-han'}">Còn hạn</option>
+                <option th:value="het-han" th:selected="${thoiHanSearch == 'het-han'}">Hết hạn</option>
+            </select>
         </div>
-
-        <div class="mb-3">
+        <div class="mb-3 col-4">
             <label class="form-label">Số lượng</label>
-            <input type="number" class="form-control" name="soLuong" id="soLuong" th:value="${mgg.soLuong}">
+            <select class="form-select mb-3" aria-label="Default select example" name="soLuongSearch">
+                <option th:value="tat-ca" th:selected="${soLuongSearch == 'tat-ca'}">Tất cả</option>
+                <option th:value="con-hang" th:selected="${soLuongSearch == 'con-hang'}">Còn hàng</option>
+                <option th:value="het-hang" th:selected="${soLuongSearch == 'het-hang'}">Hết hàng</option>
+            </select>
         </div>
-
-        <div class="mb-3">
-            <label class="form-label">Ngày bắt đầu</label>
-            <input type="datetime-local" class="form-control" name="ngayBatDau" id="ngayBatDau" th:value="${mgg.ngayBatDau}">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Ngày kết thúc</label>
-            <input type="datetime-local" class="form-control" name="ngayKetThuc" id="ngayKetThuc" th:value="${mgg.ngayKetThuc}">
-        </div>
-
-        <div class=" d-flex">
-
-            <div class="mb-3 col-8">
-                <label class="form-label">Giá trị giảm</label>
-                <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam" th:value="${mgg.giaTriGiam}">
-            </div>
-            <div class="col-1">
-
-            </div>
-
-            <div class="mb-3 col-3">
-                <label class="form-label">Hình thức</label>
-                <select class="form-select" name="hinhThuc" th:field="*{mgg.hinhThuc}">
-                    <option value="true">VND</option>
-                    <option value="false">%</option>
-                </select>
-            </div>
-
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Giá trị đơn hàng tối thiểu</label>
-            <div class="input-group mb-3">
-                <input type="number" class="form-control" name="giaTriToiThieu" id="giaTriToiThieu" th:value="${mgg.giaTriToiThieu}">
-                <span class="input-group-text" id="basic-addon2">đ</span>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Giá trị giảm tối đa</label>
-            <div class="input-group mb-3">
-                <input type="number" class="form-control" name="giaTriToiDa" id="giaTriToiDa" th:value="${mgg.giaTriToiDa}">
-                <span class="input-group-text" id="basic-addon">đ</span>
-            </div>
-        </div>
-
-        <label class="form-label">Trạng thái</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" id="flexRadioDefault1" value="true" th:field="*{mgg.trangThai}" >
-            <label class="form-check-label" for="flexRadioDefault1">
-                Hoạt động
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" id="flexRadioDefault2"  th:field="*{mgg.trangThai}" value="false">
-            <label class="form-check-label" for="flexRadioDefault2">
-                Ngưng hoạt động
-            </label>
-        </div>
-
-<!--        <a href="/admin/ttap-tshirt" class="btn btn-primary">Quay lại</a>-->
-        <button class="btn btn-primary">Thêm</button>
-        <h4 class="text-danger mt-3">[[${errors}]]</h4>
+        <button type="submit" class="mb-3 btn btn-primary col-2">Tìm kiếm</button>
+        <a th:href="@{/admin/ma-giam-gia/form-add}" class="btn btn-success">Tạo khuyến mãi mới</a>
     </form>
-    <hr>
-    <br>
     <h1 class="text-center">Danh sách mã khuyến mãi</h1>
     <div class="row d-flex justify-content-center">
-        <h5 class="text-center">[[${nullmgg}]]</h5>
-        <div th:each="vc : ${ListMGG}" class="col-3 mb-3" style="border:1px solid black; border-radius: 1ch; margin: 1ch;">
-            <img src="https://png.pngtree.com/png-vector/20220803/ourmid/pngtree-gift-voucher-coupon-design-png-image_6097745.png" alt="" class="col-12">
-            <h4 class="text-center">Tên khuyến mãi: <h4 class="text-center text-danger" th:text="${vc.ten}"></h4></h4>
-            <h4 class="text-center">Giá trị giảm: <h4 class="text-center text-danger" th:text="${vc.giaTriGiam ?: 0}+' '+${vc.hinhThuc?'VND':'%'}"></h4></h4>
-            <a th:href="@{/admin/ma-giam-gia/detail/{id}(id=${vc.id})}" class="btn col-12 btn-primary mb-3">Xem chi tiết</a>
-        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Mã khuyến mãi</th>
+                <th scope="col">Tên khuyến mãi</th>
+                <th scope="col">Giá trị giảm</th>
+                <th scope="col">Hình thức giảm</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="vc, stat : ${ListMGG}">
+                <td>[[${stat.index+1}]]</td>
+                <td>[[${vc.ma}]]</td>
+                <td>[[${vc.ten}]]</td>
+                <td>[[${vc.giaTriGiam}]]</td>
+                <td>[[${vc.hinhThuc?'VND':'%'}]]</td>
+                <td>[[${vc.soLuong}]]</td>
+                <td>
+                    <a th:href="@{/admin/ma-giam-gia/detail/{id}(id=${vc.id})}" class="btn btn-primary mb-3">Xem chi tiết</a>
+                </td>
+            </tr>
+            <h5 class="text-center">[[${nullmgg}]]</h5>
+            </tbody>
+        </table>
     </div>
     <div class="justify-content-center d-flex mb-5">
-        <a th:href="@{/admin/ma-giam-gia/hien-thi?page={p}(p=${page<=0?0:page-1})}" class="btn btn-outline-primary">Trang trước</a>
+        <a th:href="@{/admin/ma-giam-gia/hien-thi?page=${page <= 0 ? 0 : page - 1}}" class="btn btn-outline-primary">Trang trước</a>
         <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
-        <a th:href="@{/admin/ma-giam-gia/hien-thi?page={p}(p=${page+1})}" class="btn btn-outline-primary">Trang sau</a>
+        <a th:href="@{/admin/ma-giam-gia/hien-thi?page=${page + 1}}" class="btn btn-outline-primary">Trang sau</a>
     </div>
 </div>
+<div th:replace="~{/fragment/footer :: footer}"></div>
     </div>
 </div>
+</body>
+<!--<script>-->
+<!--    function submit(){-->
+<!--        let ten = document.getElementById("ten").value()-->
+<!--        let ngayBatDau = document.getElementById("ngayBatDau").value()-->
+<!--        let ngayKetThuc = document.getElementById("ngayKetThuc").value()-->
+<!--        let giaTriGiam = document.getElementById("giaTriGiam").value()-->
 
 </body>
 
 <script>
-    let page = document.getElementById('input-page').value
+    let pageInput = document.getElementById('input-page').value;
+    let linkSearch = new URLSearchParams(window.location.search);
+    let page = parseInt(pageInput)
+
     function changePage(page){
-        if (page < 1){
-            window.location.href = window.location.origin + '/admin/ma-giam-gia/hien-thi?page=0'
-        }else {
-            window.location.href = window.location.origin + '/admin/ma-giam-gia/hien-thi?page='+(page-1)
+        if (page >= 1) {
+            window.location.href = window.location.origin + '/admin/ma-giam-gia/hien-thi?page='+(page-1);
+
+        } else {
+            window.location.href = window.location.origin + '/admin/ma-giam-gia/hien-thi?page=0';
         }
+
     }
+
 </script>
 </html>
