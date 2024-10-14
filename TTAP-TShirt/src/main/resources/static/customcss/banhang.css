@@ -63,3 +63,22 @@
     margin-left: 280px; /* Khoảng cách bằng với chiều rộng sidebar */
     padding: 20px; /* Tùy chỉnh khoảng cách bên trong nội dung */
 }
+
+
+.info-label {
+    font-weight: bold;
+    width: 150px; /* Đặt độ rộng cố định cho các nhãn */
+}
+.info-value {
+    flex: 1;
+    text-align: right; /* Căn chỉnh giá trị sang bên phải */
+    font-weight: bold;        }
+.info-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.main-content {
+    margin-left: 280px; /* Khoảng cách bằng với chiều rộng sidebar */
+    padding: 20px; /* Tùy chỉnh khoảng cách bên trong nội dung */
+}
