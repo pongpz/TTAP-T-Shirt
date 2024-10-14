@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Controller
@@ -57,18 +58,17 @@ public class ChiTietSanPhamController {
         SanPham sp = sanPhamService.findById(id);
         List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findBySanPhamId(id);
         model.addAttribute("listSP",sp);
-//        model.addAttribute("listSP", sanPhamService.findAll());
-        model.addAttribute("listChatLieu", chatLieuRepository.findAll());
-        model.addAttribute("listKieuDang", kieuDangRepository.findAll());
-        model.addAttribute("listNSX", nsxRepository.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuRepository.findAll());
-        model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listHinhAnh", hinhAnhService.findAll());
-        model.addAttribute("listKichCo", kichCoService.findAll());
         model.addAttribute("listCTSP", listCTSP);
         return "admin/sanpham/chi-tiet-san-pham";
     }
 
+    public String formatCurrency(Double amount) {
+        if (amount == null) {
+            return "0"; // Giá trị mặc định nếu amount là null
+        }
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount);
+    }
 
     @GetMapping("/delete/{idCTSP}")
     public String delete(@PathVariable("idCTSP") Long idCTSP) {
@@ -92,16 +92,23 @@ public class ChiTietSanPhamController {
         return "admin/sanpham/ctsp-view-update";
     }
 
+    @GetMapping("/add/{id}")
+    public String addCTSP(Model model, @PathVariable("id") Long id) {
+        SanPham sp = sanPhamService.findById(id);
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findBySanPhamId(id);
+        model.addAttribute("listSP",sp);
+        model.addAttribute("listMauSac", mauSacService.findAll());
+        model.addAttribute("listHinhAnh", hinhAnhService.findAll());
+        model.addAttribute("listKichCo", kichCoService.findAll());
+        return "admin/sanpham/them-chi-tiet-san-pham";
+    }
+
     @PostMapping("/add")
     public String createNewCTSP(
             @RequestParam("idSanPham") Long idSanPham,
             @RequestParam("idMauSac") Long idMauSac,
             @RequestParam("idKichCo") Long idKichCo,
             @RequestParam("idHinhAnh") Long idHinhAnh,
-            @RequestParam("idChatLieu") Long idChatLieu,
-            @RequestParam("idKieuDang") Long idKieuDang,
-            @RequestParam("idNSX") Long idNSX,
-            @RequestParam("idThuongHieu") Long idThuongHieu,
             @RequestParam(required = false, value = "idKhuyenMai") Long idKhuyenMai,
             ChiTietSanPham chiTietSanPham,
             RedirectAttributes redirectAttributes) {
