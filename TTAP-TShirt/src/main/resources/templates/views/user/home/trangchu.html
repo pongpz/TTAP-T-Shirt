@@ -56,15 +56,12 @@
         <div class="row featured__filter">
             <div class="col-md-4" th:each="sp : ${lsSPCT}">
                 <div class="card mb-3 d-flex align-items-center">
-                    <img th:src="${sp.hinhAnh?.getphotoPath() ?: ''}" class="card-img-top" alt="...">
+                    <img th:src="${sp.hinhAnh?.getphotoPath() ?: 'https://png.pngtree.com/png-vector/20190929/ourlarge/pngtree-t-shirt-line-icon-vector-png-image_1770961.jpg'}" class="card-img-top" alt="...">
                     <div class="card-body d-flex flex-column justify-content-between text-center">
-                        <p class="card-text">[[${sp.sanPham.ten}]]</p>
+                        <h4 class="card-text">[[${sp.sanPham.ten}]]</h4>
                         <div class="text-center">
                             <h5>
                                 <span style="color: red;">[[${sp.giaBan}]]</span>đ
-                                <strike>
-                                    <span>0</span>đ
-                                </strike>
                             </h5>
                             <a class="abc mt-3" th:href="@{/TTAP/san-pham/{idSP}(idSP=${sp.id})}">
                                 <span>Xem sản phẩm</span>
@@ -87,15 +84,12 @@
     <div class="row featured__filter">
         <div class="col-md-4" th:each="sp : ${lsSPMoi}">
             <div class="card mb-3 d-flex align-items-center">
-                <img src="/assets/ảnh giày/image.jpg" class="card-img-top" alt="...">
+                <img th:src="${sp.hinhAnh?.getphotoPath() ?: 'https://png.pngtree.com/png-vector/20190929/ourlarge/pngtree-t-shirt-line-icon-vector-png-image_1770961.jpg'}" class="card-img-top" alt="...">
                 <div class="card-body d-flex flex-column justify-content-between text-center">
-                    <p class="card-text">[[${sp.sanPham.ten}]]</p>
+                    <h4 class="card-text">[[${sp.sanPham.ten}]]</h4>
                     <div class="text-center">
                         <h5>
                             <span style="color: red;">[[${sp.giaBan}]]</span>đ
-                            <strike>
-                                <span>0</span>đ
-                            </strike>
                         </h5>
                         <a class="abc mt-3" th:href="@{/TTAP/san-pham/{id}(id=${sp.sanPham.id})}">
                             <span>Xem sản phẩm</span>

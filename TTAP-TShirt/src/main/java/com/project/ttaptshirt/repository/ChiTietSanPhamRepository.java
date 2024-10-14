@@ -40,6 +40,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
             @Param("kichCo") Integer kichCo,
             Pageable pageable);
 
-
+    @Query("select spct from ChiTietSanPham  spct order by spct.ngayTao desc")
+    List<ChiTietSanPham> getListNewCTSP();
 
 }
