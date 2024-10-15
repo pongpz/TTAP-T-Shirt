@@ -132,24 +132,24 @@ public class MaGiamGiaController {
             model.addAttribute("errors","Giá trị giảm không được vượt quá 100%!");
             model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
-        }else if(!mgg.getSoLuong().toString().trim().matches("\\d+")){
-            model.addAttribute("errors","Số lượng phải là số!");
+        }else if(!mgg.getSoLuong().toString().trim().matches("\\d+") || mgg.getSoLuong() <= 0){
+            model.addAttribute("errors","Số lượng phải là số và lớn hơn 0!");
             model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
-        }else if(!mgg.getGiaTriGiam().toString().trim().matches("\\d+")){
-            model.addAttribute("errors","Giá trị giảm phải là số!");
+        }else if(!mgg.getGiaTriGiam().toString().trim().matches("\\d+") || mgg.getGiaTriGiam() <= 0){
+            model.addAttribute("errors","Giá trị giảm phải là số và lớn hơn 0!");
             model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
-        }else if(!mgg.getGiaTriToiDa().toString().trim().matches("\\d+")){
-            model.addAttribute("errors","Giá trị tối đa phải là số!");
+        }else if(!mgg.getGiaTriToiDa().toString().trim().matches("\\d+") || mgg.getGiaTriToiDa() <= 0){
+            model.addAttribute("errors","Giá trị tối đa phải là số và lớn hơn 0!");
             model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
-        }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("\\d+")){
-            model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số!");
+        }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("\\d+") || mgg.getGiaTriToiThieu() <= 0){
+            model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số và lớn hơn 0!");
             model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else if (mgg.getNgayKetThuc().isBefore(LocalDateTime.now())){
-            model.addAttribute("errors","Ngày kết thúc phải sau ngày hôm nay!");
+            model.addAttribute("errors","Ngày kết thúc phải sau thời điểm hiện tại!");
             model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else if (check_ma){
@@ -167,41 +167,33 @@ public class MaGiamGiaController {
     }
 
     @PostMapping("/add")
-    public String update(@Valid MaGiamGia mgg , Errors errors, Model model, @RequestParam(value = "page",defaultValue = "0") Integer page){
+    public String add(@Valid MaGiamGia mgg , Errors errors, Model model){
         if (errors.hasFieldErrors()){
             model.addAttribute("errors","Vui lòng điền đủ trường!");
             model.addAttribute("mgg",mgg);
-            Pageable pageab = PageRequest.of(page, 9);
-            Page<MaGiamGia> p = mggr.findAll(pageab);
-            model.addAttribute("ListMGG",p);
-            model.addAttribute("page",page);
             return "admin/magiamgia/form-add-voucher";
         }
-        Pageable pageab = PageRequest.of(page, 9);
-        Page<MaGiamGia> p = mggr.findAll(pageab);
         model.addAttribute("mgg",mgg);
-        model.addAttribute("ListMGG",p);
-        model.addAttribute("page",page);
         if (mgg.getNgayBatDau().isAfter(mgg.getNgayKetThuc())){
             model.addAttribute("errors","Ngày bắt đầu phải sớm hơn ngày kết thúc!");
             return "admin/magiamgia/form-add-voucher";
         }else if (!mgg.getHinhThuc() && mgg.getGiaTriGiam()>100){
             model.addAttribute("errors","Giá trị giảm không được vượt quá 100%!");
             return "admin/magiamgia/form-add-voucher";
-        }else if(!mgg.getSoLuong().toString().trim().matches("\\d+")){
-            model.addAttribute("errors","Số lượng phải là số!");
+        }else if(!mgg.getSoLuong().toString().trim().matches("\\d+") || mgg.getSoLuong() <= 0){
+            model.addAttribute("errors","Số lượng phải là số và lớn hơn 0!");
             return "admin/magiamgia/form-add-voucher";
-        }else if(!mgg.getGiaTriGiam().toString().trim().matches("\\d+")){
-            model.addAttribute("errors","Giá trị giảm phải là số!");
+        }else if(!mgg.getGiaTriGiam().toString().trim().matches("\\d+") || mgg.getGiaTriGiam() <= 0){
+            model.addAttribute("errors","Giá trị giảm phải là số và lớn hơn 0!");
             return "admin/magiamgia/form-add-voucher";
-        }else if(!mgg.getGiaTriToiDa().toString().trim().matches("\\d+")){
-            model.addAttribute("errors","Giá trị tối đa phải là số!");
+        }else if(!mgg.getGiaTriToiDa().toString().trim().matches("\\d+") || mgg.getGiaTriToiDa() <= 0){
+            model.addAttribute("errors","Giá trị tối đa phải là số và lớn hơn 0!");
             return "admin/magiamgia/form-add-voucher";
-        }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("\\d+")){
-            model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số!");
+        }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("\\d+") || mgg.getGiaTriToiThieu() <= 0){
+            model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số và lớn hơn 0!");
             return "admin/magiamgia/form-add-voucher";
         }else if (mgg.getNgayKetThuc().isBefore(LocalDateTime.now())){
-            model.addAttribute("errors","Ngày kết thúc phải sau ngày hôm nay!");
+            model.addAttribute("errors","Ngày kết thúc phải sau thời điểm hiện tại!");
             return "admin/magiamgia/form-add-voucher";
         }else if (!mggr.findbyMa(mgg.getMa()).isEmpty()){
             model.addAttribute("errors","Mã giảm giá đã tồn tại, vui lòng nhập mã khác!");
@@ -221,7 +213,7 @@ public class MaGiamGiaController {
         return "admin/magiamgia/form-add-voucher";
     }
 
-    @Scheduled(fixedRate = 6000)
+    @Scheduled(fixedRate = 5000)
     public void ChangeStatus(){
         List<MaGiamGia> ls = mggr.getMGGHetHan(LocalDateTime.now());
         for (int i = 0 ; i < ls.size() ; i ++){
