@@ -171,7 +171,7 @@
                 <div class="text-center">
                   <b th:text="${@sanPhamCustomerController.formatCurrency(sp.giaBan)+' vnđ'}"></b>
                   <div class="d-flex flex-column justify-content-center align-items-center mt-2">
-                    <a class="abc " th:href="@{/TTAP/san-pham/{id}(id=${sp.sanPham.id})}">
+                    <a class="abc " th:href="@{/TTAP/san-pham-detail/{id}(id=${sp.sanPham.id})}">
                       <span>Xem sản phẩm</span>
                     </a>
                     <a class="abc my-2">

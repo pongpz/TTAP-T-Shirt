@@ -3,6 +3,8 @@ package com.project.ttaptshirt.controller;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.KichCo;
 import com.project.ttaptshirt.entity.KieuDang;
+import com.project.ttaptshirt.entity.MauSac;
+import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -15,12 +17,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/TTAP")
@@ -104,6 +109,22 @@ public class SanPhamCustomerController {
         return "user/home/sanpham";
     }
 
+
+    @GetMapping("/san-pham-detail/{idSP}")
+    public String sanPhamDetail(@PathVariable Long idSP, Model model,@RequestParam(required = false, value = "mauSac") String mauSac,@RequestParam(required = false, value = "kichCo") String kichCo){
+        List<ChiTietSanPham> ls = chiTietSanPhamRepository.findByIDSanPham(idSP,kichCo,mauSac);
+        model.addAttribute("SPCTFist", ls.stream().findFirst().orElse(null));
+        List<MauSac> lsms = new ArrayList<>();
+        List<KichCo> lskk = new ArrayList<>();
+        List<ChiTietSanPham> lsctsp = chiTietSanPhamRepository.getThuocTinhSPCT(idSP);
+        for (int i = 0 ; i < lsctsp.size() ; i++){
+            lsms.add(lsctsp.get(i).getMauSac());
+            lskk.add(lsctsp.get(i).getKichCo());
+        }
+        model.addAttribute("lsms",lsms);
+        model.addAttribute("lskk",lskk);
+        return "user/home/sanphamdetail";
+    }
 
     public String formatCurrency(double amount) {
         DecimalFormat formatter = new DecimalFormat("#,###");

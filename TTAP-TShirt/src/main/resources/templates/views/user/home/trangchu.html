@@ -58,15 +58,12 @@
                 <div class="card mb-3 d-flex align-items-center">
                     <img th:src="${sp.hinhAnh?.getphotoPath() ?: ''}" class="card-img-top" alt="...">
                     <div class="card-body d-flex flex-column justify-content-between text-center">
-                        <p class="card-text">[[${sp.sanPham.ten}]]</p>
+                        <h4 class="card-text">[[${sp.sanPham.ten}]]</h4>
                         <div class="text-center">
                             <h5>
                                 <span style="color: red;">[[${sp.giaBan}]]</span>đ
-                                <strike>
-                                    <span>0</span>đ
-                                </strike>
                             </h5>
-                            <a class="abc mt-3" th:href="@{/TTAP/san-pham/{idSP}(idSP=${sp.id})}">
+                            <a class="abc mt-3" th:href="@{/TTAP/san-pham-detail/{idSP}(idSP=${sp.id})}">
                                 <span>Xem sản phẩm</span>
                             </a>
 <!--                            <a class="abc mt-3" onclick="addToCart(1)">-->
@@ -89,15 +86,12 @@
             <div class="card mb-3 d-flex align-items-center">
                 <img src="/assets/ảnh giày/image.jpg" class="card-img-top" alt="...">
                 <div class="card-body d-flex flex-column justify-content-between text-center">
-                    <p class="card-text">[[${sp.sanPham.ten}]]</p>
+                    <h4 class="card-text">[[${sp.sanPham.ten}]]</h4>
                     <div class="text-center">
                         <h5>
                             <span style="color: red;">[[${sp.giaBan}]]</span>đ
-                            <strike>
-                                <span>0</span>đ
-                            </strike>
                         </h5>
-                        <a class="abc mt-3" th:href="@{/TTAP/san-pham/{id}(id=${sp.sanPham.id})}">
+                        <a class="abc mt-3" th:href="@{/TTAP/san-pham-detail/{id}(id=${sp.sanPham.id})}">
                             <span>Xem sản phẩm</span>
                         </a>
                         <a class="abc mt-3" onclick="addToCart(1)">

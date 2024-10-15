@@ -68,19 +68,27 @@ public class HomeCustomerController {
             System.out.println("ID Chi Tiet SP: " + map.get("id_chi_tiet_sp") + ", So Luong: " + map.get("so_luong"));
         });
         List<ChiTietSanPham> lsCTSP = new ArrayList<>();
+        if (ctspr.getListNewCTSP().size() < 6){
+            for (int i = 0 ; i < ctspr.getListNewCTSP().size() ; i ++){
+                model.addAttribute("lsSPMoi",ctspr.getListNewCTSP());
+            }
+        }else {
+            for (int i = 0 ; i < 6 ; i ++){
+                model.addAttribute("lsSPMoi",ctspr.getListNewCTSP());
+            }
+        }
         if (newList.size() < 6){
             for (int i = 0 ; i < newList.size() ; i++){
                 lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
             }
             model.addAttribute("lsSPCT",lsCTSP);
-            return "user/home/trangchu";
         }else {
             for (int i = 0 ; i < 6 ; i++){
                 lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
             }
             model.addAttribute("lsSPCT",lsCTSP);
-            return "user/home/trangchu";
         }
+        return "user/home/trangchu";
     }
     @GetMapping("/san-pham/{id}")
     public String detailSP(Model model, @PathVariable Long id){
