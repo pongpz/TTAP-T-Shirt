@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -174,7 +175,7 @@ public class MaGiamGiaController {
             Page<MaGiamGia> p = mggr.findAll(pageab);
             model.addAttribute("ListMGG",p);
             model.addAttribute("page",page);
-            return "admin/magiamgia/voucher";
+            return "admin/magiamgia/form-add-voucher";
         }
         Pageable pageab = PageRequest.of(page, 9);
         Page<MaGiamGia> p = mggr.findAll(pageab);
@@ -183,28 +184,28 @@ public class MaGiamGiaController {
         model.addAttribute("page",page);
         if (mgg.getNgayBatDau().isAfter(mgg.getNgayKetThuc())){
             model.addAttribute("errors","Ngày bắt đầu phải sớm hơn ngày kết thúc!");
-            return "admin/magiamgia/voucher";
+            return "admin/magiamgia/form-add-voucher";
         }else if (!mgg.getHinhThuc() && mgg.getGiaTriGiam()>100){
             model.addAttribute("errors","Giá trị giảm không được vượt quá 100%!");
-            return "admin/magiamgia/voucher";
+            return "admin/magiamgia/form-add-voucher";
         }else if(!mgg.getSoLuong().toString().trim().matches("\\d+")){
             model.addAttribute("errors","Số lượng phải là số!");
-            return "admin/magiamgia/voucher";
+            return "admin/magiamgia/form-add-voucher";
         }else if(!mgg.getGiaTriGiam().toString().trim().matches("\\d+")){
             model.addAttribute("errors","Giá trị giảm phải là số!");
-            return "admin/magiamgia/voucher";
+            return "admin/magiamgia/form-add-voucher";
         }else if(!mgg.getGiaTriToiDa().toString().trim().matches("\\d+")){
             model.addAttribute("errors","Giá trị tối đa phải là số!");
-            return "admin/magiamgia/voucher";
+            return "admin/magiamgia/form-add-voucher";
         }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("\\d+")){
             model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số!");
-            return "admin/magiamgia/voucher";
+            return "admin/magiamgia/form-add-voucher";
         }else if (mgg.getNgayKetThuc().isBefore(LocalDateTime.now())){
             model.addAttribute("errors","Ngày kết thúc phải sau ngày hôm nay!");
-            return "admin/magiamgia/voucher";
+            return "admin/magiamgia/form-add-voucher";
         }else if (!mggr.findbyMa(mgg.getMa()).isEmpty()){
             model.addAttribute("errors","Mã giảm giá đã tồn tại, vui lòng nhập mã khác!");
-            return "admin/magiamgia/voucher";
+            return "admin/magiamgia/form-add-voucher";
         }
         else {
             mgg.setNgayTao(LocalDateTime.now());
@@ -218,5 +219,17 @@ public class MaGiamGiaController {
     public String formAdd(MaGiamGia mgg, Model model){
         model.addAttribute("mgg",mgg);
         return "admin/magiamgia/form-add-voucher";
+    }
+
+    @Scheduled(fixedRate = 6000)
+    public void ChangeStatus(){
+        List<MaGiamGia> ls = mggr.getMGGHetHan(LocalDateTime.now());
+        for (int i = 0 ; i < ls.size() ; i ++){
+            MaGiamGia mgg = new MaGiamGia();
+            mgg = ls.get(i);
+            mgg.setTrangThai(false);
+            mgg.setId(ls.get(i).getId());
+            mggr.save(mgg);
+        }
     }
 }
