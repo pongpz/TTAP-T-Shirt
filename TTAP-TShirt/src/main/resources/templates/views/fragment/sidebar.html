@@ -52,11 +52,11 @@
             <div class="dropdown pb-4">
                 <a href="#" class="d-flex align-items-center text-light text-decoration-none dropdo wn-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
-                    <span class="d-none d-sm-inline mx-1">user name</span>
+                    <span th:if="${userLogged != null}" class="d-none d-sm-inline mx-1" th:text="${userLogged.hoTen}"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
 
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
                 </ul>
             </div>
         </div>

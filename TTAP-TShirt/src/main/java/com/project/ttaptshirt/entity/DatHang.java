@@ -24,7 +24,7 @@ public class DatHang {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "id_users")
+    @JoinColumn(name = "id_customer")
     private User user;
 
     @Column(name = "ghi_chu")

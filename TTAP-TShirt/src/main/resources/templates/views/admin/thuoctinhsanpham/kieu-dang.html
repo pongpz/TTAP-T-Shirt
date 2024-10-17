@@ -65,14 +65,14 @@
                 <div class="col-md-6">
                     <div class=" box">
                         <!-- Thêm -->
-                        <form th:action="@{/admin/kich-co/save-kich-co}" th:object="${kichCo}" method="post">
+                        <form th:action="@{/admin/kieu-dang/add}" th:object="${kieuDang}" method="post">
                             <div class="form-group">
-                                <label for="ma">Mã kích cỡ:</label>
-                                <input type="text" class="form-control" id="ma" name="ma" placeholder="Nhập mã kích cỡ" />
+                                <label for="ma">Mã kieu dang:</label>
+                                <input type="text" class="form-control" id="ma" name="ma" placeholder="Nhập mã kieu dang" />
                             </div>
                             <div class="form-group">
-                                <label for="ten">Tên kích cỡ:</label>
-                                <input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên kích cỡ" />
+                                <label for="ten">Tên kieu dang:</label>
+                                <input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên kieu dang" />
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
