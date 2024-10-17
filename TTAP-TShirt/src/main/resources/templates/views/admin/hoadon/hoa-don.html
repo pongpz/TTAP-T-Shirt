@@ -70,8 +70,8 @@
         <tr th:each="hd, stat: ${listHD}" >
             <td th:text="${stat.index+1}"></td>
             <td th:text="${hd.ma}"></td>
-            <td th:text="${hd.nhanVien.hoTen?:'Không có'}"></td>
-            <td th:text="${hd.khachHang.hoTen?:'Không có'}"></td>
+            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>
+            <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Không có'}"></td>
             <td th:text="${hd.tongTien?:'Không có'}"></td>
             <td th:text="${hd.ngayThanhToan?:'Không có'}"></td>
             <td th:text="${hd.sdtNguoiNhan?:'Không có'}"></td>
