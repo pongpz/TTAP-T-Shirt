@@ -27,7 +27,7 @@ public class HoaDon {
 
     @ManyToOne
     @JoinColumn(name = "id_nhan_vien")
-    private NhanVien nhanVien;
+    private User nhanVien;
 
     @Column(name = "ma")
     private String ma;
@@ -50,7 +50,7 @@ public class HoaDon {
 
     @ManyToOne
     @JoinColumn(name = "id_khach_hang")
-    private KhachHang khachHang;
+    private User khachHang;
 
     @Column(name = "dia_chi_giao_hang")
     private String diaChiGiaoHang;
