@@ -1,7 +1,7 @@
 package com.project.ttaptshirt.service;
 
 
-import com.project.ttaptshirt.entity.ChucVu;
+import com.project.ttaptshirt.entity.Role;
 import com.project.ttaptshirt.repository.ChucVuRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,16 +15,16 @@ public class ChucVuService {
     @Autowired
     private ChucVuRepo repoCv;
 
-    public List<ChucVu> findAll(){
+    public List<Role> findAll(){
         return repoCv.findAll();
     }
 
-    public ChucVu save(ChucVu cv){
+    public Role save(Role cv){
         return repoCv.save(cv);
     }
 
 
-    public Optional<ChucVu> findById(Long id){
+    public Optional<Role> findById(Long id){
         return repoCv.findById(id);
     }
 

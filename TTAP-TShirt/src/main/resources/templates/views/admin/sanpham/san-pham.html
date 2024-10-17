@@ -60,10 +60,10 @@
                                     <td th:text="${iterStat.index + 1}"></td>
                                     <td th:text="${sanPham.ma}"></td>
                                     <td th:text="${sanPham.ten}"></td>
-                                    <td th:text="${sanPham.nsx.ten}"></td>
-                                    <td th:text="${sanPham.chatLieu.ten}"></td>
-                                    <td th:text="${sanPham.thuongHieu.ten}"></td>
-                                    <td th:text="${sanPham.kieuDang.ten}"></td>
+                                    <td th:text="${sanPham.nsx==null ?'':sanPham.nsx.ten}"></td>
+                                    <td th:text="${sanPham.chatLieu==null ?'':sanPham.chatLieu.ten}"></td>
+                                    <td th:text="${sanPham.thuongHieu==null ?'':sanPham.thuongHieu.ten}"></td>
+                                    <td th:text="${sanPham.kieuDang==null ?'':sanPham.kieuDang.ten}"></td>
                                     <td th:text="${sanPham.ngayTao}"></td>
                                     <td>
                                 <span th:class="'badge ' + (${sanPham.trangThai} == 1 ? 'bg-info text-dark' : 'bg-secondary text-light')"
@@ -125,21 +125,21 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Chất Liệu</label>
-                                <select class="form-select" name="idNSX">
+                                <select class="form-select" name="idChatLieu">
                                     <option th:each="nsx : ${listChatLieu}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Thương Hiệu</label>
-                                <select class="form-select" name="idNSX">
+                                <select class="form-select" name="idThuongHieu">
                                     <option th:each="nsx : ${listThuongHieu}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Kểu Dáng</label>
-                                <select class="form-select" name="idNSX">
+                                <select class="form-select" name="idKieuDang">
                                     <option th:each="nsx : ${listKieuDang}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
                                 </select>
                             </div>
