@@ -75,10 +75,6 @@ public class User {
     @Column(name = "ngay_sua")
     private LocalDate ngaySua;
 
-    @ManyToOne
-    @JoinColumn(name = "id_chuc_vu")
-    private ChucVu cv;
-
     @OneToOne
     @JoinColumn(name = "id_dia_chi")
     private DiaChi dc;
