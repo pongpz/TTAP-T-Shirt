@@ -56,29 +56,32 @@
                     <span style="color: rgb(91, 80, 80); font-weight: bolder; margin-left: -20px;">0</span>đ
                   </div>
                 </div>
-                <a href="#/check-out" style="width: 80%; margin-left: 30px;" class="button">Thanh toán</a>
+                <a href="#" style="width: 80%; margin-left: 30px;" class="button">Thanh toán</a>
               </div>
             </li>
             <li class="account-hover">
               <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Tên người dùng</a>
+                <a href="#"  th:text="${userLogged != null ? 'Xin Chào ' + userLogged.hoTen : 'Chưa Đăng Nhập'}">
+                  <i class="fa fa-user"></i>
+                </a>
+
                 <div class="account-form">
                   <a href="#/dia-chi" class="d-flex align-items-center gap-2 dropdown-item">
                     <i class="fa fa-user fs-6"></i>
                     Tài khoản của tôi
                   </a>
-                  <a href="#/don-hang" class="d-flex align-items-center gap-2 dropdown-item">
+                  <a href="#" class="d-flex align-items-center gap-2 dropdown-item">
                     <i class="ti ti-list-check fs-6"></i>
                     Đơn hàng
                   </a>
-                  <a href="#/login" class="d-flex align-items-center gap-2 dropdown-item">
+                  <a th:if="${userLogged==null}" href="/login" class="d-flex align-items-center gap-2 dropdown-item">
                     <i class="ti ti-list-check fs-6"></i>
                     Đăng nhập
                   </a>
-                  <button onclick="logout()" class="d-flex align-items-center gap-2 dropdown-item">
+                  <a th:if="${userLogged!=null}" href="/logout" class="d-flex align-items-center gap-2 dropdown-item">
                     <i class="fa fa-sign-out fs-6"></i>
-                    Đăng xuất
-                  </button>
+                    Đăng xuấtttttttttt
+                  </a>
                 </div>
               </div>
             </li>
