@@ -1,12 +1,15 @@
 package com.project.ttaptshirt.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +23,8 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,7 +32,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 @Builder
-@Table(name = "nhan_vien")
+@Table(name = "users")
 @Entity
 public class User {
 
@@ -36,9 +41,9 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column( name = "ho_ten")
+    @Column(name = "ho_ten")
     @NotBlank(message = "Họ tên không được phép trống")
-    @Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]+$",message = "Họ tên chỉ được chứa các ký tự chữ và dấu cách")
+    @Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]+$", message = "Họ tên chỉ được chứa các ký tự chữ và dấu cách")
     private String hoTen;
 
     @Column(name = "ngay_sinh")
@@ -59,21 +64,28 @@ public class User {
 
     @NotBlank(message = "Tk không được phép trống")
     @Column(name = "tai_khoan")
-    private String taiKhoan;
+    private String username;
 
     @NotBlank(message = "Mk không được phép trống")
     @Column(name = "mat_khau")
-    private String matKhau;
+    private String password;
 
-    @NotBlank(message = "trang thai không được phép trống")
     @Column(name = "trang_thai")
-    private String trangThai;
+    private Boolean enable;
 
     @Column(name = "ngay_tao")
     private LocalDate ngayTao;
 
     @Column(name = "ngay_sua")
     private LocalDate ngaySua;
+
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    private List<Role> roles = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "id_dia_chi")

@@ -23,4 +23,7 @@ public interface MaGiamGiaRepo extends JpaRepository<MaGiamGia, Long> {
 
     @Query("select mgg from MaGiamGia mgg where (mgg.ten like %:ten% or mgg.ten is null) and (mgg.ma like %:ma% or mgg.ma is null) and (:hinhThuc is null or mgg.hinhThuc =:hinhThuc) and ((:thoiHan1 is null or mgg.ngayKetThuc >:thoiHan1) and (:thoiHan2 is null or mgg.ngayKetThuc <:thoiHan2)) and ((:soLuong1 is null or mgg.soLuong >:soLuong1) and (:soLuong2 is null or mgg.soLuong <=:soLuong2)) order by mgg.id desc")
     List<MaGiamGia> searchByAll(String ten, String ma, Boolean hinhThuc, LocalDateTime thoiHan1, LocalDateTime thoiHan2, Integer soLuong1, Integer soLuong2, Pageable pageable);
+
+    @Query("select mgg from MaGiamGia mgg where mgg.ngayKetThuc <:ngayKetThuc or mgg.soLuong <= 0")
+    List<MaGiamGia> getMGGHetHan(LocalDateTime ngayKetThuc);
 }

@@ -1,6 +1,7 @@
 package com.project.ttaptshirt.repository;
 
 import com.project.ttaptshirt.entity.ChiTietSanPham;
+import com.project.ttaptshirt.entity.KichCo;
 import com.project.ttaptshirt.entity.SanPham;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
     List<ChiTietSanPham> findBySanPhamId(Long id);
 
     @Query("select spct from ChiTietSanPham spct where spct.sanPham.id =:idSP and (:kichCo is null or spct.kichCo.id =:kichCo) and (:mauSac is null or spct.mauSac.id =:mauSac)")
-    List<ChiTietSanPham> findByIDSanPham(Long idSP, Long kichCo, Long mauSac);
+    List<ChiTietSanPham> findByIDSanPham(Long idSP, String kichCo, String mauSac);
 
 
     @Query("""
@@ -40,6 +41,10 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
             @Param("kichCo") Integer kichCo,
             Pageable pageable);
 
+    @Query("select spct from ChiTietSanPham  spct order by spct.ngayTao desc")
+    List<ChiTietSanPham> getListNewCTSP();
 
+    @Query("select spct from ChiTietSanPham spct where spct.sanPham.id =:id")
+    List<ChiTietSanPham> getThuocTinhSPCT(Long id);
 
 }
