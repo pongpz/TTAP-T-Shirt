@@ -5,7 +5,6 @@
 //import com.project.ttaptshirt.entity.DiaChi;
 //import com.project.ttaptshirt.entity.User;
 //import com.project.ttaptshirt.repository.DiaChiRepo;
-//import com.project.ttaptshirt.repository.NhanVienReopository;
 //import com.project.ttaptshirt.repository.UserRepo;
 //import com.project.ttaptshirt.util.Const;
 //import jakarta.mail.MessagingException;
@@ -24,9 +23,9 @@
 //import java.util.Optional;
 //
 //@Service
-//public class NhanVienService {
+//public class UsersService {
 //    @Autowired
-//    private NhanVienReopository repoNhanVien;
+//    private UserRepo repoUser;
 //
 //    @Autowired
 //    private DiaChiRepo repoDc;
@@ -43,39 +42,39 @@
 //    private MailService mailService;
 //
 //    public User save (User nv){
-//        return repoNhanVien.save(nv);
+//        return repoUser.save(nv);
 //    }
 //
 //    public List<User> findAll(){
-//        return repoNhanVien.findAll();
+//        return repoUser.findAll();
 //    }
 //
-//    public List<User> findByCv(String cv){return repoNhanVien.findByCv_Ten(cv);}
+//    public List<User> findByCv(String cv){return repoUser.findByCv_Ten(cv);}
 //
-//    public List<User> findByNhanVien(String name){return repoNhanVien.findByHoTenContainingIgnoreCase(name);}
+//    public List<User> findByUsers(String name){return repoUser.findByHoTenContainingIgnoreCase(name);}
 //
 //    public Optional<User> findById(Long id){
-//        return repoNhanVien.findById(id);
+//        return repoUser.findById(id);
 //    }
 //
 //    public void deleteById(Long id){
-//        repoNhanVien.deleteById(id);
+//        repoUser.deleteById(id);
 //    }
 //
 //    public User updateDiachi(Long nhanVienId, DiaChi diaChi){
-//        Optional<User> NhanVienOptional =repoNhanVien.findById(nhanVienId);
+//        Optional<User> NhanVienOptional =repoUser.findById(nhanVienId);
 //        if (NhanVienOptional.isPresent()){
 //            User nhanVien = NhanVienOptional.get();
 //            repoDc.save(diaChi);
 //            nhanVien.setDc(diaChi);
-//            return repoNhanVien.save(nhanVien);
+//            return repoUser.save(nhanVien);
 //        }else {
 //            throw new RuntimeException("NhanVien not found with id " + nhanVienId);
 //        }
 //    }
 //
 //    public User createNhanVien(User nhanVien) {
-//        repoNhanVien.save(nhanVien);
+//        repoUser.save(nhanVien);
 //        sendEmail(nhanVien);
 //        return nhanVien;
 //    }
@@ -89,8 +88,8 @@
 //            helper.setTo(nhanVien.getEmail());
 //            helper.setSubject("Account Details");
 //            Context context = new Context();
-//            context.setVariable("NhanVienname", nhanVien.getTaiKhoan());
-//            context.setVariable("password", nhanVien.getMatKhau());
+//            context.setVariable("NhanVienname", nhanVien.getUsername());
+//            context.setVariable("password", nhanVien.getPassword());
 //            String htmlContent = thymeleafTemplateEngine.process("/user/email-template", context);
 //            helper.setText(htmlContent, true);
 //            mailSender.send(message);
@@ -99,8 +98,8 @@
 //        }
 //    }
 //
-//    public Boolean registerNhanVien(User nhanVien) {
-//        repoNhanVien.save(nhanVien);
+//    public Boolean registerUser(User nhanVien) {
+//        repoUser.save(nhanVien);
 //        try {
 //            DataMailDTO dataMail = new DataMailDTO();
 //
@@ -109,8 +108,8 @@
 //
 //            Map<String, Object> props = new HashMap<>();
 //            props.put("name", nhanVien.getHoTen());
-//            props.put("Username", nhanVien.getTaiKhoan());
-//            props.put("password", nhanVien.getMatKhau());
+//            props.put("Username", nhanVien.getUsername());
+//            props.put("password", nhanVien.getPassword());
 //            dataMail.setProps(props);
 //
 //            mailService.sendHtmlMail(dataMail, Const.TEMPLATE_FILE_NAME.CLIENT_REGISTER);

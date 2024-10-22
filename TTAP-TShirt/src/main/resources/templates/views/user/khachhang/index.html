@@ -1,114 +1,102 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragment/head :: head}"></head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TTAP</title>
+    <link rel="stylesheet" href="/customcss/banhang.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
 <body class="hold-transition skin-blue sidebar-mini">
-<!-- Site wrapper -->
-<div class="wrapper">
-
-    <div th:replace="~{/fragment/header :: header}"></div>
-
-    <!-- =============================================== -->
-
-    <!-- Left side column. contains the sidebar -->
-    <div th:replace="~{/fragment/aside :: aside}"></div>
-
-    <!-- =============================================== -->
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h1>
-                Quản lý user
-                <small>it all starts here</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Examples</a></li>
-                <li class="active">Blank page</li>
-            </ol>
-        </section>
-
-        <!-- Main content -->
-        <section class="content">
-
-            <!-- Default box -->
-            <div class="col-xs-12">
+    <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
+    <div class="main-content content flex-grow-1 p-4">
+    <h2 class="text-center">Quản lý khách hàng</h2>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
                 <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">Quản lý Khách hàng</h3>
-                        <div class="box-tools">
-                            <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
-                                <form th:action="@{/TTAP/KhanhHang/find}" method="get" th:border="1">
-                                    <input type="text" placeholder="tìm kiếm" name="name">
-                                    <div class="input-group-btn">
-                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                    </div>
-                                </form>
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Danh sách Khách hàng</h3>
+                    </div>
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
+                            <form th:action="@{/TTAP/KhanhHang/find}" method="get" th:border="1">
+                                <input type="text" placeholder="tìm kiếm" name="name">
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </form>
 
-                            </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary" href="/TTAP/KhachHang/new">Them</a>
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
+                    <div class="box-body">
+                        <table class="table table-bordered">
                             <thead>
-                            <th>#</th>
-                            <th>Mã</th>
-                            <th>Họ và tên</th>
-                            <th>Giới tính</th>
-                            <th>Số điện thoại</th>
-                            <th>Email</th>
-                            <th>Trạng thái</th>
-                            <th>ngày tạo</th>
-                            <th>ngày tạo</th>
-                            <th>Thao tác</th>
+                            <tr style="background-color: lightskyblue">
+                                <th>#</th>
+                                <th>Họ và tên</th>
+                                <th>Giới tính</th>
+                                <th>Số điện thoại</th>
+                                <th>Email</th>
+                                <th>Tài khoản</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="user, stt : ${cusLst}">
+                            <tr th:each="user, stt : ${cus}">
                                 <td th:text="${stt.index + 1}"></td>
-                                <td th:text="${user.maKhachhang}"></td>
                                 <td th:text="${user.hoTen}"></td>
                                 <td>
-                        <span th:switch="${user.gioiTinh}">
-                            <span th:case="true">Nam</span>
-                            <span th:case="false">Nu</span>
-                        </span>
+                                    <span th:switch="${user.gioiTinh}">
+                                        <span th:case="true">Nam</span>
+                                        <span th:case="false">Nu</span>
+                                    </span>
                                 </td>
                                 <td th:text="${user.soDienthoai}"></td>
                                 <td th:text="${user.email}"></td>
-                                <td th:text="${user.trangThai}"></td>
-                                <td th:text="${user.ngayTao}"></td>
-                                <td th:text="${user.ngaySua}"></td>
+                                <td th:text="${user.username}"></td>
                                 <td>
-                                    <a class="btn btn-danger" th:href="@{/TTAP/KhachHang/delete/{id}(id = ${user.id})}">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </a>
-                                    <a class="btn btn-primary" th:href="@{/TTAP/KhachHang/detail/{id}(id = ${user.id})}">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </a>
+                                    <span th:switch="${user.enable}">
+                                    <span th:case="true">Hoạt động</span>
+                                    <span th:case="false">Ngưng hoạt động</span>
+                                </span>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" th:href="@{/admin/users/deactivate/{id}(id = ${user.id})}">
+                                                                        <span class="glyphicon glyphicon-trash"></span></a>
+                                    <a class="btn btn-primary" th:href="@{/admin/users/detail/{id}(id = ${user.id})}">
+                                                                        <span class="glyphicon glyphicon-pencil"></span></a>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
+
                     </div>
 
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                            <li th:classappend="${cus.hasPrevious()} ? '' : 'disabled'">
+                                <a th:href="${cus.hasPrevious()} ? @{/admin/users/view(p=${cus.number - 1})} : '#'" aria-label="Previous">«</a>
+                            </li>
+                            <li th:each="i : ${#numbers.sequence(0, cus.totalPages - 1)}" th:classappend="${cus.number == i} ? 'active'">
+                                <a th:href="@{/admin/users/view(p=${i})}" th:text="${i + 1}">1</a>
+                            </li>
+                            <li th:classappend="${cus.hasNext()} ? '' : 'disabled'">
+                                <a th:href="${cus.hasNext()} ? @{/admin/users/view(p=${cus.number + 1})} : '#'" aria-label="Next">»</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <!-- /.box -->
+        </div>
+        <!-- Default box -->
+        <!-- /.box -->
 
-        </section>
-        <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-
-    <div th:replace="~{/fragment/footer :: footer}"></div>
+    </section>
 </div>
-<!-- ./wrapper -->
-
-<!-- jQuery 3 -->
-
-<div th:replace="~{/fragment/script :: script}"></div>
 </body>
 </html>
 

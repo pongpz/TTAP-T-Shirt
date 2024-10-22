@@ -1,10 +1,12 @@
-//package com.project.ttaptshirt.controller;
+//package com.project.ttaptshirt.controller.adminController;
 //
 //
 //import com.project.ttaptshirt.entity.DiaChi;
 //import com.project.ttaptshirt.entity.User;
 //import com.project.ttaptshirt.service.ChucVuService;
 ////import com.project.ttaptshirt.service.UserService;
+//import com.project.ttaptshirt.service.UsersService;
+//import com.project.ttaptshirt.service.impl.UserServiceImpl;
 //import jakarta.validation.Valid;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Controller;
@@ -15,17 +17,19 @@
 //import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
 //import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //
 //import java.time.LocalDate;
 //import java.util.List;
+//import java.util.Optional;
 //
 //@Controller
 //@RequestMapping("/TTAP/User/")
 //public class UserController {
 //
 //    @Autowired
-//    private UserService serUser;
+//    private UsersService serUser;
 //
 //    @Autowired
 //    private ChucVuService serCv;
@@ -39,43 +43,43 @@
 //        return"/user/index";
 //    }
 //
-////    @GetMapping("employee")
-////    public String employee(Model mol){
-////        List<User> employeeList = serUser.findByCv("employee");
-////        mol.addAttribute("empoLst",employeeList);
-////        return "/user/nhanvien/index";
-////    }
+//    @GetMapping("employee")
+//    public String employee(Model mol){
+//        List<User> employeeList = serUser.findByCv("employee");
+//        mol.addAttribute("empoLst",employeeList);
+//        return "/user/nhanvien/index";
+//    }
 //
-////    @GetMapping("employee/find")
-////    public String findUser(@RequestParam(value = "name", required = false) String name, Model mol){
-////        List<User> users;
-////        if (name == null || name.isEmpty()) {
-////            users = serUser.findByCv("employee"); // Assuming you have a method to retrieve all users
-////        } else {
-////            users = serUser.findByUsers(name);
-////        }
-////        mol.addAttribute("empoLst",users);
-////        return "/user/nhanvien/index";
-////    }
+//    @GetMapping("employee/find")
+//    public String findUser(@RequestParam(value = "name", required = false) String name, Model mol){
+//        List<User> users;
+//        if (name == null || name.isEmpty()) {
+//            users = serUser.findByCv("employee"); // Assuming you have a method to retrieve all users
+//        } else {
+//            users = serUser.findByUsers(name);
+//        }
+//        mol.addAttribute("empoLst",users);
+//        return "/user/nhanvien/index";
+//    }
 //
-////    @GetMapping("customer/find")
-////    public String findCos(@RequestParam(value = "name", required = false) String name, Model mol){
-////        List<User> users;
-////        if (name == null || name.isEmpty()) {
-////            users = serUser.findByCv("customer"); // ko tim dc la back ve ban dau
-////        } else {
-////            users = serUser.findByUsers(name);// neu bị trùng tên là vẫn hiện lên table
-////        }
-////        mol.addAttribute("cusLst",users);
-////        return "/user/khachhang/index";
-////    }
+//    @GetMapping("customer/find")
+//    public String findCos(@RequestParam(value = "name", required = false) String name, Model mol){
+//        List<User> users;
+//        if (name == null || name.isEmpty()) {
+//            users = serUser.findByCv("customer"); // ko tim dc la back ve ban dau
+//        } else {
+//            users = serUser.findByUsers(name);// neu bị trùng tên là vẫn hiện lên table
+//        }
+//        mol.addAttribute("cusLst",users);
+//        return "/user/khachhang/index";
+//    }
 //
-////    @GetMapping("customer")
-////    public String customer(Model mol){
-////        List<User> customerList = serUser.findByCv("customer");
-////        mol.addAttribute("cusLst",customerList);
-////        return "/user/khachhang/index";
-////    }
+//    @GetMapping("customer")
+//    public String customer(Model mol){
+//        List<User> customerList = serUser.findByCv("customer");
+//        mol.addAttribute("cusLst",customerList);
+//        return "/user/khachhang/index";
+//    }
 //
 //    @GetMapping("newNv")
 //    public String addNv(Model mol){
@@ -110,35 +114,35 @@
 //
 //    @GetMapping("delete/{id}")
 //    public String deleteUser(@PathVariable("id") Long id,Model mol){
-//        User user = serUser.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
+//        Optional<User> user = serUser.findById(id);
+////                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
 //        serUser.deleteById(id);
 //        return "redirect:/TTAP/User/employee";
 //    }
 //    @GetMapping("deletekh/{id}")
 //    public String deleteKh(@PathVariable("id") Long id,Model mol){
-//        User user = serUser.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
+//        Optional<User> user = serUser.findById(id);
+////                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
 //        serUser.deleteById(id);
 //        return "redirect:/TTAP/User/customer";
 //    }
 //    @GetMapping("detail/{id}")
 //    public String showDetail(@PathVariable("id") Long id,Model mol){
-//        User user = serUser.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
+//        Optional<User> user = serUser.findById(id);
+////                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
 //        mol.addAttribute("user",user);
 //        mol.addAttribute("cv",serCv.findAll());
-//        mol.addAttribute("diaChi",user.getDc() != null ? user.getDc() : new DiaChi());
+//        mol.addAttribute("diaChi",user.get().getDc() != null ? user.get().getDc() : new DiaChi());
 //        return "/user/nhanvien/update";
 //    }
 //
 //    @GetMapping("detailKh/{id}")
 //    public String showDetailKh(@PathVariable("id") Long id,Model mol){
-//        User user = serUser.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
+//        Optional<User> user = serUser.findById(id);
+////                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
 //        mol.addAttribute("user",user);
 //        mol.addAttribute("cv",serCv.findAll());
-//        mol.addAttribute("diaChi",user.getDc() != null ? user.getDc() : new DiaChi());
+//        mol.addAttribute("diaChi",user.get().getDc() != null ? user.get().getDc() : new DiaChi());
 //        return "/user/khachhang/update";
 //    }
 //
@@ -148,9 +152,9 @@
 //            user.setId(user.getId());
 //            return "/user/update";
 //        }
-//        User existingUser = serUser.findById(user.getId())
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + user.getId()));
-//        user.setNgayTao(existingUser.getNgayTao());
+//        Optional<User> existingUser = serUser.findById(user.getId());
+////                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + user.getId()));
+//        user.setNgayTao(existingUser.get().getNgayTao());
 //        user.setNgaySua(LocalDate.now());
 //        serUser.save(user);
 //        return "redirect:/TTAP/User/employee";
@@ -162,9 +166,9 @@
 //            user.setId(user.getId());
 //            return "/user/update";
 //        }
-//        User existingUser = serUser.findById(user.getId())
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + user.getId()));
-//        user.setNgayTao(existingUser.getNgayTao());
+//        Optional<User> existingUser = serUser.findById(user.getId());
+////                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + user.getId()));
+//        user.setNgayTao(existingUser.get().getNgayTao());
 //        user.setNgaySua(LocalDate.now());
 //        serUser.save(user);
 //        return "redirect:/TTAP/User/employee";
@@ -182,18 +186,18 @@
 //        return "redirect:/TTAP/User/detailKh/"+ id;
 //    }
 //
-//    @PostMapping("register")
-//    public String registerUser(@Valid @ModelAttribute User user,BindingResult result,Model mol) {
-//        if (result.hasErrors()){
-//            mol.addAttribute("cv",serCv.findAll());
-//            return "/user/dangky";
-//        }
-//        user.setNgayTao(LocalDate.now());
-//        user.setNgaySua(LocalDate.now());
-//        serUser.createUser(user);
-//        mol.addAttribute("message", "Chi tiết tài khoản đã đc gửi.");
-//        return "redirect:/TTAP/User/home";
-//    }
+////    @PostMapping("register")
+////    public String registerUser(@Valid @ModelAttribute User user,BindingResult result,Model mol) {
+////        if (result.hasErrors()){
+////            mol.addAttribute("cv",serCv.findAll());
+////            return "/user/dangky";
+////        }
+////        user.setNgayTao(LocalDate.now());
+////        user.setNgaySua(LocalDate.now());
+////        serUser.createUser(user);
+////        mol.addAttribute("message", "Chi tiết tài khoản đã đc gửi.");
+////        return "redirect:/TTAP/User/home";
+////    }
 //
 ////    @PostMapping(value = "create")
 ////    public ResponseEntity<String> create(
