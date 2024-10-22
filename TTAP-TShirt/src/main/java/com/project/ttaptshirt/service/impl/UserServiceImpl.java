@@ -4,6 +4,10 @@ import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +34,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userRepo.findAll();
+    }
+
+    @Override
+    public Page<User> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending()); // Sắp xếp theo `id` giảm dần
+        return userRepo.findAll(pageable);
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable){
+        return userRepo.findAll(pageable);
     }
 
     @Override

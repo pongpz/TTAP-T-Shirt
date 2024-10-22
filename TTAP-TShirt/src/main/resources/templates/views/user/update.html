@@ -130,7 +130,7 @@
 </head>
 <body>
 <h1>Them/sua User</h1>
-<form class="row g-3" th:action="@{/TTAP/User/update}" th:object="${user}" method="post">
+<form class="row g-3" th:action="@{/admin/users/update}" th:object="${user}" method="post">
     <input type="hidden" th:field="*{id}"/>
     <div class="col-md-6">
         <label  class="form-label">Ho va ten</label>
@@ -162,26 +162,15 @@
             Nu
         </div>
     </div>
-    <div class="col-md-4">
-        <label  class="form-label">Chuc vu</label>
-        <select class="form-select" th:field="*{cv}" >
-            <option th:each="cv : ${cv}" th:value="${cv.id}" th:text="${cv.ten}"></option>
-        </select>
-    </div>
     <div class="col-md-6">
         <label  class="form-label">Ten tai khoan</label>
-        <input type="text" class="form-control" th:field="*{taiKhoan}" >
-        <span th:if="${#fields.hasErrors('taiKhoan')}" th:errors="*{taiKhoan}"></span>
+        <input type="text" class="form-control" th:field="*{username}" >
+        <span th:if="${#fields.hasErrors('taiKhoan')}" th:errors="*{username}"></span>
     </div>
     <div class="col-md-6">
         <label  class="form-label">Password</label>
-        <input type="text" class="form-control" th:field="*{matKhau}">
-        <span th:if="${#fields.hasErrors('matKhau')}" th:errors="*{matKhau}"></span>
-    </div>
-    <div class="col-md-6">
-        <label  class="form-label">Trang thai</label>
-        <input type="text" class="form-control" th:field="*{trangThai}">
-        <span th:if="${#fields.hasErrors('trangThai')}" th:errors="*{trangThai}"></span>
+        <input type="text" class="form-control" th:field="*{password}">
+        <span th:if="${#fields.hasErrors('matKhau')}" th:errors="*{password}"></span>
     </div>
     <div class="col-12">
         <button type="submit" class="btn btn-primary">Update</button>

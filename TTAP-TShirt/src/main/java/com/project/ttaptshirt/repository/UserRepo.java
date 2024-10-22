@@ -23,7 +23,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
 //    Optional<User> findByEmail(String email);
 //
-////    List<User> findByCv_Ten(String cv);
+//   List<User> findByCv_Ten(String cv);
 //
 //    List<User> findByHoTenContainingIgnoreCase(String name);
 }
