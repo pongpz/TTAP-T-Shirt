@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.adminController;
 
+import com.project.ttaptshirt.entity.DiaChi;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
@@ -84,7 +85,7 @@ public class KhachHangController {
         User user = serUser.findById(id);
         if (user != null) {
             model.addAttribute("user", user);
-            return "user/update";
+            return "user/khachhang/update";
         } else {
             model.addAttribute("error", "User not found");
             return "redirect:/admin/users/view";
@@ -133,6 +134,12 @@ public class KhachHangController {
             redirectAttributes.addFlashAttribute("error", "Error updating user: " + e.getMessage());
         }
         return "redirect:/users"; // Điều hướng về danh sách người dùng sau khi cập nhật
+    }
+
+    @PostMapping("/update/{id}/DiaChi")
+    public String getupdateDiachi(@PathVariable("id") Long id, @ModelAttribute DiaChi diaChi, Model mol){
+        serUser.updateDiachi(id,diaChi);
+        return "redirect:/admin/users/detail/"+ id;
     }
 
 }
