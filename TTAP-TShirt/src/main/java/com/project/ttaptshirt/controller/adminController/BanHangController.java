@@ -303,4 +303,18 @@ public class BanHangController {
         return "redirect:/admin/ban-hang";
 
     }
+
+//    @RequestMapping("/thanh-toan/vnpay")
+//    public String createVNPayPayment(Model modeel, @RequestParam String maHD){
+//        String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+//        String vnp_ReturnUrl = "http://localhost:8080/TTAP/trang-chu";
+//        String vnp_TmnCode = "MT6RTYUK";
+//        String secretKey = "SXF7AIMCYSCS4XIWP5RLLO12WG2O14YW";
+//        String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+//        String vnp_Locale = "vn";
+//        String vnp_CurrCode = "VND";
+//        String vnp_TxnRef = maHD;
+//        String vnp_OrderInfo = hoaDonRepository.getHDByMa(maHD).get(0).getGhiChu();
+//        return "redirect:/admin/ban-hang";
+//    }
 }

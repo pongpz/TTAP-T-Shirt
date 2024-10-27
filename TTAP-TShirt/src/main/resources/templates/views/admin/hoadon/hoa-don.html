@@ -108,12 +108,12 @@
         <tr th:each="hdct, stat: ${listHDCT}">
             <td th:text="${stat.index+1}"></td>
             <td th:text="${hdct.hoaDon.ma?: 'Không có'}"></td>
-            <td th:text="${hdct.chiTietSanPham.sanPham.ten?: 'Không có'}"></td>
-            <td th:text="${hdct.chiTietSanPham.mauSac.ten ?: 'Không có'}"></td>
-            <td th:text="${hdct.chiTietSanPham.kichCo.ten ?: 'Không có'}"></td>
-            <td th:text="${hdct.donGia ?: 'Không có'}"></td>
-            <td th:text="${hdct.soLuong ?: 'Không có'}"></td>
-            <td th:text="${hdct.hoaDon.maGiamGia.ten ?: 'Không có'}"></td>
+            <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.ten : 'Không có'}"></td>
+            <td th:text="${hdct.chiTietSanPham.mauSac != null  ? hdct.chiTietSanPham.mauSac.ten : 'Không có'}"></td>
+            <td th:text="${hdct.chiTietSanPham.kichCo != null  ? hdct.chiTietSanPham.kichCo.ten : 'Không có'}"></td>
+            <td th:text="${hdct.donGia != null ? hdct.donGia : 'Không có'}"></td>
+            <td th:text="${hdct.soLuong != null ? hdct.soLuong : 'Không có'}"></td>
+            <td th:text="${hdct.hoaDon.maGiamGia != null ? hdct.hoaDon.maGiamGia.ten : 'Không có'}"></td>
         </tr>
         </tbody>
     </table>

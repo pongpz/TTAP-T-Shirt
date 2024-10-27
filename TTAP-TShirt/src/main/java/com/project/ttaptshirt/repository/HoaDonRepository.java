@@ -29,4 +29,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
 
     @Query("select hd from HoaDon hd order by hd.id desc")
     List<HoaDon> getAllHD(Pageable pageable);
+
+    @Query("select hd from HoaDon hd where hd.ma =:ma")
+    List<HoaDon> getHDByMa(String ma);
 }
