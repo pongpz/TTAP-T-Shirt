@@ -148,6 +148,9 @@ public class MaGiamGiaController {
             model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số và lớn hơn 0!");
             model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
+        }else if (mgg.getNgayBatDau().isBefore(LocalDateTime.now())){
+            model.addAttribute("errors","Ngày bắt đầu phải sau thời điểm hiện tại!");
+            return "admin/magiamgia/form-add-voucher";
         }else if (mgg.getNgayKetThuc().isBefore(LocalDateTime.now())){
             model.addAttribute("errors","Ngày kết thúc phải sau thời điểm hiện tại!");
             model.addAttribute("mgg",mgg);
@@ -191,6 +194,9 @@ public class MaGiamGiaController {
             return "admin/magiamgia/form-add-voucher";
         }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("\\d+") || mgg.getGiaTriToiThieu() <= 0){
             model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số và lớn hơn 0!");
+            return "admin/magiamgia/form-add-voucher";
+        }else if (mgg.getNgayBatDau().isBefore(LocalDateTime.now())){
+            model.addAttribute("errors","Ngày bắt đầu phải sau thời điểm hiện tại!");
             return "admin/magiamgia/form-add-voucher";
         }else if (mgg.getNgayKetThuc().isBefore(LocalDateTime.now())){
             model.addAttribute("errors","Ngày kết thúc phải sau thời điểm hiện tại!");

@@ -16,16 +16,16 @@
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
 
     <div class="main-content content flex-grow-1 p-4">
-        <h2 class="text-center">Tạo kuyến mãi</h2>
+        <h2 class="text-center">Thêm mã giảm giá</h2>
         <hr>
 <form th:action="@{/admin/ma-giam-gia/add}" method="post">
     <div class="mb-3">
-        <label class="form-label">Tên khuyến mãi</label>
+        <label class="form-label">Tên giảm giá</label>
         <input type="text" class="form-control" name="ten" id="ten" th:value="${mgg.ten}">
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Mã khuyến mãi</label>
+        <label class="form-label">Mã giảm giá</label>
         <input type="text" class="form-control" name="ma" id="ma" th:value="${mgg.ma}">
     </div>
 
