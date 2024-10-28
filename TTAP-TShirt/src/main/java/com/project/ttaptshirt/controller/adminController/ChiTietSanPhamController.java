@@ -139,6 +139,7 @@ public class ChiTietSanPhamController {
             chiTietSanPham.setHinhAnh(anh);
         }
 
+<<<<<<< HEAD
         // Lưu ChiTietSanPham và xử lý ngoại lệ
         try {
             chiTietSanPhamService.save(chiTietSanPham);
@@ -149,6 +150,12 @@ public class ChiTietSanPhamController {
         }
 
         // Chuyển hướng với idSanPham
+=======
+
+        chiTietSanPhamService.save(chiTietSanPham);
+
+        // Use the path variable to build the redirect URL
+>>>>>>> 676a0c9ae5cdb311adc8193023a56a8cc4f982e3
         redirectAttributes.addAttribute("id", idSanPham);
         return "redirect:/admin/chi-tiet-san-pham/" + idSanPham;
     }

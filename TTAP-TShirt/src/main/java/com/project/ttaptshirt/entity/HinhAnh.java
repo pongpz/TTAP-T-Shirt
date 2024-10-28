@@ -32,6 +32,10 @@ public class HinhAnh {
     @Column(name = "trang_thai")
     private String trangThai;
 
+    @ManyToOne
+    @JoinColumn(name = "id_san_pham")
+    private SanPham sanPham;
+
     @Transient
         public String getphotoPath(){
         if(ten == null) return null;
