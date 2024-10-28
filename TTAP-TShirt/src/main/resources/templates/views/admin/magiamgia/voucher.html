@@ -53,7 +53,7 @@
             </select>
         </div>
         <button type="submit" class="mb-3 btn btn-primary col-2">Tìm kiếm</button>
-        <a th:href="@{/admin/ma-giam-gia/form-add}" class="btn btn-success">Tạo khuyến mãi mới</a>
+        <a th:href="@{/admin/ma-giam-gia/form-add}" class="btn btn-success">Tạo mã giảm giá mới</a>
     </form>
     <h1 class="text-center">Danh sách mã giảm giá</h1>
     <div class="row d-flex justify-content-center">
@@ -61,8 +61,9 @@
             <thead>
             <tr>
                 <th scope="col">STT</th>
-                <th scope="col">Mã khuyến mãi</th>
-                <th scope="col">Tên khuyến mãi</th>
+                <th scope="col">Mã giảm giá</th>
+                <th scope="col">Tên mã giảm giá</th>
+                <th scope="col">Ngày kết thúc</th>
                 <th scope="col">Giá trị giảm</th>
                 <th scope="col">Hình thức giảm</th>
                 <th scope="col">Số lượng</th>
@@ -75,6 +76,7 @@
                 <td>[[${stat.index+1}]]</td>
                 <td>[[${vc.ma}]]</td>
                 <td>[[${vc.ten}]]</td>
+                <td>[[${vc.ngayKetThuc}]]</td>
                 <td>[[${vc.giaTriGiam}]]</td>
                 <td>[[${vc.hinhThuc?'VND':'%'}]]</td>
                 <td>[[${vc.soLuong}]]</td>
