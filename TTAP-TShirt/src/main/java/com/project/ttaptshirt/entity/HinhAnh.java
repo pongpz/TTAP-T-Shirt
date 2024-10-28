@@ -20,6 +20,7 @@ import lombok.ToString;
 public class HinhAnh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "ten")
@@ -30,6 +31,10 @@ public class HinhAnh {
 
     @Column(name = "trang_thai")
     private String trangThai;
+
+    @ManyToOne
+    @JoinColumn(name = "id_san_pham")
+    private SanPham sanPham;
 
     @Transient
         public String getphotoPath(){

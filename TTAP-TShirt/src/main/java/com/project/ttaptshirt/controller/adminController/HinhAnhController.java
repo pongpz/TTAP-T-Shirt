@@ -31,19 +31,19 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/admin/image")
+@RequestMapping("/admin/hinh-anh")
 public class HinhAnhController {
 
 
     @Autowired
     private HinhAnhService serImage;
+//
+//    @GetMapping("")
+//    public List<HinhAnh> getall(){
+//        return serImage.findAll();
+//    }
 
     @GetMapping("")
-    public List<HinhAnh> getall(){
-        return serImage.findAll();
-    }
-
-    @GetMapping("/showuploadFrom")
     public String showUploadForm(Model model) {
         HinhAnh hinhAnh = new HinhAnh();
         model.addAttribute("hinhanh", hinhAnh);

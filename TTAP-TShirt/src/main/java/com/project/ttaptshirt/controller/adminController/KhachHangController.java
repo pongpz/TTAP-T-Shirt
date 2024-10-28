@@ -107,10 +107,10 @@ public class KhachHangController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error deactivating user: " + e.getMessage());
         }
-        return "redirect:/users";
+        return "redirect:/admin/users/view";
     }
 
-    @PostMapping("/update}")
+    @PostMapping("/updateUser")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User updatedUser,
                              RedirectAttributes redirectAttributes) {
         try {

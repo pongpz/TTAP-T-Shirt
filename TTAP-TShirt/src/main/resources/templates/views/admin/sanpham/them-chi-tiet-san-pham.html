@@ -27,42 +27,48 @@
                     <h4 style="color: red" th:text="${listSP.ten}"></h4>
                     </div>
                     <form th:action="@{/admin/chi-tiet-san-pham/add}" method="post">
+                        <!-- Tên sản phẩm -->
                         <div class="col-md-6">
                             <label class="form-label">Sản Phẩm</label>
                             <input type="text" class="form-control" id="sanPhamTen" th:value="${listSP.ten}" readonly>
                             <input type="hidden" name="idSanPham" th:value="${listSP.id}">
                         </div>
+
+                        <!-- Chọn Màu Sắc với tùy chọn nhiều -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Màu Sắc</label>
-                                <select class="form-select" name="idMauSac">
+                                <select class="form-select" name="idMauSac" multiple>
                                     <option th:each="mauSac : ${listMauSac}" th:value="${mauSac.id}" th:text="${mauSac.ten}"></option>
                                 </select>
                             </div>
+                            <!-- Giá bán -->
                             <div class="col-md-6">
-                                 <label class="form-label">Giá Bán</label>
+                                <label class="form-label">Giá Bán</label>
                                 <input type="number" class="form-control" name="giaBan">
                             </div>
                         </div>
 
+                        <!-- Chọn Kích Cỡ với tùy chọn nhiều -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Kích Cỡ</label>
-                                <select class="form-select" name="idKichCo">
+                                <select class="form-select" name="idKichCo" multiple>
                                     <option th:each="kichCo : ${listKichCo}" th:value="${kichCo.id}" th:text="${kichCo.ten}"></option>
                                 </select>
                             </div>
+                            <!-- Số lượng -->
                             <div class="col-md-6">
                                 <label class="form-label">Số Lượng</label>
                                 <input type="number" class="form-control" name="soLuong">
                             </div>
-
                         </div>
 
+<<<<<<< HEAD
                         <div class="col-md-6">
                             <label class="form-label">hình ảnh</label>
                             <select class="form-select" name="idHinhAnh">
-                                <option th:each="kichCo : ${listHinhAnh}" th:value="${kichCo.id}" th:text="${kichCo.id}"></option>
+                                <option th:each="kichCo : ${listHinhAnh}" th:value="${hinhAnh.id}" th:text="${hinhAnh.ma}"></option>
                             </select>
                         </div>
 
@@ -72,6 +78,9 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Thêm</button>
+=======
+                        <button type="submit" class="btn btn-primary mt-3">Tạo Biến Thể</button>
+>>>>>>> 676a0c9ae5cdb311adc8193023a56a8cc4f982e3
                     </form>
                 </div>
             </div>
