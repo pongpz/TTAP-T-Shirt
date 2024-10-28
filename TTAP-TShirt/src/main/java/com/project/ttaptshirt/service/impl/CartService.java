@@ -81,7 +81,6 @@ public class CartService {
             CartItemDTO cartItem = new CartItemDTO();
             cartItem.setId(item.getChiTietSanPham().getId());
             cartItem.setName(item.getChiTietSanPham().getSanPham().getTen());
-            cartItem.setImagePath(item.getChiTietSanPham().getHinhAnh().getphotoPath());
             cartItem.setPrice(item.getChiTietSanPham().getGiaBan().doubleValue());
             cartItem.setQuantity(item.getSoLuong());
             cartItem.setTotalPrice(item.getTongTien());

@@ -126,10 +126,6 @@ public class ChiTietSanPhamController {
         chiTietSanPham.setKichCo(kichCo);
 
 
-        HinhAnh anh = new HinhAnh();
-        anh.setId(idHinhAnh);
-        chiTietSanPham.setHinhAnh(anh);
-
 
         chiTietSanPhamService.save(chiTietSanPham);
 

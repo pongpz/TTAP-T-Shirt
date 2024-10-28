@@ -18,7 +18,22 @@
     <div class="main-content content flex-grow-1 p-4">
         <h2 class="text-center">Kích Cỡ</h2>
         <hr>
+        <div class="form-group col-md-3 text-end">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
+                Thêm kích cỡ
+            </button>
+        </div>
 
+        <div class="modal fade" th:id="'modal-themsp-'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModqalLabel">Thêm Sản Phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+            </div>
+        </div>
+    </div>
         <!-- Main content -->
         <section class="content">
             <div class="row">
@@ -35,6 +50,8 @@
                                     <th>STT</th>
                                     <th>Mã màu</th>
                                     <th>Tên kích cỡ</th>
+                                    <th> Chiều cao</th>
+                                    <th> Cân nặng</th>
                                     <th>Hành động</th>
                                 </tr>
                                 </thead>
@@ -43,6 +60,8 @@
                                     <td th:text="${i.index + 1}"></td>
                                     <td th:text="${mausac.ma}"></td>
                                     <td th:text="${mausac.ten}"></td>
+                                    <td th:text="${mausac.chieuCao}"></td>
+                                    <td th:text="${mausac.canNang}"></td>
                                     <td>
                                         <a class="btn btn-success" th:href="@{/admin/kich-co/update-kich-co/{id}(id=${mausac.id})}">Sửa</a>
                                     </td>
@@ -60,25 +79,6 @@
                                 <li><a href="#">»</a></li>
                             </ul>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class=" box">
-                        <!-- Thêm -->
-                        <form th:action="@{/admin/kich-co/save-kich-co}" th:object="${kichCo}" method="post">
-                            <div class="form-group">
-                                <label for="ma">Mã kích cỡ:</label>
-                                <input type="text" class="form-control" id="ma" name="ma" placeholder="Nhập mã kích cỡ" />
-                            </div>
-                            <div class="form-group">
-                                <label for="ten">Tên kích cỡ:</label>
-                                <input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên kích cỡ" />
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <button type="submit" class="btn btn-primary">Thêm</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

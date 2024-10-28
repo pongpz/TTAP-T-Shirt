@@ -49,8 +49,5 @@ public class ChiTietSanPham extends CreatedUpdatedAt{
     @Column(name = "so_luong")
     private Integer soLuong;
 
-    @ManyToOne
-    @JoinColumn(name = "id_hinh_anh")
-    private HinhAnh hinhAnh;
 
 }
