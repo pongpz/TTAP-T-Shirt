@@ -26,8 +26,11 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Mã khuyến mãi</label>
-                                <input type="text" class="form-control" name="ma" id="ma" th:value="${mgg.ma}">
+                                <label class="form-label">Mã giảm giá</label>
+                                <div class="d-flex">
+                                    <input type="text" class="form-control" name="ma" id="inputMa" th:value="${mgg.ma}">
+                                    <button onclick="generateSecureCode(event)" class="btn btn-outline-primary"><i class="bi bi-shuffle"></i></button>
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -104,4 +107,20 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
+<script>
+    let ma = document.getElementById("inputMa")
+    function generateSecureCode(event) {
+        const array = new Uint32Array(8);
+        window.crypto.getRandomValues(array);
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const charactersLength = characters.length;
+        let result = '';
+        for (let i = 0; i < 8; i++) {
+            result += characters.charAt(array[i] % charactersLength);
+        }
+        ma.value = result
+        event.preventDefault();
+    }
+
+</script>
 </html>
