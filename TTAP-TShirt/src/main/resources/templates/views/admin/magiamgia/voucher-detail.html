@@ -17,11 +17,11 @@
 
     <div class="main-content content flex-grow-1 p-4">
                     <div class="container">
-                        <h1 class="text-center">Khuyến mãi</h1>
+                        <h1 class="text-center">Mã giảm giá</h1>
                         <form th:action="@{/admin/ma-giam-gia/update}" method="post" class="mb-5">
                             <input type="hidden" th:field="*{mgg.id}">
                         <div class="mb-3">
-                                <label class="form-label">Tên khuyến mãi</label>
+                                <label class="form-label">Tên mã giảm giá</label>
                                 <input type="text" class="form-control" name="ten" id="ten" th:value="${mgg.ten}">
                             </div>
 
