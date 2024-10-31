@@ -51,7 +51,7 @@
                             <tr th:each="ctsp : ${listCTSP}">
                                 <td th:text="${ctsp.mauSac.ten}"></td>
                                 <td th:text="${ctsp.soLuong}"></td>
-                                <td><img th:src="${ctsp.hinhAnh?.getphotoPath() ?: ''}" alt="Image" style="width: 100px; height: auto;"></td>
+<!--                                <td><img th:src="${ctsp.hinhAnh.getphotoPath()!= null ? ctsp.hinhAnh.getphotoPath(): ''}" alt="Image" style="width: 100px; height: auto;"></td>-->
                                 <td th:text="${@chiTietSanPhamController.formatCurrency(ctsp.giaBan)+' vnđ'}"></td>
                                 <td th:text="${ctsp.kichCo.ten}"></td>
 

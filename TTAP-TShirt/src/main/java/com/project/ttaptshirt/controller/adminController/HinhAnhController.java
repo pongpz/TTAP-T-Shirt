@@ -70,7 +70,7 @@ public class HinhAnhController {
         String uploadDir = "image/"+saveHinhAnh1.getphotoPath();
         FileUploadUtil.savefile(uploadDir,filename,miMultipartFile);
 
-        return new RedirectView("/admin/image/showuploadFrom", true);
+        return new RedirectView("/admin/hinh-anh/showuploadFrom", true);
     }
 
 
