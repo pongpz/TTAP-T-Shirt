@@ -39,22 +39,18 @@
                             <thead>
                             <tr>
                                 <th scope="col">Màu Sắc</th>
-                                <th scope="col">Số Lượng</th>
-                                <th scope="col">Hình Ảnh</th>
-                                <th scope="col">Giá Bán</th>
                                 <th scope="col">Kích Cỡ</th>
-
+                                <th scope="col">Số Lượng</th>
+                                <th scope="col">Giá Bán</th>
                                 <th scope="col">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="ctsp : ${listCTSP}">
                                 <td th:text="${ctsp.mauSac.ten}"></td>
-                                <td th:text="${ctsp.soLuong}"></td>
-                                <td><img th:src="${ctsp.hinhAnh?.getphotoPath() ?: ''}" alt="Image" style="width: 100px; height: auto;"></td>
-                                <td th:text="${@chiTietSanPhamController.formatCurrency(ctsp.giaBan)+' vnđ'}"></td>
                                 <td th:text="${ctsp.kichCo.ten}"></td>
-
+                                <td th:text="${ctsp.soLuong}"></td>
+                                <td th:text="${@chiTietSanPhamController.formatCurrency(ctsp.giaBan)+' vnđ'}"></td>
                                 <td>
                                     <a class="btn btn-primary" th:href="@{/admin/chi-tiet-san-pham/detail/{id}(id=${ctsp.id})}">Sửa</a>
                                     <a class="btn btn-danger" th:href="@{/admin/chi-tiet-san-pham/delete/{id}(id=${ctsp.id})}">Xóa</a>

@@ -27,13 +27,13 @@ public class CreatedUpdatedAt {
     private LocalDateTime ngaySua;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         ngayTao = LocalDateTime.now();
         ngaySua = LocalDateTime.now();
     }
 
     @PreUpdate
-    protected  void onUpdate(){
+    protected void onUpdate() {
         ngaySua = LocalDateTime.now();
     }
 }

@@ -19,10 +19,36 @@
         <h2 class="text-center">Chất Liệu</h2>
         <hr>
 
+
+        <div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
+                Thêm chất liệu
+            </button>
+        </div>
+
+        <div class="modal fade" th:id="'modal-themsp-'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModqalLabel">Thêm chất liệu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/admin/chat-lieu/add}" th:object="${chatLieu}" method="post">
+                        <div class="mb-3">
+                            <label for="ten" class="form-label">Tên chất liệu</label>
+                            <input type="text" class="form-control" id="ten" name="ten" required>
+                        </div>
+                            <button type="submit" class="btn btn-primary">Thêm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-md-6">
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">Danh sách chất liệu</h3>
@@ -62,25 +88,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class=" box">
-                        <!-- Thêm -->
-                        <form th:action="@{/admin/chat-lieu/add}" th:object="${chatLieu}" method="post">
-                            <div class="form-group">
-                                <label for="ma">Mã chất liệu:</label>
-                                <input type="text" class="form-control" id="ma" name="ma" placeholder="Nhập mã chất liệu" />
-                            </div>
-                            <div class="form-group">
-                                <label for="ten">Tên chất liệu:</label>
-                                <input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên chất liệu" />
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Thêm</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+
         </section>
     </div>
 </div>

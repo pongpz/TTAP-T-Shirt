@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Random;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,4 +31,20 @@ public class ThuongHieu {
     @Column(name = "trang_thai")
     private int trangThai;
     // Getters and Setters
+    @PrePersist
+    private void prePersist() {
+        if (this.ma == null || this.ma.isEmpty()) {
+            this.ma = "NSX" + generateRandomCode(3);
+        }
+    }
+
+    private String generateRandomCode(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder code = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            code.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return code.toString();
+    }
 }

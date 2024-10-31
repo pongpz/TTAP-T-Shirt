@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Random;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,12 +29,23 @@ public class KichCo {
     @Column(name = "ten")
     private String ten;
 
-    @Column(name = "chieu_cao")
-    private double chieuCao;
-
-    @Column(name = "can_nang")
-    private double canNang;
-
     @Column(name = "trang_thai")
     private double trangThai;
+
+    @PrePersist
+    private void prePersist() {
+        if (this.ma == null || this.ma.isEmpty()) {
+            this.ma = "KC" + generateRandomCode(3);
+        }
+    }
+
+    private String generateRandomCode(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder code = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            code.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return code.toString();
+    }
 }

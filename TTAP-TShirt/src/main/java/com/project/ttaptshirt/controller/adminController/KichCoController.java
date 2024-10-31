@@ -14,14 +14,12 @@ public class KichCoController {
     @Autowired
     KichCoService kichCoService;
 
-    // GET request to open the size page
     @GetMapping("")
     public String openSizePage(Model model){
         model.addAttribute("listKichCo", kichCoService.findAll());
         return "admin/thuoctinhsanpham/kich-co";
     }
 
-    // GET request to open the update page
     @GetMapping("/update-kich-co/{id}")
     public String openPageUpdate(@PathVariable("id") Long id, Model model ){
         KichCo kichCo = kichCoService.findById(id);
@@ -29,32 +27,17 @@ public class KichCoController {
         return "admin/thuoctinhsanpham/update-kich-co";
     }
 
-    // POST request to create a new size
     @PostMapping("/save-kich-co")
     public String createNewKichCo(KichCo kichCo){
         kichCoService.save(kichCo);
         return "redirect:/admin/kich-co";
     }
 
-    // PUT request to update an existing size
-    @PutMapping("/update-kich-co/{id}")
-    public String updateKichCo(KichCo kichCo, @PathVariable("id") Long id){
+    @PostMapping("update-kich-co/{id}")
+    public String updateMauSac(KichCo kichCo, @PathVariable("id") Long id){
         kichCo.setId(id);
         kichCoService.save(kichCo);
         return "redirect:/admin/kich-co";
-    }
-
-    // DELETE request to delete an existing size
-    @DeleteMapping("/delete-kich-co/{id}")
-    public String deleteKichCo(@PathVariable("id") Long id){
-        kichCoService.deleteById(id);
-        return "redirect:/admin/kich-co";
-    }
-
-    // Test method
-    @GetMapping("/test")
-    public String test(){
-        return "admin/thuoctinhsanpham/kich-co";
     }
 
 }
