@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Date;
 import java.text.NumberFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -96,8 +97,7 @@ public class BanHangController {
         List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<MaGiamGia> listKM = voucherRepo.findAll();
-//        List<User> listKH = khachHangService.findAll();
-//        model.addAttribute("listKH", listKH);
+
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listHD", listHd);
@@ -182,7 +182,7 @@ public class BanHangController {
 
 
         hoaDon.setTongTien((float) totalMoneyAfter);
-        hoaDon.setTrangThai(true);
+        hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
         return "redirect:/admin/ban-hang";
     }
@@ -219,11 +219,18 @@ public class BanHangController {
 
 
     @PostMapping("/newHoaDon")
-    public String newHoaDon() {
+    public String newHoaDon(Authentication authentication) {
         HoaDon hoaDon = new HoaDon();
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            hoaDon.setNhanVien(user);
+        }
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
-        hoaDon.setTrangThai(false);
+        hoaDon.setNgayTao(LocalDate.now());
+        hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
+
         return "redirect:/admin/ban-hang";
     }
 
