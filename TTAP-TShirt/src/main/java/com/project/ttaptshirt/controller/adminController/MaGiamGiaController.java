@@ -4,6 +4,7 @@ import com.project.ttaptshirt.entity.MaGiamGia;
 import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,6 +51,7 @@ public class MaGiamGiaController {
         return "admin/magiamgia/voucher";
     }
 
+    @Transactional
     @GetMapping("/detail/{idMGG}")
     public String detail (Model model, @PathVariable("idMGG") Long idMGG){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -111,6 +113,7 @@ public class MaGiamGiaController {
         return "admin/magiamgia/tim-kiem-voucher";
     }
 
+    @Transactional
     @PostMapping("/update")
     public String update(@Valid MaGiamGia mgg, Errors errors, Model model){
         boolean check_ma = false;
@@ -119,48 +122,40 @@ public class MaGiamGiaController {
                 check_ma = true;
             }
         }
+        model.addAttribute("mgg",mgg);
         if (errors.hasErrors()){
             model.addAttribute("errors","Vui lòng điền đủ trường!");
-            model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }
         if (mgg.getNgayBatDau().isAfter(mgg.getNgayKetThuc())){
             model.addAttribute("errors","Ngày bắt đầu phải sớm hơn ngày kết thúc!");
-            model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else if (!mgg.getHinhThuc() && mgg.getGiaTriGiam()>100){
             model.addAttribute("errors","Giá trị giảm không được vượt quá 100%!");
-            model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else if (mgg.getHinhThuc() && mgg.getGiaTriToiDa()>mgg.getGiaTriGiam()) {
             model.addAttribute("errors", "Giá trị giảm không được vượt quá giá trị giảm!");
-            return "admin/magiamgia/form-add-voucher";
+            return "admin/magiamgia/voucher-detail";
         }else if(!mgg.getSoLuong().toString().trim().matches("\\d+") || mgg.getSoLuong() <= 0){
             model.addAttribute("errors","Số lượng phải là số và lớn hơn 0!");
-            model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else if(!mgg.getGiaTriGiam().toString().trim().matches("\\d+") || mgg.getGiaTriGiam() <= 0){
             model.addAttribute("errors","Giá trị giảm phải là số và lớn hơn 0!");
-            model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else if(!mgg.getGiaTriToiDa().toString().trim().matches("\\d+") || mgg.getGiaTriToiDa() <= 0){
             model.addAttribute("errors","Giá trị tối đa phải là số và lớn hơn 0!");
-            model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("\\d+") || mgg.getGiaTriToiThieu() < 0){
             model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số và lớn hơn 0!");
-            model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else if (mgg.getNgayBatDau().isBefore(LocalDateTime.now())){
             model.addAttribute("errors","Ngày bắt đầu phải sau thời điểm hiện tại!");
-            return "admin/magiamgia/form-add-voucher";
+            return "admin/magiamgia/voucher-detail";
         }else if (mgg.getNgayKetThuc().isBefore(LocalDateTime.now())){
             model.addAttribute("errors","Ngày kết thúc phải sau thời điểm hiện tại!");
-            model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else if (check_ma){
             model.addAttribute("errors","Mã giảm giá đã tồn tại, vui lòng nhập mã khác!");
-            model.addAttribute("mgg",mgg);
             return "admin/magiamgia/voucher-detail";
         }else {
             MaGiamGia mgg2 = mggr.getReferenceById(mgg.getId());

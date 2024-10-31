@@ -71,6 +71,7 @@ public class HinhAnhController {
         FileUploadUtil.savefile(uploadDir,filename,miMultipartFile);
 
         return new RedirectView("/admin/image/showuploadFrom", true);
+        return new RedirectView("/admin/hinh-anh/showuploadFrom", true);
     }
 
 

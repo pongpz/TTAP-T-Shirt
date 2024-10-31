@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragment/head :: head}"></head>
+<!--<head th:replace="~{/fragment/head :: head}"></head>-->
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
 
-    <div th:replace="~{/fragment/header :: header}"></div>
+<!--    <div th:replace="~{/fragment/header :: header}"></div>-->
 
-    <!-- =============================================== -->
+
 
     <!-- Left side column. contains the sidebar -->
-    <div th:replace="~{/fragment/aside :: aside}"></div>
+<!--    <div th:replace="~{/fragment/aside :: aside}"></div>-->
 
-    <!-- =============================================== -->
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -37,7 +36,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Ảnh sản phẩm</h3>
                 </div>
-                <form th:action="@{/admin/image/uploadImage}" enctype="multipart/form-data" th:object="${hinhanh}" method="post">
+                <form th:action="@{/admin/hinh-anh/uploadImage}" enctype="multipart/form-data" th:object="${hinhanh}" method="post">
                     <div class="box-body">
                         <div class="form-group">
                             <label for="exampleInputPassword1">Ma</label>
@@ -88,12 +87,12 @@
     </div>
     <!-- /.content-wrapper -->
 
-    <div th:replace="~{/fragment/footer :: footer}"></div>
+<!--    <div th:replace="~{/fragment/footer :: footer}"></div>-->
 </div>
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
 
-<div th:replace="~{/fragment/script :: script}"></div>
+<!--<div th:replace="~{/fragment/script :: script}"></div>-->
 </body>
 </html>
