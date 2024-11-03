@@ -21,24 +21,26 @@
                 <label for="ma" class="form-label">Mã hóa đơn</label>
                 <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}">
             </div>
-            <div class="mb-3 col-4">
-                <label for="tenkh" class="form-label">Tên khách hàng</label>
-                <input type="text" class="form-control" id="tenkh" name="tenkh" th:value="${tenkh}">
-            </div>
-            <div class="mb-3 col-4">
-                <label for="tennv" class="form-label">Tên nhân viên</label>
-                <input type="text" class="form-control" id="tennv" name="tennv" th:value="${tennv}">
-            </div>
-            <div class="mb-3 col-4">
-                <label for="sdt" class="form-label">Số điện thoại khách hàng</label>
-                <input type="text" class="form-control" id="sdt" name="sdt" th:value="${sdt}">
-            </div>
+<!--            <div class="mb-3 col-4">-->
+<!--                <label for="tenkh" class="form-label">Tên khách hàng</label>-->
+<!--                <input type="text" class="form-control" id="tenkh" name="tenkh" th:value="${tenkh}">-->
+<!--            </div>-->
+<!--            <div class="mb-3 col-4">-->
+<!--                <label for="tennv" class="form-label">Tên nhân viên</label>-->
+<!--                <input type="text" class="form-control" id="tennv" name="tennv" th:value="${tennv}">-->
+<!--            </div>-->
+<!--            <div class="mb-3 col-4">-->
+<!--                <label for="sdt" class="form-label">Số điện thoại khách hàng</label>-->
+<!--                <input type="text" class="form-control" id="sdt" name="sdt" th:value="${sdt}">-->
+<!--            </div>-->
             <div class="col-4">
                 <label class="form-label">Trạng thái</label>
                 <select class="form-select" aria-label="Default select example" name="trangThai">
                     <option selected value="">Tất cả</option>
-                    <option th:value="false" th:selected="${trangThai==false}">Chưa thanh toán</option>
-                    <option th:value="true" th:selected="${trangThai==true}">Đã thanh toán</option>
+                    <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>
+                    <option value="1" th:selected="${trangThai==1}">Đã thanh toán</option>
+                    <option value="2" th:selected="${trangThai==2}">Đã hủy</option>
+                    <option value="3" th:selected="${trangThai==3}">Chờ xác nhận</option>
                 </select>
             </div>
             <div class="mb-3 col-4">
@@ -54,8 +56,8 @@
                 <tr>
                     <th scope="col">STT</th>
                     <th scope="col">Mã hóa đơn</th>
-                    <th scope="col">Nhân viên</th>
-                    <th scope="col">Khách hàng</th>
+<!--                    <th scope="col">Nhân viên</th>-->
+<!--                    <th scope="col">Khách hàng</th>-->
                     <th scope="col">Tổng tiền</th>
                     <th scope="col">Ngày thanh toán</th>
                     <th scope="col">SĐT người nhận</th>
@@ -66,18 +68,22 @@
                 </tr>
                 </thead>
                 <tbody>
-
                 <tr th:each="hd, stat: ${listHD}" >
                     <td th:text="${stat.index+1}"></td>
                     <td th:text="${hd.ma}"></td>
-                    <td th:text="${hd.nhanVien.hoTen?:'Không có'}"></td>
-                    <td th:text="${hd.khachHang.hoTen?:'Không có'}"></td>
+<!--                    <td th:text="${hd.nhanVien.hoTen?:'Không có'}"></td>-->
+<!--                    <td th:text="${hd.khachHang.hoTen?:'Không có'}"></td>-->
                     <td th:text="${hd.tongTien?:'Không có'}"></td>
                     <td th:text="${hd.ngayThanhToan?:'Không có'}"></td>
                     <td th:text="${hd.sdtNguoiNhan?:'Không có'}"></td>
                     <td th:text="${hd.tenNguoiNhan?:'Không có'}"></td>
                     <td th:text="${hd.soTienGiamGia?:'Không có'}"></td>
-                    <td th:text="${hd.trangThai?'Đã thanh toán':'Chưa thanh toán'}"></td>
+                    <td>
+                        <span th:if="${hd.trangThai == 0}">Chưa thanh toán</span>
+                        <span th:if="${hd.trangThai == 1}">Đã thanh toán</span>
+                        <span th:if="${hd.trangThai == 2}">Đã hủy</span>
+                        <span th:if="${hd.trangThai == 3}">Chờ xác nhận</span>
+                    </td>
                     <td>
                         <a th:href="@{/admin/hoa-don-chi-tiet/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
                     </td>
@@ -128,12 +134,13 @@
 
     function changePage(page){
         if (page >= 1) {
-            window.location.href = window.location.origin + '/admin/hoa-don/hien-thi?page='+(page-1);
-
+            linkSearch.set('page', page-1); // Cập nhật giá trị 'page'
         } else {
-            window.location.href = window.location.origin + '/admin/hoa-don/hien-thi?page=0';
+            linkSearch.set('page', 0); // Nếu page nhỏ hơn 1, đặt thành 0
         }
 
+        // Cập nhật lại URL với các tham số đã sửa
+        window.location.href = window.location.origin + '/admin/hoa-don/tim-kiem?' + linkSearch.toString();
     }
 
 </script>
