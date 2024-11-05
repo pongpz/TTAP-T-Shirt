@@ -24,6 +24,9 @@ public class DatHangChiTiet {
     @JoinColumn(name = "id_san_pham_chi_tiet")
     private ChiTietSanPham chiTietSanPham;
 
+    @Column(name = "gia")
+    private Double gia;
+
     @ManyToOne
     @JoinColumn(name = "id_dat_hang")
     private DatHang datHang;
