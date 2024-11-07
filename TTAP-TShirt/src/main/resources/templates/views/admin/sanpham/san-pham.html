@@ -40,7 +40,7 @@
                         </div>
                         <span class="d-block text-center mt-3" th:if="${listSP.isEmpty()}">Không có sản phẩm nào</span>
                         <div th:if="${not listSP.isEmpty()}">
-                            <table class="table table-borderless table-hover mt-3">
+                            <table class="table table-hover">
                                 <thead>
                                 <tr style="border: 1px solid #ccc; background-color: lightskyblue">
                                     <th>STT</th>
@@ -64,7 +64,10 @@
                                     <td th:text="${sanPham.chatLieu==null ?'':sanPham.chatLieu.ten}"></td>
                                     <td th:text="${sanPham.thuongHieu==null ?'':sanPham.thuongHieu.ten}"></td>
                                     <td th:text="${sanPham.kieuDang==null ?'':sanPham.kieuDang.ten}"></td>
-                                    <td th:text="${sanPham.ngayTao}"></td>
+                                    <td>
+                                        <span th:text="${sanPham.ngayTao != null ? @sanPhamController.formatLocalDateTime(sanPham.ngayTao) : 'không có'}"></span>
+                                    </td>
+
                                     <td>
                                 <span th:class="'badge ' + (${sanPham.trangThai} == 1 ? 'bg-info text-dark' : 'bg-secondary text-light')"
                                       th:text="${sanPham.trangThai} == 1 ? 'Đang bán' : 'Hết hàng'">
@@ -72,6 +75,7 @@
                                     </td>
                                     <td>
                                         <a th:href="@{'chi-tiet-san-pham/' + ${sanPham.id} }" class="btn btn-primary">Chi tiết</a>
+                                        <a th:href="@{'san-pham/sua-san-pham/' + ${sanPham.id} }" class="btn btn-primary">Sửa</a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -108,10 +112,6 @@
                     </div>
                     <div class="modal-body">
                         <form action="/admin/san-pham/add" method="post">
-                            <div class="mb-3">
-                                <label for="ma" class="form-label">Mã Sản Phẩm</label>
-                                <input type="text" class="form-control" id="ma" name="ma" required>
-                            </div>
                             <div class="mb-3">
                                 <label for="ten" class="form-label">Tên Sản Phẩm</label>
                                 <input type="text" class="form-control" id="ten" name="ten" required>
@@ -169,10 +169,6 @@
             </div>
         </div>
 
-    </div>
-
-
-</div>
 
 
 

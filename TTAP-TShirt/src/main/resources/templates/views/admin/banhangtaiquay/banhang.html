@@ -73,11 +73,11 @@
                                     </button>
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             th:attr="data-bs-target='#modal-khachhang-' + ${hoaDon.id}">
-                                        Thêm Khách Hàng
+                                        Thêm Khách Hànggg
                                     </button>
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             th:attr="data-bs-target='#modal-khuyenmai-' + ${hoaDon.id}">
-                                        Thêm Khuyến Mãi
+                                        Thêm Khuyến Mãiii
                                     </button>
 
                                     <!-- Modal Sản Phẩm -->
@@ -86,7 +86,8 @@
                                         <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn mua
+                                                    <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn
+                                                        mua
                                                         vào hóa đơn</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -120,7 +121,7 @@
                                                             <td th:text="${ctsp.id}"></td>
                                                             <th scope="row" th:text="${ctsp.sanPham.ma}"></th>
                                                             <td th:text="${ctsp.sanPham.ten}"></td>
-                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>
+<!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
                                                             <td th:text="${ctsp.sanPham.nsx.ten}"></td>
                                                             <td th:text="${ctsp.sanPham.chatLieu.ten}"></td>
                                                             <td th:text="${ctsp.kichCo.ten}"></td>
@@ -136,79 +137,13 @@
                                                                     <input type="hidden" name="idhd"
                                                                            th:value="${hoaDon.id}"/>
                                                                     <input style="width: 28%" type="number"
-                                                                           th:id="${'quantity-' + ctsp.id}" name="soLuong"
+                                                                           th:id="${'quantity-' + ctsp.id}"
+                                                                           name="soLuong"
                                                                            value="0" min="1" max="${ctsp.soLuong}"/>
                                                                     <button style="width: 68%" type="submit"
                                                                             class="btn btn-primary">Thêm vào hóa đơn
                                                                     </button>
                                                                 </form>
-
-                                                            <table class="table">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th scope="col">Id</th>
-                                                                    <th scope="col">Ma San Pham</th>
-                                                                    <th scope="col">Ten San Pham</th>
-                                                                    <th scope="col">Thuong Hieu</th>
-                                                                    <th scope="col">NSX</th>
-                                                                    <th scope="col">Chat Lieu</th>
-                                                                    <th scope="col">Kich Co</th>
-                                                                    <th scope="col">Mau Sac</th>
-                                                                    <th scope="col">Anh</th>
-                                                                    <th scope="col">Số Lượng Tồn</th>
-                                                                    <th scope="col">Giá bán</th>
-                                                                    <th scope="col">Số lượng mua</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr th:each="ctsp : ${listCTSP}">
-                                                                    <td th:text="${ctsp.id}"></td>
-                                                                    <th scope="row" th:text="${ctsp.sanPham.ma}"></th>
-                                                                    <td th:text="${ctsp.sanPham.ten}"></td>
-                                                                    <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>
-                                                                    <td th:text="${ctsp.sanPham.nsx.ten}"></td>
-                                                                    <td th:text="${ctsp.sanPham.chatLieu.ten}"></td>
-                                                                    <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>
-                                                                    <td th:text="${ctsp.sanPham.nsx.ten}"></td>
-                                                                    <td th:text="${ctsp.sanPham.chatLieu.ten}"></td>
-                                                                    <td th:text="${ctsp.kichCo.ten}"></td>
-                                                                    <td th:text="${ctsp.mauSac.ten}"></td>
-                                                                    <td>
-                                                                        <img th:src="${ctsp.hinhAnh?.getphotoPath() ?: ''}" alt="Image" style="width: 100px; height: auto;">
-                                                                    </td>
-                                                                    <td th:text="${ctsp.soLuong}"></td>
-                                                                    <td th:text="${ctsp.giaBan} + '$'"></td>
-                                                                    <td>
-                                                                        <form style="width: 240px"
-                                                                              th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
-                                                                              method="post" onsubmit="setQuantity(${ctsp.id})">
-                                                                            <input type="hidden" name="idctsp"
-                                                                                   th:value="${ctsp.id}"/>
-                                                                            <input type="hidden" name="idhd"
-                                                                                   th:value="${hoaDon.id}"/>
-                                                                            <input style="width: 28%" type="number"
-                                                                                   th:id="${'quantity-' + ctsp.id}" name="soLuong"
-                                                                                   value="0" min="1" max="${ctsp.soLuong}"/>
-                                                                            <button style="width: 68%" type="submit"
-                                                                                    class="btn btn-primary">Thêm vào hóa đơn
-                                                                            </button>
-                                                                        </form>
-                                                                        <script th:inline="javascript">
-                                                                            function setQuantity(ctspId) {
-                                                                                var quantityInput = document.getElementById('quantity-' + ctspId);
-                                                                                var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
-                                                                                hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
-                                                                            }
-                                                                        </script>
-                                                                    </td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                                Close
-                                                            </button>
-                                                        </div>
                                                                 <script th:inline="javascript">
                                                                     function setQuantity(ctspId) {
                                                                         var quantityInput = document.getElementById('quantity-' + ctspId);
@@ -222,7 +157,8 @@
                                                     </table>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
                                                         Close
                                                     </button>
                                                 </div>
@@ -235,7 +171,8 @@
                                         <div class="modal-dialog modal-xl modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModqalLabel">Chọn khách hàng vào hóa
+                                                    <h5 class="modal-title" id="exampleModqalLabel">Chọn khách hàng vào
+                                                        hóa
                                                         đơn</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -257,7 +194,8 @@
                                                             <td>
                                                                 <form th:action="@{/admin/ban-hang/chon-khach-hang}"
                                                                       method="post">
-                                                                    <input type="hidden" name="idkh" th:value="${kh.id}"/>
+                                                                    <input type="hidden" name="idkh"
+                                                                           th:value="${kh.id}"/>
                                                                     <input type="hidden" name="idhd"
                                                                            th:value="${hoaDon.id}"/>
                                                                     <button type="submit" class="btn btn-primary">Chọn
@@ -269,7 +207,8 @@
                                                     </table>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
                                                         Close
                                                     </button>
                                                 </div>
@@ -282,7 +221,8 @@
                                         <div class="modal-dialog modal-xl modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleMsodalLabel">Chọn khuyến mãi vào hóa
+                                                    <h5 class="modal-title" id="exampleMsodalLabel">Chọn khuyến mãi vào
+                                                        hóa
                                                         đơn</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -307,7 +247,8 @@
                                                             <td>
                                                                 <form th:action="@{/admin/ban-hang/chon-khuyen-mai}"
                                                                       method="post">
-                                                                    <input type="hidden" name="idkm" th:value="${km.id}"/>
+                                                                    <input type="hidden" name="idkm"
+                                                                           th:value="${km.id}"/>
                                                                     <input type="hidden" name="idhd"
                                                                            th:value="${hoaDon.id}"/>
                                                                     <button type="submit" class="btn btn-primary">Chọn
@@ -319,7 +260,8 @@
                                                     </table>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
                                                         Close
                                                     </button>
                                                 </div>
@@ -346,7 +288,7 @@
                         <tr>
                             <th scope="col">Id</th>
                             <th scope="col">Ten San Pham</th>
-                            <th scope="col">Thuong Hieu</th>
+                            <th scope="col">Thương Hiệu</th>
                             <th scope="col">NSX</th>
                             <th scope="col">Chat Lieu</th>
                             <th scope="col">Kich Co</th>
@@ -361,10 +303,10 @@
                         <tr th:each="hdct:${listHDCT}">
                             <td th:text="${hdct.chiTietSanPham.id}"></td>
                             <td th:text="${hdct.chiTietSanPham.sanPham.ten}"></td>
-                            <td th:text="${hdct.chiTietSanPham.thuongHieu.ten}"></td>
-                            <td th:text="${hdct.chiTietSanPham.nsx.ten}"></td>
-                            <td th:text="${hdct.chiTietSanPham.chatLieu.ten}"></td>
-                            <td th:text="${hdct.chiTietSanPham.kichCo.ten}"></td>
+                            <td th:text="${hdct.chiTietSanPham.sanPham.thuongHieu.ten}"></td>
+                            <td th:text="${hdct.chiTietSanPham.sanPham.nsx.ten}"></td>
+                            <td th:text="${hdct.chiTietSanPham.sanPham.chatLieu.ten}"></td>
+                            <td th:text="${hdct.chiTietSanPham.sanPham.chatLieu.ten}"></td>
                             <td th:text="${hdct.chiTietSanPham.mauSac.ten}"></td>
                             <td th:text="${hdct.chiTietSanPham.giaBan}+' vnd'"></td>
                             <td th:text="${hdct.soLuong}"></td>
@@ -377,7 +319,8 @@
                                    th:onclick="|handleXoaSpKhoiHdct(event,${hdct.id})|"
                                 >Xóa sản phẩm</a>
                                 <button type="button" id="editQuantityBtn" data-bs-toggle="modal"
-                                        th:attr="data-bs-target='#modal-suaSoLuong-' + ${hdct.id}" class="btn btn-warning"
+                                        th:attr="data-bs-target='#modal-suaSoLuong-' + ${hdct.id}"
+                                        class="btn btn-warning"
                                         th:onclick="'editbtnOnClick(' + ${hdct.id} + ')'"
                                 >
                                     Sửa số lượng
@@ -391,18 +334,23 @@
                                     <div class="modal-content">
                                         <span class="closeModal" data-bs-dismiss="modal">&times;</span>
                                         <h2>Sửa số lượng</h2>
-                                        <form th:id="'quantityForm-'+${hdct.id}" th:onsubmit="'handleSubmitUpdateQuantity(' + ${hdct.id} + ', event)'" method="post">
+                                        <form th:id="'quantityForm-'+${hdct.id} "
+                                              th:onsubmit="'handleSubmitUpdateQuantity(' + ${hdct.id} + ', event)'"
+                                              method="post">
                                             <div>
-                                                <input type="hidden" th:id="'detailInvoiceId-'+${hdct.id}" th:value="${hdct.id}">
+                                                <input type="hidden" th:id="'detailInvoiceId-'+${hdct.id}"
+                                                       th:value="${hdct.id}">
                                                 <label>Số lượng:</label>
-                                                <input type="number" th:id="'quantityModal-'+${hdct.id}" name="quantity" min="1" required>
-                                                <button th:onclick="|btnSubmitHandle(${hdct.id})|" type="submit" class="btn btn-primary">Cập nhật</button>
+                                                <input type="number" th:id="'quantityModal-'+${hdct.id}" name="quantity"
+                                                       min="1" required>
+                                                <button th:onclick="|btnSubmitHandle(${hdct.id})|" type="submit"
+                                                        class="btn btn-primary">Cập nhật
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-
 
 
                         </tr>
@@ -423,19 +371,25 @@
                             <div class="container mt-4">
                                 <div class="info-container">
                                     <label class="info-label">Tiền hàng:</label>
-                                    <span class="info-value" th:text="${totalMoneyBefore != null ? totalMoneyBefore : 0} +' vnd'"></span>
+                                    <span class="info-value"
+                                          th:text="${totalMoneyBefore != null ? totalMoneyBefore : 0} +' vnd'"></span>
                                 </div>
                                 <div class="info-container">
                                     <label class="info-label">Khuyến Mãi:</label>
-                                    <span class="info-value" th:text="${moneyVoucher != null ? moneyVoucher : 0} +' vnd'"></span>
+                                    <span class="info-value"
+                                          th:text="${moneyVoucher != null ? moneyVoucher : 0} +' vnd'"></span>
                                 </div>
                                 <div class="info-container">
                                     <label class="info-label">Tổng tiền:</label>
-                                    <span class="info-value" th:text="${totalMoneyAfter != null ? totalMoneyAfter : 0} +' vnd'"></span>
+                                    <span class="info-value"
+                                          th:text="${totalMoneyAfter != null ? totalMoneyAfter : 0} +' vnd'"></span>
                                 </div>
                                 <form th:action="@{/admin/ban-hang/hoa-don/xac-nhan-thanh-toan}" method="get">
-                                    <input type="hidden" name="idhd" th:if="${hoadon1 != null}" th:value="${hoadon1.id}" />
-                                    <button type="submit" class="btn btn-primary mt-3" style="margin-left: auto;">Xác nhận thanh toán</button>
+                                    <input type="hidden" name="idhd" th:if="${hoadon1 != null}"
+                                           th:value="${hoadon1.id}"/>
+                                    <button type="submit" class="btn btn-primary mt-3" style="margin-left: auto;">Xác
+                                        nhận thanh toán
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -450,7 +404,7 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!--<script th:src="@{/js/banhang.js}"></script>-->
+<script th:src="@{/js/banhang.js}"></script>
 
 
 </div>

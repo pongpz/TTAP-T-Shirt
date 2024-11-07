@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TTAP</title>
+  <link rel="stylesheet" href="/customcss/banhang.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="d-flex">
+
+  <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
+
+  <div class="main-content content flex-grow-1 p-4">
+    <h2 class="text-center">Sửa Sản Phẩm</h2>
+    <hr>
+
+    <section class="content">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="container my-4">
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <form th:action="@{/admin/san-pham/sua-san-pham/{id}(id=${ssanpham.id})}" th:object="${ssanpham}" method="post">
+                      <input type="hidden" name="ma" th:value="${ssanpham.ma}"/>
+                      <div class="form-group">
+                        <label>Tên sản phẩm:</label>
+                        <input type="text" class="form-control" name="ten" th:value="${ssanpham.ten}" placeholder="Nhập tên sản phẩm" />
+                      </div>
+
+                      <!-- Nhà Sản Xuất -->
+                      <div class="mb-3">
+                        <label class="form-label">Nhà Sản Xuất</label>
+                        <select class="form-select" name="idNSX">
+                          <option th:each="nsx : ${nsxList}" th:value="${nsx.id}" th:text="${nsx.ten}"
+                                  th:selected="${nsx.id == ssanpham.nsx?.id}"></option>
+                        </select>
+                      </div>
+
+                      <!-- Chất Liệu -->
+                      <div class="mb-3">
+                        <label class="form-label">Chất Liệu</label>
+                        <select class="form-select" name="idChatLieu">
+                          <option th:each="chatLieu : ${chatLieuList}" th:value="${chatLieu.id}" th:text="${chatLieu.ten}"
+                                  th:selected="${chatLieu.id == ssanpham.chatLieu?.id}"></option>
+                        </select>
+                      </div>
+
+                      <!-- Thương Hiệu -->
+                      <div class="mb-3">
+                        <label class="form-label">Thương Hiệu</label>
+                        <select class="form-select" name="idThuongHieu">
+                          <option th:each="thuongHieu : ${thuongHieuList}" th:value="${thuongHieu.id}" th:text="${thuongHieu.ten}"
+                                  th:selected="${thuongHieu.id == ssanpham.thuongHieu?.id}"></option>
+                        </select>
+                      </div>
+
+                      <!-- Kiểu Dáng -->
+                      <div class="mb-3">
+                        <label class="form-label">Kiểu Dáng</label>
+                        <select class="form-select" name="idKieuDang">
+                          <option th:each="kieuDang : ${kieuDangList}" th:value="${kieuDang.id}" th:text="${kieuDang.ten}"
+                                  th:selected="${kieuDang.id == ssanpham.kieuDang?.id}"></option>
+                        </select>
+                      </div>
+
+                      <!-- Mô Tả -->
+                      <div class="mb-3">
+                        <label for="moTa" class="form-label">Mô Tả</label>
+                        <textarea class="form-control" id="moTa" name="moTa" rows="2" th:text="${ssanpham.moTa}"></textarea>
+                      </div>
+
+                      <!-- Trạng Thái -->
+                      <div class="mb-3">
+                        <label class="form-label">Trạng Thái</label>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="trangThaiDangBan" name="trangThai" value="1" th:checked="${ssanpham.trangThai == 1}" required>
+                          <label class="form-check-label" for="trangThaiDangBan">Còn Hàng</label>
+                        </div>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="trangThaiHetHang" name="trangThai" value="0" th:checked="${ssanpham.trangThai == 0}" required>
+                          <label class="form-check-label" for="trangThaiHetHang">Hết Hàng</label>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Sửa</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

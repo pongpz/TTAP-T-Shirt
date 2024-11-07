@@ -53,7 +53,7 @@ public class ChiTietSanPhamController {
     @Autowired
     HinhAnhService hinhAnhService;
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public String index(@PathVariable("id") Long id,Model model) {
         SanPham sp = sanPhamService.findById(id);
         List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findBySanPhamId(id);
@@ -97,7 +97,6 @@ public class ChiTietSanPhamController {
         SanPham sp = sanPhamService.findById(id);
         List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findBySanPhamId(id);
         model.addAttribute("listSP",sp);
-        model.addAttribute("listCTSP", listCTSP);
         model.addAttribute("listMauSac", mauSacService.findAll());
         model.addAttribute("listHinhAnh", hinhAnhService.findAll());
         model.addAttribute("listKichCo", kichCoService.findAll());
@@ -107,92 +106,28 @@ public class ChiTietSanPhamController {
     @PostMapping("/add")
     public String createNewCTSP(
             @RequestParam("idSanPham") Long idSanPham,
-            @RequestParam("idMauSac") Long idMauSac,
-            @RequestParam("idKichCo") Long idKichCo,
-            @RequestParam(required = false, value = "idHinhAnh") Long idHinhAnh,
+            @RequestParam("mauSacIds") List<Long> mauSacIds, // Nhận nhiều màu sắc
+            @RequestParam("kichCoIds") List<Long> kichCoIds, // Nhận nhiều kích cỡ
             ChiTietSanPham chiTietSanPham,
             RedirectAttributes redirectAttributes) {
 
-        // Kiểm tra dữ liệu đầu vào
-        if (idSanPham == null || idMauSac == null || idKichCo == null || idHinhAnh == null) {
-            redirectAttributes.addFlashAttribute("error", "Các trường bắt buộc không được bỏ trống.");
-            return "redirect:/admin/chi-tiet-san-pham";
-        }
-
-        // Thiết lập các thuộc tính của ChiTietSanPham
         SanPham sanPham = new SanPham();
         sanPham.setId(idSanPham);
-        chiTietSanPham.setSanPham(sanPham);
 
-        MauSac mauSac = new MauSac();
-        mauSac.setId(idMauSac);
-        chiTietSanPham.setMauSac(mauSac);
+        // Lưu từng biến thể cho sản phẩm
+        for (Long mauSacId : mauSacIds) {
+            MauSac mauSac = new MauSac();
+            mauSac.setId(mauSacId);
 
-        KichCo kichCo = new KichCo();
-        kichCo.setId(idKichCo);
-        chiTietSanPham.setKichCo(kichCo);
-
-//        // Xử lý idAnh nếu có
-//        if (idHinhAnh != null) {
-//            HinhAnh anh = new HinhAnh();
-//            anh.setId(idHinhAnh);
-//            chiTietSanPham.setHinhAnh(anh);
-//        }
-
-        // Lưu ChiTietSanPham và xử lý ngoại lệ
-        try {
-            chiTietSanPhamService.save(chiTietSanPham);
-            redirectAttributes.addFlashAttribute("success", "Thêm chi tiết sản phẩm thành công.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Lỗi khi lưu chi tiết sản phẩm: " + e.getMessage());
-            return "redirect:/admin/chi-tiet-san-pham/{id}";
-        }
-
-        // Chuyển hướng với idSanPham
-
-        chiTietSanPhamService.save(chiTietSanPham);
-
-        // Use the path variable to build the redirect URL
+            for (Long kichCoId : kichCoIds) {
+                KichCo kichCo = new KichCo();
+                kichCo.setId(kichCoId);
 
         redirectAttributes.addAttribute("id", idSanPham);
-        return "redirect:/admin/chi-tiet-san-pham/" + idSanPham;
+
+        return "redirect:/admin/chi-tiet-san-pham/{id}";
     }
 
-//    @PostMapping("/add")
-//    public String createNewCTSP(
-//            @RequestParam("idSanPham") Long idSanPham,
-//            @RequestParam("idMauSac") Long idMauSac,
-//            @RequestParam("idKichCo") Long idKichCo,
-//            @RequestParam("idHinhAnh") Long idHinhAnh,
-//            @RequestParam(required = false, value = "idKhuyenMai") Long idKhuyenMai,
-//            ChiTietSanPham chiTietSanPham,
-//            RedirectAttributes redirectAttributes) {
-//
-//        SanPham sanPham = new SanPham();
-//        sanPham.setId(idSanPham);
-//        chiTietSanPham.setSanPham(sanPham);
-//
-//        MauSac mauSac = new MauSac();
-//        mauSac.setId(idMauSac);
-//        chiTietSanPham.setMauSac(mauSac);
-//
-//        KichCo kichCo = new KichCo();
-//        kichCo.setId(idKichCo);
-//        chiTietSanPham.setKichCo(kichCo);
-//
-//
-//        HinhAnh anh = new HinhAnh();
-//        anh.setId(idHinhAnh);
-//        chiTietSanPham.setHinhAnh(anh);
-//
-//
-//        chiTietSanPhamService.save(chiTietSanPham);
-//
-//        // Use the path variable to build the redirect URL
-//        redirectAttributes.addAttribute("id", idSanPham);
-//
-//        return "redirect:/admin/chi-tiet-san-pham/{id}";
-//    }
 
 
     @PostMapping("/update/{idCTSP}")
@@ -200,11 +135,6 @@ public class ChiTietSanPhamController {
             @PathVariable("idCTSP") Long idCTSP,
             @RequestParam(required = false, value = "idMauSac") Long idMauSac,
             @RequestParam(required = false, value = "idKichCo") Long idKichCo,
-            @RequestParam(required = false, value = "idChatLieu") Long idChatLieu,
-            @RequestParam(required = false, value = "idKieuDang") Long idKieuDang,
-            @RequestParam(required = false, value = "idNSX") Long idNSX,
-            @RequestParam(required = false, value = "idThuongHieu") Long idThuongHieu,
-            @RequestParam(required = false, value = "idKhuyenMai") String idKhuyenMai,
             @RequestParam(required = false, value = "soLuong") Integer soLuong,
             @RequestParam(required = false, value = "giaBan") Double giaBan,
             RedirectAttributes redirectAttributes) {

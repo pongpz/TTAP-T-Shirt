@@ -56,14 +56,14 @@ function updateMainContent(url) {
 
 updateMainContent('/admin/ban-hang');
 
-function handleCTHD(event,idHD){
-    var btnCthdId = "#chiTietHd-"+idHD;
-    var btnCthd = $(btnCthdId);
-        event.preventDefault();
-     var urlCTHD =   btnCthd.attr("href");
-    updateMainContent(urlCTHD);
-
-}
+// function handleCTHD(event,idHD){
+//     var btnCthdId = "#chiTietHd-"+idHD;
+//     var btnCthd = $(btnCthdId);
+//         event.preventDefault();
+//      var urlCTHD =   btnCthd.attr("href");
+//     updateMainContent(urlCTHD);
+//
+// }
 
 function handleXoaSpKhoiHdct(event,idHD){
     var btnCtspId = "#btnXoaSpKhoiGioHang-"+idHD;

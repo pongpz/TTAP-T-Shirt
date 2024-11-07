@@ -44,7 +44,8 @@ public class KieuDangController {
 
     @GetMapping("/update/{id}")
     public String detailKieuDang(@PathVariable("id") Long id, Model model){
-        model.addAttribute("detailKieuDang",kieuDangRepository.getReferenceById(id));
+        KieuDang kieuDang = kieuDangRepository.findById(id).orElse(null);
+        model.addAttribute("detailKieuDang",kieuDang);
         model.addAttribute("listKieuDang",kieuDangRepository.findAll());
         return "admin/thuoctinhsanpham/update-kieu-dang";
     }

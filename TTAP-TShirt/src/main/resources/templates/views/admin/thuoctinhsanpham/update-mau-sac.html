@@ -34,10 +34,7 @@
                                     </div>
                                     <div class="card-body">
                                         <form th:action="@{/admin/mau-sac/update-mau-sac/{id}(id=${mauSac.id})}" th:object="${mauSac}" method="post">
-                                            <div class="form-group">
-                                                <label> Mã màu sắc:</label>
-                                                <input type="text" class="form-control" name="ma" th:value="${mauSac.ma}"  placeholder="Nhập mã màu sắc" />
-                                            </div>
+                                            <input type="hidden" name="ma" th:value="${mauSac.ma}"/>
                                             <div class="form-group">
                                                 <label> Tên màu sắc:</label>
                                                 <input type="text" class="form-control" name="ten" th:value="${mauSac.ten}" placeholder="Nhập tên màu sắc" />

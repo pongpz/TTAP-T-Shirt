@@ -38,16 +38,13 @@ public class ChiTietSanPham extends CreatedUpdatedAt{
     @JoinColumn(name = "id_kich_co")
     private KichCo kichCo;
 
-//    @ManyToOne
-//    @JoinColumn(name = "id_khuyen_mai")
-//    private KhuyenMai khuyenMai;
-
     @Column(name = "trang_thai")
     private String trangThai;
 
 
     @Column(name = "so_luong")
     private Integer soLuong;
+
 
 
 }

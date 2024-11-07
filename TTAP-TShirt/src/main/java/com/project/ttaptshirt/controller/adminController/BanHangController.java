@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Date;
 import java.text.NumberFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -96,8 +97,7 @@ public class BanHangController {
         List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<MaGiamGia> listKM = voucherRepo.findAll();
-//        List<User> listKH = khachHangService.findAll();
-//        model.addAttribute("listKH", listKH);
+
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listHD", listHd);
@@ -182,7 +182,7 @@ public class BanHangController {
 
 
         hoaDon.setTongTien((float) totalMoneyAfter);
-        hoaDon.setTrangThai(true);
+        hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
         return "redirect:/admin/ban-hang";
     }
@@ -219,11 +219,18 @@ public class BanHangController {
 
 
     @PostMapping("/newHoaDon")
-    public String newHoaDon() {
+    public String newHoaDon(Authentication authentication) {
         HoaDon hoaDon = new HoaDon();
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            hoaDon.setNhanVien(user);
+        }
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
-        hoaDon.setTrangThai(false);
+        hoaDon.setNgayTao(LocalDate.now());
+        hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
+
         return "redirect:/admin/ban-hang";
     }
 
@@ -303,4 +310,18 @@ public class BanHangController {
         return "redirect:/admin/ban-hang";
 
     }
+
+//    @RequestMapping("/thanh-toan/vnpay")
+//    public String createVNPayPayment(Model modeel, @RequestParam String maHD){
+//        String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+//        String vnp_ReturnUrl = "http://localhost:8080/TTAP/trang-chu";
+//        String vnp_TmnCode = "MT6RTYUK";
+//        String secretKey = "SXF7AIMCYSCS4XIWP5RLLO12WG2O14YW";
+//        String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+//        String vnp_Locale = "vn";
+//        String vnp_CurrCode = "VND";
+//        String vnp_TxnRef = maHD;
+//        String vnp_OrderInfo = hoaDonRepository.getHDByMa(maHD).get(0).getGhiChu();
+//        return "redirect:/admin/ban-hang";
+//    }
 }

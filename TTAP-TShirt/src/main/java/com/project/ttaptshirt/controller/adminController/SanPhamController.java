@@ -8,16 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/admin/san-pham")
 public class SanPhamController {
+
+    public String formatLocalDateTime(LocalDateTime dateTime) {
+        Date date = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        return formatter.format(date);
+    }
 
     @Autowired
     SanPhamRepository sanPhamRepository;
@@ -69,16 +77,79 @@ public class SanPhamController {
                       @RequestParam("idChatLieu") Long idChatLieu,
                       @RequestParam("idThuongHieu") Long idThuongHieu,
                       @RequestParam("idKieuDang") Long idKieuDang) {
-        NSX nsx = nsxRepository.findById(idNsx).orElse(null);
-        ChatLieu chatLieu = chatLieuRepository.findById(idChatLieu).orElse(null);
-        ThuongHieu thuongHieu = thuongHieuRepository.findById(idThuongHieu).orElse(null);
-        KieuDang kieuDang = kieuDangRepository.findById(idKieuDang).orElse(null);
-        sanPham.setNsx(nsx);
-        sanPham.setChatLieu(chatLieu);
-        sanPham.setThuongHieu(thuongHieu);
-        sanPham.setKieuDang(kieuDang);
+
+        // Thiết lập các thuộc tính cho sản phẩm
+        sanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
+        sanPham.setChatLieu(chatLieuRepository.findById(idChatLieu).orElse(null));
+        sanPham.setThuongHieu(thuongHieuRepository.findById(idThuongHieu).orElse(null));
+        sanPham.setKieuDang(kieuDangRepository.findById(idKieuDang).orElse(null));
+
+        // Sinh mã duy nhất cho sản phẩm
+        sanPham.setMa(generateUniqueCode());
+
         sanPhamRepository.save(sanPham);
         return "redirect:/admin/san-pham";
     }
+
+    private String generateUniqueCode() {
+        String generatedMa;
+        do {
+            generatedMa = "SP" + generateRandomCode(5);
+        } while (sanPhamRepository.existsByMa(generatedMa));
+        return generatedMa;
+    }
+
+    private String generateRandomCode(int length) {
+        String characters = "0123456789";
+        StringBuilder code = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            code.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return code.toString();
+    }
+
+
+    @GetMapping("sua-san-pham/{id}")
+    public String update(@PathVariable("id") Long id, Model model) {
+        SanPham sanPham = sanPhamRepository.findById(id).orElse(null);
+        model.addAttribute("ssanpham", sanPham);
+        model.addAttribute("nsxList", nsxRepository.findAll());
+        model.addAttribute("chatLieuList", chatLieuRepository.findAll());
+        model.addAttribute("thuongHieuList", thuongHieuRepository.findAll());
+        model.addAttribute("kieuDangList", kieuDangRepository.findAll());
+        return "/admin/sanpham/sua-san-pham";
+    }
+
+
+    @PostMapping("sua-san-pham/{id}")
+    public String updatesp(SanPham sanPham, @PathVariable("id") Long id,
+                           @RequestParam("idNSX") Long idNsx,
+                           @RequestParam("idChatLieu") Long idChatLieu,
+                           @RequestParam("idThuongHieu") Long idThuongHieu,
+                           @RequestParam("idKieuDang") Long idKieuDang) {
+
+        SanPham existingSanPham = sanPhamRepository.findById(id).orElse(null);
+        if (existingSanPham == null) {
+            return "redirect:/admin/san-pham";
+        }
+
+        sanPham.setMa(existingSanPham.getMa());
+
+        existingSanPham.setTen(sanPham.getTen());
+        existingSanPham.setMoTa(sanPham.getMoTa());
+        existingSanPham.setTrangThai(sanPham.getTrangThai());
+
+        existingSanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
+        existingSanPham.setChatLieu(chatLieuRepository.findById(idChatLieu).orElse(null));
+        existingSanPham.setThuongHieu(thuongHieuRepository.findById(idThuongHieu).orElse(null));
+        existingSanPham.setKieuDang(kieuDangRepository.findById(idKieuDang).orElse(null));
+
+        sanPhamRepository.save(existingSanPham);
+
+        return "redirect:/admin/san-pham";
+    }
+
+
 
 }

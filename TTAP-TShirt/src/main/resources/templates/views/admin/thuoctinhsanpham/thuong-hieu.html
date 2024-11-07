@@ -19,10 +19,34 @@
         <h2 class="text-center">Thương Hiệu</h2>
         <hr>
 
+        <div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
+                Thêm thương hiệu
+            </button>
+        </div>
+
+        <div class="modal fade" th:id="'modal-themsp-'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModqalLabel">Thêm thương hiệu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/admin/thuong-hieu/add}" th:object="${chatLieu}" method="post">                            <div class="mb-3">
+                                <label for="ten" class="form-label">Tên thương hiệu</label>
+                                <input type="text" class="form-control" id="ten" name="ten" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Thêm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-md-6">
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">Danh sách thương hiệu</h3>
@@ -60,24 +84,6 @@
                                 <li><a href="#">»</a></li>
                             </ul>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class=" box">
-                        <!-- Thêm -->
-                        <form th:action="@{/admin/thuong-hieu/add}" th:object="${chatLieu}" method="post">
-                            <div class="form-group">
-                                <label for="ma">Mã thương hiệu:</label>
-                                <input type="text" class="form-control" id="ma" name="ma" placeholder="Nhập mã thương hiệu" />
-                            </div>
-                            <div class="form-group">
-                                <label for="ten">Tên thương hiệu:</label>
-                                <input type="text" class="form-control" id="ten" name="ten" placeholder="Nhập tên thương hiệuthương hiệu" />
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Thêm</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

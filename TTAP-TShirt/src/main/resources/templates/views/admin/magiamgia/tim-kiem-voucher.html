@@ -16,7 +16,7 @@
   <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
 
   <div class="main-content content flex-grow-1 p-4">
-    <h2 class="text-center">Kuyến mãi</h2>
+    <h2 class="text-center">Mã giảm giá</h2>
     <hr>
   <form th:action="@{/admin/ma-giam-gia/tim-kiem}" method="get" style="border: brown solid 1px; border-radius: 1ch" class="row justify-content-center d-flex">
     <h6>Tìm kiếm/Lọc</h6>
@@ -53,19 +53,21 @@
       </select>
     </div>
     <button type="submit" class="mb-3 btn btn-primary col-2">Tìm kiếm</button>
-    <a th:href="@{/admin/ma-giam-gia/form-add}" class="btn btn-success">Tạo khuyến mãi mới</a>
+    <a th:href="@{/admin/ma-giam-gia/form-add}" class="btn btn-success">Tạo mã giảm giá mới</a>
   </form>
-  <h1 class="text-center">Danh sách mã khuyến mãi</h1>
+  <h1 class="text-center">Danh sách mã giảm giá</h1>
   <div class="row d-flex justify-content-center">
     <table class="table table-striped">
       <thead>
       <tr>
         <th scope="col">STT</th>
-        <th scope="col">Mã khuyến mãi</th>
-        <th scope="col">Tên khuyến mãi</th>
+        <th scope="col">Mã giảm giá</th>
+        <th scope="col">Tên mã giảm giá</th>
+        <th scope="col">Ngày kết thúc</th>
         <th scope="col">Giá trị giảm</th>
         <th scope="col">Hình thức giảm</th>
         <th scope="col">Số lượng</th>
+        <th scope="col">Trạng thái</th>
         <th scope="col">Hành động</th>
       </tr>
       </thead>
@@ -74,9 +76,11 @@
         <td>[[${stat.index+1}]]</td>
         <td>[[${vc.ma}]]</td>
         <td>[[${vc.ten}]]</td>
+        <td>[[${vc.ngayKetThuc}]]</td>
         <td>[[${vc.giaTriGiam}]]</td>
         <td>[[${vc.hinhThuc?'VND':'%'}]]</td>
         <td>[[${vc.soLuong}]]</td>
+        <td>[[${vc.trangThai?'Còn hạn':'Hết hạn'}]]</td>
         <td>
           <a th:href="@{/admin/ma-giam-gia/detail/{id}(id=${vc.id})}" class="btn btn-primary mb-3">Xem chi tiết</a>
         </td>

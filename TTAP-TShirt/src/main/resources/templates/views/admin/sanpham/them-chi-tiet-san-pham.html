@@ -26,61 +26,61 @@
                     <h4>Sản Phẩm:&nbsp;&nbsp; </h4>
                     <h4 style="color: red" th:text="${listSP.ten}"></h4>
                     </div>
+                    <br>
                     <form th:action="@{/admin/chi-tiet-san-pham/add}" method="post">
-                        <!-- Tên sản phẩm -->
-                        <div class="col-md-6">
-                            <label class="form-label">Sản Phẩm</label>
-                            <input type="text" class="form-control" id="sanPhamTen" th:value="${listSP.ten}" readonly>
-                            <input type="hidden" name="idSanPham" th:value="${listSP.id}">
+                        <input type="hidden" name="idSanPham" th:value="${listSP.id}"/>
+                        <div class="accordion" id="accordionColorSelection">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingColors">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseColors" aria-expanded="false" aria-controls="collapseColors">
+                                        Chọn Màu Sắc
+                                    </button>
+                                </h2>
+                                <div id="collapseColors" class="accordion-collapse collapse" aria-labelledby="headingColors" data-bs-parent="#accordionColorSelection">
+                                    <div class="accordion-body">
+                                        <div class="form-check" th:each="mauSac : ${listMauSac}">
+                                            <input class="form-check-input" type="checkbox" name="mauSacIds" th:value="${mauSac.id}" th:id="'mauSac_' + ${mauSac.id}">
+                                            <label class="form-check-label" th:for="'mauSac_' + ${mauSac.id}" th:text="${mauSac.ten}">Tên màu</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+<br>
+                        <div class="accordion" id="accordionSizeSelection">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSizes">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSizes" aria-expanded="false" aria-controls="collapseSizes">
+                                        Chọn Kích Cỡ
+                                    </button>
+                                </h2>
+                                <div id="collapseSizes" class="accordion-collapse collapse" aria-labelledby="headingSizes" data-bs-parent="#accordionSizeSelection">
+                                    <div class="accordion-body">
+                                        <div class="form-check" th:each="kichCo : ${listKichCo}">
+                                            <input class="form-check-input" type="checkbox" name="kichCoIds" th:value="${kichCo.id}" th:id="'kichCo_' + ${kichCo.id}">
+                                            <label class="form-check-label" th:for="'kichCo_' + ${kichCo.id}" th:text="${kichCo.ten}">Tên kích cỡ</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Chọn Màu Sắc với tùy chọn nhiều -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Màu Sắc</label>
-                                <select class="form-select" name="idMauSac" multiple>
-                                    <option th:each="mauSac : ${listMauSac}" th:value="${mauSac.id}" th:text="${mauSac.ten}"></option>
-                                </select>
-                            </div>
-                            <!-- Giá bán -->
-                            <div class="col-md-6">
+
+<br>
+
+                            <div>
                                 <label class="form-label">Giá Bán</label>
                                 <input type="number" class="form-control" name="giaBan">
                             </div>
-                        </div>
 
-                        <!-- Chọn Kích Cỡ với tùy chọn nhiều -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Kích Cỡ</label>
-                                <select class="form-select" name="idKichCo" multiple>
-                                    <option th:each="kichCo : ${listKichCo}" th:value="${kichCo.id}" th:text="${kichCo.ten}"></option>
-                                </select>
-                            </div>
-                            <!-- Số lượng -->
-                            <div class="col-md-6">
+                            <div>
                                 <label class="form-label">Số Lượng</label>
                                 <input type="number" class="form-control" name="soLuong">
                             </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">thêm</button>
                         </div>
-
-<<<<<<< HEAD
-                        <div class="col-md-6">
-                            <label class="form-label">hình ảnh</label>
-                            <select class="form-select" name="idHinhAnh">
-                                <option th:each="kichCo : ${listHinhAnh}" th:value="${hinhAnh.id}" th:text="${hinhAnh.ma}"></option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">hinh anh</label>
-
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Thêm</button>
-=======
-                        <button type="submit" class="btn btn-primary mt-3">Tạo Biến Thể</button>
->>>>>>> 676a0c9ae5cdb311adc8193023a56a8cc4f982e3
                     </form>
                 </div>
             </div>
@@ -88,5 +88,6 @@
 
     </div>
 </div>
+
 </body>
 </html>

@@ -18,18 +18,28 @@
     <div class="main-content content flex-grow-1 p-4">
         <h2 class="text-center">Kích Cỡ</h2>
         <hr>
-        <div class="form-group col-md-3 text-end">
+        <div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
                 Thêm kích cỡ
             </button>
         </div>
 
         <div class="modal fade" th:id="'modal-themsp-'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModqalLabel">Thêm Sản Phẩm</h5>
+                        <h5 class="modal-title" id="exampleModqalLabel">Thêm kích cỡ</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/admin/kich-co/save-kich-co" method="post">
+                            <div class="mb-3">
+                                <label for="ten" class="form-label">Tên kích cỡ</label>
+                                <input type="text" class="form-control" id="ten" name="ten" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Thêm</button>
+                        </form>
                     </div>
             </div>
         </div>
@@ -37,7 +47,7 @@
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-md-6">
+
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">Danh sách kích cỡ</h3>
@@ -48,10 +58,8 @@
                                 <thead>
                                 <tr style="background-color: lightskyblue">
                                     <th>STT</th>
-                                    <th>Mã màu</th>
+                                    <th>Mã kích cỡ</th>
                                     <th>Tên kích cỡ</th>
-                                    <th> Chiều cao</th>
-                                    <th> Cân nặng</th>
                                     <th>Hành động</th>
                                 </tr>
                                 </thead>
@@ -60,8 +68,6 @@
                                     <td th:text="${i.index + 1}"></td>
                                     <td th:text="${mausac.ma}"></td>
                                     <td th:text="${mausac.ten}"></td>
-                                    <td th:text="${mausac.chieuCao}"></td>
-                                    <td th:text="${mausac.canNang}"></td>
                                     <td>
                                         <a class="btn btn-success" th:href="@{/admin/kich-co/update-kich-co/{id}(id=${mausac.id})}">Sửa</a>
                                     </td>
@@ -81,7 +87,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+
             <!-- Default box -->
             <!-- /.box -->
 

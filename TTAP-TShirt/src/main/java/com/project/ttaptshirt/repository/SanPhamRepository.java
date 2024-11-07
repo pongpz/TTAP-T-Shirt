@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
     List<SanPham> findByTenContaining(String ten);
+    boolean existsByMa(String ma);
+
 }

@@ -34,7 +34,7 @@ public class MauSac {
     @PrePersist
     private void prePersist() {
         if (this.ma == null || this.ma.isEmpty()) {
-            this.ma = "MS" + generateRandomCode(6); // Sinh mã với tiền tố "MS" và 6 ký tự ngẫu nhiên
+            this.ma = "MS" + generateRandomCode(3);
         }
     }
 

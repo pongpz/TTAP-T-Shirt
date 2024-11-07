@@ -59,7 +59,8 @@ public class ChatLieuController {
             User user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
-        model.addAttribute("detailChatLieu",cli.getReferenceById(id));
+        ChatLieu chatLieu = cli.findById(id).orElse(null);
+        model.addAttribute("detailChatLieu",chatLieu);
         model.addAttribute("listChatLieu",cli.findAll());
         return "admin/thuoctinhsanpham/update-chat-lieu";
     }

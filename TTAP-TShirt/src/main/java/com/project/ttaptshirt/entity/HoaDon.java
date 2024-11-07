@@ -33,7 +33,7 @@ public class HoaDon {
     private String ma;
 
     @Column(name = "ngay_tao")
-    private Date ngayTao;
+    private LocalDate ngayTao;
 
     @Column(name = "ngay_thanh_toan")
     private LocalDate ngayThanhToan;
@@ -77,7 +77,7 @@ public class HoaDon {
     private float soTienGiamGia;
 
     @Column(name = "trang_thai")
-    private Boolean trangThai;
+    private Integer trangThai;
 
     @Column(name = "ten_nguoi_nhan")
     private String tenNguoiNhan;

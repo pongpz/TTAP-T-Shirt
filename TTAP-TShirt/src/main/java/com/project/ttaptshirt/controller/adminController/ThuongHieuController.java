@@ -45,7 +45,8 @@ public class ThuongHieuController {
 
     @GetMapping("/update/{id}")
     public String detailThuongHieu(@PathVariable("id") Long id, Model model){
-        model.addAttribute("detailThuongHieu",thi.getReferenceById(id));
+        ThuongHieu thuongHieu = thi.findById(id).orElse(null);
+        model.addAttribute("detailThuongHieu",thuongHieu);
         model.addAttribute("listThuongHieu",thi.findAll());
         return "admin/thuoctinhsanpham/update-thuong-hieu";
     }

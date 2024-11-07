@@ -34,10 +34,7 @@
                                     </div>
                                     <div class="card-body">
                                         <form th:action="@{/admin/thuong-hieu/update/{id}(id=${detailThuongHieu.id})}" th:object="${thuongHieu}" method="post">
-                                            <div class="form-group">
-                                                <label> Mã thương hiệu:</label>
-                                                <input type="text" class="form-control" name="ma" th:value="${detailThuongHieu.ma}"  placeholder="Nhập mã thương hiệu" />
-                                            </div>
+                                            <input type="hidden" name="ma" th:value="${detailThuongHieu.ma}"/>
                                             <div class="form-group">
                                                 <label> Tên thương hiệu:</label>
                                                 <input type="text" class="form-control" name="ten" th:value="${detailThuongHieu.ten}" placeholder="Nhập tên thương hiệu" />
