@@ -146,7 +146,7 @@ public class BanHangController {
         return "admin/banhangtaiquay/banhang";
     }
 
-    @GetMapping("/hoa-don/xac-nhan-thanh-toan")
+    @PostMapping("/hoa-don/xac-nhan-thanh-toan")
     public String xacNhanThanhToan(@RequestParam("idhd") Long id,Model model,Authentication authentication) {
 
         if (authentication != null) {
@@ -182,7 +182,7 @@ public class BanHangController {
 
 
         hoaDon.setTongTien((float) totalMoneyAfter);
-        hoaDon.setTrangThai(0);
+        hoaDon.setTrangThai(1);
         hoaDonService.save(hoaDon);
         return "redirect:/admin/ban-hang";
     }

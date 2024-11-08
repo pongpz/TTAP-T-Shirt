@@ -81,4 +81,10 @@
 .main-content {
     margin-left: 280px; /* Khoảng cách bằng với chiều rộng sidebar */
     padding: 20px; /* Tùy chỉnh khoảng cách bên trong nội dung */
+
+    .fixed-table {
+        max-height: 400px; /* Đặt chiều cao cố định cho bảng */
+        overflow-y: auto;  /* Thêm con lăn khi dữ liệu vượt quá chiều cao */
+    }
+
 }
