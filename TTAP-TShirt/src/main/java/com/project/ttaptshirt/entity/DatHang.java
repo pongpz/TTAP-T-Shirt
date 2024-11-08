@@ -30,6 +30,13 @@ public class DatHang {
     @Column(name = "ghi_chu")
     private String ghiChu;
 
+
+    @Column(name = "phi_van_chuyen")
+    private Double phiVanChuyen;
+
+    @Column(name = "giam_gia")
+    private Double giamGia;
+
     @Column(name = "phuong_thuc_thanh_toan")
     private String phuongThucThanhToan;
 

@@ -123,18 +123,6 @@ public class ChiTietSanPhamController {
                 KichCo kichCo = new KichCo();
                 kichCo.setId(kichCoId);
 
-                ChiTietSanPham newChiTietSanPham = new ChiTietSanPham();
-                newChiTietSanPham.setSanPham(sanPham);
-                newChiTietSanPham.setMauSac(mauSac);
-                newChiTietSanPham.setKichCo(kichCo);
-                newChiTietSanPham.setGiaBan(chiTietSanPham.getGiaBan()); // Giả sử bạn muốn giữ giá bán từ biến thể đầu tiên
-                newChiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong()); // Giả sử bạn muốn giữ số lượng từ biến thể đầu tiên
-
-                chiTietSanPhamService.save(newChiTietSanPham);
-            }
-        }
-
-        // Dùng biến path variable để xây dựng URL chuyển hướng
         redirectAttributes.addAttribute("id", idSanPham);
 
         return "redirect:/admin/chi-tiet-san-pham/{id}";

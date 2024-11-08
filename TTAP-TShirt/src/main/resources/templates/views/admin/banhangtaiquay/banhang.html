@@ -73,6 +73,7 @@
                                     Thêm Khuyến Mãiii
                                 </button>
 
+<<<<<<< HEAD
                                 <!-- Modal Sản Phẩm -->
                                 <div class="modal fade" th:id="'modal-sanpham-' + ${hoaDon.id}" tabindex="-1"
                                      aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -92,6 +93,89 @@
                                                         <button class="col-1 btn btn-primary" type="submit">Tìm kiếm
                                                         </button>
                                                     </form>
+=======
+                                    <!-- Modal Sản Phẩm -->
+                                    <div class="modal fade" th:id="'modal-sanpham-' + ${hoaDon.id}" tabindex="-1"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn
+                                                        mua
+                                                        vào hóa đơn</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div>
+                                                        <form class="row" action="#">
+                                                            <input class="col-7" type="text" name="tenSpSearch">
+                                                            <button class="col-1 btn btn-primary" type="submit">Tìm kiếm
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Id</th>
+                                                            <th scope="col">Ma San Pham</th>
+                                                            <th scope="col">Ten San Pham</th>
+                                                            <th scope="col">Thuong Hieu</th>
+                                                            <th scope="col">NSX</th>
+                                                            <th scope="col">Chat Lieu</th>
+                                                            <th scope="col">Kich Co</th>
+                                                            <th scope="col">Mau Sac</th>
+                                                            <th scope="col">Số Lượng Tồn</th>
+                                                            <th scope="col">Giá bán</th>
+                                                            <th scope="col">Số lượng mua</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="ctsp : ${listCTSP}">
+                                                            <td th:text="${ctsp.id}"></td>
+                                                            <th scope="row" th:text="${ctsp.sanPham.ma}"></th>
+                                                            <td th:text="${ctsp.sanPham.ten}"></td>
+<!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                            <td th:text="${ctsp.sanPham.nsx.ten}"></td>
+                                                            <td th:text="${ctsp.sanPham.chatLieu.ten}"></td>
+                                                            <td th:text="${ctsp.kichCo.ten}"></td>
+                                                            <td th:text="${ctsp.mauSac.ten}"></td>
+                                                            <td th:text="${ctsp.soLuong}"></td>
+                                                            <td th:text="${ctsp.giaBan} + 'vnd'"></td>
+                                                            <td>
+                                                                <form style="width: 240px"
+                                                                      th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
+                                                                      method="post" onsubmit="setQuantity(${ctsp.id})">
+                                                                    <input type="hidden" name="idctsp"
+                                                                           th:value="${ctsp.id}"/>
+                                                                    <input type="hidden" name="idhd"
+                                                                           th:value="${hoaDon.id}"/>
+                                                                    <input style="width: 28%" type="number"
+                                                                           th:id="${'quantity-' + ctsp.id}"
+                                                                           name="soLuong"
+                                                                           value="0" min="1" max="${ctsp.soLuong}"/>
+                                                                    <button style="width: 68%" type="submit"
+                                                                            class="btn btn-primary">Thêm vào hóa đơn
+                                                                    </button>
+                                                                </form>
+                                                                <script th:inline="javascript">
+                                                                    function setQuantity(ctspId) {
+                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                    }
+                                                                </script>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+>>>>>>> 0c06957576d401d0568b1e5f618e250f0db8b24a
                                                 </div>
                                                 <table class="table">
                                                     <thead>

@@ -62,7 +62,7 @@ public class CartController {
 
         CartDTO cart = cartService.getCart(userId);
         model.addAttribute("cart", cart);
-        return "cart/view";
+        return "/views/user/home/cart";
     }
 }
 
