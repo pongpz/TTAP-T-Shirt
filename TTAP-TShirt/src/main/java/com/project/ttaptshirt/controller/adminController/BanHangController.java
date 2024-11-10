@@ -3,12 +3,10 @@ package com.project.ttaptshirt.controller.adminController;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
 import com.project.ttaptshirt.repository.HoaDonRepository;
+import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.repository.VoucherRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
-import com.project.ttaptshirt.service.ChiTietSanPhamService;
-import com.project.ttaptshirt.service.HoaDonChiTietService;
-import com.project.ttaptshirt.service.HoaDonService;
-import com.project.ttaptshirt.service.KhachHangService;
+import com.project.ttaptshirt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Date;
 import java.text.NumberFormat;
@@ -42,7 +41,7 @@ public class BanHangController {
     VoucherRepo voucherRepo;
 
     @Autowired
-    KhachHangService khachHangService;
+    UserRepo userRepo;
 
     @Autowired
     HoaDonRepository hoaDonRepository;
@@ -60,8 +59,8 @@ public class BanHangController {
         List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<MaGiamGia> listKM = voucherRepo.findAll();
-//        List<User> listKH = khachHangService.findAll();
-//        model.addAttribute("listKH", listKH);
+        List<User> listkh = userRepo.findAll();
+        model.addAttribute("listUser",listkh);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listLs", listHd);
@@ -97,7 +96,9 @@ public class BanHangController {
         List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<MaGiamGia> listKM = voucherRepo.findAll();
+        List<User> listkh = userRepo.findAll();
 
+        model.addAttribute("listUser",listkh);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listHD", listHd);
@@ -119,10 +120,13 @@ public class BanHangController {
         double discount = 0.0;
 
         if (voucher != null) {
-            if (voucher.getHinhThuc().equals("%")) {
+            if (voucher.getHinhThuc().equals(false)) {
                 discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+                if (discount > voucher.getGiaTriToiDa()){
+                    discount = voucher.getGiaTriToiDa();
+                }
             }
-            else if (voucher.getHinhThuc().equals(("VND"))) {
+            else if (voucher.getHinhThuc().equals(true)) {
                 discount = voucher.getGiaTriGiam();
             }
         }
@@ -146,17 +150,22 @@ public class BanHangController {
         return "admin/banhangtaiquay/banhang";
     }
 
+
+
+
     @PostMapping("/hoa-don/xac-nhan-thanh-toan")
-    public String xacNhanThanhToan(@RequestParam("idhd") Long id,Model model,Authentication authentication) {
+    public String xacNhanThanhToan(
+            @RequestParam("idhd") Long id, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
 
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
-        HoaDon hoaDon = hoaDonService.findById(id);
 
+        HoaDon hoaDon = hoaDonService.findById(id);
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(id);
+
         double totalMoneyBefore = listHDCT.stream()
                 .mapToDouble(hdct -> {
                     int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
@@ -168,11 +177,13 @@ public class BanHangController {
         MaGiamGia voucher = hoaDon.getMaGiamGia();
         double discount = 0.0;
 
-        if (voucher!= null){
-            if (voucher.getHinhThuc().equals("%")) {
+        if (voucher != null) {
+            if (voucher.getHinhThuc().equals(false)) {
                 discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
-            }
-            else if (voucher.getHinhThuc().equals("VND")) {
+                if (discount > voucher.getGiaTriToiDa()) {
+                    discount = voucher.getGiaTriToiDa();
+                }
+            } else if (voucher.getHinhThuc().equals(true)) {
                 discount = voucher.getGiaTriGiam();
             }
         }
@@ -180,12 +191,16 @@ public class BanHangController {
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0);
 
-
+        hoaDon.setSoTienGiamGia((float) discount);
         hoaDon.setTongTien((float) totalMoneyAfter);
         hoaDon.setTrangThai(1);
         hoaDonService.save(hoaDon);
+
+        // Thêm ID hóa đơn vào RedirectAttributes
+        redirectAttributes.addFlashAttribute("idHoaDonIn", hoaDon.getId());
         return "redirect:/admin/ban-hang";
     }
+
 
     @GetMapping("/huy")
     public String huyHD(@RequestParam("hoadonId") Long idhd, Model model,Authentication authentication) {
@@ -224,7 +239,7 @@ public class BanHangController {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
-            hoaDon.setNhanVien(user);
+            hoaDon.setKhachHang(user);
         }
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
         hoaDon.setNgayTao(LocalDate.now());

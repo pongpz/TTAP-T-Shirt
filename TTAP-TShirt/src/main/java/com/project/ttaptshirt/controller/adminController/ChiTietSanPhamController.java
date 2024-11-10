@@ -123,6 +123,18 @@ public class ChiTietSanPhamController {
                 KichCo kichCo = new KichCo();
                 kichCo.setId(kichCoId);
 
+                ChiTietSanPham newChiTietSanPham = new ChiTietSanPham();
+                newChiTietSanPham.setSanPham(sanPham);
+                newChiTietSanPham.setMauSac(mauSac);
+                newChiTietSanPham.setKichCo(kichCo);
+                newChiTietSanPham.setGiaBan(chiTietSanPham.getGiaBan());
+                newChiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong());
+
+                chiTietSanPhamService.save(newChiTietSanPham);
+            }
+        }
+
+        // Dùng biến path variable để xây dựng URL chuyển hướng
         redirectAttributes.addAttribute("id", idSanPham);
 
         return "redirect:/admin/chi-tiet-san-pham/{id}";
@@ -144,7 +156,7 @@ public class ChiTietSanPhamController {
 
         if (existingCTSP == null) {
             // Xử lý lỗi nếu không tìm thấy đối tượng
-            return "redirect:/admin/error"; // Hoặc trang lỗi phù hợp
+            return "redirect:/admin/error";
         }
 
         // Cập nhật thuộc tính nếu có giá trị mới từ form

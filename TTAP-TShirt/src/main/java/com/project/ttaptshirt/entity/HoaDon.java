@@ -25,10 +25,6 @@ public class HoaDon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_nhan_vien")
-    private User nhanVien;
-
     @Column(name = "ma")
     private String ma;
 

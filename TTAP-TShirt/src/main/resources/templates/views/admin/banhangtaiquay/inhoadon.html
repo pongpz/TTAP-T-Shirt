@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>In Hóa Đơn</title>
+</head>
+<body>
+<div id="hoaDon">
+  <h2>Hóa Đơn Thanh Toán</h2>
+  <p>Mã hóa đơn: <span th:text="${hoaDon.id}"></span></p>
+  <p>Tên khách hàng: <span th:text="${hoaDon.tenKhachHang}"></span></p>
+  <p>Nhân viên: <span th:text="${hoaDon.tenNhanVien}"></span></p>
+  <p>Tổng tiền: <span th:text="${#numbers.formatCurrency(hoaDon.tongTien)}"></span></p>
+  <!-- Hiển thị danh sách sản phẩm -->
+  <ul>
+    <li th:each="sanPham : ${hoaDon.sanPhamList}">
+      <span th:text="${sanPham.tenSanPham}">Tên sản phẩm</span> -
+      <span th:text="${#numbers.formatCurrency(sanPham.gia)}">Giá</span>
+    </li>
+  </ul>
+</div>
+<button onclick="window.print()">In hóa đơn</button>
+</body>
+</html>
