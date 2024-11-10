@@ -1,0 +1,1569 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TTAP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/customcss/banhang.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+
+<div class="d-flex">
+    <div>
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0">
+            <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white"
+                 style="position: fixed; top: 0; left: 0; width: 280px; height: 100vh;">
+                <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none">
+                    <span class="fs-4"><img src="/images/logo2tap.jpg" alt=""
+                                            style="width: 180px; height: 100px;"></span>
+                </a>
+                <hr class="text-light">
+
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <!--                <li class="nav-item">-->
+                    <!--                    <a class="nav-link link-light " >-->
+                    <!--                        <i class="bi bi-table"></i> Thống kê-->
+                    <!--                    </a>-->
+                    <!--                </li>-->
+                    <li class="nav-item">
+                        <a href="/admin/ban-hang" class="nav-link link-light">
+                            <i class="bi bi-cart4"></i> Bán Hàng
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="nav-link link-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-box"></i> Quản Lý Sản Phẩm
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                            <li><a class="dropdown-item " href="/admin/san-pham">Sản Phẩm</a></li>
+                            <li><a class="dropdown-item " href="/admin/hinh-anh">Hình ảnh</a></li>
+                            <li><a class="dropdown-item " href="/admin/mau-sac">Màu Sắc</a></li>
+                            <li><a class="dropdown-item " href="/admin/kich-co">Kích Cỡ</a></li>
+                            <li><a class="dropdown-item " href="/admin/nsx/view">Nhà Sản Xuất</a></li>
+                            <li><a class="dropdown-item " href="/admin/thuong-hieu/view">Thương Hiệu</a></li>
+                            <li><a class="dropdown-item " href="/admin/chat-lieu/view">Chất Liệu</a></li>
+                            <li><a class="dropdown-item " href="/admin/kieu-dang/view">Kiểu Dáng</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/admin/ma-giam-gia/hien-thi" class="nav-link link-light">
+                            <i class="bi bi-percent"></i> Mã Giảm Giá
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/hoa-don/hien-thi" class="nav-link link-light">
+                            <i class="bi bi-receipt"></i> Quản lý hóa đơn
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/users/view" class="nav-link link-light">
+                            <i class="bi bi-people-fill"></i> Khách Hàng
+                        </a>
+                    </li>
+                    <!--                <li class="nav-item">-->
+                    <!--                    <a href="/TTAP/NhanVien/home" class="nav-link link-light" >-->
+                    <!--                        <i class="bi bi-person-workspace"></i> Nhân Viên-->
+                    <!--                    </a>-->
+                    <!--                </li>-->
+                </ul>
+
+                <div class="dropdown pb-4">
+                    <a href="#" class="d-flex align-items-center text-light text-decoration-none dropdo wn-toggle"
+                       id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30"
+                             class="rounded-circle">
+
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+
+                        <li><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content content flex-grow-1 p-4">
+        <h4 class="text-center">Bán Hàng Tại Quầy</h4>
+        <hr>
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-8">
+                <!-- Thông tin hóa đơn -->
+                <div class="invoice-section fixed-table"
+                     style="border: 1px solid rgb(182, 172, 172); padding: 1ch; border-radius: 0.5ch; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230); margin-bottom: 2ch;">
+                    <label class="font-weight-bold">Thông tin hóa đơn</label>
+                    <input type="text" class="form-control mt-2" placeholder="Tìm kiếm hóa đơn">
+                    <div class="btn-group mt-2" role="group" aria-label="Basic example">
+                        <form action="/admin/ban-hang/newHoaDon" method="post">
+                            <button type="submit" class="btn btn-success">Tạo hóa đơn</button>
+                        </form>
+                        <button type="button" class="btn btn-outline-secondary">Làm mới</button>
+                    </div>
+                    <hr>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Mã hóa đơn</th>
+                            <th scope="col">Ngày tạo</th>
+                            <th scope="col">Khách hàng</th>
+                            <th scope="col">Trạng Thái</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>3</td>
+                            <td>HD169119</td>
+                            <td>2024-10-31</td>
+                            <td>chưa có</td>
+                            <td>Chưa Thanh Toán</td>
+
+                            <td>
+                                <a href="/admin/ban-hang/huy?hoadonId=3"
+                                   class="btn btn-outline-danger">Hủy</a>
+                                <a href="/admin/ban-hang/hoa-don/chi-tiet?hoadonId=3"
+                                   class="btn btn-outline-warning chitiethd"
+                                   id="chiTietHd-3"
+                                   onclick="handleCTHD(event,3)" data-invoice-code="HD169119">chi
+                                    tiết</a>
+
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-sanpham-3">
+                                    Thêm Sản Phẩm
+                                </button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-khachhang-3">
+                                    Thêm Khách Hànggg
+                                </button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-khuyenmai-3">
+                                    Thêm Khuyến Mãiii
+                                </button>
+
+                                <<<<<<< HEAD
+                                <!-- Modal Sản Phẩm -->
+                                <div class="modal fade" id="modal-sanpham-3" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn
+                                                    mua
+                                                    vào hóa đơn</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div>
+                                                    <form class="row" action="#">
+                                                        <input class="col-7" type="text" name="tenSpSearch">
+                                                        <button class="col-1 btn btn-primary" type="submit">Tìm kiếm
+                                                        </button>
+                                                    </form>
+                                                    =======
+                                                    <!-- Modal Sản Phẩm -->
+                                                    <div class="modal fade" id="modal-sanpham-3" tabindex="-1"
+                                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-xl modal-dialog-centered"
+                                                             id="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Chọn
+                                                                        sản phẩm muốn
+                                                                        mua
+                                                                        vào hóa đơn</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div>
+                                                                        <form class="row" action="#">
+                                                                            <input class="col-7" type="text"
+                                                                                   name="tenSpSearch">
+                                                                            <button class="col-1 btn btn-primary"
+                                                                                    type="submit">Tìm kiếm
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th scope="col">Id</th>
+                                                                            <th scope="col">Ma San Pham</th>
+                                                                            <th scope="col">Ten San Pham</th>
+                                                                            <th scope="col">Thuong Hieu</th>
+                                                                            <th scope="col">NSX</th>
+                                                                            <th scope="col">Chat Lieu</th>
+                                                                            <th scope="col">Kich Co</th>
+                                                                            <th scope="col">Mau Sac</th>
+                                                                            <th scope="col">Số Lượng Tồn</th>
+                                                                            <th scope="col">Giá bán</th>
+                                                                            <th scope="col">Số lượng mua</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <th scope="row">MS-007</th>
+                                                                            <td>SH mode</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>nsx1</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Large</td>
+                                                                            <td>do</td>
+                                                                            <td>14</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="1"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="3"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-1"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>2</td>
+                                                                            <th scope="row">MS-007</th>
+                                                                            <td>SH mode</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>nsx1</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Small</td>
+                                                                            <td>do</td>
+                                                                            <td>9926</td>
+                                                                            <td>100000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="2"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="3"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-2"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>3</td>
+                                                                            <th scope="row">MS-007</th>
+                                                                            <td>SH mode</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>nsx1</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Small</td>
+                                                                            <td>do</td>
+                                                                            <td>9</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="3"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="3"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-3"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>4</td>
+                                                                            <th scope="row">SP66738</th>
+                                                                            <td>Ao Polo C? ng?n</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>Aolle</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Small</td>
+                                                                            <td>do</td>
+                                                                            <td>100</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="4"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="3"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-4"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>5</td>
+                                                                            <th scope="row">SP66738</th>
+                                                                            <td>Ao Polo C? ng?n</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>Aolle</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Medium</td>
+                                                                            <td>do</td>
+                                                                            <td>100</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="5"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="3"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-5"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>6</td>
+                                                                            <th scope="row">SP66738</th>
+                                                                            <td>Ao Polo C? ng?n</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>Aolle</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>X-Large</td>
+                                                                            <td>do</td>
+                                                                            <td>100</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="6"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="3"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-6"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">
+                                                                        Close
+                                                                    </button>
+                                                                    >>>>>>> 0c06957576d401d0568b1e5f618e250f0db8b24a
+                                                                </div>
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col">Id</th>
+                                                                        <th scope="col">Ma San Pham</th>
+                                                                        <th scope="col">Ten San Pham</th>
+                                                                        <th scope="col">Thuong Hieu</th>
+                                                                        <th scope="col">NSX</th>
+                                                                        <th scope="col">Chat Lieu</th>
+                                                                        <th scope="col">Kich Co</th>
+                                                                        <th scope="col">Mau Sac</th>
+                                                                        <th scope="col">Số Lượng Tồn</th>
+                                                                        <th scope="col">Giá bán</th>
+                                                                        <th scope="col">Số lượng mua</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <th scope="row">MS-007</th>
+                                                                        <td>SH mode</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>nsx1</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Large</td>
+                                                                        <td>do</td>
+                                                                        <td>14</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="1"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="3"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-1"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <th scope="row">MS-007</th>
+                                                                        <td>SH mode</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>nsx1</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Small</td>
+                                                                        <td>do</td>
+                                                                        <td>9926</td>
+                                                                        <td>100000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="2"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="3"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-2"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>3</td>
+                                                                        <th scope="row">MS-007</th>
+                                                                        <td>SH mode</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>nsx1</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Small</td>
+                                                                        <td>do</td>
+                                                                        <td>9</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="3"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="3"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-3"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>4</td>
+                                                                        <th scope="row">SP66738</th>
+                                                                        <td>Ao Polo C? ng?n</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>Aolle</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Small</td>
+                                                                        <td>do</td>
+                                                                        <td>100</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="4"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="3"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-4"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>5</td>
+                                                                        <th scope="row">SP66738</th>
+                                                                        <td>Ao Polo C? ng?n</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>Aolle</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Medium</td>
+                                                                        <td>do</td>
+                                                                        <td>100</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="5"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="3"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-5"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>6</td>
+                                                                        <th scope="row">SP66738</th>
+                                                                        <td>Ao Polo C? ng?n</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>Aolle</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>X-Large</td>
+                                                                        <td>do</td>
+                                                                        <td>100</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="6"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="3"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-6"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Modal Khách Hàng -->
+                                                <div class="modal fade" id="modal-khachhang-3" tabindex="-1"
+                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModqalLabel">Chọn
+                                                                    khách hàng vào
+                                                                    hóa
+                                                                    đơn</h5>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col">STT</th>
+                                                                        <th scope="col">Họ và tên</th>
+                                                                        <th scope="col">Số điện thoại</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Modal Khuyến Mãi -->
+                                                <div class="modal fade" id="modal-khuyenmai-3" tabindex="-1"
+                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleMsodalLabel">Chọn
+                                                                    khuyến mãi vào
+                                                                    hóa
+                                                                    đơn</h5>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col">STT</th>
+                                                                        <th scope="col">Mã voucher</th>
+                                                                        <th scope="col">Giảm giá</th>
+                                                                        <th scope="col">Hạn sử dụng</th>
+                                                                        <th scope="col">Thao tác</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>HD868319</td>
+                            <td>2024-10-31</td>
+                            <td>chưa có</td>
+                            <td>Chưa Thanh Toán</td>
+
+                            <td>
+                                <a href="/admin/ban-hang/huy?hoadonId=4"
+                                   class="btn btn-outline-danger">Hủy</a>
+                                <a href="/admin/ban-hang/hoa-don/chi-tiet?hoadonId=4"
+                                   class="btn btn-outline-warning chitiethd"
+                                   id="chiTietHd-4"
+                                   onclick="handleCTHD(event,4)" data-invoice-code="HD868319">chi
+                                    tiết</a>
+
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-sanpham-4">
+                                    Thêm Sản Phẩm
+                                </button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-khachhang-4">
+                                    Thêm Khách Hànggg
+                                </button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-khuyenmai-4">
+                                    Thêm Khuyến Mãiii
+                                </button>
+
+                                <<<<<<< HEAD
+                                <!-- Modal Sản Phẩm -->
+                                <div class="modal fade" id="modal-sanpham-4" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn
+                                                    mua
+                                                    vào hóa đơn</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div>
+                                                    <form class="row" action="#">
+                                                        <input class="col-7" type="text" name="tenSpSearch">
+                                                        <button class="col-1 btn btn-primary" type="submit">Tìm kiếm
+                                                        </button>
+                                                    </form>
+                                                    =======
+                                                    <!-- Modal Sản Phẩm -->
+                                                    <div class="modal fade" id="modal-sanpham-4" tabindex="-1"
+                                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-xl modal-dialog-centered"
+                                                             id="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Chọn
+                                                                        sản phẩm muốn
+                                                                        mua
+                                                                        vào hóa đơn</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div>
+                                                                        <form class="row" action="#">
+                                                                            <input class="col-7" type="text"
+                                                                                   name="tenSpSearch">
+                                                                            <button class="col-1 btn btn-primary"
+                                                                                    type="submit">Tìm kiếm
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th scope="col">Id</th>
+                                                                            <th scope="col">Ma San Pham</th>
+                                                                            <th scope="col">Ten San Pham</th>
+                                                                            <th scope="col">Thuong Hieu</th>
+                                                                            <th scope="col">NSX</th>
+                                                                            <th scope="col">Chat Lieu</th>
+                                                                            <th scope="col">Kich Co</th>
+                                                                            <th scope="col">Mau Sac</th>
+                                                                            <th scope="col">Số Lượng Tồn</th>
+                                                                            <th scope="col">Giá bán</th>
+                                                                            <th scope="col">Số lượng mua</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <th scope="row">MS-007</th>
+                                                                            <td>SH mode</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>nsx1</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Large</td>
+                                                                            <td>do</td>
+                                                                            <td>14</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="1"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="4"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-1"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>2</td>
+                                                                            <th scope="row">MS-007</th>
+                                                                            <td>SH mode</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>nsx1</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Small</td>
+                                                                            <td>do</td>
+                                                                            <td>9926</td>
+                                                                            <td>100000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="2"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="4"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-2"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>3</td>
+                                                                            <th scope="row">MS-007</th>
+                                                                            <td>SH mode</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>nsx1</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Small</td>
+                                                                            <td>do</td>
+                                                                            <td>9</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="3"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="4"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-3"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>4</td>
+                                                                            <th scope="row">SP66738</th>
+                                                                            <td>Ao Polo C? ng?n</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>Aolle</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Small</td>
+                                                                            <td>do</td>
+                                                                            <td>100</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="4"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="4"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-4"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>5</td>
+                                                                            <th scope="row">SP66738</th>
+                                                                            <td>Ao Polo C? ng?n</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>Aolle</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>Medium</td>
+                                                                            <td>do</td>
+                                                                            <td>100</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="5"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="4"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-5"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>6</td>
+                                                                            <th scope="row">SP66738</th>
+                                                                            <td>Ao Polo C? ng?n</td>
+                                                                            <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                            <td>Aolle</td>
+                                                                            <td>chat lieu vip</td>
+                                                                            <td>X-Large</td>
+                                                                            <td>do</td>
+                                                                            <td>100</td>
+                                                                            <td>20000.0vnd</td>
+                                                                            <td>
+                                                                                <form style="width: 240px"
+                                                                                      action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                      method="post"
+                                                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                                                    <input type="hidden" name="idctsp"
+                                                                                           value="6"/>
+                                                                                    <input type="hidden" name="idhd"
+                                                                                           value="4"/>
+                                                                                    <input style="width: 28%"
+                                                                                           type="number"
+                                                                                           id="quantity-6"
+                                                                                           name="soLuong"
+                                                                                           value="0" min="1"
+                                                                                           max="${ctsp.soLuong}"/>
+                                                                                    <button style="width: 68%"
+                                                                                            type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        vào hóa đơn
+                                                                                    </button>
+                                                                                </form>
+                                                                                <script>
+                                                                                    function setQuantity(ctspId) {
+                                                                                        var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                    }
+                                                                                </script>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">
+                                                                        Close
+                                                                    </button>
+                                                                    >>>>>>> 0c06957576d401d0568b1e5f618e250f0db8b24a
+                                                                </div>
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col">Id</th>
+                                                                        <th scope="col">Ma San Pham</th>
+                                                                        <th scope="col">Ten San Pham</th>
+                                                                        <th scope="col">Thuong Hieu</th>
+                                                                        <th scope="col">NSX</th>
+                                                                        <th scope="col">Chat Lieu</th>
+                                                                        <th scope="col">Kich Co</th>
+                                                                        <th scope="col">Mau Sac</th>
+                                                                        <th scope="col">Số Lượng Tồn</th>
+                                                                        <th scope="col">Giá bán</th>
+                                                                        <th scope="col">Số lượng mua</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <th scope="row">MS-007</th>
+                                                                        <td>SH mode</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>nsx1</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Large</td>
+                                                                        <td>do</td>
+                                                                        <td>14</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="1"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="4"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-1"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <th scope="row">MS-007</th>
+                                                                        <td>SH mode</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>nsx1</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Small</td>
+                                                                        <td>do</td>
+                                                                        <td>9926</td>
+                                                                        <td>100000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="2"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="4"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-2"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>3</td>
+                                                                        <th scope="row">MS-007</th>
+                                                                        <td>SH mode</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>nsx1</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Small</td>
+                                                                        <td>do</td>
+                                                                        <td>9</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="3"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="4"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-3"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>4</td>
+                                                                        <th scope="row">SP66738</th>
+                                                                        <td>Ao Polo C? ng?n</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>Aolle</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Small</td>
+                                                                        <td>do</td>
+                                                                        <td>100</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="4"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="4"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-4"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>5</td>
+                                                                        <th scope="row">SP66738</th>
+                                                                        <td>Ao Polo C? ng?n</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>Aolle</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>Medium</td>
+                                                                        <td>do</td>
+                                                                        <td>100</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="5"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="4"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-5"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>6</td>
+                                                                        <th scope="row">SP66738</th>
+                                                                        <td>Ao Polo C? ng?n</td>
+                                                                        <!--                                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>-->
+                                                                        <td>Aolle</td>
+                                                                        <td>chat lieu vip</td>
+                                                                        <td>X-Large</td>
+                                                                        <td>do</td>
+                                                                        <td>100</td>
+                                                                        <td>20000.0vnd</td>
+                                                                        <td>
+                                                                            <form style="width: 240px"
+                                                                                  action="/admin/ban-hang/add-ctsp-to-hoadon"
+                                                                                  method="post"
+                                                                                  onsubmit="setQuantity(${ctsp.id})">
+                                                                                <input type="hidden" name="idctsp"
+                                                                                       value="6"/>
+                                                                                <input type="hidden" name="idhd"
+                                                                                       value="4"/>
+                                                                                <input style="width: 28%" type="number"
+                                                                                       id="quantity-6"
+                                                                                       name="soLuong"
+                                                                                       value="0" min="1"
+                                                                                       max="${ctsp.soLuong}"/>
+                                                                                <button style="width: 68%" type="submit"
+                                                                                        class="btn btn-primary">Thêm vào
+                                                                                    hóa đơn
+                                                                                </button>
+                                                                            </form>
+                                                                            <script>
+                                                                                function setQuantity(ctspId) {
+                                                                                    var quantityInput = document.getElementById('quantity-' + ctspId);
+                                                                                    var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);
+                                                                                    hiddenQuantityInput.value = parseInt(quantityInput.value, 10);
+                                                                                }
+                                                                            </script>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Modal Khách Hàng -->
+                                                <div class="modal fade" id="modal-khachhang-4" tabindex="-1"
+                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModqalLabel">Chọn
+                                                                    khách hàng vào
+                                                                    hóa
+                                                                    đơn</h5>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col">STT</th>
+                                                                        <th scope="col">Họ và tên</th>
+                                                                        <th scope="col">Số điện thoại</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Modal Khuyến Mãi -->
+                                                <div class="modal fade" id="modal-khuyenmai-4" tabindex="-1"
+                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleMsodalLabel">Chọn
+                                                                    khuyến mãi vào
+                                                                    hóa
+                                                                    đơn</h5>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col">STT</th>
+                                                                        <th scope="col">Mã voucher</th>
+                                                                        <th scope="col">Giảm giá</th>
+                                                                        <th scope="col">Hạn sử dụng</th>
+                                                                        <th scope="col">Thao tác</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Thông tin sản phẩm -->
+                <div class="product-section fixed-table"
+                     style="border: 1px solid rgb(182, 172, 172); padding: 1ch; border-radius: 0.5ch; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230);">
+                    <label class="font-weight-bold">Thông tin sản phẩm</label>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Ten San Pham</th>
+                            <th scope="col">Thương Hiệu</th>
+                            <th scope="col">NSX</th>
+                            <th scope="col">Chat Lieu</th>
+                            <th scope="col">Kich Co</th>
+                            <th scope="col">Mau Sac</th>
+                            <th scope="col">Giá bán</th>
+                            <th scope="col">Số lượng mua</th>
+                            <th scope="col">Thành Tiền</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="thongTinHoaDon">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right Column - Thông tin thanh toán -->
+            <div class="col-md-4">
+                <div class="payment-info"
+                     style="border: 1px solid rgb(182, 172, 172); padding: 1ch; border-radius: 0.5ch; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230);">
+                    <label class="font-weight-bold">Thông tin thanh toán</label>
+                    <div class="mt-3">
+                        <div class="info-container">
+                            <label>Tiền hàng:</label>
+                            <span>0 VND</span>
+                        </div>
+                        <div class="info-container">
+                            <label>Khuyến Mãi:</label>
+                            <span>0 VND</span>
+                        </div>
+                        <div class="info-container">
+                            <label>Tổng tiền:</label>
+                            <span><b style="color: red">0 VND</b></span>
+                        </div>
+                        <form action="/admin/ban-hang/hoa-don/xac-nhan-thanh-toan" method="post">
+
+                            <button type="submit" class="btn btn-primary mt-3">Xác nhận thanh toán</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/banhang.js"></script>
+
+
+</div>
+</body>
+</html>
+
