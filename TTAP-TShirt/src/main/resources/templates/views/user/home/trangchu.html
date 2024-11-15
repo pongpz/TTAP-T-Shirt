@@ -94,7 +94,7 @@
 <!--                        <a class="abc mt-3" th:href="@{/TTAP/san-pham-detail/{id}(id=${sp.sanPham.id})}">-->
                             <span>Xem sản phẩm</span>
                         </a>
-                        <a class="abc mt-3" onclick="addToCart(1)">
+                        <a class="abc mt-3" th:href="@{/TTAP/cart/add(productId=${sp.sanPham.id}, quantity=1)}" methods="post">
                             <span>Thêm vào giỏ hàng</span>
                         </a>
                     </div>

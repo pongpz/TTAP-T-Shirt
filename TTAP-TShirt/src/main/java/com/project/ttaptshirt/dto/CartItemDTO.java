@@ -19,5 +19,5 @@ public class CartItemDTO {
     private String imagePath;
     private Double price;
     private int quantity;
-    private Double totalPrice;
+
 }
