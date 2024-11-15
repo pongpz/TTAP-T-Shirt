@@ -3,67 +3,95 @@ package com.project.ttaptshirt.service.impl;
 import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.DatHang;
-import com.project.ttaptshirt.entity.DatHangChiTiet;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
-import com.project.ttaptshirt.repository.DatHangChiTietRepository;
-import com.project.ttaptshirt.repository.DatHangRepository;
-import com.project.ttaptshirt.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 @SessionAttributes("cart")
 public class CartService {
     private final ChiTietSanPhamRepository productRepository;
     private CartDTO cart = new CartDTO();
+    List<CartItemDTO> items = new ArrayList<>();
+
+    public CartService(ChiTietSanPhamRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public List<CartItemDTO> getCartItems() {
+        return items;
+    }
 
     @ModelAttribute("cart")
     public CartDTO createCart() {
         return new CartDTO();
     }
 
-    public CartService(ChiTietSanPhamRepository productRepository) {
-        this.productRepository = productRepository;
-    }
-
-    public void addItem(CartDTO cart,Long productId, int quantity) {
+    public void addItem(CartDTO cart, Long productId, int quantity) {
+        // Tìm sản phẩm trong kho
         ChiTietSanPham product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        CartItemDTO item = new CartItemDTO();
-        item.setIdItem(product.getId());
-        item.setName(product.getSanPham().getTen());
-        item.setPrice(product.getGiaBan());
-        item.setQuantity(quantity);
+        // Kiểm tra nếu sản phẩm đã tồn tại trong giỏ hàng
+        if (cart.getItems() == null) {
+            cart.setItems(new ArrayList<>());
+        }
 
-        cart.getItems().add(item);
-        updateTotalPrice();
-    }
-
-    public void updateItemQuantity(Long productId, int quantity) {
-        cart.getItems().stream()
+        CartItemDTO existingItem = cart.getItems().stream()
                 .filter(item -> item.getIdItem().equals(productId))
-                .forEach(item -> item.setQuantity(quantity));
-        updateTotalPrice();
+                .findFirst()
+                .orElse(null);
+
+        if (existingItem != null) {
+            // Nếu sản phẩm đã tồn tại, tăng số lượng
+            existingItem.setQuantity(existingItem.getQuantity() + quantity);
+        } else {
+            // Nếu sản phẩm chưa tồn tại, thêm mới
+            CartItemDTO newItem = new CartItemDTO();
+            newItem.setIdItem(product.getId());
+            newItem.setName(product.getSanPham().getTen());
+            newItem.setPrice(product.getGiaBan());
+            newItem.setQuantity(quantity);
+
+            cart.getItems().add(newItem);
+        }
+
+        // Debug log
+        System.out.println("Giỏ hàng sau khi thêm: " + cart.getItems());
+
+        // Cập nhật tổng giá trị giỏ hàng
+        updateTotalPrice(cart);
     }
 
-    public void removeItem(Long productId) {
-        cart.getItems().removeIf(item -> item.getIdItem().equals(productId));
-        updateTotalPrice();
+    public void updateItemQuantity(CartDTO cart, Long productId, int quantity) {
+        if (cart.getItems() != null) {
+            cart.getItems().stream()
+                    .filter(item -> item.getIdItem().equals(productId))
+                    .forEach(item -> item.setQuantity(quantity));
+            updateTotalPrice(cart); // Cập nhật giá sau khi thay đổi số lượng
+        }
     }
 
-    private void updateTotalPrice() {
-        BigDecimal total = (BigDecimal) cart.getItems().stream()
-                .map(item -> item.getPrice());
-        cart.setTotalAmount(total);
+    public void removeItem(CartDTO cart, Long productId) {
+        if (cart.getItems() != null) {
+            cart.getItems().removeIf(item -> item.getIdItem().equals(productId));
+            updateTotalPrice(cart); // Cập nhật giá sau khi xóa sản phẩm
+        }
+    }
+
+    private void updateTotalPrice(CartDTO cart) {
+        BigDecimal total = cart.getItems() != null
+                ? cart.getItems().stream()
+                .map(item -> BigDecimal.valueOf(item.getPrice() * item.getQuantity()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                : BigDecimal.ZERO;
+
+        cart.setTotalAmount(BigDecimal.valueOf(total.doubleValue()));
     }
 
     public CartDTO getCart() {

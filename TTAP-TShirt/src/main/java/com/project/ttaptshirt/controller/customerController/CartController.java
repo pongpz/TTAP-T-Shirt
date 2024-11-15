@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/TTAP/cart/")
+@SessionAttributes("cart")
 public class CartController {
     @Autowired
     private CartService cartService;
@@ -18,17 +19,27 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @PostMapping("/add")
+    @ModelAttribute("cart")
+    public CartDTO createCart() {
+        return new CartDTO(); // Tạo giỏ hàng mới nếu chưa tồn tại
+    }
+
+    @GetMapping("/add")
     public String addItem(@ModelAttribute("cart") CartDTO cart, @RequestParam Long productId, @RequestParam int quantity,
                           RedirectAttributes redirectAttributes) {
         cartService.addItem(cart, productId, quantity);
         redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng.");
-        return "redirect:/cart/view";
+        return "redirect:/TTAP/cart/view";
     }
 
     @GetMapping("/view")
     public String viewCart(@ModelAttribute("cart") CartDTO cart, Model model) {
-        model.addAttribute("cart", cart);
+        if (cart.getItems() != null && !cart.getItems().isEmpty()) {
+            model.addAttribute("cart", cart); // Thêm giỏ hàng vào Model
+            System.out.println("all:"+model.asMap());
+        } else {
+            model.addAttribute("message", "Giỏ hàng của bạn trống.");
+        }
         return "/user/home/cart"; // Trả về trang Thymeleaf hiển thị giỏ hàng
     }
 

@@ -30,41 +30,44 @@
             <div class="col-lg-9 col-md-7">
                 <div class="row featured__filter">
                     <h1>Giỏ hàng của bạn</h1>
-                    <div th:if="${#lists.isEmpty(cartItems)}">
-                        <p th:text="${message}">Giỏ hàng của bạn đang trống.</p>
+                    <div th:if="${message}" style="color: red;">
+                        <p th:text="${message}"></p>
                     </div>
-                    <div th:if="${!#lists.isEmpty(cartItems)}">
+
+                    <!-- Hiển thị giỏ hàng nếu có sản phẩm -->
+                    <div>
                         <table border="1">
                             <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Tên sản phẩm</th>
-                                <th>Mô tả</th>
+                                <th>Giá</th>
                                 <th>Số lượng</th>
-                                <th>Giá mỗi đơn vị</th>
-                                <th>Tổng tiền</th>
+                                <th>Thành tiền</th>
                                 <th>Hành động</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <th:block th:each="item : ${cartItems.i}">
-                                <tr>
-                                    <td><span th:text="${item.getDatHang().getItems()}"></span></td>
-                                    <td><span th:text="${item.chiTietSanPham.moTa}"></span></td>
-                                    <td><span th:text="${item.soLuong}"></span></td>
-                                    <td><span th:text="${item.gia}"></span></td>
-                                    <td><span th:text="${item.tongTien}"></span></td>
-                                    <td>
-                                        <form th:action="@{/cart/remove}" method="post">
-                                            <input type="hidden" name="itemId" th:value="${item.id}">
-                                            <button type="submit">Xóa</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </th:block>
+                            <tr th:each="item, iterStat : ${cart.items}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td th:text="${item.name}"></td>
+                                <td th:text="${item.price}"></td>
+                                <td th:text="${item.quantity}"></td>
+                                <td th:text="${item.price * item.quantity}"></td>
+                                <td>
+                                    <a th:href="@{/TTAP/cart/remove(productId=${item.idItem})}">Xóa</a>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
+
+                        <h3>Tổng tiền: <span th:text="${cart.totalAmount}"></span> VND</h3>
                     </div>
-                    <h3>Tổng giá: <span th:text="${totalPrice}">0</span></h3>
+
+                    <!-- Nếu giỏ hàng trống -->
+                    <div th:if="${cart.items == null or cart.items.isEmpty()}">
+                        <p>Giỏ hàng của bạn đang trống.</p>
+                    </div>
                 </div> <br>
                 <!--        <nav aria-label="Page navigation example" style="margin-left: 400px" ng-if="listSanPhamShop.length != 0">-->
                 <!--          <ul class="pagination">-->
