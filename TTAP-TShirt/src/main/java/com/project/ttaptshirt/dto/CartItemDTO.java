@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 @Builder
 public class CartItemDTO {
-    private Long id;
+    private Long idItem;
     private String name;
     private String imagePath;
     private Double price;

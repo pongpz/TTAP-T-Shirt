@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.List;
 @Getter
 @Setter
@@ -16,5 +17,5 @@ import java.util.List;
 @Builder
 public class CartDTO {
     private List<CartItemDTO> items;
-    private Double totalAmount;
+    private BigDecimal totalAmount;
 }
