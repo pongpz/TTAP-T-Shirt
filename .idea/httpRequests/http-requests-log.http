@@ -1,3 +1,124 @@
+GET http://localhost:8080/TTAP/cart/view
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-13T233047.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/view?userId=47
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-13T215415.500.json
+
+###
+
+GET http://localhost:8080/TTAP/cart/view
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-13T215359.400.json
+
+###
+
+GET http://localhost:8080/TTAP/cart/view?userId=19
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-13T215349.500.json
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-12T223603.200.html
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-12T223439.500.json
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-12T223308.500.json
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-12T222846.500.json
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-12T222400.500.json
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-12T222250.500.json
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+content-length: 0
+
+<> 2024-11-12T221905.500.json
+
+###
+
 GET http://localhost:8080/admin/ban-hang
 User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
 Accept-Encoding: br, deflate, gzip, x-gzip
