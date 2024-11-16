@@ -23,68 +23,7 @@
 
 <body>
 
-<header th:replace="~{/fragment/header-customer :: header-customer}"></header>
-<section class="product spad" style="margin-top: -50px;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9 col-md-7">
-                <div class="row featured__filter">
-                    <h1>Giỏ hàng của bạn</h1>
-                    <div th:if="${message}" style="color: red;">
-                        <p th:text="${message}"></p>
-                    </div>
 
-                    <!-- Hiển thị giỏ hàng nếu có sản phẩm -->
-                    <div>
-                        <table border="1">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Giá</th>
-                                <th>Số lượng</th>
-                                <th>Thành tiền</th>
-                                <th>Hành động</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="item, iterStat : ${cart.items}">
-                                <td th:text="${iterStat.index + 1}"></td>
-                                <td th:text="${item.name}"></td>
-                                <td th:text="${item.price}"></td>
-                                <td th:text="${item.quantity}"></td>
-                                <td th:text="${item.price * item.quantity}"></td>
-                                <td>
-                                    <a th:href="@{/TTAP/cart/remove(productId=${item.idItem})}">Xóa</a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                        <h3>Tổng tiền: <span th:text="${cart.totalAmount}"></span> VND</h3>
-                    </div>
-
-                    <!-- Nếu giỏ hàng trống -->
-                    <div th:if="${cart.items == null or cart.items.isEmpty()}">
-                        <p>Giỏ hàng của bạn đang trống.</p>
-                    </div>
-                </div> <br>
-                <!--        <nav aria-label="Page navigation example" style="margin-left: 400px" ng-if="listSanPhamShop.length != 0">-->
-                <!--          <ul class="pagination">-->
-                <!--            <li class="page-item" ng-show="pageNumber > 0">-->
-                <!--              <a class="page-link" href="" ng-click="previous()"><img src="/assets/images/chevron-left.svg" height="15px" alt=""></a>-->
-                <!--            </li>-->
-                <!--            <li class="page-item">-->
-                <!--              <a class="page-link">{{pageNumber + 1}}</a>-->
-                <!--            </li>-->
-                <!--            <li class="page-item" ng-show="showNextButton">-->
-                <!--              <a class="page-link" href="" ng-click="nextPage()"><img src="/assets/images/chevron-right.svg" height="15px" alt=""></a>-->
-                <!--            </li>-->
-                <!--          </ul>-->
-                <!--        </nav>-->
-            </div>
-        </div>
-    </div>
 
 </section>
 
