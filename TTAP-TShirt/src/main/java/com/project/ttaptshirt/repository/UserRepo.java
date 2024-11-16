@@ -2,6 +2,8 @@ package com.project.ttaptshirt.repository;
 
 
 import com.project.ttaptshirt.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +28,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 //   List<User> findByCv_Ten(String cv);
 //
 //    List<User> findByHoTenContainingIgnoreCase(String name);
+    Optional<User> findBySoDienthoai(String sdt);
+
+    Page<User> findBySoDienthoaiContaining(String phoneNumber, Pageable pageable);
 }

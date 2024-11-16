@@ -5,6 +5,8 @@ import com.project.ttaptshirt.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface UserService extends CommonService<User> {
 
     Page<User> findAll(int page, int size);
@@ -17,4 +19,9 @@ public interface UserService extends CommonService<User> {
 
 
     User updateDiachi(Long userId, DiaChi diaChi);
+
+    Optional<User> findBySdt(String sdt);
+
+    Page<User> searchByPhoneNumber(String phoneNumber, Pageable pageable);
+
 }
