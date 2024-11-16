@@ -174,7 +174,7 @@
                     <a class="abc " th:href="@{/TTAP/san-pham-detail/{id}(id=${sp.sanPham.id})}">
                       <span>Xem sản phẩm</span>
                     </a>
-                    <a class="abc my-2">
+                    <a class="abc my-2" th:href="@{/TTAP/cart/add(productId=${sp.sanPham.id}, quantity=1)}">
                       <span>Thêm vào giỏ hàng</span>
                     </a>
                   </div>

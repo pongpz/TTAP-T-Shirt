@@ -43,5 +43,13 @@ public class CartController {
         return "/user/home/cart"; // Trả về trang Thymeleaf hiển thị giỏ hàng
     }
 
+    @GetMapping("/remove")
+    public String removeItem(@ModelAttribute("cart") CartDTO cart, @RequestParam Long productId,
+                             RedirectAttributes redirectAttributes) {
+        cartService.removeItem(cart, productId); // Xóa sản phẩm khỏi giỏ
+        redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được xóa khỏi giỏ hàng.");
+        return "redirect:/TTAP/cart/view";
+    }
+
 }
 
