@@ -22,15 +22,15 @@
                     </div>
                     <div class="box-tools">
                         <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
-                            <form th:action="@{/TTAP/KhanhHang/find}" method="get" th:border="1">
-                                <input type="text" placeholder="tìm kiếm" name="name">
+                            <form th:action="@{/admin/users/search}" method="get" th:border="1">
+                                <input type="text" placeholder="tìm kiếm" name="phoneNumber">
                                 <div class="input-group-btn">
-                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    <button type="submit" class="btn btn-default">find</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
+                    <a href="/register"></a>
                     <div class="box-body">
                         <table class="table table-bordered">
                             <thead>
@@ -66,9 +66,9 @@
                                 </td>
                                 <td>
                                     <a class="btn btn-danger" th:href="@{/admin/users/deactivate/{id}(id = ${user.id})}">
-                                                                        <span class="glyphicon glyphicon-trash"></span></a>
+                                                                        Hủy</a>
                                     <a class="btn btn-primary" th:href="@{/admin/users/detail/{id}(id = ${user.id})}">
-                                                                        <span class="glyphicon glyphicon-pencil"></span></a>
+                                                                        Chi tiết</a>
                                 </td>
                             </tr>
                             </tbody>

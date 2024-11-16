@@ -2,6 +2,7 @@ package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.service.impl.CartService;
+import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 public class CartController {
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private HoaDonServiceImpl hoaDonService;
 
     public CartController(CartService cartService) {
         this.cartService = cartService;
@@ -60,23 +64,18 @@ public class CartController {
                            @RequestParam String phoneNumber,
                            @RequestParam String address,
                            RedirectAttributes redirectAttributes) {
-        if (cart.getItems() == null || cart.getItems().isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Giỏ hàng của bạn đang trống.");
+        try {
+            hoaDonService.createHoaDon(cart, fullName, phoneNumber, address);
+
+            // Xoá giỏ hàng sau khi thanh toán
+            cart.setItems(new ArrayList<>());
+            cart.setTotalAmount(BigDecimal.ZERO);
+
+            redirectAttributes.addFlashAttribute("message", "Thanh toán thành công!");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
             return "redirect:/TTAP/cart/view";
         }
-
-        // Xử lý thanh toán (Lưu thông tin đơn hàng vào database hoặc gửi email)
-        System.out.println("Thanh toán:");
-        System.out.println("Họ và tên: " + fullName);
-        System.out.println("Số điện thoại: " + phoneNumber);
-        System.out.println("Địa chỉ: " + address);
-        System.out.println("Chi tiết giỏ hàng: " + cart.getItems());
-
-        // Clear giỏ hàng sau khi thanh toán
-        cart.setItems(new ArrayList<>());
-        cart.setTotalAmount(BigDecimal.ZERO);
-
-        redirectAttributes.addFlashAttribute("message", "Thanh toán thành công!");
         return "redirect:/TTAP/cart/view";
     }
 
