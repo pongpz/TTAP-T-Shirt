@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8676785-309e-46b5-8c91-c21db6f8148d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/CartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/cart.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/sanpham.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/sanpham.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/sanphamdetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/sanphamdetail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/trangchu.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/trangchu.html" afterDir="false" />
-    </list>
+    <list default="true" id="e8676785-309e-46b5-8c91-c21db6f8148d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -145,7 +137,7 @@
       <workItem from="1731599437472" duration="247000" />
       <workItem from="1731671781413" duration="2177000" />
       <workItem from="1731676180607" duration="11848000" />
-      <workItem from="1731737665995" duration="3050000" />
+      <workItem from="1731737665995" duration="3539000" />
     </task>
     <servers />
   </component>
