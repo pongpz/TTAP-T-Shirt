@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 @Controller
 @RequestMapping("/TTAP/cart/")
 @SessionAttributes("cart")
@@ -50,6 +53,33 @@ public class CartController {
         redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được xóa khỏi giỏ hàng.");
         return "redirect:/TTAP/cart/view";
     }
+
+    @PostMapping("/checkout")
+    public String checkout(@ModelAttribute("cart") CartDTO cart,
+                           @RequestParam String fullName,
+                           @RequestParam String phoneNumber,
+                           @RequestParam String address,
+                           RedirectAttributes redirectAttributes) {
+        if (cart.getItems() == null || cart.getItems().isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "Giỏ hàng của bạn đang trống.");
+            return "redirect:/TTAP/cart/view";
+        }
+
+        // Xử lý thanh toán (Lưu thông tin đơn hàng vào database hoặc gửi email)
+        System.out.println("Thanh toán:");
+        System.out.println("Họ và tên: " + fullName);
+        System.out.println("Số điện thoại: " + phoneNumber);
+        System.out.println("Địa chỉ: " + address);
+        System.out.println("Chi tiết giỏ hàng: " + cart.getItems());
+
+        // Clear giỏ hàng sau khi thanh toán
+        cart.setItems(new ArrayList<>());
+        cart.setTotalAmount(BigDecimal.ZERO);
+
+        redirectAttributes.addFlashAttribute("message", "Thanh toán thành công!");
+        return "redirect:/TTAP/cart/view";
+    }
+
 
 }
 
