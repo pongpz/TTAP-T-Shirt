@@ -1,6 +1,7 @@
 package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.dto.CartDTO;
+import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.service.impl.CartService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/TTAP/cart/")
@@ -78,6 +80,10 @@ public class CartController {
         }
         return "redirect:/TTAP/cart/view";
     }
+
+
+
+
 
 
 }
