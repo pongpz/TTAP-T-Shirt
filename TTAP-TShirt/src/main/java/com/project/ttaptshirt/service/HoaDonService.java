@@ -17,5 +17,9 @@ public interface HoaDonService extends CommonService<HoaDon> {
 
     public List<HoaDon> getListHDDaThanhToan();
 
+
+    public void updateTongTien(Long idHd,Double tongTien);
+
     HoaDon createHoaDon(CartDTO cart, String fullName, String phoneNumber, String address);
+
 }

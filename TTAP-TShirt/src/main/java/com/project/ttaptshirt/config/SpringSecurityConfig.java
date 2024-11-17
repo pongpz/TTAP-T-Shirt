@@ -40,6 +40,7 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
+<<<<<<< HEAD
 //    @Bean
 //    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        http.csrf().disable().authorizeHttpRequests()
@@ -47,6 +48,9 @@ public class SpringSecurityConfig {
 //
 //        return http.build();
 //    }
+=======
+
+>>>>>>> 309144c021ea3563d136f06913414073fb340ddf
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {

@@ -59,12 +59,14 @@ public class AccountController {
 
             User user1 = userService.findUserByUsername(user.getUsername());
             userService.insertDefaultUserRole(user1.getId());
+            System.out.println("thanh cong roi");
             redirectAttributes.addFlashAttribute("isRegisterSuccess", true);
             return "redirect:/login";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("isRegisterSuccess", false);
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             System.out.println(e);
+            System.out.println("deo on roi");
             return "redirect:/register";
         }
     }

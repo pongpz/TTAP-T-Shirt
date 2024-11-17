@@ -71,6 +71,11 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
+
+    public void updateTongTien(Long idHd, Double tongTien) {
+        hoaDonRepository.updateTongTienHd(idHd,tongTien);
+    }
+
     public HoaDon createHoaDon(CartDTO cart, String fullName, String phoneNumber, String address) {
         if (cart == null|| cart.getItems() == null || cart.getItems().isEmpty()){
             throw new IllegalArgumentException("Giỏ hàng trống, không thể tạo hóa đơn.");
@@ -97,5 +102,6 @@ public class HoaDonServiceImpl implements HoaDonService {
             hoadonChiTietRepository.save(chiTiet);
         }
         return saveHd;
+
     }
 }

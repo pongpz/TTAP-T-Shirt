@@ -20,4 +20,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet,Lon
     @Query(value = "update hoa_don_chi_tiet set so_luong = ?1 where id = ?2",nativeQuery = true)
     void updateSoLuongSpHdct(Integer soLuong,Long idHdct);
 
+    @Query(value = "select * from hoa_don_chi_tiet where id_hoa_don = ?1",nativeQuery = true)
+    List<HoaDonChiTiet> getHoaDonChiTietByIdHd(Long idHd);
+
 }
