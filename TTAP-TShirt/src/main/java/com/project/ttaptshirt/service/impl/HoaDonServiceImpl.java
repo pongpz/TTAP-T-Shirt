@@ -81,11 +81,12 @@ public class HoaDonServiceImpl implements HoaDonService {
             throw new IllegalArgumentException("Giỏ hàng trống, không thể tạo hóa đơn.");
         }
         HoaDon hoaDon = new HoaDon();
+        hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
         hoaDon.setTenNguoiNhan(fullName);
         hoaDon.setSdtNguoiNhan(phoneNumber);
         hoaDon.setDiaChiGiaoHang(address);
         hoaDon.setNgayTao(LocalDate.now());
-        hoaDon.setTrangThai(1);
+        hoaDon.setTrangThai(3);
         hoaDon.setTongTien(cart.getTotalAmount().floatValue());
 
         HoaDon saveHd = hoaDonRepository.save(hoaDon);

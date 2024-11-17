@@ -2,9 +2,14 @@ package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.dto.CartItemDTO;
+import com.project.ttaptshirt.entity.HoaDon;
+import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.service.impl.CartService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +28,9 @@ public class CartController {
 
     @Autowired
     private HoaDonServiceImpl hoaDonService;
+
+    @Autowired
+    HoaDonChiTietRepository hdctr;
 
     public CartController(CartService cartService) {
         this.cartService = cartService;
@@ -65,24 +73,30 @@ public class CartController {
                            @RequestParam String fullName,
                            @RequestParam String phoneNumber,
                            @RequestParam String address,
-                           RedirectAttributes redirectAttributes) {
+                           RedirectAttributes redirectAttributes,
+                           Model model) {
         try {
-            hoaDonService.createHoaDon(cart, fullName, phoneNumber, address);
+           HoaDon hoaDon = hoaDonService.createHoaDon(cart, fullName, phoneNumber, address);
 
             // Xoá giỏ hàng sau khi thanh toán
             cart.setItems(new ArrayList<>());
             cart.setTotalAmount(BigDecimal.ZERO);
 
-            redirectAttributes.addFlashAttribute("message", "Thanh toán thành công!");
+//            redirectAttributes.addFlashAttribute("message", "Thanh toán thành công!");
+            model.addAttribute("hoaDon", hoaDon);
+            return "/user/home/checkout";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
             return "redirect:/TTAP/cart/view";
         }
-        return "redirect:/TTAP/cart/view";
     }
 
 
-
+    @GetMapping("/hoa-don-chi-tiet/hien-thi")
+    public String hienThi(@RequestParam Long id, Model model){
+        model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
+        return "/user/home/checkout";
+    }
 
 
 

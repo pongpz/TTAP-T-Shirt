@@ -11,6 +11,8 @@ import lombok.ToString;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -81,6 +83,10 @@ public class HoaDon {
 
     @Column(name = "ten_nguoi_nhan")
     private String tenNguoiNhan;
+
+
+    @OneToMany(mappedBy = "hoaDon", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<HoaDonChiTiet> hoaDonChiTiets = new ArrayList<>();
 
     @PreUpdate
     protected  void onUpdate(){
