@@ -158,10 +158,6 @@
                     <div class="col-2">
                         <span th:text="'Color: ' + ${hdct.chiTietSanPham.mauSac.ten}"></span><br/>
                         <span th:text="'Size: ' + ${hdct.chiTietSanPham.kichCo.ten}"></span><br/>
-                        <span th:text="'Kieu Dang: ' + ${hdct.chiTietSanPham.sanPham.kieuDang.ten}">Style: Casual</span><br/>
-                        <span th:text="'Chat Lieu: ' + ${hdct.chiTietSanPham.sanPham.chatLieu.ten}">NSX: BrandX</span><br/>
-                        <span th:text="'NSX: ' + ${hdct.chiTietSanPham.sanPham.nsx.ten}">NSX: BrandX</span><br/>
-                        <span th:text="'ThuongHieu: ' + ${hdct.chiTietSanPham.sanPham.thuongHieu.ten}"></span><br/>
                     </div>
                     <div class="col-2">
                         <h6>Price</h6>
@@ -350,7 +346,7 @@
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher(nếu
                         có):</label>
-                    <label class="col-4" style="font-size: 18px; font-weight: bold">50,000 VND</label>
+                    <label class="col-4" style="font-size: 18px; font-weight: bold">0 VND</label>
                     <button class="col-3 btn btn-primary"onclick="toastWarning('Thông Báo','Chức năng đang được phát triển !')">
                         Chọn
                         Voucher
@@ -360,7 +356,7 @@
                 <hr/>
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Số Tiền Thanh toán:</label>
-                    <label class="col-4" style="font-size: 18px; font-weight: bold">150,000 VND</label>
+                    <label class="col-4" style="font-size: 18px; font-weight: bold" th:text="${hoadon != null && hoadon.tongTien != null ? hoadon.tongTien + ' đ' : 'Chưa có dữ liệu'}"></label>
                 </div>
                 <br/>
 

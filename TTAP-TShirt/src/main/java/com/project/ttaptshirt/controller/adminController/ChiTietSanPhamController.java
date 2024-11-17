@@ -98,7 +98,7 @@ public class ChiTietSanPhamController {
         List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findBySanPhamId(id);
         model.addAttribute("listSP",sp);
         model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listHinhAnh", hinhAnhService.findAll());
+//        model.addAttribute("listHinhAnh", hinhAnhService.findAll());
         model.addAttribute("listKichCo", kichCoService.findAll());
         return "admin/sanpham/them-chi-tiet-san-pham";
     }

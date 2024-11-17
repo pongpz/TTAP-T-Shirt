@@ -30,7 +30,7 @@ public class HinhAnh {
     private String ten;
 
     @Column(name = "trang_thai")
-    private String trangThai;
+    private int trangThai;
 
     @ManyToOne
     @JoinColumn(name = "id_san_pham")

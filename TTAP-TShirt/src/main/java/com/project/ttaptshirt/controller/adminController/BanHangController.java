@@ -209,6 +209,7 @@ public class BanHangController {
             hoaDon.setNhanVien(user);
         }
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
+        hoaDon.setLoaiDon(1);
         hoaDon.setNgayTao(LocalDate.now());
         hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
