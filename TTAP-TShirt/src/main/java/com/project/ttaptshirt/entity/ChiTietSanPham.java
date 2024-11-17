@@ -46,5 +46,8 @@ public class ChiTietSanPham extends CreatedUpdatedAt{
     private Integer soLuong;
 
 
+    @Transient
+    private String imageLink;
+
 
 }

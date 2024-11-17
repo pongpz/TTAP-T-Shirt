@@ -4,12 +4,17 @@ package com.project.ttaptshirt.controller.adminController;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.*;
 import com.project.ttaptshirt.security.CustomUserDetail;
+import com.project.ttaptshirt.service.HinhAnhService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -37,6 +42,12 @@ public class SanPhamController {
     ThuongHieuRepository thuongHieuRepository;
     @Autowired
     KieuDangRepository kieuDangRepository;
+
+    @Autowired
+    HinhAnhService hinhAnhService;
+
+    @Autowired
+    HinhAnhRepository hinhAnhRepository;
 
     @GetMapping
     public String index(Model model, Authentication authentication) {
@@ -73,10 +84,22 @@ public class SanPhamController {
 
     @PostMapping("/add")
     public String add(SanPham sanPham,
+                      @RequestParam("image") MultipartFile file,
                       @RequestParam("idNSX") Long idNsx,
                       @RequestParam("idChatLieu") Long idChatLieu,
                       @RequestParam("idThuongHieu") Long idThuongHieu,
-                      @RequestParam("idKieuDang") Long idKieuDang) {
+                      @RequestParam("idKieuDang") Long idKieuDang) throws IOException, GeneralSecurityException {
+
+
+        if (file.isEmpty()) {
+            return "FIle is empty";
+        }
+        File tempFile = File.createTempFile("temp", null);
+        file.transferTo(tempFile);
+        String imagePath = hinhAnhService.uploadImageToDrive(tempFile);
+
+        HinhAnh hinhAnh = new HinhAnh();
+        hinhAnh.setPath(imagePath);
 
         // Thiết lập các thuộc tính cho sản phẩm
         sanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
@@ -87,7 +110,11 @@ public class SanPhamController {
         // Sinh mã duy nhất cho sản phẩm
         sanPham.setMa(generateUniqueCode());
 
-        sanPhamRepository.save(sanPham);
+
+
+        SanPham sanPham1 = sanPhamRepository.save(sanPham);
+        hinhAnh.setSanPham(sanPham1);
+        hinhAnhRepository.save(hinhAnh);
         return "redirect:/admin/san-pham";
     }
 

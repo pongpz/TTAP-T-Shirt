@@ -26,8 +26,8 @@ import java.util.Optional;
 @Service
 public class HinhAnhService {
 
-//    @Autowired
-//    private HinhAnhRepository repoImage;
+    @Autowired
+    private HinhAnhRepository hinhAnhRepository;
 //
 //    public HinhAnh save(HinhAnh hinhAnh){
 //       return repoImage.save(hinhAnh);
@@ -54,8 +54,7 @@ public class HinhAnhService {
         return filePath.toString();
     }
 
-    public HinhAnh uploadImageToDrive(File file) throws GeneralSecurityException, IOException {
-        HinhAnh hinhAnh = new HinhAnh();
+    public String uploadImageToDrive(File file) throws GeneralSecurityException, IOException {
 
         try{
             String folderId = "1qoyTft_RF3dI7TJQ9-IZcRFVveCJ7d0k";
@@ -69,15 +68,12 @@ public class HinhAnhService {
             String imageUrl = "https://drive.google.com/uc?export=view&id="+uploadedFile.getId();
             System.out.println("IMAGE URL: " + imageUrl);
             file.delete();
-            hinhAnh.setTrangThai(200);
-//            hinhAnh.setMessage("Image Successfully Uploaded To Drive");
-            hinhAnh.setTen(imageUrl);
+            return  imageUrl;
         }catch (Exception e){
             System.out.println(e.getMessage());
-            hinhAnh.setTrangThai(500);
-//            hinhAnh.setMessage(e.getMessage());
+            return null;
         }
-        return  hinhAnh;
+
 
     }
 
@@ -92,6 +88,14 @@ public class HinhAnhService {
                 credential)
                 .build();
 
+    }
+
+    public String getFirstImageLinkBySanPhamId(Long sanPhamId) {
+        List<HinhAnh> hinhAnhs = hinhAnhRepository.findBySanPhamId(sanPhamId);
+        if (!hinhAnhs.isEmpty()) {
+            return hinhAnhs.get(0).getPath(); // Trả về đường dẫn của hình ảnh đầu tiên
+        }
+        return "/assets/no-image.jpg"; // Trường hợp không có hình ảnh
     }
 
 

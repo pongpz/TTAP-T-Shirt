@@ -27,7 +27,7 @@ public class HinhAnh {
     private String ma;
 
     @Column(name = "ten_url")
-    private String ten;
+    private String path;
 
     @Column(name = "trang_thai")
     private int trangThai;
@@ -36,11 +36,6 @@ public class HinhAnh {
     @JoinColumn(name = "id_san_pham")
     private SanPham sanPham;
 
-    @Transient
-        public String getphotoPath(){
-        if(ten == null) return null;
-        return "/images/"+ten;
-    }
 
     // Getters and Setters
 }
