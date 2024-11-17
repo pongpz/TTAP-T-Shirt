@@ -82,8 +82,9 @@ public class HoaDon {
     @Column(name = "ten_nguoi_nhan")
     private String tenNguoiNhan;
 
+
     @Column(name = "loai_don")
-    private int loaiDon;
+    private Integer loaiDon;
 
     @PreUpdate
     protected  void onUpdate(){

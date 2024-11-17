@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 031382acc9da0a122399606c6b85d690ddbbf754
 package com.project.ttaptshirt.controller.adminController;
 
 import ch.qos.logback.core.util.StringUtil;
@@ -31,6 +35,7 @@ import java.util.UUID;
 public class HinhAnhController {
 
 
+<<<<<<< HEAD
 //    @Autowired
 //    private HinhAnhService hinhAnhService;
 //
@@ -47,3 +52,21 @@ public class HinhAnhController {
 //    }
 
 }
+=======
+    @Autowired
+    private HinhAnhService hinhAnhService;
+
+    @PostMapping("/uploadToGoogleDrive")
+    public Object handleFileUpload(@RequestParam("image") MultipartFile file) throws IOException, GeneralSecurityException {
+        if (file.isEmpty()) {
+            return "FIle is empty";
+        }
+        File tempFile = File.createTempFile("temp", null);
+        file.transferTo(tempFile);
+        HinhAnh res = hinhAnhService.uploadImageToDrive(tempFile);
+        System.out.println(res);
+        return res;
+    }
+}
+
+>>>>>>> 031382acc9da0a122399606c6b85d690ddbbf754

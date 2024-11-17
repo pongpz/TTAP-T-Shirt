@@ -23,7 +23,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Query("select hd from HoaDon hd where (:ma is null or hd.ma like %:ma% ) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) order by hd.id desc")
     List<HoaDon> search2(String ma, Integer trangThai, LocalDate ngayThanhToan,Pageable pageable);
 
-    @Query(value = "select * from hoa_don where trang_thai = 0",nativeQuery = true)
+    @Query(value = "select * from hoa_don where trang_thai = 0 and loai_don = 1",nativeQuery = true)
     List<HoaDon> getListHDChuaThanhToan();
 
     @Query(value = "select * from hoa_don where trang_thai = 1",nativeQuery = true)
@@ -43,4 +43,20 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Modifying
     @Query(value = "update hoa_don set tong_tien = ?2 where id=?1" ,nativeQuery = true)
     void updateTongTienHd(Long idHd,Double tongTien);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update hoa_don set trang_thai = 0 where id=?1" ,nativeQuery = true)
+    void xacNhanHoaDon(Long idHd);
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "update hoa_don set trang_thai = 1 where id=?1" ,nativeQuery = true)
+    void hoanThanhHoaDon(Long idHd);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update hoa_don set trang_thai = 2 where id=?1" ,nativeQuery = true)
+    void huyHoaDonOnline(Long idHd);
 }
