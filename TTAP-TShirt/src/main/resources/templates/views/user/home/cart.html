@@ -69,19 +69,25 @@
                         <p>Giỏ hàng của bạn đang trống.</p>
                     </div>
                 </div> <br>
-                <!--        <nav aria-label="Page navigation example" style="margin-left: 400px" ng-if="listSanPhamShop.length != 0">-->
-                <!--          <ul class="pagination">-->
-                <!--            <li class="page-item" ng-show="pageNumber > 0">-->
-                <!--              <a class="page-link" href="" ng-click="previous()"><img src="/assets/images/chevron-left.svg" height="15px" alt=""></a>-->
-                <!--            </li>-->
-                <!--            <li class="page-item">-->
-                <!--              <a class="page-link">{{pageNumber + 1}}</a>-->
-                <!--            </li>-->
-                <!--            <li class="page-item" ng-show="showNextButton">-->
-                <!--              <a class="page-link" href="" ng-click="nextPage()"><img src="/assets/images/chevron-right.svg" height="15px" alt=""></a>-->
-                <!--            </li>-->
-                <!--          </ul>-->
-                <!--        </nav>-->
+                <div>
+                    <h3>Thông tin thanh toán</h3>
+                    <form th:action="@{/TTAP/cart/checkout}" method="post">
+                        <div class="form-group">
+                            <label for="fullName">Họ và Tên:</label>
+                            <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Nhập họ và tên" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Số điện thoại:</label>
+                            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="Nhập số điện thoại" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Địa chỉ:</label>
+                            <textarea id="address" name="address" class="form-control" placeholder="Nhập địa chỉ" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Thanh toán</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>

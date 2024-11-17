@@ -62,7 +62,9 @@
             </div>
             <br>
             <form action="" method="post"></form>
-            <button class="btn btn-outline-danger">Thêm vào giỏ hàng</button>
+            <a class="abc my-2" th:href="@{/TTAP/cart/add(productId=${spct.sanPham.id}, quantity=1)}">
+                <span>Thêm vào giỏ hàng</span>
+            </a>
             <button class="btn btn-danger">Mua ngay</button>
         </div>
     </div>

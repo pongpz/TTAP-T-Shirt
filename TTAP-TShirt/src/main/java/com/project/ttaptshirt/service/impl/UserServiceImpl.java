@@ -77,4 +77,14 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User not found with id " + userId);
         }
     }
+
+    @Override
+    public Optional<User> findBySdt(String sdt) {
+        return userRepo.findBySoDienthoai(sdt);
+    }
+
+    @Override
+    public Page<User> searchByPhoneNumber(String phoneNumber, Pageable pageable) {
+        return userRepo.findBySoDienthoaiContaining(phoneNumber, pageable);
+    }
 }
