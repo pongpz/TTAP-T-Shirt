@@ -6,6 +6,7 @@ import com.project.ttaptshirt.entity.KieuDang;
 import com.project.ttaptshirt.entity.MauSac;
 import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.repository.*;
+//import com.project.ttaptshirt.service.HinhAnhService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,6 +53,9 @@ public class SanPhamCustomerController {
     @Autowired
     private ChatLieuRepository chatLieuRepository;
 
+//    @Autowired
+//    HinhAnhService hinhAnhService;
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -88,8 +92,10 @@ public class SanPhamCustomerController {
             maxPrice = priceRangerList.get(priceRangerId).getMaxValue();
         }
 
+        // Phân trang với page và size cố định (6 sản phẩm mỗi trang)
         Pageable pageable = PageRequest.of(page, 6);
 
+        // Truy vấn sản phẩm với các tiêu chí tìm kiếm
         Page<ChiTietSanPham> sanPhamPage = chiTietSanPhamRepository.findByTenContainingAndPriceBetween(
                 ten.isEmpty() ? null : ten,
                 minPrice,
@@ -97,6 +103,13 @@ public class SanPhamCustomerController {
                 kichCoId == 0 ? null : kichCoId,
                 pageable);
 
+        // Cập nhật hình ảnh cho mỗi ChiTietSanPham
+        for (ChiTietSanPham chiTietSanPham : sanPhamPage.getContent()) {
+//            String imageLink = hinhAnhService.getFirstImageLinkBySanPhamId(chiTietSanPham.getSanPham().getId());
+//            chiTietSanPham.setImageLink(imageLink);
+        }
+
+        // Thêm các thông tin cần thiết vào model
         model.addAttribute("kichCoList", kichCoRepository.findAll());
         model.addAttribute("kichCoId", kichCoId);
         model.addAttribute("requestURI", request.getRequestURI());
@@ -105,9 +118,11 @@ public class SanPhamCustomerController {
         model.addAttribute("priceRangerList", priceRangerList);
         model.addAttribute("ten", ten);
         model.addAttribute("priceRangerId", priceRangerId);
+        model.addAttribute("currentPage", page);  // Thêm trang hiện tại vào model
 
         return "user/home/sanpham";
     }
+
 
 
     @GetMapping("/san-pham-detail/{idSP}")
@@ -130,4 +145,6 @@ public class SanPhamCustomerController {
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(amount);
     }
+
+
 }

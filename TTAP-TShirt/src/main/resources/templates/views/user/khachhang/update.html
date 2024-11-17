@@ -174,12 +174,12 @@
                             <div class="col-md-6">
                                 <label  class="form-label">Ten tai khoan</label>
                                 <input type="text" class="form-control" th:field="*{username}" >
-                                <span th:if="${#fields.hasErrors('taiKhoan')}" th:errors="*{username}"></span>
+                                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                             </div>
                             <div class="col-md-6">
                                 <label  class="form-label">Password</label>
                                 <input type="text" class="form-control" th:field="*{password}">
-                                <span th:if="${#fields.hasErrors('matKhau')}" th:errors="*{password}"></span>
+                                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">Update</button>
@@ -187,6 +187,7 @@
                         </form>
                         <div class="col-md-2">
                             <button class="btn btn-primary" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Dia chi</button>
+                            <a th:href="@{/admin/users/view}" class="btn btn-primary">Trở về</a>
                         </div>
                         <div id="id01" class="modal">
                             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>

@@ -29,6 +29,8 @@ import java.util.Optional;
 public class KhachHangController {
     @Autowired
     private UserServiceImpl serUser;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
 
     @GetMapping("/home")
@@ -84,7 +86,9 @@ public class KhachHangController {
     public String showUserDetails(@PathVariable("id") Long id, Model model) {
         User user = serUser.findById(id);
         if (user != null) {
+            DiaChi diaChi = new DiaChi();
             model.addAttribute("user", user);
+            model.addAttribute("diaChi", diaChi);
             return "user/khachhang/update";
         } else {
             model.addAttribute("error", "User not found");
@@ -108,6 +112,24 @@ public class KhachHangController {
             redirectAttributes.addFlashAttribute("error", "Error deactivating user: " + e.getMessage());
         }
         return "redirect:/admin/users/view";
+    }
+
+    @GetMapping("/search")
+    public String searchByPhoneNumber(@RequestParam("phoneNumber") String phoneNumber,
+                                      @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size,
+                                      Model model) {
+        // Tạo Pageable với trang và kích thước
+        Pageable pageable = PageRequest.of(page, size);
+
+        // Lấy danh sách người dùng theo số điện thoại và phân trang
+        Page<User> userPage = userServiceImpl.searchByPhoneNumber(phoneNumber, pageable);
+
+        // Thêm vào model để hiển thị
+        model.addAttribute("cus", userPage);
+        model.addAttribute("phoneNumber", phoneNumber);
+
+        return "user/khachhang/index"; // Trả về trang danh sách người dùng
     }
 
     @PostMapping("/updateUser")
@@ -137,9 +159,20 @@ public class KhachHangController {
     }
 
     @PostMapping("/update/{id}/DiaChi")
-    public String getupdateDiachi(@PathVariable("id") Long id, @ModelAttribute DiaChi diaChi, Model mol){
-        serUser.updateDiachi(id,diaChi);
-        return "redirect:/admin/users/detail/"+ id;
+    public String updateDiaChi(@PathVariable("id") Long id,
+                               @ModelAttribute("diaChi") DiaChi diaChi,
+                               RedirectAttributes redirectAttributes) {
+        try {
+            // Gọi service để cập nhật địa chỉ
+            serUser.updateDiachi(id, diaChi);
+            // Gửi thông báo thành công
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật địa chỉ thành công!");
+        } catch (Exception e) {
+            // Gửi thông báo lỗi nếu có ngoại lệ
+            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật địa chỉ thất bại: " + e.getMessage());
+        }
+        // Chuyển hướng về trang chi tiết của user
+        return "redirect:/admin/users/detail/" + id;
     }
 
 }

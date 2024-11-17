@@ -12,7 +12,7 @@ import com.project.ttaptshirt.repository.KieuDangRepository;
 import com.project.ttaptshirt.repository.NSXRepository;
 import com.project.ttaptshirt.repository.ThuongHieuRepository;
 import com.project.ttaptshirt.service.ChiTietSanPhamService;
-import com.project.ttaptshirt.service.HinhAnhService;
+//import com.project.ttaptshirt.service.HinhAnhService;
 import com.project.ttaptshirt.service.KichCoService;
 import com.project.ttaptshirt.service.MauSacService;
 import com.project.ttaptshirt.service.SanPhamService;
@@ -50,8 +50,8 @@ public class ChiTietSanPhamController {
     ThuongHieuRepository thuongHieuRepository;
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
-    @Autowired
-    HinhAnhService hinhAnhService;
+//    @Autowired
+//    HinhAnhService hinhAnhService;
 
     @GetMapping("{id}")
     public String index(@PathVariable("id") Long id,Model model) {
@@ -98,7 +98,7 @@ public class ChiTietSanPhamController {
         List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findBySanPhamId(id);
         model.addAttribute("listSP",sp);
         model.addAttribute("listMauSac", mauSacService.findAll());
-        model.addAttribute("listHinhAnh", hinhAnhService.findAll());
+//        model.addAttribute("listHinhAnh", hinhAnhService.findAll());
         model.addAttribute("listKichCo", kichCoService.findAll());
         return "admin/sanpham/them-chi-tiet-san-pham";
     }

@@ -48,6 +48,10 @@ public class HoaDon {
     @JoinColumn(name = "id_khach_hang")
     private User khachHang;
 
+    @ManyToOne
+    @JoinColumn(name = "id_nhan_vien")
+    private User nhanVien;
+
     @Column(name = "dia_chi_giao_hang")
     private String diaChiGiaoHang;
 
@@ -77,6 +81,10 @@ public class HoaDon {
 
     @Column(name = "ten_nguoi_nhan")
     private String tenNguoiNhan;
+
+
+    @Column(name = "loai_don")
+    private Integer loaiDon;
 
     @PreUpdate
     protected  void onUpdate(){

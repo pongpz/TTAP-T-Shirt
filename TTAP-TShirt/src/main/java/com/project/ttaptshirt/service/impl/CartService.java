@@ -99,4 +99,11 @@ public class CartService {
     }
 
 
+    public List<CartItemDTO> getItemsByIds(List<Long> ids) {
+        return items.stream()
+                .filter(item -> ids.contains(item.getIdItem()))
+                .toList();
+    }
+
+
 }
