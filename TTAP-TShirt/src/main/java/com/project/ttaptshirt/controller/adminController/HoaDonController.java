@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -58,22 +59,31 @@ public class HoaDonController {
     }
 
     @GetMapping("/tim-kiem")
-    public String timKiem(@RequestParam(required = false, value = "ma") String ma,
-                          @RequestParam(required = false, value = "tennv") String tennv,
-                          @RequestParam(required = false, value = "tenkh") String tenkh,
-                          @RequestParam(required = false, value = "sdt") String sdt,
+    public String timKiem(
+                          @RequestParam(required = false, value = "ma") String ma,
+                          @RequestParam(required = false, value = "keyword") String keyword,
+//                          @RequestParam(required = false, value = "tennv") String tennv,
+//                          @RequestParam(required = false, value = "tenkh") String tenkh,
+//                          @RequestParam(required = false, value = "sdt") String sdt,
                           @RequestParam(required = false, value = "trangThai") Integer trangThai,
                           @RequestParam(value = "ngayThanhToan", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ngayThanhToan,
                           @RequestParam(defaultValue = "0") Integer page,
                           Model model) {
         Pageable pageab = PageRequest.of(page, 5);
 //        List<HoaDon> lsSearch = hr.search("", "", "", "", null, null, pageab);
-        List<HoaDon> lsSearch = hr.search2(ma,trangThai,ngayThanhToan,pageab);
+        List<HoaDon> lsSearch = new ArrayList<>();
+        if(keyword.trim().isEmpty()){
+            lsSearch = hr.search2(ma.trim(),trangThai,ngayThanhToan,pageab);
+        }else {
+            lsSearch = hr.search(keyword.trim(),trangThai,ngayThanhToan,pageab);
+        }
+//        System.out.println(lsSearch);
         model.addAttribute("listHD", lsSearch);
         model.addAttribute("ma", ma);
-        model.addAttribute("tennv", tennv);
-        model.addAttribute("tenkh", tenkh);
-        model.addAttribute("sdt", sdt);
+//        model.addAttribute("tennv", tennv);
+//        model.addAttribute("tenkh", tenkh);
+//        model.addAttribute("sdt", sdt);
+        model.addAttribute("keyword", keyword.trim());
         model.addAttribute("ngayThanhToan", ngayThanhToan);
         model.addAttribute("trangThai", trangThai);
         model.addAttribute("page", page);
