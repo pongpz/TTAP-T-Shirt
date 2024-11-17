@@ -104,4 +104,19 @@ public class HoaDonServiceImpl implements HoaDonService {
         return saveHd;
 
     }
+
+    @Override
+    public void xacNhanHoaDon(Long idHoaDon) {
+        hoaDonRepository.xacNhanHoaDon(idHoaDon);
+    }
+
+    @Override
+    public void hoanThanhHoaDon(Long idHoaDon) {
+        hoaDonRepository.hoanThanhHoaDon(idHoaDon);
+    }
+
+    @Override
+    public void huyHoaDonOnline(Long idHoaDon) {
+        hoaDonRepository.huyHoaDonOnline(idHoaDon);
+    }
 }

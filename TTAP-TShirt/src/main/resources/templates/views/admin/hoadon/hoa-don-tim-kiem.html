@@ -79,14 +79,35 @@
                     <td th:text="${hd.tenNguoiNhan?:'Không có'}"></td>
                     <td th:text="${hd.soTienGiamGia?:'Không có'}"></td>
                     <td>
-                        <span th:if="${hd.trangThai == 0}">Chưa thanh toán</span>
-                        <span th:if="${hd.trangThai == 1}">Đã thanh toán</span>
-                        <span th:if="${hd.trangThai == 2}">Đã hủy</span>
-                        <span th:if="${hd.trangThai == 3}">Chờ xác nhận</span>
+                        <span th:if="${hd.trangThai == 0}" class="text-warning">Chưa thanh toán</span>
+                        <span th:if="${hd.trangThai == 1}" class="text-success">Đã thanh toán</span>
+                        <span th:if="${hd.trangThai == 2}" class="text-danger">Đã hủy</span>
+                        <span th:if="${hd.trangThai == 3}" class="text-primary">Chờ xác nhận</span>
                     </td>
                     <td>
                         <a th:href="@{/admin/hoa-don-chi-tiet/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
+
+                        <!-- Cancel Invoice button -->
+                        <a th:href="@{/admin/hoa-don/huy-hoa-don-online/{idHD}(idHD=${hd.id})}"
+                           th:if="${hd.trangThai == 3 && hd.loaiDon == 0}"
+                           class="btn btn-danger"
+                           th:onclick="'return confirm(\'Are you sure you want to cancel this invoice?\')'">Hủy hóa đơn</a>
+
+                        <!-- Confirm Invoice button -->
+                        <a th:href="@{/admin/hoa-don/xac-nhan-hoa-don/{idHD}(idHD=${hd.id})}"
+                           th:if="${hd.trangThai == 3 && hd.loaiDon == 0}"
+                           class="btn btn-primary"
+                           th:onclick="'return confirm(\'Are you sure you want to confirm this invoice?\')'">Xác nhận hóa đơn</a>
+
+                        <!-- Complete Invoice button -->
+                        <a th:href="@{/admin/hoa-don/hoan-thanh-hoa-don/{idHD}(idHD=${hd.id})}"
+                           th:if="${hd.trangThai == 0 && hd.loaiDon == 0}"
+                           class="btn btn-success"
+                           th:onclick="'return confirm(\'Are you sure you want to mark this invoice as complete?\')'">Hoàn thành</a>
                     </td>
+
+
+
                 </tr>
                 </tbody>
             </table>
