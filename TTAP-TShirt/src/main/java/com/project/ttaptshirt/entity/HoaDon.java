@@ -48,6 +48,10 @@ public class HoaDon {
     @JoinColumn(name = "id_khach_hang")
     private User khachHang;
 
+    @ManyToOne
+    @JoinColumn(name = "id_nhan_vien")
+    private User nhanVien;
+
     @Column(name = "dia_chi_giao_hang")
     private String diaChiGiaoHang;
 

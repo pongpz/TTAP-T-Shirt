@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,4 +39,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Query("select hd from HoaDon hd where hd.ma =:ma")
     List<HoaDon> getHDByMa(String ma);
 
+    @Transactional
+    @Modifying
+    @Query(value = "update hoa_don set tong_tien = ?2 where id=?1" ,nativeQuery = true)
+    void updateTongTienHd(Long idHd,Double tongTien);
 }
