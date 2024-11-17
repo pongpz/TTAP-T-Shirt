@@ -21,18 +21,7 @@
                             <label for="ma" class="form-label">Mã hóa đơn</label>
                             <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}">
                         </div>
-<!--                        <div class="mb-3 col-4">-->
-<!--                            <label for="tenkh" class="form-label">Tên khách hàng</label>-->
-<!--                            <input type="text" class="form-control" id="tenkh" name="tenkh" th:value="${tenkh}">-->
-<!--                        </div>-->
-<!--                        <div class="mb-3 col-4">-->
-<!--                            <label for="tennv" class="form-label">Tên nhân viên</label>-->
-<!--                            <input type="text" class="form-control" id="tennv" name="tennv" th:value="${tennv}">-->
-<!--                        </div>-->
-<!--                        <div class="mb-3 col-4">-->
-<!--                            <label for="sdt" class="form-label">Số điện thoại khách hàng</label>-->
-<!--                            <input type="text" class="form-control" id="sdt" name="sdt" th:value="${sdt}">-->
-<!--                        </div>-->
+
                         <div class="col-4">
                             <label class="form-label">Trạng thái</label>
                             <select class="form-select" aria-label="Default select example" name="trangThai">
@@ -58,11 +47,11 @@
             <th scope="col">Mã hóa đơn</th>
 <!--            <th scope="col">Nhân viên</th>-->
 <!--            <th scope="col">Khách hàng</th>-->
-            <th scope="col">Tổng tiền</th>
+            <th scope="col">Loại đơn</th>
             <th scope="col">Ngày thanh toán</th>
             <th scope="col">SĐT người nhận</th>
             <th scope="col">Tên người nhận</th>
-            <th scope="col">Số tiền giảm</th>
+            <th scope="col">Tổng tiền</th>
             <th scope="col">Trạng thái</th>
             <th scope="col">Hành động</th>
         </tr>
@@ -73,20 +62,28 @@
             <td th:text="${hd.ma}"></td>
 <!--            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>-->
 <!--            <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Không có'}"></td>-->
-            <td th:text="${hd.tongTien?:'Không có'}"></td>
-            <td th:text="${hd.ngayThanhToan?:'Không có'}"></td>
-            <td th:text="${hd.sdtNguoiNhan?:'Không có'}"></td>
-            <td th:text="${hd.tenNguoiNhan?:'Không có'}"></td>
-            <td th:text="${hd.soTienGiamGia?:'Không có'}"></td>
+            <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
+                th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
+            </td>
+            <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
+            <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
+            <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
+            <td th:text="${hd.tongTien ?: 'Không có'}"></td>
+
             <td>
-                <span th:if="${hd.trangThai == 0}">Chưa thanh toán</span>
-                <span th:if="${hd.trangThai == 1}">Đã thanh toán</span>
-                <span th:if="${hd.trangThai == 2}">Đã hủy</span>
-                <span th:if="${hd.trangThai == 3}">Chờ xác nhận</span>
+                <span th:if="${hd.trangThai == 0}" class="text-warning">Chưa thanh toán</span>
+                <span th:if="${hd.trangThai == 1}" class="text-success">Đã thanh toán</span>
+                <span th:if="${hd.trangThai == 2}" class="text-danger">Đã hủy</span>
+                <span th:if="${hd.trangThai == 3}" class="text-primary">Chờ xác nhận</span>
             </td>
             <td>
                 <a th:href="@{/admin/hoa-don-chi-tiet/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
+                <a href="#" th:if="${hd.trangThai == 3 &&hd.loaiDon==0}" class="btn btn-danger">Hủy hóa đơn</a>
+                <a href="#" th:if="${hd.trangThai == 3 &&hd.loaiDon==0}" class="btn btn-primary">Xác nhận hóa đơn</a>
+                <a href="#" th:if="${hd.trangThai == 0&&hd.loaiDon==0}" class="btn btn-success">Hoàn thành</a>
+
             </td>
+
         </tr>
         </tbody>
     </table>
