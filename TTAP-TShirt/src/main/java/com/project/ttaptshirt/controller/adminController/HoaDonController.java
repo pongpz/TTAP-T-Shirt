@@ -34,8 +34,10 @@ public class HoaDonController {
     }
 
     @GetMapping("/tim-kiem")
-    public String timKiem(@RequestParam(required = false, value = "ma") String ma,
-                          @RequestParam(required = false, value = "tennv") String tennv,
+    public String timKiem(
+                          @RequestParam(required = false, value = "ma") String ma,
+//                          @RequestParam(required = false, value = "keyword") String keyword,
+//                          @RequestParam(required = false, value = "tennv") String tennv,
                           @RequestParam(required = false, value = "tenkh") String tenkh,
                           @RequestParam(required = false, value = "sdt") String sdt,
                           @RequestParam(required = false, value = "trangThai") Integer trangThai,
@@ -44,12 +46,14 @@ public class HoaDonController {
                           Model model) {
         Pageable pageab = PageRequest.of(page, 5);
 //        List<HoaDon> lsSearch = hr.search("", "", "", "", null, null, pageab);
-        List<HoaDon> lsSearch = hr.search2(ma,trangThai,ngayThanhToan,pageab);
+        List<HoaDon> lsSearch = hr.search(ma,tenkh,sdt,trangThai,ngayThanhToan,pageab);
+        System.out.println(lsSearch);
         model.addAttribute("listHD", lsSearch);
         model.addAttribute("ma", ma);
-        model.addAttribute("tennv", tennv);
+//        model.addAttribute("tennv", tennv);
         model.addAttribute("tenkh", tenkh);
         model.addAttribute("sdt", sdt);
+//        model.addAttribute("keyword", keyword.trim());
         model.addAttribute("ngayThanhToan", ngayThanhToan);
         model.addAttribute("trangThai", trangThai);
         model.addAttribute("page", page);

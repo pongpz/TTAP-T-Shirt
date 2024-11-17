@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
-    @Query("select hd from HoaDon hd where (:ma is null or hd.ma like %:ma% ) and (:tenkh is null or hd.khachHang.hoTen like %:tenkh% ) and (:sdt is null or hd.khachHang.soDienthoai like %:sdt%) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan)")
+    @Query("select hd from HoaDon hd where (:ma is null or hd.ma like %:ma% ) and (:tenkh is null or hd.khachHang.hoTen like %:tenkh% ) and (:sdt is null or hd.khachHang.soDienthoai like %:sdt%) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) order by hd.id desc")
     List<HoaDon> search(String ma,String tenkh, String sdt, Integer trangThai, LocalDate ngayThanhToan, Pageable pageable);
 
     @Query("select hd from HoaDon hd where (:ma is null or hd.ma like %:ma% ) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) order by hd.id desc")
