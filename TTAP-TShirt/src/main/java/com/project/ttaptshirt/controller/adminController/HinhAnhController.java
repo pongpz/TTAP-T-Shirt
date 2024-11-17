@@ -5,7 +5,7 @@ import ch.qos.logback.core.util.StringUtil;
 import com.project.ttaptshirt.config.FileUploadUtil;
 import com.project.ttaptshirt.dto.HinhAnhDto;
 import com.project.ttaptshirt.entity.HinhAnh;
-import com.project.ttaptshirt.service.HinhAnhService;
+//import com.project.ttaptshirt.service.HinhAnhService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
