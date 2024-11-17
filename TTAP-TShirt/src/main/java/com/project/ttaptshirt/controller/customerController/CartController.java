@@ -1,5 +1,7 @@
 package com.project.ttaptshirt.controller.customerController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.entity.HoaDon;
@@ -74,15 +76,16 @@ public class CartController {
                            @RequestParam String phoneNumber,
                            @RequestParam String address,
                            RedirectAttributes redirectAttributes,
+                           HttpSession session,
                            Model model) {
         try {
            HoaDon hoaDon = hoaDonService.createHoaDon(cart, fullName, phoneNumber, address);
 
+            session.setAttribute("hoaDon", hoaDon);
             // Xoá giỏ hàng sau khi thanh toán
             cart.setItems(new ArrayList<>());
             cart.setTotalAmount(BigDecimal.ZERO);
 
-//            redirectAttributes.addFlashAttribute("message", "Thanh toán thành công!");
             model.addAttribute("hoaDon", hoaDon);
             return "/user/home/checkout";
         } catch (IllegalArgumentException e) {
@@ -93,11 +96,28 @@ public class CartController {
 
 
     @GetMapping("/hoa-don-chi-tiet/hien-thi")
-    public String hienThi(@RequestParam Long id, Model model){
+    public String hienThi(@RequestParam Long id, Model model,HttpSession session){
+        HoaDon hoaDon = (HoaDon) session.getAttribute("hoaDon");
+        model.addAttribute("hoaDon", hoaDon);
         model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
         return "/user/home/checkout";
     }
 
+    @GetMapping("/viewInvoice")
+    public String viewInvoice(HttpSession session, Model model) {
+        // Lấy hóa đơn từ session
+        HoaDon hoaDon = (HoaDon) session.getAttribute("hoaDon");
+
+        if (hoaDon != null) {
+            // Nếu có hóa đơn, truyền vào model để hiển thị
+            model.addAttribute("hoaDon", hoaDon);
+            return "/user/home/checkout"; // Trả về view hiển thị thông tin hóa đơn
+        } else {
+            // Nếu không có hóa đơn, hiển thị thông báo lỗi
+            model.addAttribute("message", "Không tìm thấy hóa đơn.");
+            return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
+        }
+    }
 
 
 }

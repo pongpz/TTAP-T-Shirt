@@ -82,6 +82,10 @@ public class HoaDon {
     @Column(name = "ten_nguoi_nhan")
     private String tenNguoiNhan;
 
+
+    @Column(name = "loai_don")
+    private Integer loaiDon;
+
     @PreUpdate
     protected  void onUpdate(){
         ngayThanhToan = LocalDate.now();
