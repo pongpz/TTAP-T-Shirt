@@ -2,6 +2,7 @@ package com.project.ttaptshirt.controller.adminController;
 
 import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.repository.HoaDonRepository;
+import com.project.ttaptshirt.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,6 +25,9 @@ public class HoaDonController {
     @Autowired
     HoaDonRepository hr;
 
+    @Autowired
+    HoaDonService hoaDonService;
+
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page) {
         Pageable pageab = PageRequest.of(page, 5);
@@ -31,6 +37,24 @@ public class HoaDonController {
             model.addAttribute("nullhd", "Không có hóa đơn nào");
         }
         return "admin/hoadon/hoa-don";
+    }
+    @GetMapping("/xac-nhan-hoa-don/{idHD}")
+    public String xacNhanHD(@PathVariable("idHD") Long idHD){
+        hoaDonService.xacNhanHoaDon(idHD);
+        return "redirect:/admin/hoa-don/hien-thi";
+    }
+
+
+    @GetMapping("/hoan-thanh-hoa-don/{idHD}")
+    public String hoanThanhHD(@PathVariable("idHD") Long idHD){
+        hoaDonService.hoanThanhHoaDon(idHD);
+        return "redirect:/admin/hoa-don/hien-thi";
+    }
+
+    @GetMapping("/huy-hoa-don-online/{idHD}")
+    public String huyHDOnline(@PathVariable("idHD") Long idHD){
+        hoaDonService.huyHoaDonOnline(idHD);
+        return "redirect:/admin/hoa-don/hien-thi";
     }
 
     @GetMapping("/tim-kiem")
