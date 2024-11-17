@@ -39,11 +39,6 @@ public class SpringSecurityConfig {
 
         return http.build();
     }
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 031382acc9da0a122399606c6b85d690ddbbf754
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return (web -> web.ignoring().requestMatchers("/images/**", "/customcss/**", "/js/**", "/asset/**","customercss/**"));
