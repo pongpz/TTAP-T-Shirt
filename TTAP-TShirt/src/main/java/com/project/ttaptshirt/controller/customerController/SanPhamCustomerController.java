@@ -6,7 +6,7 @@ import com.project.ttaptshirt.entity.KieuDang;
 import com.project.ttaptshirt.entity.MauSac;
 import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.repository.*;
-import com.project.ttaptshirt.service.HinhAnhService;
+//import com.project.ttaptshirt.service.HinhAnhService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,8 +53,8 @@ public class SanPhamCustomerController {
     @Autowired
     private ChatLieuRepository chatLieuRepository;
 
-    @Autowired
-    HinhAnhService hinhAnhService;
+//    @Autowired
+//    HinhAnhService hinhAnhService;
 
     @Data
     @AllArgsConstructor
@@ -105,8 +105,8 @@ public class SanPhamCustomerController {
 
         // Cập nhật hình ảnh cho mỗi ChiTietSanPham
         for (ChiTietSanPham chiTietSanPham : sanPhamPage.getContent()) {
-            String imageLink = hinhAnhService.getFirstImageLinkBySanPhamId(chiTietSanPham.getSanPham().getId());
-            chiTietSanPham.setImageLink(imageLink);
+//            String imageLink = hinhAnhService.getFirstImageLinkBySanPhamId(chiTietSanPham.getSanPham().getId());
+//            chiTietSanPham.setImageLink(imageLink);
         }
 
         // Thêm các thông tin cần thiết vào model

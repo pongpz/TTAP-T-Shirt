@@ -17,11 +17,11 @@ import java.util.Optional;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
-    @Query("select hd from HoaDon hd where (:ma is null or hd.ma like %:ma% ) and (:tenkh is null or hd.khachHang.hoTen like %:tenkh% ) and (:sdt is null or hd.khachHang.soDienthoai like %:sdt%) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan)")
-    List<HoaDon> search(String ma,String tenkh, String sdt, Integer trangThai, LocalDate ngayThanhToan, Pageable pageable);
+    @Query("select hd from HoaDon hd where (:ma is null or hd.ma like %:ma%) and (hd.khachHang is null or hd.khachHang.hoTen like %:keyword% or hd.khachHang.soDienthoai like %:keyword%) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) order by hd.id desc")
+    List<HoaDon> search(String ma,String keyword, Integer trangThai, LocalDate ngayThanhToan, Pageable pageable);
 
-    @Query("select hd from HoaDon hd where (:ma is null or hd.ma like %:ma% ) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) order by hd.id desc")
-    List<HoaDon> search2(String ma, Integer trangThai, LocalDate ngayThanhToan,Pageable pageable);
+    @Query("select hd from HoaDon hd where (:keyword is null or hd.ma like %:keyword% ) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) order by hd.id desc")
+    List<HoaDon> search2(String keyword, Integer trangThai, LocalDate ngayThanhToan,Pageable pageable);
 
     @Query(value = "select * from hoa_don where trang_thai = 0 and loai_don = 1",nativeQuery = true)
     List<HoaDon> getListHDChuaThanhToan();

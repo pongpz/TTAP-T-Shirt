@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,7 +24,11 @@
     <div class="main-content content flex-grow-1 p-4">
         <h2 class="text-center">Bán Hàng Tại Quầy</h2>
         <hr>
-
+        <div class="d-flex">
+        <a th:href="@{/admin/ban-hang}" class="fw-medium fs-5 text-black" style="text-decoration:none">Bán hàng</a>
+            <a>&nbsp / &nbsp</a>
+        <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Chi tiết hóa đơn</a>
+        </div>
         <div id="toast-root"></div>
         <div>
             <h1 th:text="${hoadon.ma}"></h1>
@@ -217,10 +221,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
                         <br/>
                         <br/>
 
@@ -382,6 +382,10 @@
                         <!-- Hidden input field to hold the HoaDon ID -->
                         <input type="hidden" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
                     </button>
+                    <a class="col-4 btn btn-primary" style="height: 50px" th:href="@{/admin/ban-hang/hoa-don/thanh-toan-vnpay?idhd={idhd}(idhd=${hoadon.id})}">Chuyển khoản
+                        <!-- Hidden input field to hold the HoaDon ID -->
+<!--                        <input type="hidden" id="hoaDonIdCheckOut2" th:value="${hoadon.id}">-->
+                    </a>
                 </div>
 
                 <script>
@@ -497,18 +501,7 @@
 
         </script>
 
-        <script th:inline="javascript">
-            /*<![CDATA[*/
-            /* Check if the deleteSuccess attribute is present in the model */
-            var ok = [[${okok}]];
-            console.log(123);
-            if (ok) {
-                toastSuccess('Thành Công !', 'ok Thành Công Sản Phẩm !');
-            }
-            /*]]>*/
-
-
-        </script>
+      
 
         <script th:inline="javascript">
             /*<![CDATA[*/
