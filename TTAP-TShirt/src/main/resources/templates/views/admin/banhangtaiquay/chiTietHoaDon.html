@@ -28,9 +28,6 @@
         <div id="toast-root"></div>
         <div>
             <h1 th:text="${hoadon.ma}"></h1>
-            <span th:text="${updateSuccess}">Update Success </span>
-            <span th:text="${deleteSuccess}">Update Success</span>
-
 
         </div>
 
@@ -145,19 +142,32 @@
 
                 <hr/>
                 <!-- Example list of cart items -->
-                <div th:each="hdct : ${listHDCT}" class="product-cart bg-light row"
+                <div th:each="hdct,status: ${listHDCT}" class="product-cart bg-light row"
                      style="width: 95%; height: 200px; margin-left: 20px; margin-top: 60px"
                      id="product-row-${hdct.id}">
                     <div class="col-2">
+                        <h6 th:text="'STT: '+${status.index+1}"></h6>
+                        <br>
                         <img src="https://res.cloudinary.com/dld7uoqyh/image/upload/v1728726810/productImg/bbe9a9e0-9b71-45cc-b1c1-778fba4b2a25.jpg"
                              style="width: 80px; height: 80px" alt="product image"/>
                     </div>
                     <div class="col-2">
                         <h5 th:text="${hdct.chiTietSanPham.sanPham.ten}">Product Name</h5>
+                        <br>
+                        <span th:text="'Mã SP: ' + ${hdct.chiTietSanPham.sanPham.ma}"></span><br/>
+                        <br>
+                        <span th:text="'Số lượng còn lại: ' + ${hdct.chiTietSanPham.soLuong}"></span><br/>
+
+
                     </div>
                     <div class="col-2">
-                        <span th:text="'Color: ' + ${hdct.chiTietSanPham.mauSac.ten}"></span><br/>
+                        <span th:text="'Kiểu Dáng: ' + ${hdct.chiTietSanPham.sanPham.kieuDang.ten}"></span><br/>
+                        <span th:text="'Màu Sắc: ' + ${hdct.chiTietSanPham.mauSac.ten}"></span><br/>
                         <span th:text="'Size: ' + ${hdct.chiTietSanPham.kichCo.ten}"></span><br/>
+                        <span th:text="'Thương Hiệu: ' + ${hdct.chiTietSanPham.sanPham.thuongHieu.ten}"></span><br/>
+
+
+
                     </div>
                     <div class="col-2">
                         <h6>Price</h6>
@@ -183,34 +193,32 @@
                         </script>
 
                         <!-- Modal update soluong -->
-                        <div class="modal fade" id="modalUpdateQuantity" tabindex="-1"
-                             aria-labelledby="modalUpdateQuantityLabel" aria-hidden="true">
+                        <div class="modal fade" id="modalUpdateQuantity" tabindex="-1" aria-labelledby="modalUpdateQuantityLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="modalUpdateQuantityLabel">Update Quantity</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="updateQuantityForm" action="/hoa-don/sua-so-luong1" method="POST">
+                                        <form id="updateQuantityForm" action="/admin/ban-hang/hoa-don/sua-so-luong" method="POST">
                                             <div class="mb-3">
                                                 <label for="quantityInput" class="form-label">Quantity</label>
-                                                <input type="number" class="form-control" id="quantityInput"
-                                                       name="soLuongSua" min="1" required>
+                                                <input type="number" class="form-control" id="quantityInput" name="soLuongSua" min="1" required>
                                             </div>
                                             <input type="hidden" id="idHdctInput" name="idHdctSua">
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
-                                        </button>
-                                        <button type="submit" class="btn btn-primary" id="updateQuantityBtn">Update
-                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <!-- Use a button with type="submit" within the form -->
+                                        <button type="submit" class="btn btn-primary" form="updateQuantityForm">Update</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
 
 
                         <br/>
@@ -369,11 +377,23 @@
                 <br/><br/>
 
                 <div class="paying">
-                    <button class="col-4 btn btn-primary" style="height: 50px" onclick="checkout()">Thanh Toán
+                    <button class="col-4 btn btn-primary" style="height: 50px"
+                            onclick="confirmCheckout()">Thanh Toán
                         <!-- Hidden input field to hold the HoaDon ID -->
                         <input type="hidden" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
                     </button>
                 </div>
+
+                <script>
+                    function confirmCheckout() {
+                        // Display a confirmation dialog
+                        if (confirm('Are you sure you want to proceed with the checkout?')) {
+                            // Call the actual checkout function if confirmed
+                            checkout();
+                        }
+                    }
+                </script>
+
 
             </div>
         </div>
@@ -385,33 +405,47 @@
                 document.getElementById('idHdctInput').value = idHdct;
             }
 
-            document.getElementById('updateQuantityBtn').addEventListener('click', function () {
-                const quantity = document.getElementById('quantityInput').value;
-                const idHdct = document.getElementById('idHdctInput').value;
-                console.log("quantity: " + quantity, "idHdct: " + idHdct)
-                if (quantity && idHdct) {
-                    const formData = new FormData();
-                    formData.append('soLuongSua', quantity);
-                    formData.append('idHdctSua', idHdct);
 
-                    fetch('/admin/ban-hang/hoa-don/sua-so-luong', {
-                        method: 'POST',
-                        body: formData
-                    })
-                        .then(response => {
-                            if (response.redirected) {
-                                window.location.href = response.url;
-                            } else {
-                                return response.text();
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error updating quantity:', error);
-                        });
-                } else {
-                    alert('Please fill in all fields.');
-                }
-            });
+            // document.getElementById('updateQuantityBtn').addEventListener('click', function () {
+            //     const quantity = document.getElementById('quantityInput').value;
+            //     const idHdct = document.getElementById('idHdctInput').value;
+            //
+            //     console.log("quantity: " + quantity, "idHdct: " + idHdct);
+            //
+            //     if (quantity && idHdct) {
+            //         const formData = new FormData();
+            //         formData.append('soLuongSua', quantity);
+            //         formData.append('idHdctSua', idHdct);
+            //
+            //         fetch('/admin/ban-hang/hoa-don/sua-so-luong', {
+            //             method: 'POST', // Change to 'PUT' if appropriate for your API
+            //             body: formData
+            //         })
+            //             .then(response => response.json()) // Parse response as JSON
+            //             .then(data => {
+            //                 if (data.success) {
+            //                     // Display success message
+            //                     toastSuccess('Thành Công!', data.message);
+            //
+            //                     // Optionally update UI (e.g., show new total amount if provided)
+            //                     if (data.totalAmount !== undefined) {
+            //                         document.getElementById('totalAmountDisplay').textContent = `Total: ${data.totalAmount} VND`;
+            //                     }
+            //
+            //                     // Close modal if necessary
+            //                     const modal = bootstrap.Modal.getInstance(document.getElementById('modalUpdateQuantity'));
+            //                     modal.hide();
+            //                 } else {
+            //                     console.error('Update failed:', data.message);
+            //                 }
+            //             })
+            //             .catch(error => {
+            //                 console.error('Error updating quantity:', error);
+            //             });
+            //     } else {
+            //         alert('Please fill in all fields.');
+            //     }
+            // });
 
 
 
@@ -466,10 +500,29 @@
         <script th:inline="javascript">
             /*<![CDATA[*/
             /* Check if the deleteSuccess attribute is present in the model */
+            var ok = [[${okok}]];
+            console.log(123);
+            if (ok) {
+                toastSuccess('Thành Công !', 'ok Thành Công Sản Phẩm !');
+            }
+            /*]]>*/
+
+
+        </script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
             var addSuccess = [[${addSuccess}]];
+            var isQuantityNotEnough = [[${isQuantityNotEnough}]];
+
+            var messageQuantityNotEnough = [[${messageQuantityNotEnough}]];
             console.log(123);
             if (addSuccess) {
                 toastSuccess('Thành Công !', 'Thêm Thành Công Sản Phẩm !');
+            }
+            if (isQuantityNotEnough) {
+                toastWarning("Lỗi !",messageQuantityNotEnough);
             }
             /*]]>*/
 
@@ -482,7 +535,7 @@
             var updateSuccess = [[${updateSuccess}]];
             console.log(123);
             if (updateSuccess) {
-                toastSuccess('Thành Công !', 'Update Thành Công Số Lượng Sản Phẩm !');
+                toastSuccess('Thành Công !', 'Cập nhật Thành Công Số Lượng Sản Phẩm !');
             }
             /*]]>*/
 

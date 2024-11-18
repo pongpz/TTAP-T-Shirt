@@ -3,6 +3,8 @@ package com.project.ttaptshirt.service;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.FileContent;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
@@ -83,9 +85,9 @@ public class HinhAnhService {
                 .createScoped(Collections.singleton(DriveScopes.DRIVE));
 
         return new Drive.Builder(
-                GoogleNetHttpTransport.newTrustedTransport(),
+                (HttpTransport) GoogleNetHttpTransport.newTrustedTransport(),
                 JSON_FACTORY,
-                credential)
+                (HttpRequestInitializer) credential)
                 .build();
 
     }

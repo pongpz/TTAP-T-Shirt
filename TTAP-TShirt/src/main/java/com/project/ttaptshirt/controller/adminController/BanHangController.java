@@ -71,20 +71,6 @@ public class BanHangController {
     }
 
 
-//    @GetMapping("/index")
-//    public String openBanHangPageindex(Model model) {
-//        List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
-//        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
-//        List<MaGiamGia> listKM = voucherRepo.findAll();
-//        List<User> listKH = userRepo.findAll();
-//        model.addAttribute("listKH", listKH);
-//        model.addAttribute("listKM", listKM);
-//        model.addAttribute("listHoaDon", listHoaDon);
-//        model.addAttribute("listCTSP", listCTSP);
-//
-//        return "admin/banhangtaiquay/index";
-//    }
-
     @GetMapping("/hoa-don/chi-tiet")
     public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model,Authentication authentication) {
         if (authentication != null) {
@@ -224,34 +210,65 @@ public class BanHangController {
     @PostMapping("/add-ctsp-to-hoadon")
     public String addCtspToHoaDon(@RequestParam("idctsp") Long idctsp,
                                   @RequestParam("idhd") Long idhd,
-                                  @RequestParam("soLuong") Integer soLuong,
+                                  @RequestParam("soLuong") Integer soLuongMua,
                                   RedirectAttributes redirectAttributes) {
 
-        HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-        HoaDon hoaDon = new HoaDon();
-        hoaDon.setId(idhd);
-        ChiTietSanPham chiTietSanPham = new ChiTietSanPham();
-        chiTietSanPham.setId(idctsp);
-        hoaDonChiTiet.setHoaDon(hoaDon);
-        hoaDonChiTiet.setChiTietSanPham(chiTietSanPham);
-        hoaDonChiTiet.setSoLuong(soLuong);
-        hoaDonChiTietService.save(hoaDonChiTiet);
-        ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
-        int soLuongSauUpdate;
-        if (chiTietSanPham1.getSoLuong() < soLuong) {
-            soLuongSauUpdate = chiTietSanPham1.getSoLuong();
+        List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietService.getListHdctByIdHd(idhd);
+        Boolean isHdctExist = false;
+        for (HoaDonChiTiet hdChiTiet: hoaDonChiTietList) {
+            if (hdChiTiet.getChiTietSanPham().getId()==idctsp) {
+                isHdctExist = true;
+            }
+        }
+        if (isHdctExist) {
+            for (HoaDonChiTiet hdChiTiet: hoaDonChiTietList) {
+                if (hdChiTiet.getChiTietSanPham().getId()==idctsp) {
+                    Integer soLuongHienTaiTrongHDCT = hdChiTiet.getSoLuong();
+                    Integer soLuongMoi = soLuongHienTaiTrongHDCT+soLuongMua;
+                    ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
+                    if (soLuongMua > chiTietSanPham1.getSoLuong()) {
+                        redirectAttributes.addFlashAttribute("isQuantityNotEnough", true);
+                        redirectAttributes.addFlashAttribute("messageQuantityNotEnough", "Số lượng không đủ, chỉ còn "+chiTietSanPham1.getSoLuong()+ " san pham");
+                        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
+                    }
+                    hoaDonChiTietService.updateSoLuongHdct(soLuongMoi,hdChiTiet.getId());
+
+                    Integer soLuongConLaiCTSP = chiTietSanPham1.getSoLuong()-soLuongMua;
+
+                    chiTietSanPhamService.updateSoLuongCtsp(soLuongConLaiCTSP,idctsp);
+                    redirectAttributes.addFlashAttribute("addSuccess", true);
+                    return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
+                }
+            }
         } else {
-            soLuongSauUpdate = chiTietSanPham1.getSoLuong() - soLuong;
+            HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+            HoaDon hoaDon = new HoaDon();
+            hoaDon.setId(idhd);
+            ChiTietSanPham chiTietSanPham = new ChiTietSanPham();
+            chiTietSanPham.setId(idctsp);
+            hoaDonChiTiet.setHoaDon(hoaDon);
+            hoaDonChiTiet.setChiTietSanPham(chiTietSanPham);
+            hoaDonChiTiet.setSoLuong(soLuongMua);
+            hoaDonChiTietService.save(hoaDonChiTiet);
+            ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
+            int soLuongSauUpdate;
+            if (chiTietSanPham1.getSoLuong() < soLuongMua) {
+                soLuongSauUpdate = chiTietSanPham1.getSoLuong();
+            } else {
+                soLuongSauUpdate = chiTietSanPham1.getSoLuong() - soLuongMua;
+            }
+            chiTietSanPham1.setSoLuong(soLuongSauUpdate);
+            chiTietSanPhamService.save(chiTietSanPham1);
+            List<HoaDonChiTiet> listHdct = hoaDonChiTietService.getListHdctByIdHd(idhd);
+            Double tongTien = 0.0;
+            for (HoaDonChiTiet hdct: listHdct) {
+                tongTien+= hdct.getChiTietSanPham().getGiaBan()*hdct.getSoLuong();
+            }
+            hoaDonService.updateTongTien(idhd,tongTien);
+            redirectAttributes.addFlashAttribute("addSuccess", true);
         }
-        chiTietSanPham1.setSoLuong(soLuongSauUpdate);
-        chiTietSanPhamService.save(chiTietSanPham1);
-        List<HoaDonChiTiet> listHdct = hoaDonChiTietService.getListHdctByIdHd(idhd);
-        Double tongTien = 0.0;
-        for (HoaDonChiTiet hdct: listHdct) {
-           tongTien+= hdct.getChiTietSanPham().getGiaBan()*hdct.getSoLuong();
-        }
-        hoaDonService.updateTongTien(idhd,tongTien);
-        redirectAttributes.addFlashAttribute("addSuccess", true);
+
+
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
 
     }
@@ -306,7 +323,9 @@ public class BanHangController {
 
 
     @PostMapping("/hoa-don/sua-so-luong")
-    public String updateSoLuongSua(@RequestParam("soLuongSua") Integer soLuongSua, @RequestParam("idHdctSua") Long idHdct, RedirectAttributes redirectAttributes) {
+    public String updateSoLuongSua(@RequestParam("soLuongSua") Integer soLuongSua,
+                                   @RequestParam("idHdctSua") Long idHdct,
+                                   RedirectAttributes redirectAttributes) {
         System.out.println(soLuongSua);
         System.out.println(idHdct);
 
@@ -328,9 +347,9 @@ public class BanHangController {
         }
         hoaDonService.updateTongTien(idhd, tongTien);
 
+        System.out.println("dung controller roi");
         // Add flash attribute to indicate success
         redirectAttributes.addFlashAttribute("updateSuccess", true);
-
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
 
