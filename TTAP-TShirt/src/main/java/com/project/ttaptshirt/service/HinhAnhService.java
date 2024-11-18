@@ -73,8 +73,6 @@ public class HinhAnhService {
             System.out.println(e.getMessage());
             return null;
         }
-
-
     }
 
     private Drive createDriveService() throws GeneralSecurityException, IOException {
