@@ -295,7 +295,7 @@ public class BanHangController {
 
         Long idhd = hoaDonRepository.getHDByMa(mahd).get(0).getId();
         if (!respCode.equals("00")){
-            return "/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
         }else {
             if (authentication != null) {
                 CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
