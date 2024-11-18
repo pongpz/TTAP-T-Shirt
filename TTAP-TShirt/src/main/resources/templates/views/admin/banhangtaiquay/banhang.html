@@ -24,6 +24,7 @@
 
         <h2 class="text-center">Bán Hàng Tại Quầy</h2>
         <hr>
+        <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Bán hàng</a>
         <div class="row">
             <article>
                 <div style="margin-top: 0px; border: 1px solid rgb(182, 172, 172); padding: 5ch; border-radius: 0.5cap; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230);">
@@ -39,7 +40,7 @@
                                     <button type="submit" class="btn btn-success" onclick="return confirmSubmit();">Tạo hóa đơn</button>
 
                                 </form>
-                                <p th:text="${checkoutSuccess}"></p>
+                                <p th:text="${checkoutSuccess}" hidden></p>
 
                                 <script>
                                     function confirmSubmit() {
@@ -59,6 +60,7 @@
                                 <th scope="col">Ngày tạo</th>
                                 <th scope="col">Khách hàng</th>
                                 <th scope="col">Trạng Thái</th>
+                                <th scope="col">Hành động</th>
                             </tr>
                             </thead>
                             <tbody>

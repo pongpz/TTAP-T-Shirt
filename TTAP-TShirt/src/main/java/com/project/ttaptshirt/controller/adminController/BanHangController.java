@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.adminController;
 
+import com.project.ttaptshirt.config.Config;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
 import com.project.ttaptshirt.repository.HoaDonRepository;
@@ -7,7 +8,11 @@ import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.repository.VoucherRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +23,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.sql.Date;
-import java.text.NumberFormat;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 @Controller
 @RequestMapping("/admin/ban-hang")
@@ -165,9 +178,173 @@ public class BanHangController {
         return "redirect:/admin/ban-hang";
     }
 
+    @GetMapping("/hoa-don/thanh-toan-vnpay")
+    public String createPayment(@RequestParam("idhd") Long id, Authentication authentication, RedirectAttributes redirectAttributes,Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
 
-    @GetMapping("/huy")
+        HoaDon hoaDon = hoaDonService.findById(id);
+        List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(id);
+        double totalMoneyBefore = listHDCT.stream()
+                .mapToDouble(hdct -> {
+                    int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
+                    double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null) ? hdct.getChiTietSanPham().getGiaBan() : 0.0;
+                    return soLuong * giaBan;
+                })
+                .sum();
+        MaGiamGia voucher = hoaDon.getMaGiamGia();
+        double discount = 0.0;
+
+        if (voucher != null) {
+            if (voucher.getHinhThuc().equals(false)) {
+                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+                if (discount > voucher.getGiaTriToiDa()) {
+                    discount = voucher.getGiaTriToiDa();
+                }
+            } else if (voucher.getHinhThuc().equals(true)) {
+                discount = voucher.getGiaTriGiam();
+            }
+        }
+
+        double totalMoneyAfter = totalMoneyBefore - discount;
+        totalMoneyAfter = Math.max(totalMoneyAfter, 0);
+        String vnp_Version = "2.1.0";
+        String vnp_Command = "pay";
+        String orderType = "other";
+        long amount = (int)totalMoneyAfter *100;
+        String vnp_IpAddr = Config.getIpAddress(req);
+
+        String vnp_TmnCode = Config.vnp_TmnCode;
+
+        Map<String, String> vnp_Params = new HashMap<>();
+        vnp_Params.put("vnp_TxnRef", hoaDon.getMa());
+        vnp_Params.put("vnp_Version", vnp_Version);
+        vnp_Params.put("vnp_Command", vnp_Command);
+        vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.put("vnp_Amount", String.valueOf(amount));
+        vnp_Params.put("vnp_CurrCode", "VND");
+        vnp_Params.put("vnp_BankCode", "NCB");
+        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + hoaDon.getMa());
+        vnp_Params.put("vnp_OrderType", orderType);
+        vnp_Params.put("vnp_Locale", "vn");
+        vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);
+        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+//        vnp_Params.put("id_hoa_don", id.toString());
+
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_CreateDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+
+        cld.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+        List fieldNames = new ArrayList(vnp_Params.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder hashData = new StringBuilder();
+        StringBuilder query = new StringBuilder();
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) vnp_Params.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                //Build hash data
+                hashData.append(fieldName);
+                hashData.append('=');
+                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                //Build query
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                query.append('=');
+                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                if (itr.hasNext()) {
+                    query.append('&');
+                    hashData.append('&');
+                }
+            }
+        }
+        String queryUrl = query.toString();
+        String vnp_SecureHash = Config.hmacSHA512(Config.secretKey, hashData.toString());
+        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+        String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
+//        com.google.gson.JsonObject job = new JsonObject();
+//        job.addProperty("code", "00");
+//        job.addProperty("message", "success");
+//        job.addProperty("data", paymentUrl);
+//        Gson gson = new Gson();
+//        resp.getWriter().write(gson.toJson(job));
+
+//        PaymentResDTO paymentResDTO = new PaymentResDTO();
+//        paymentResDTO.setStatus("Ok");
+//        paymentResDTO.setMessage("Successfully");
+//        paymentResDTO.setUrl(paymentUrl);
+
+        return "redirect:"+paymentUrl;
+    }
+
+    @GetMapping("/hoa-don/xac-nhan-thanh-toan_vnp")
+    public String xacNhanThanhToanVNP( Model model,
+            Authentication authentication,
+            RedirectAttributes redirectAttributes,
+            @RequestParam("vnp_ResponseCode") String respCode,
+            @RequestParam("vnp_TxnRef") String mahd) {
+
+        Long idhd = hoaDonRepository.getHDByMa(mahd).get(0).getId();
+        if (!respCode.equals("00")){
+            return "/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
+        }else {
+            if (authentication != null) {
+                CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+                User user = customUserDetail.getUser();
+                model.addAttribute("userLogged", user);
+            }
+
+            HoaDon hoaDon = hoaDonService.findById(idhd);
+            List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idhd);
+
+            // Calculating the total money before discount and applying the discount
+            double totalMoneyBefore = listHDCT.stream()
+                    .mapToDouble(hdct -> {
+                        int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
+                        double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null) ? hdct.getChiTietSanPham().getGiaBan() : 0.0;
+                        return soLuong * giaBan;
+                    })
+                    .sum();
+
+            MaGiamGia voucher = hoaDon.getMaGiamGia();
+            double discount = 0.0;
+
+            if (voucher != null) {
+                if (voucher.getHinhThuc().equals(false)) {
+                    discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+                    if (discount > voucher.getGiaTriToiDa()) {
+                        discount = voucher.getGiaTriToiDa();
+                    }
+                } else if (voucher.getHinhThuc().equals(true)) {
+                    discount = voucher.getGiaTriGiam();
+                }
+            }
+
+            double totalMoneyAfter = totalMoneyBefore - discount;
+            totalMoneyAfter = Math.max(totalMoneyAfter, 0);
+
+            hoaDon.setSoTienGiamGia((float) discount);
+            hoaDon.setTongTien((float) totalMoneyAfter);
+            hoaDon.setTrangThai(1);
+            hoaDonService.save(hoaDon);
+
+            // Set flash attribute before redirecting
+            redirectAttributes.addFlashAttribute("checkoutSuccess", true);
+
+            return "redirect:/admin/ban-hang";
+        }
+    }
+
+        @GetMapping("/huy")
     public String huyHD(@RequestParam("hoadonId") Long idhd, Model model,Authentication authentication, RedirectAttributes redirectAttributes) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
