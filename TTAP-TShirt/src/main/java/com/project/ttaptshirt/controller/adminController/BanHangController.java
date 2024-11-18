@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.sql.Date;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -210,7 +211,7 @@ public class BanHangController {
         }
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
         hoaDon.setLoaiDon(1);
-        hoaDon.setNgayTao(LocalDate.now());
+        hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
 

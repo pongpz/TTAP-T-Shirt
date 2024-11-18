@@ -165,7 +165,7 @@
         <div class="row featured__filter">
           <div class="col-lg-4 col-md-6 col-sm-6 custom-margin" th:each="sp : ${listctsp}"> <br>
             <div class="card">
-<!--              <img th:if="${sp.imageLink}" th:src="${sp.imageLink}" class="card-img-top" alt="Hình ảnh sản phẩm">-->
+              <img th:if="${sp.imageLink}" th:src="${sp.imageLink}" class="card-img-top" alt="Hình ảnh sản phẩm">
               <div class=" justify-content-between text-center">
                 <span th:text="${sp.sanPham.ten}"></span>
                 <div class="text-center">
