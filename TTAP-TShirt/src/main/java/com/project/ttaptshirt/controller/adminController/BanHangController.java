@@ -232,6 +232,13 @@ public class BanHangController {
         hoaDon.setId(idhd);
         ChiTietSanPham chiTietSanPham = new ChiTietSanPham();
         chiTietSanPham.setId(idctsp);
+        ChiTietSanPham chiTietSanPham2 = chiTietSanPhamService.findById(idctsp);
+        Integer soLuongKhaDung = chiTietSanPham2.getSoLuong();
+        if (soLuong>soLuongKhaDung) {
+            redirectAttributes.addFlashAttribute("QuantityUpdateError", true);
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+
+        }
         hoaDonChiTiet.setHoaDon(hoaDon);
         hoaDonChiTiet.setChiTietSanPham(chiTietSanPham);
         hoaDonChiTiet.setSoLuong(soLuong);
@@ -314,6 +321,13 @@ public class BanHangController {
         Long idhd = hoaDonChiTiet.getHoaDon().getId();
         Integer soLuongHienTai = hoaDonChiTiet.getSoLuong();
 
+        ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
+        Integer soLuongKhaDung = chiTietSanPham.getSoLuong();
+        if (soLuongSua>soLuongKhaDung) {
+            redirectAttributes.addFlashAttribute("QuantityUpdateError", true);
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+
+        }
         hoaDonChiTietService.updateSoLuongHdct(soLuongSua, idHdct);
 
         Integer chenhLechSl = soLuongSua - soLuongHienTai;
