@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="/customcss/banhang.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
@@ -25,13 +25,14 @@
         <h2 class="text-center">Bán Hàng Tại Quầy</h2>
         <hr>
         <div class="d-flex">
-        <a th:href="@{/admin/ban-hang}" class="fw-medium fs-5 text-black" style="text-decoration:none">Bán hàng</a>
+            <a th:href="@{/admin/ban-hang}" class="fw-medium fs-5 text-black" style="text-decoration:none">Bán hàng</a>
             <a>&nbsp / &nbsp</a>
-        <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Chi tiết hóa đơn</a>
+            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Chi tiết hóa đơn</a>
         </div>
         <div id="toast-root"></div>
         <div>
-            <h1 th:text="${hoadon.ma}"></h1>
+            <h1 th:text="'Mã Hóa Đơn: '+${hoadon.ma}"></h1>
+            <input type="number" id="lengthlistHDCT" th:value="${listHDCT.size()}" readonly>
 
         </div>
 
@@ -136,12 +137,15 @@
                     </div>
 
 
-                    <button
-                            style="margin-left: 20px"
-                            class="col-3 btn btn-danger"
-                            onclick="if(confirm('Are you sure to delete all the product from this invoice?')) { toastWarning('Hello','cái này dễ để làm sau =))') }">
-                        Xóa Hết Sản Phẩm
-                    </button>
+                    <form th:action="@{/admin/ban-hang/hoa-don/xoa-het-ctsp/{id}(id=${hoadon.id})}" method="POST"
+                          style="width: 150px;height: 60px">
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Bạn Có chắc chắn xóa hết sản phẩm khỏi hóa đơn không ?');">
+                            Xóa Hết Sản Phẩm
+                        </button>
+                    </form>
+
+
                 </div>
 
                 <hr/>
@@ -171,7 +175,6 @@
                         <span th:text="'Thương Hiệu: ' + ${hdct.chiTietSanPham.sanPham.thuongHieu.ten}"></span><br/>
 
 
-
                     </div>
                     <div class="col-2">
                         <h6>Price</h6>
@@ -197,26 +200,32 @@
                         </script>
 
                         <!-- Modal update soluong -->
-                        <div class="modal fade" id="modalUpdateQuantity" tabindex="-1" aria-labelledby="modalUpdateQuantityLabel" aria-hidden="true">
+                        <div class="modal fade" id="modalUpdateQuantity" tabindex="-1"
+                             aria-labelledby="modalUpdateQuantityLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="modalUpdateQuantityLabel">Update Quantity</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="updateQuantityForm" action="/admin/ban-hang/hoa-don/sua-so-luong" method="POST">
+                                        <form id="updateQuantityForm" action="/admin/ban-hang/hoa-don/sua-so-luong"
+                                              method="POST">
                                             <div class="mb-3">
                                                 <label for="quantityInput" class="form-label">Quantity</label>
-                                                <input type="number" class="form-control" id="quantityInput" name="soLuongSua" min="1" required>
+                                                <input type="number" class="form-control" id="quantityInput"
+                                                       name="soLuongSua" min="1" required>
                                             </div>
                                             <input type="hidden" id="idHdctInput" name="idHdctSua">
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
+                                        </button>
                                         <!-- Use a button with type="submit" within the form -->
-                                        <button type="submit" class="btn btn-primary" form="updateQuantityForm">Update</button>
+                                        <button type="submit" class="btn btn-primary" form="updateQuantityForm">Update
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -230,8 +239,6 @@
                            onclick="return confirm('Bạn Có chắc muốn xóa sản phẩm?')">
                             Xóa
                         </a>
-
-
 
 
                     </div>
@@ -348,14 +355,13 @@
                 </div>
 
 
-
-
                 <br/>
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher(nếu
                         có):</label>
                     <label class="col-4" style="font-size: 18px; font-weight: bold">0 VND</label>
-                    <button class="col-3 btn btn-primary"onclick="toastWarning('Thông Báo','Chức năng đang được phát triển !')">
+                    <button class="col-3 btn btn-primary"
+                            onclick="toastWarning('Thông Báo','Chức năng đang được phát triển !')">
                         Chọn
                         Voucher
                     </button>
@@ -364,9 +370,40 @@
                 <hr/>
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Số Tiền Thanh toán:</label>
-                    <label class="col-4" style="font-size: 18px; font-weight: bold" th:text="${hoadon != null && hoadon.tongTien != null ? hoadon.tongTien + ' đ' : 'Chưa có dữ liệu'}"></label>
+                    <label class="col-4" style="font-size: 18px; font-weight: bold"
+                           th:text="${hoadon != null && hoadon.tongTien != null ? hoadon.tongTien + ' đ' : 'Chưa có dữ liệu'}"
+                           id="tongTienLabel"></label>
                 </div>
                 <br/>
+                <div class="row">
+                    <label class="col-5" style="font-size: 18px; font-weight: bold">Tiền khách trả:</label>
+                    <input style="width: 280px;height: 40px;border-radius: 10px;" type="number" placeholder="Nhập tiền khách trả..." id="tienKhachTraInput" oninput="calculateTienThua()"><p>đ</p>
+                </div>
+                <br/>
+                <div class="row">
+                    <label class="col-5" style="font-size: 18px; font-weight: bold">Tiền thừa:</label>
+                    <label class="col-4" style="font-size: 18px; font-weight: bold" id="tienThuaLabel"></label>
+                </div>
+
+                <script>
+                    function calculateTienThua() {
+                        // Get the total amount (tongTien) from the label
+                        const tongTienText = document.getElementById('tongTienLabel').innerText;
+                        const tongTien = parseFloat(tongTienText.replace(' đ', '').replace(/,/g, '')) || 0;
+
+                        // Get the amount paid by the customer from the input
+                        const tienKhachTra = parseFloat(document.getElementById('tienKhachTraInput').value) || 0;
+
+                        // Calculate the change (tien thua)
+                        const tienThua = tienKhachTra - tongTien;
+
+                        // Display the change in the corresponding label
+                        document.getElementById('tienThuaLabel').innerText = tienThua >= 0 ? tienThua.toLocaleString() + ' đ' : 'Chưa đủ';
+
+                        // Return the calculated change for further validation if needed
+                        return tienThua;
+                    }
+                </script>
 
 
                 <br/>
@@ -382,20 +419,40 @@
                         <!-- Hidden input field to hold the HoaDon ID -->
                         <input type="hidden" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
                     </button>
-                    <a class="col-4 btn btn-primary" style="height: 50px" th:href="@{/admin/ban-hang/hoa-don/thanh-toan-vnpay?idhd={idhd}(idhd=${hoadon.id})}">Chuyển khoản
+                    <a class="col-4 btn btn-primary" style="height: 50px"
+                       th:href="@{/admin/ban-hang/hoa-don/thanh-toan-vnpay?idhd={idhd}(idhd=${hoadon.id})}">Chuyển khoản
                         <!-- Hidden input field to hold the HoaDon ID -->
-<!--                        <input type="hidden" id="hoaDonIdCheckOut2" th:value="${hoadon.id}">-->
+                        <!--                        <input type="hidden" id="hoaDonIdCheckOut2" th:value="${hoadon.id}">-->
                     </a>
                 </div>
 
                 <script>
                     function confirmCheckout() {
-                        // Display a confirmation dialog
-                        if (confirm('Are you sure you want to proceed with the checkout?')) {
+                        // Get the length of the listHDCT from the hidden input
+                        const lengthlistHDCT = parseInt(document.getElementById('lengthlistHDCT').value) || 0;
+                        console.log(lengthlistHDCT)
+                        // Check if the list is empty
+                        if (lengthlistHDCT === 0) {
+                            toastWarning('Cảnh báo!', 'Hóa đơn trống. Không thể thực hiện thanh toán!');
+                            return false; // Prevent the checkout if the list is empty
+                        }
+
+                        // Call the function to calculate the change (tiền thừa)
+                        const tienThua = calculateTienThua();
+
+                        // Check if the total amount is sufficient
+                        if (tienThua < 0) {
+                            toastWarning('Cảnh báo!', 'Tiền khách trả không đủ. Vui lòng nhập số tiền lớn hơn hoặc bằng số tiền thanh toán!');
+                            return false; // Prevent the checkout if the amount is insufficient
+                        }
+
+                        // Show confirmation if the total amount is sufficient
+                        if (confirm('Bạn có chắc chắn muốn thanh toán hóa đơn này?')) {
                             // Call the actual checkout function if confirmed
-                            checkout();
+                            // checkout();
                         }
                     }
+
                 </script>
 
 
@@ -408,50 +465,6 @@
                 document.getElementById('quantityInput').value = currentQuantity;
                 document.getElementById('idHdctInput').value = idHdct;
             }
-
-
-            // document.getElementById('updateQuantityBtn').addEventListener('click', function () {
-            //     const quantity = document.getElementById('quantityInput').value;
-            //     const idHdct = document.getElementById('idHdctInput').value;
-            //
-            //     console.log("quantity: " + quantity, "idHdct: " + idHdct);
-            //
-            //     if (quantity && idHdct) {
-            //         const formData = new FormData();
-            //         formData.append('soLuongSua', quantity);
-            //         formData.append('idHdctSua', idHdct);
-            //
-            //         fetch('/admin/ban-hang/hoa-don/sua-so-luong', {
-            //             method: 'POST', // Change to 'PUT' if appropriate for your API
-            //             body: formData
-            //         })
-            //             .then(response => response.json()) // Parse response as JSON
-            //             .then(data => {
-            //                 if (data.success) {
-            //                     // Display success message
-            //                     toastSuccess('Thành Công!', data.message);
-            //
-            //                     // Optionally update UI (e.g., show new total amount if provided)
-            //                     if (data.totalAmount !== undefined) {
-            //                         document.getElementById('totalAmountDisplay').textContent = `Total: ${data.totalAmount} VND`;
-            //                     }
-            //
-            //                     // Close modal if necessary
-            //                     const modal = bootstrap.Modal.getInstance(document.getElementById('modalUpdateQuantity'));
-            //                     modal.hide();
-            //                 } else {
-            //                     console.error('Update failed:', data.message);
-            //                 }
-            //             })
-            //             .catch(error => {
-            //                 console.error('Error updating quantity:', error);
-            //             });
-            //     } else {
-            //         alert('Please fill in all fields.');
-            //     }
-            // });
-
-
 
             function checkout() {
                 // Get the ID of the invoice (HoaDon) you want to process
@@ -501,7 +514,6 @@
 
         </script>
 
-      
 
         <script th:inline="javascript">
             /*<![CDATA[*/
@@ -515,7 +527,7 @@
                 toastSuccess('Thành Công !', 'Thêm Thành Công Sản Phẩm !');
             }
             if (isQuantityNotEnough) {
-                toastWarning("Lỗi !",messageQuantityNotEnough);
+                toastWarning("Lỗi !", messageQuantityNotEnough);
             }
             /*]]>*/
 
@@ -526,13 +538,30 @@
             /*<![CDATA[*/
             /* Check if the deleteSuccess attribute is present in the model */
             var updateSuccess = [[${updateSuccess}]];
-            console.log(123);
             if (updateSuccess) {
                 toastSuccess('Thành Công !', 'Cập nhật Thành Công Số Lượng Sản Phẩm !');
             }
             /*]]>*/
+        </script>
 
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var isInvoiceEmptyCheckout = [[${isInvoiceEmptyCheckout}]];
+            if (isInvoiceEmptyCheckout) {
+                toastError('Lỗi !', 'Hóa đơn trống không có sản phẩm!');
+            }
+            /*]]>*/
+        </script>
 
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var deleteAllSuccess = [[${deleteAllSuccess}]];
+            if (deleteAllSuccess) {
+                toastSuccess('Thành Công !', ' Xóa thành công tất cả sản phẩm trong hóa đơn!');
+            }
+            /*]]>*/
         </script>
 
         <script th:inline="javascript">
@@ -547,7 +576,6 @@
 
 
         </script>
-
 
 
 </body>
