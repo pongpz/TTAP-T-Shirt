@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -144,7 +145,7 @@ public class BanHangController {
 
     @PostMapping("/hoa-don/xac-nhan-thanh-toan")
     public String xacNhanThanhToan(
-            @RequestParam("idhd") Long id, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
+            @RequestParam("idhd") Long idHD, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
 
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
@@ -152,8 +153,13 @@ public class BanHangController {
             model.addAttribute("userLogged", user);
         }
 
-        HoaDon hoaDon = hoaDonService.findById(id);
-        List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(id);
+        HoaDon hoaDon = hoaDonService.findById(idHD);
+        List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idHD);
+        if (listHDCT.isEmpty()) {
+            System.out.println("hóa đơn trống");
+            redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout",true);
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idHD;
+        }
 
         // Calculating the total money before discount and applying the discount
         double totalMoneyBefore = listHDCT.stream()
@@ -376,6 +382,7 @@ public class BanHangController {
         return "redirect:/admin/ban-hang";
     }
 
+
     @GetMapping("/xoa/{id}")
     public String xoaHD(@PathVariable("id") Long idhd, Model model,Authentication authentication) {
         if (authentication != null) {
@@ -528,6 +535,20 @@ public class BanHangController {
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
 
+    @PostMapping("/hoa-don/xoa-het-ctsp/{idHD}")
+    public String xoaHetCtspKhoiHD(@PathVariable("idHD") Long idHD,
+                                   RedirectAttributes redirectAttributes) {
+            List<HoaDonChiTiet> listHoaDonChiTiet = hoaDonChiTietService.getListHdctByIdHd(idHD);
+        for (HoaDonChiTiet hoaDonChiTiet: listHoaDonChiTiet) {
+            Integer soLuongHoi = hoaDonChiTiet.getSoLuong();
+            ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
+            chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong()+soLuongHoi),chiTietSanPham.getId());
+            hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
+        }
+        hoaDonService.updateTongTien(idHD,0.0);
+        redirectAttributes.addFlashAttribute("deleteAllSuccess", true);
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+    }
 
     @PostMapping("/hoa-don/sua-so-luong")
     public String updateSoLuongSua(@RequestParam("soLuongSua") Integer soLuongSua,
@@ -567,19 +588,4 @@ public class BanHangController {
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
 
-
-
-//    @RequestMapping("/thanh-toan/vnpay")
-//    public String createVNPayPayment(Model modeel, @RequestParam String maHD){
-//        String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-//        String vnp_ReturnUrl = "http://localhost:8080/TTAP/trang-chu";
-//        String vnp_TmnCode = "MT6RTYUK";
-//        String secretKey = "SXF7AIMCYSCS4XIWP5RLLO12WG2O14YW";
-//        String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
-//        String vnp_Locale = "vn";
-//        String vnp_CurrCode = "VND";
-//        String vnp_TxnRef = maHD;
-//        String vnp_OrderInfo = hoaDonRepository.getHDByMa(maHD).get(0).getGhiChu();
-//        return "redirect:/admin/ban-hang";
-//    }
 }
