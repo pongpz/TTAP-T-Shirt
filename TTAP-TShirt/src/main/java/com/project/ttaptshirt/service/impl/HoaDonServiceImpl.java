@@ -87,7 +87,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setDiaChiGiaoHang(address);
         hoaDon.setNgayTao(LocalDate.now());
         hoaDon.setTrangThai(3);
-        hoaDon.setLoaiDon(1);
+        hoaDon.setLoaiDon(0);
         hoaDon.setTongTien(cart.getTotalAmount().floatValue());
 
         HoaDon saveHd = hoaDonRepository.save(hoaDon);
