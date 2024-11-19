@@ -5,9 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8676785-309e-46b5-8c91-c21db6f8148d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-client.cookies" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-client.cookies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/cred.json" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/cred.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/config/SpringSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/config/SpringSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/ChiTietSanPhamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/ChiTietSanPhamController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/HinhAnhController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/HinhAnhController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/HoaDonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/HoaDonController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/HomeCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/HomeCustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/SanPhamCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/SanPhamCustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/entity/DatHang.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/entity/DatHang.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/repository/HoaDonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/repository/HoaDonRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/HinhAnhService.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/HinhAnhService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/impl/HoaDonServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/impl/HoaDonServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/hoadon/hoa-don-tim-kiem.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/hoadon/hoa-don-tim-kiem.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/hoadon/hoa-don.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/hoadon/hoa-don.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/sanpham/chi-tiet-san-pham.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/sanpham/chi-tiet-san-pham.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/sanpham/ctsp-view-update.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/sanpham/ctsp-view-update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/sanpham/san-pham.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/sanpham/san-pham.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-chat-lieu.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-chat-lieu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-kich-co.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-kich-co.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-kieu-dang.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-kieu-dang.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-mau-sac.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-mau-sac.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-nha-san-xuat.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-nha-san-xuat.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-thuong-hieu.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/thuoctinhsanpham/update-thuong-hieu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/sanpham.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/sanpham.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/trangchu.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/trangchu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/khachhang/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/khachhang/update.html" afterDir="false" />
+=======
       <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" afterDir="false" />
+>>>>>>> e568df1ea803af7d5a7ed109d966305d3c55ad4c
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,12 +86,15 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
+    "HTTP Request.All in generated-requests.executor": "Run",
     "HTTP Request.generated-requests | #10.executor": "Run",
     "HTTP Request.generated-requests | #13.executor": "Run",
     "HTTP Request.generated-requests | #2.executor": "Run",
+    "HTTP Request.generated-requests | #24.executor": "Run",
     "HTTP Request.generated-requests | #3.executor": "Run",
     "HTTP Request.generated-requests | #4.executor": "Run",
     "HTTP Request.generated-requests | #5.executor": "Run",
+    "HTTP Request.generated-requests | #6.executor": "Run",
     "HTTP Request.generated-requests | #7.executor": "Run",
     "HTTP Request.generated-requests | #8.executor": "Run",
     "JavaScript Debug.trangchu.html.executor": "Run",
@@ -70,8 +105,12 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.TtapTShirtApplication.executor": "Run",
+<<<<<<< HEAD
+    "git-widget-placeholder": "Merging dao-thanh",
+=======
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "dao-thanh",
+>>>>>>> e568df1ea803af7d5a7ed109d966305d3c55ad4c
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/trant/OneDrive/Máy tính/TTAP/TTAP-T-Shirt",
     "node.js.detected.package.eslint": "true",
@@ -90,19 +129,19 @@
   }
 }]]></component>
   <component name="RunManager" selected="Spring Boot.TtapTShirtApplication">
+    <configuration name="All in generated-requests" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http">
+      <method v="2" />
+    </configuration>
     <configuration name="generated-requests | #10" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="10" requestIdentifier="#10" runType="Run single request">
       <method v="2" />
     </configuration>
     <configuration name="generated-requests | #13" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="13" requestIdentifier="#13" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="generated-requests | #5" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="5" requestIdentifier="#5" runType="Run single request">
+    <configuration name="generated-requests | #24" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="24" requestIdentifier="#24" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="generated-requests | #7" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="7" requestIdentifier="#7" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #8" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="8" requestIdentifier="#8" runType="Run single request">
+    <configuration name="generated-requests | #6" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="6" requestIdentifier="#6" runType="Run single request">
       <method v="2" />
     </configuration>
     <configuration name="TtapTShirtApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
@@ -115,11 +154,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="HTTP Request.generated-requests | #6" />
         <item itemvalue="HTTP Request.generated-requests | #13" />
+        <item itemvalue="HTTP Request.All in generated-requests" />
+        <item itemvalue="HTTP Request.generated-requests | #24" />
         <item itemvalue="HTTP Request.generated-requests | #10" />
-        <item itemvalue="HTTP Request.generated-requests | #8" />
-        <item itemvalue="HTTP Request.generated-requests | #7" />
-        <item itemvalue="HTTP Request.generated-requests | #5" />
       </list>
     </recent_temporary>
   </component>
@@ -149,9 +188,15 @@
       <workItem from="1731671781413" duration="2177000" />
       <workItem from="1731676180607" duration="11848000" />
       <workItem from="1731737665995" duration="6648000" />
+<<<<<<< HEAD
+      <workItem from="1731772076399" duration="24929000" />
+      <workItem from="1731931107334" duration="8166000" />
+      <workItem from="1732016392701" duration="4564000" />
+=======
       <workItem from="1731772076399" duration="20753000" />
       <workItem from="1731939184043" duration="11582000" />
       <workItem from="1732033476086" duration="7425000" />
+>>>>>>> e568df1ea803af7d5a7ed109d966305d3c55ad4c
     </task>
     <servers />
   </component>
