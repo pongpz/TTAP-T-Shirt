@@ -75,7 +75,7 @@ public class HoaDonController {
         if(keyword.trim().isEmpty()){
             lsSearch = hr.search2(ma.trim(),trangThai,ngayThanhToan,pageab);
         }else {
-            lsSearch = hr.search(keyword.trim(),trangThai,ngayThanhToan,pageab);
+            lsSearch = hr.search(ma.trim(),keyword.trim(),trangThai,ngayThanhToan,pageab);
         }
 //        System.out.println(lsSearch);
         model.addAttribute("listHD", lsSearch);

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -80,6 +81,7 @@ public class KhachHangController {
             return "redirect:/admin/users/register";
         }
     }
+
 
     // Hiển thị thông tin người dùng theo ID
     @GetMapping("/detail/{id}")
