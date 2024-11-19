@@ -507,6 +507,19 @@
 
         </script>
 
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var checkoutFail = [[${checkoutFail}]];
+            console.log(123);
+            if (checkoutFail) {
+                toastError('Error!', 'Thanh toán thất bại !');
+            }
+            /*]]>*/
+
+
+        </script>
+
 
 
 </body>
