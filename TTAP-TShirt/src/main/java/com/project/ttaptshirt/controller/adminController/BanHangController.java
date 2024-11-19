@@ -281,6 +281,7 @@ public class BanHangController {
 
         Long idhd = hoaDonRepository.getHDByMa(mahd).get(0).getId();
         if (!respCode.equals("00")){
+            redirectAttributes.addFlashAttribute("checkoutFail", true);
             return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
         }else {
             if (authentication != null) {

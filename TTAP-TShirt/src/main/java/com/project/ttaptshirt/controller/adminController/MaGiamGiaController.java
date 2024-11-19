@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -115,7 +116,7 @@ public class MaGiamGiaController {
 
     @Transactional
     @PostMapping("/update")
-    public String update(@Valid MaGiamGia mgg, Errors errors, Model model){
+    public String update(@Valid MaGiamGia mgg, Errors errors, Model model,RedirectAttributes redirectAttributes){
         boolean check_ma = false;
         for (int i = 0; i < mggr.findAllMaNotHaveThisId(mgg.getId()).size(); i ++){
             if (mggr.findAllMaNotHaveThisId(mgg.getId()).get(i).equals(mgg.getMa())){
@@ -163,12 +164,13 @@ public class MaGiamGiaController {
             mgg.setNgaySua(LocalDateTime.now());
             mgg.setId(mgg.getId());
             mggr.save(mgg);
+            redirectAttributes.addFlashAttribute("updateSuccess", true);
             return "redirect:/admin/ma-giam-gia/hien-thi";
         }
     }
 
     @PostMapping("/add")
-    public String add(@Valid MaGiamGia mgg , Errors errors, Model model){
+    public String add(@Valid MaGiamGia mgg , Errors errors, Model model, RedirectAttributes redirectAttributes){
         if (errors.hasFieldErrors()){
             model.addAttribute("errors","Vui lòng điền đủ trường!");
             model.addAttribute("mgg",mgg);
@@ -210,6 +212,7 @@ public class MaGiamGiaController {
             mgg.setNgayTao(LocalDateTime.now());
             mgg.setNgaySua(LocalDateTime.now());
             mggr.save(mgg);
+            redirectAttributes.addFlashAttribute("addSuccess", true);
             return "redirect:/admin/ma-giam-gia/hien-thi";
         }
     }
