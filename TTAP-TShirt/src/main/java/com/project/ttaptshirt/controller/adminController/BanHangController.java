@@ -19,16 +19,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -106,6 +110,31 @@ public class BanHangController {
 
         HoaDon hoadon = hoaDonRepository.findById(idHoaDon).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idHoaDon));
         model.addAttribute("hoadon", hoadon);
+        HoaDon hoaDon = hoaDonService.findById(idHoaDon);
+        double totalMoneyBefore = listHDCT.stream()
+                .mapToDouble(hdct -> {
+                    int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
+                    double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null) ? hdct.getChiTietSanPham().getGiaBan() : 0.0;
+                    return soLuong * giaBan;
+                })
+                .sum();
+        MaGiamGia voucher = hoaDon.getMaGiamGia();
+        double discount = 0.0;
+
+        if (voucher != null) {
+            if (voucher.getHinhThuc().equals(false)) {
+                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+                if (discount > voucher.getGiaTriToiDa()) {
+                    discount = voucher.getGiaTriToiDa();
+                }
+            } else if (voucher.getHinhThuc().equals(true)) {
+                discount = voucher.getGiaTriGiam();
+            }
+        }
+
+        double totalMoneyAfter = totalMoneyBefore - discount;
+        totalMoneyAfter = Math.max(totalMoneyAfter, 0);
+        model.addAttribute("linkqr","https://api.vietqr.io/image/970407-1938170304-oJ6IfGN.jpg?accountName=DUONGTRUNGANH&amount="+(int)totalMoneyAfter+"&addInfo="+hoaDon.getMa());
 
         return "admin/banhangtaiquay/chiTietHoaDon";
     }
@@ -213,7 +242,7 @@ public class BanHangController {
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
-        vnp_Params.put("vnp_BankCode", "NCB");
+        vnp_Params.put("vnp_BankCode", "");
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + hoaDon.getMa());
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
