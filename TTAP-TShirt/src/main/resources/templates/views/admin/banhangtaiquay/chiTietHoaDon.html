@@ -32,8 +32,8 @@
         <div id="toast-root"></div>
         <div>
             <h1 th:text="'Mã Hóa Đơn: '+${hoadon.ma}"></h1>
-            <input type="number" id="lengthlistHDCT" th:value="${listHDCT.size()}" readonly>
-
+            <input type="hidden" id="lengthlistHDCT" th:value="${listHDCT.size()}" readonly>
+            <label th:text="'Số chi tiết sản phẩm: '+${listHDCT.size()}"></label>
         </div>
 
         <br/>
@@ -191,7 +191,7 @@
                         <button class="btn btn-warning"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalUpdateQuantity"
-                                th:onclick="'openModal(' + ${hdct.id} + ',' + ${hdct.soLuong} + ');'">
+                                th:onclick="'openModal(' + ${hdct.id} + ',' + ${hdct.soLuong} + ',' + ${hdct.chiTietSanPham.soLuong} + ');'">
                             Sửa Số Lượng
                         </button>
                         <script>
@@ -213,7 +213,7 @@
                                         <form id="updateQuantityForm" action="/admin/ban-hang/hoa-don/sua-so-luong"
                                               method="POST">
                                             <div class="mb-3">
-                                                <label for="quantityInput" class="form-label">Quantity</label>
+                                                <label for="quantityInput" id="quantityAvaliable" class="form-label"></label>
                                                 <input type="number" class="form-control" id="quantityInput"
                                                        name="soLuongSua" min="1" required>
                                             </div>
@@ -377,7 +377,7 @@
                 <br/>
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Tiền khách trả:</label>
-                    <input style="width: 280px;height: 40px;border-radius: 10px;" type="number" placeholder="Nhập tiền khách trả..." id="tienKhachTraInput" oninput="calculateTienThua()"><p>đ</p>
+                    <input style="width: 280px;height: 40px;border-radius: 10px;" type="number" placeholder="Nhập tiền khách trả..." id="tienKhachTraInput" oninput="calculateTienThua()">
                 </div>
                 <br/>
                 <div class="row">
@@ -461,10 +461,11 @@
         <script>
 
             // Function to populate the modal with the correct item data
-            function openModal(idHdct, currentQuantity) {
+            function openModal(idHdct, currentQuantity,quantityAvaliable) {
                 document.getElementById('quantityInput').value = currentQuantity;
                 document.getElementById('idHdctInput').value = idHdct;
-            }
+                document.getElementById('quantityAvaliable').innerText ='Số Lượng khả dụng: '+ quantityAvaliable;
+             }
 
             function checkout() {
                 // Get the ID of the invoice (HoaDon) you want to process
@@ -540,6 +541,16 @@
             var updateSuccess = [[${updateSuccess}]];
             if (updateSuccess) {
                 toastSuccess('Thành Công !', 'Cập nhật Thành Công Số Lượng Sản Phẩm !');
+            }
+            /*]]>*/
+        </script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var QuantityUpdateError = [[${QuantityUpdateError}]];
+            if (QuantityUpdateError) {
+                toastError('Thất bại !', 'Số lượng sản phẩm không hợp lệ !');
             }
             /*]]>*/
         </script>
