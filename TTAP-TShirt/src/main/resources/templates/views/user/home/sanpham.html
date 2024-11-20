@@ -52,6 +52,14 @@
   .pagination li a:hover {
     background-color: #e1e1e1;
   }
+
+  .product-name {
+    white-space: nowrap;      /* Không xuống dòng */
+    overflow: hidden;         /* Ẩn phần tràn */
+    text-overflow: ellipsis;  /* Thêm dấu "..." khi tràn */
+    display: block;           /* Đảm bảo nội dung nằm trong một dòng */
+    width: 100%;              /* Đảm bảo vừa với container */
+  }
 </style>
 
 <body>
@@ -200,19 +208,14 @@
                 </div>
               </div>
               <div class=" justify-content-between text-center">
-                <span th:text="${sp.ten}"></span> <br>
-                <span th:text="|${giasanpham[sp.id]} đ|"></span>
+                <b><span class="product-name" th:text="${sp.ten}"></span></b>
+                <b><span th:text="|${giasanpham[sp.id]} đ|"></span></b>
                 <div class="text-center">
                   <div class="d-flex flex-column justify-content-center align-items-center mt-2">
                     <a class="abc">
                       <span>Xem sản phẩm</span>
                     </a>
-<<<<<<< HEAD
-=======
-                    <a class="abc my-2" th:href="@{/TTAP/cart/add(productId=${sp.id}, quantity=1)}">
-                      <span>Thêm vào giỏ hàng</span>
-                    </a>
->>>>>>> 0cfbc536175531a88cc860775e234d4df03a0b89
+                    <br>
                   </div>
                 </div>
               </div>
