@@ -141,7 +141,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setTenNguoiNhan(fullName);
         hoaDon.setSdtNguoiNhan(phoneNumber);
         hoaDon.setDiaChiGiaoHang(address);
-        hoaDon.setNgayTao(LocalDate.now());
+        hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(3);
         hoaDon.setLoaiDon(0);
         hoaDon.setTongTien(cart.getTongTien().floatValue());
