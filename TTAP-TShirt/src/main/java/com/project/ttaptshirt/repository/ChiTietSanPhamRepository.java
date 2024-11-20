@@ -1,8 +1,6 @@
 package com.project.ttaptshirt.repository;
 
 import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.KichCo;
-import com.project.ttaptshirt.entity.SanPham;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -46,5 +44,8 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
 
     @Query("select spct from ChiTietSanPham spct where spct.sanPham.id =:id")
     List<ChiTietSanPham> getThuocTinhSPCT(Long id);
+
+    @Query("select Min(c.giaBan) FROM ChiTietSanPham c WHERE c.sanPham.id = :sanPhamId")
+    Double findMinGiaBan(@Param("sanPhamId") Long sanPhamId);
 
 }

@@ -32,12 +32,16 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+<<<<<<< HEAD
+import java.time.LocalDateTime;
+=======
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+>>>>>>> 0cfbc536175531a88cc860775e234d4df03a0b89
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -410,7 +414,7 @@ public class BanHangController {
         }
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
         hoaDon.setLoaiDon(1);
-        hoaDon.setNgayTao(LocalDate.now());
+        hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
 

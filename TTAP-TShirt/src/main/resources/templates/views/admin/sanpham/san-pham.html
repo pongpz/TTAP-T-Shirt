@@ -107,72 +107,68 @@
                 </div>
 
         <!-- Modal thêm sản phẩm -->
-        <div class="modal fade" th:id="'modal-themsp-'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModqalLabel">Thêm Sản Phẩm</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" th:id="'modal-themsp-'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm Sản Phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/admin/san-pham/add}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="ten" class="form-label">Tên Sản Phẩm</label>
+                        <input type="text" class="form-control" id="ten" name="ten" required>
                     </div>
-                    <div class="modal-body">
-                        <form action="/admin/san-pham/add" method="post" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label for="ten" class="form-label">Tên Sản Phẩm</label>
-                                <input type="text" class="form-control" id="ten" name="ten" required>
-                            </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Nhà Sản Xuất</label>
-                                <select class="form-select" name="idNSX" required>
-                                    <option value="" disabled selected>-- Vui lòng chọn Nhà Sản Xuất --</option>
-                                    <option th:each="nsx : ${listNsx}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Chất Liệu</label>
-                                <select class="form-select" name="idChatLieu">
-                                    <option value="" disabled selected>-- Vui lòng chọn Chất Liệu --</option>
-                                    <option th:each="chatLieu : ${listChatLieu}" th:value="${chatLieu.id}" th:text="${chatLieu.ten}"></option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Thương Hiệu</label>
-                                <select class="form-select" name="idThuongHieu">
-                                    <option value="" disabled selected>-- Vui lòng chọn Thương Hiệu --</option>
-                                    <option th:each="thuongHieu : ${listThuongHieu}" th:value="${thuongHieu.id}" th:text="${thuongHieu.ten}"></option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Kiểu Dáng</label>
-                                <select class="form-select" name="idKieuDang">
-                                    <option value="" disabled selected>-- Vui lòng chọn Kiểu Dáng --</option>
-                                    <option th:each="kieuDang : ${listKieuDang}" th:value="${kieuDang.id}" th:text="${kieuDang.ten}"></option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="moTa" class="form-label">Mô Tả</label>
-                                <textarea class="form-control" id="moTa" name="moTa" rows="2"></textarea>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="hinhAnh" class="form-label">Chọn Ảnh</label>
-                                <input type="file" class="form-control" id="hinhAnh" name="image">
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Lưu</button>
-                        </form>
-
+                    <div class="mb-3">
+                        <label class="form-label">Nhà Sản Xuất</label>
+                        <select class="form-select" name="idNSX" required>
+                            <option th:each="nsx : ${listNsx}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
+                        </select>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                    <div class="mb-3">
+                        <label class="form-label">Chất Liệu</label>
+                        <select class="form-select" name="idChatLieu">
+                            <option th:each="chatLieu : ${listChatLieu}" th:value="${chatLieu.id}" th:text="${chatLieu.ten}"></option>
+                        </select>
                     </div>
-                </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Thương Hiệu</label>
+                        <select class="form-select" name="idThuongHieu">
+                            <option th:each="thuongHieu : ${listThuongHieu}" th:value="${thuongHieu.id}" th:text="${thuongHieu.ten}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Kiểu Dáng</label>
+                        <select class="form-select" name="idKieuDang">
+                            <option th:each="kieuDang : ${listKieuDang}" th:value="${kieuDang.id}" th:text="${kieuDang.ten}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="moTa" class="form-label">Mô Tả</label>
+                        <textarea class="form-control" id="moTa" name="moTa" rows="2"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="hinhAnh" class="form-label">Chọn Ảnh</label>
+                        <input type="file" class="form-control" id="hinhAnh" name="image" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
+    </div>
+</div>
+
 
 
 </body>

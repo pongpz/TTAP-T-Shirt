@@ -9,8 +9,10 @@ import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,6 +29,20 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+
+    //huy hoa don cho
+    @Transactional
+    public void huyHoaDonCho(){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiredTime = now.minusDays(1);
+
+        List<HoaDon> hoadons = hoaDonRepository.findByTrangThaiAndNgayTaoBefore(0,expiredTime);
+
+        hoadons.forEach(hoadon -> hoadon.setTrangThai(5));
+        hoaDonRepository.saveAll(hoadons);
+
+    }
 
     public HoaDonServiceImpl(HoaDonRepository hoadonRepository, HoaDonChiTietRepository hoadonChiTietRepository) {
         this.hoadonRepository = hoadonRepository;
@@ -83,7 +99,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setTenNguoiNhan(fullName);
         hoaDon.setSdtNguoiNhan(phoneNumber);
         hoaDon.setDiaChiGiaoHang(address);
-        hoaDon.setNgayTao(LocalDate.now());
+        hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(3);
         hoaDon.setLoaiDon(0);
         hoaDon.setTongTien(cart.getTotalAmount().floatValue());

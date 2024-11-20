@@ -45,9 +45,4 @@ public class ChiTietSanPham extends CreatedUpdatedAt{
     @Column(name = "so_luong")
     private Integer soLuong;
 
-
-    @Transient
-    private String imageLink;
-
-
 }

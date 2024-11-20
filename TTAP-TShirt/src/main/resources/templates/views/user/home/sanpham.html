@@ -23,6 +23,35 @@
 </head>
 
 <style>
+  .pagination-outer {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .pagination {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+
+    padding: 8px 15px;
+    background-color: #f5f5f5;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .pagination li a:hover {
+    background-color: #e1e1e1;
+  }
 </style>
 
 <body>
@@ -163,20 +192,27 @@
       </div>
       <div class="col-lg-9 col-md-7">
         <div class="row featured__filter">
-          <div class="col-lg-4 col-md-6 col-sm-6 custom-margin" th:each="sp : ${listctsp}"> <br>
+          <div class="col-lg-4 col-md-6 col-sm-6 custom-margin" th:each="sp : ${listsp}"> <br>
             <div class="card">
-<!--              <img th:if="${sp.imageLink}" th:src="${sp.imageLink}" class="card-img-top" alt="Hình ảnh sản phẩm">-->
+              <div class="product-images">
+                <div th:each="hinhAnh : ${hinhAnhSanPham[sp.id]}">
+                  <img th:src="${hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 250px; height: 300px;">
+                </div>
+              </div>
               <div class=" justify-content-between text-center">
-                <span th:text="${sp.sanPham.ten}"></span>
+                <span th:text="${sp.ten}"></span> <br>
+                <span th:text="|${giasanpham[sp.id]} đ|"></span>
                 <div class="text-center">
-                  <b th:text="${@sanPhamCustomerController.formatCurrency(sp.giaBan)+' vnđ'}"></b>
                   <div class="d-flex flex-column justify-content-center align-items-center mt-2">
-                    <a class="abc " th:href="@{/TTAP/san-pham-detail/{id}(id=${sp.sanPham.id})}">
+                    <a class="abc">
                       <span>Xem sản phẩm</span>
                     </a>
+<<<<<<< HEAD
+=======
                     <a class="abc my-2" th:href="@{/TTAP/cart/add(productId=${sp.id}, quantity=1)}">
                       <span>Thêm vào giỏ hàng</span>
                     </a>
+>>>>>>> 0cfbc536175531a88cc860775e234d4df03a0b89
                   </div>
                 </div>
               </div>
@@ -184,21 +220,28 @@
           </div>
         </div> <br>
 
-        <div class="pagination">
+        <div class="pagination-outer">
           <ul class="pagination">
-            <li th:class="${currentPage == 0} ? 'disabled' : ''">
-              <a th:href="@{/san-pham(page=${currentPage - 1}, ten=${ten}, priceRangerId=${priceRangerId}, kichCoId=${kichCoId})}">&laquo;</a>
+            <!-- Previous button -->
+            <li th:if="${currentPage > 0}">
+              <a th:href="@{/TTAP/san-pham(page=${currentPage - 1})}" title="Previous Page">«</a>
             </li>
 
-            <li th:each="i : ${#numbers.sequence(0, totalPage - 1)}" th:class="${i == currentPage} ? 'active' : ''">
-              <a th:href="@{/san-pham(page=${i}, ten=${ten}, priceRangerId=${priceRangerId}, kichCoId=${kichCoId})}" th:text="${i + 1}"></a>
+            <!-- Page number links -->
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+              <a th:href="@{/TTAP/san-pham(page=${i})}" th:text="${i + 1}"
+                 th:classappend="${i == currentPage ? 'active' : ''}" title="Page [[${i + 1}]]"></a>
             </li>
 
-            <li th:class="${currentPage == totalPage - 1} ? 'disabled' : ''">
-              <a th:href="@{/san-pham(page=${currentPage + 1}, ten=${ten}, priceRangerId=${priceRangerId}, kichCoId=${kichCoId})}">&raquo;</a>
+            <!-- Next button -->
+            <li th:if="${currentPage < totalPages - 1}">
+              <a th:href="@{/TTAP/san-pham(page=${currentPage + 1})}" title="Next Page">»</a>
             </li>
           </ul>
         </div>
+
+
+
 
       </div>
     </div>
