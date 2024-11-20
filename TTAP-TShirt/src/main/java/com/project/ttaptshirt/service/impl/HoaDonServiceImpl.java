@@ -2,9 +2,7 @@ package com.project.ttaptshirt.service.impl;
 
 import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.dto.CartItemDTO;
-import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.HoaDon;
-import com.project.ttaptshirt.entity.HoaDonChiTiet;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
@@ -71,11 +69,11 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-
     public void updateTongTien(Long idHd, Double tongTien) {
         hoaDonRepository.updateTongTienHd(idHd,tongTien);
     }
 
+    @Override
     public HoaDon createHoaDon(CartDTO cart, String fullName, String phoneNumber, String address) {
         if (cart == null|| cart.getItems() == null || cart.getItems().isEmpty()){
             throw new IllegalArgumentException("Giỏ hàng trống, không thể tạo hóa đơn.");
@@ -100,6 +98,48 @@ public class HoaDonServiceImpl implements HoaDonService {
             chiTiet.setChiTietSanPham(chiTietSanPham);
             chiTiet.setSoLuong(item.getQuantity());
             chiTiet.setDonGia(item.getPrice().floatValue());
+
+            hoadonChiTietRepository.save(chiTiet);
+        }
+        return saveHd;
+
+    }
+
+    @Override
+    public HoaDon createHoaDon2(DatHang cart,List<Long> selectedProductIds, String fullName, String phoneNumber, String address) {
+        if (cart == null|| cart.getItems() == null || cart.getItems().isEmpty()){
+            throw new IllegalArgumentException("Giỏ hàng trống, không thể tạo hóa đơn.");
+        }
+
+        // Lọc các sản phẩm được chọn từ giỏ hàng
+        List<DatHangChiTiet> selectedItems = cart.getItems().stream()
+                .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId()))
+                .toList();
+
+        if (selectedItems.isEmpty()) {
+            throw new IllegalArgumentException("Không có sản phẩm nào được chọn để tạo hóa đơn.");
+        }
+
+        HoaDon hoaDon = new HoaDon();
+        hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
+        hoaDon.setTenNguoiNhan(fullName);
+        hoaDon.setSdtNguoiNhan(phoneNumber);
+        hoaDon.setDiaChiGiaoHang(address);
+        hoaDon.setNgayTao(LocalDate.now());
+        hoaDon.setTrangThai(3);
+        hoaDon.setLoaiDon(0);
+        hoaDon.setTongTien(cart.getTongTien().floatValue());
+
+        HoaDon saveHd = hoaDonRepository.save(hoaDon);
+
+        for(DatHangChiTiet item : cart.getItems()) {
+            HoaDonChiTiet chiTiet = new HoaDonChiTiet();
+            chiTiet.setHoaDon(saveHd);
+            ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository.findById(item.getId())
+                    .orElseThrow(() -> new RuntimeException("Chi tiết sản phẩm không tồn tại: " + item.getId()));
+            chiTiet.setChiTietSanPham(chiTietSanPham);
+            chiTiet.setSoLuong(item.getSoLuong());
+            chiTiet.setDonGia(item.getGia().floatValue());
 
             hoadonChiTietRepository.save(chiTiet);
         }

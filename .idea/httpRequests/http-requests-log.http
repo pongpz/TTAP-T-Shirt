@@ -1,3 +1,14 @@
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-20T182644.200.html
+
+###
+
 GET http://localhost:8080/TTAP/cart/viewInvoice
 User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
 Accept-Encoding: br, deflate, gzip, x-gzip

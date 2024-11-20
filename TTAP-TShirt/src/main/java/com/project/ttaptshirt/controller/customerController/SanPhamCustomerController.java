@@ -1,12 +1,9 @@
 package com.project.ttaptshirt.controller.customerController;
 
-import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.KichCo;
-import com.project.ttaptshirt.entity.KieuDang;
-import com.project.ttaptshirt.entity.MauSac;
-import com.project.ttaptshirt.entity.SanPham;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.*;
 //import com.project.ttaptshirt.service.HinhAnhService;
+import com.project.ttaptshirt.security.CustomUserDetail;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,7 +79,15 @@ public class SanPhamCustomerController {
                                   @RequestParam(defaultValue = "") String ten,
                                   @RequestParam(defaultValue = "0") int priceRangerId,
                                   @RequestParam(defaultValue = "0") int kichCoId,
-                                  @RequestParam(defaultValue = "0") int page) {
+                                  @RequestParam(defaultValue = "0") int page,
+                                  Authentication authentication) {
+
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
+        model.addAttribute("requestURI", request.getRequestURI());
 
         // Kiểm tra và xử lý giá trị của priceRanger
         double minPrice = 0;
@@ -126,7 +132,18 @@ public class SanPhamCustomerController {
 
 
     @GetMapping("/san-pham-detail/{idSP}")
-    public String sanPhamDetail(@PathVariable Long idSP, Model model,@RequestParam(required = false, value = "mauSac") String mauSac,@RequestParam(required = false, value = "kichCo") String kichCo){
+    public String sanPhamDetail(@PathVariable Long idSP, Model model,
+                                @RequestParam(required = false, value = "mauSac") String mauSac,
+                                @RequestParam(required = false, value = "kichCo") String kichCo,
+                                HttpServletRequest request, Authentication authentication){
+
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
+        model.addAttribute("requestURI", request.getRequestURI());
+
         List<ChiTietSanPham> ls = chiTietSanPhamRepository.findByIDSanPham(idSP,kichCo,mauSac);
         model.addAttribute("SPCTFist", ls.stream().findFirst().orElse(null));
         List<MauSac> lsms = new ArrayList<>();

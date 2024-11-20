@@ -73,7 +73,13 @@ public class HomeCustomerController {
         return "user/home/trangchu"; // Trả về trang chủ
     }
     @GetMapping("/san-pham/{id}")
-    public String detailSP(Model model, @PathVariable Long id){
+    public String detailSP(HttpServletRequest request, Model model, Authentication authentication, @PathVariable Long id){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
+        model.addAttribute("requestURI", request.getRequestURI());
         // Kiểm tra danh sách trả về từ findByIDSanPham trước khi truy cập phần tử
 //        model.addAttribute("mauSac", mauSacService.findAll());
 //        model.addAttribute("kc", kichCoService.findAll());
