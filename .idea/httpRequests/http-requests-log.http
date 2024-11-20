@@ -2,6 +2,325 @@ GET http://localhost:8080/TTAP/trang-chu
 User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
 Accept-Encoding: br, deflate, gzip, x-gzip
 Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-20T182644.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/viewInvoice
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221333-1.200.html
+
+###
+
+GET http://localhost:8080/admin/hoa-don-chi-tiet/hien-thi?id=11&page=63
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221333.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/hoa-don-chi-tiet/hien-thi?id=13
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221333.500.json
+
+###
+
+GET http://localhost:8080/TTAP/cart/viewInvoice
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221332-6.200.html
+
+###
+
+GET http://localhost:8080/admin/users/search?phoneNumber=hSvZKe8h
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221332-5.200.html
+
+###
+
+GET http://localhost:8080/register?password=1YtORzR_
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221332-4.200.html
+
+###
+
+GET http://localhost:8080/admin/users/register?password=FC4Cgq0D
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221332-3.200.html
+
+###
+
+POST http://localhost:8080/admin/users/register?password=kNAWLpl2Content-Type: application/x-www-form-urlencoded
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221332-2.200.html
+
+###
+
+GET http://localhost:8080/admin/ban-hang
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221332-1.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/remove?productId=96
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221332.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/add?productId=28&quantity=23
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221331.500.json
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221331-3.200.html
+
+###
+
+POST http://localhost:8080/TTAP/cart/add?productId=16&quantity=45Content-Type: application/x-www-form-urlencoded
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221331.405.json
+
+###
+
+GET http://localhost:8080/TTAP/cart/view
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221331-2.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/view
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221331-1.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/view
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221331.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/view?userId=98
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221330-6.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/view
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221330-5.200.html
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221330-4.200.html
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221330-3.200.html
+
+###
+
+GET http://localhost:8080/admin/ban-hang
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221330-2.200.html
+
+###
+
+GET http://localhost:8080/cart
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221330.404.json
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221330-1.200.html
+
+###
+
+GET http://localhost:8080/admin/ban-hang
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=CC7832404F189C663CC5175B188CE368
+cookie: JSESSIONID=F816093726F19FD0023857A167DC8D79
+content-length: 0
+
+<> 2024-11-18T221330.200.html
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=CC7832404F189C663CC5175B188CE368
+content-length: 0
+
+<> 2024-11-18T221225.200.html
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=CC7832404F189C663CC5175B188CE368
+content-length: 0
+
+<> 2024-11-18T221211.200.html
+
+###
+
+GET http://localhost:8080/TTAP/cart/viewInvoice
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
+cookie: JSESSIONID=CC7832404F189C663CC5175B188CE368
+content-length: 0
+
+<> 2024-11-18T221125.200.html
+
+###
+
+GET http://localhost:8080/TTAP/trang-chu
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
 Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
 content-length: 0
 

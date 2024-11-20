@@ -13,6 +13,11 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
 
+    //lấy giá sản phẩm thấp nhất để hiển thị
+    public Double getMinGiaBan(Long sanPhamId) {
+        return chiTietSanPhamRepository.findMinGiaBan(sanPhamId);
+    }
+
     @Override
     public void save(ChiTietSanPham chiTietSanPham) {
         chiTietSanPhamRepository.save(chiTietSanPham);
