@@ -80,7 +80,7 @@ public class BanHangController {
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<MaGiamGia> listKM = voucherRepo.findAll();
         List<User> listkh = userRepo.findAll();
-        model.addAttribute("listUser",listkh);
+        model.addAttribute("listUser", listkh);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listLs", listHd);
@@ -92,7 +92,7 @@ public class BanHangController {
 
 
     @GetMapping("/hoa-don/chi-tiet")
-    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model,Authentication authentication) {
+    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
@@ -103,7 +103,7 @@ public class BanHangController {
         List<MaGiamGia> listKM = voucherRepo.findAll();
         List<User> listkh = userRepo.findAll();
 
-        model.addAttribute("listKh",listkh);
+        model.addAttribute("listKh", listkh);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listCTSP", listCTSP);
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idHoaDon);
@@ -137,12 +137,10 @@ public class BanHangController {
 
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0);
-        model.addAttribute("linkqr","https://api.vietqr.io/image/970407-1938170304-oJ6IfGN.jpg?accountName=DUONGTRUNGANH&amount="+(int)totalMoneyAfter+"&addInfo="+hoaDon.getMa());
+        model.addAttribute("linkqr", "https://api.vietqr.io/image/970407-1938170304-oJ6IfGN.jpg?accountName=DUONGTRUNGANH&amount=" + (int) totalMoneyAfter + "&addInfo=" + hoaDon.getMa());
 
         return "admin/banhangtaiquay/chiTietHoaDon";
     }
-
-
 
 
     @PostMapping("/hoa-don/xac-nhan-thanh-toan")
@@ -159,8 +157,8 @@ public class BanHangController {
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idHD);
         if (listHDCT.isEmpty()) {
             System.out.println("hóa đơn trống");
-            redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout",true);
-            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idHD;
+            redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
         }
 
         // Calculating the total money before discount and applying the discount
@@ -202,7 +200,7 @@ public class BanHangController {
     }
 
     @GetMapping("/hoa-don/thanh-toan-vnpay")
-    public String createPayment(@RequestParam("idhd") Long id, Authentication authentication, RedirectAttributes redirectAttributes,Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public String createPayment(@RequestParam("idhd") Long id, Authentication authentication, RedirectAttributes redirectAttributes, Model model, HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
@@ -238,7 +236,7 @@ public class BanHangController {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        long amount = (int)totalMoneyAfter *100;
+        long amount = (int) totalMoneyAfter * 100;
         String vnp_IpAddr = Config.getIpAddress(req);
 
         String vnp_TmnCode = Config.vnp_TmnCode;
@@ -306,21 +304,21 @@ public class BanHangController {
 //        paymentResDTO.setMessage("Successfully");
 //        paymentResDTO.setUrl(paymentUrl);
 
-        return "redirect:"+paymentUrl;
+        return "redirect:" + paymentUrl;
     }
 
     @GetMapping("/hoa-don/xac-nhan-thanh-toan_vnp")
-    public String xacNhanThanhToanVNP( Model model,
-            Authentication authentication,
-            RedirectAttributes redirectAttributes,
-            @RequestParam("vnp_ResponseCode") String respCode,
-            @RequestParam("vnp_TxnRef") String mahd) {
+    public String xacNhanThanhToanVNP(Model model,
+                                      Authentication authentication,
+                                      RedirectAttributes redirectAttributes,
+                                      @RequestParam("vnp_ResponseCode") String respCode,
+                                      @RequestParam("vnp_TxnRef") String mahd) {
 
         Long idhd = hoaDonRepository.getHDByMa(mahd).get(0).getId();
-        if (!respCode.equals("00")){
+        if (!respCode.equals("00")) {
             redirectAttributes.addFlashAttribute("checkoutFail", true);
-            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
-        }else {
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+        } else {
             if (authentication != null) {
                 CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
                 User user = customUserDetail.getUser();
@@ -368,17 +366,21 @@ public class BanHangController {
         }
     }
 
-        @GetMapping("/huy")
-    public String huyHD(@RequestParam("hoadonId") Long idhd, Model model,Authentication authentication, RedirectAttributes redirectAttributes) {
+    @GetMapping("/huy-hoa-don-tai-quay")
+    public String huyHD(@RequestParam("hoadonId") Long idhd, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
-        List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
-        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
-        model.addAttribute("listHoaDon", listHoaDon);
-        model.addAttribute("listCTSP", listCTSP);
+        List<HoaDonChiTiet> listHoaDonChiTiet = hoaDonChiTietService.getListHdctByIdHd(idhd);
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiet) {
+            Integer soLuongHoi = hoaDonChiTiet.getSoLuong();
+            ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
+            chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong() + soLuongHoi), chiTietSanPham.getId());
+            hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
+        }
+        hoaDonService.updateTongTien(idhd, 0.0);
         hoaDonService.updateTrangThaiHD(1, idhd);
         redirectAttributes.addFlashAttribute("isCancelInvoice", true);
         return "redirect:/admin/ban-hang";
@@ -386,7 +388,7 @@ public class BanHangController {
 
 
     @GetMapping("/xoa/{id}")
-    public String xoaHD(@PathVariable("id") Long idhd, Model model,Authentication authentication) {
+    public String xoaHD(@PathVariable("id") Long idhd, Model model, Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
@@ -429,34 +431,57 @@ public class BanHangController {
                                   @RequestParam("soLuong") Integer soLuongMua,
                                   RedirectAttributes redirectAttributes) {
 
+        // Lấy danh sách chi tiết hóa đơn (HDCT) dựa trên ID hóa đơn (idhd)
         List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietService.getListHdctByIdHd(idhd);
         Boolean isHdctExist = false;
-        for (HoaDonChiTiet hdChiTiet: hoaDonChiTietList) {
-            if (hdChiTiet.getChiTietSanPham().getId()==idctsp) {
+
+        // Kiểm tra xem sản phẩm đã tồn tại trong danh sách HDCT chưa
+        for (HoaDonChiTiet hdChiTiet : hoaDonChiTietList) {
+            if (hdChiTiet.getChiTietSanPham().getId() == idctsp) {
                 isHdctExist = true;
             }
         }
+
+        // Nếu sản phẩm đã tồn tại trong HDCT
         if (isHdctExist) {
-            for (HoaDonChiTiet hdChiTiet: hoaDonChiTietList) {
-                if (hdChiTiet.getChiTietSanPham().getId()==idctsp) {
+            for (HoaDonChiTiet hdChiTiet : hoaDonChiTietList) {
+                if (hdChiTiet.getChiTietSanPham().getId() == idctsp) {
+                    // Lấy số lượng hiện tại trong HDCT và tính số lượng mới
                     Integer soLuongHienTaiTrongHDCT = hdChiTiet.getSoLuong();
-                    Integer soLuongMoi = soLuongHienTaiTrongHDCT+soLuongMua;
+                    Integer soLuongMoi = soLuongHienTaiTrongHDCT + soLuongMua;
+
+                    // Lấy thông tin sản phẩm chi tiết (CTSP)
                     ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
+
+                    // Kiểm tra số lượng tồn kho có đủ không
                     if (soLuongMua > chiTietSanPham1.getSoLuong()) {
                         redirectAttributes.addFlashAttribute("isQuantityNotEnough", true);
-                        redirectAttributes.addFlashAttribute("messageQuantityNotEnough", "Số lượng không đủ, chỉ còn "+chiTietSanPham1.getSoLuong()+ " san pham");
-                        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
+                        redirectAttributes.addFlashAttribute("messageQuantityNotEnough", "Số lượng không đủ, chỉ còn " + chiTietSanPham1.getSoLuong() + " sản phẩm");
+                        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
                     }
-                    hoaDonChiTietService.updateSoLuongHdct(soLuongMoi,hdChiTiet.getId());
 
-                    Integer soLuongConLaiCTSP = chiTietSanPham1.getSoLuong()-soLuongMua;
+                    // Cập nhật số lượng mới vào HDCT
+                    hoaDonChiTietService.updateSoLuongHdct(soLuongMoi, hdChiTiet.getId());
 
-                    chiTietSanPhamService.updateSoLuongCtsp(soLuongConLaiCTSP,idctsp);
+                    // Cập nhật lại số lượng tồn kho
+                    Integer soLuongConLaiCTSP = chiTietSanPham1.getSoLuong() - soLuongMua;
+                    chiTietSanPhamService.updateSoLuongCtsp(soLuongConLaiCTSP, idctsp);
+
+                    // Cập nhật tổng tiền hóa đơn
+                    List<HoaDonChiTiet> listHdct = hoaDonChiTietService.getListHdctByIdHd(idhd);
+                    Double tongTien = 0.0;
+                    for (HoaDonChiTiet hdct : listHdct) {
+                        tongTien += hdct.getChiTietSanPham().getGiaBan() * hdct.getSoLuong();
+                    }
+                    hoaDonService.updateTongTien(idhd, tongTien);
+
+                    // Thông báo thêm thành công
                     redirectAttributes.addFlashAttribute("addSuccess", true);
-                    return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
+                    return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
                 }
             }
         } else {
+            // Nếu sản phẩm chưa tồn tại trong HDCT, tạo mới một HDCT
             HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
             HoaDon hoaDon = new HoaDon();
             hoaDon.setId(idhd);
@@ -465,28 +490,37 @@ public class BanHangController {
             hoaDonChiTiet.setHoaDon(hoaDon);
             hoaDonChiTiet.setChiTietSanPham(chiTietSanPham);
             hoaDonChiTiet.setSoLuong(soLuongMua);
+
+            // Lưu HDCT mới vào cơ sở dữ liệu
             hoaDonChiTietService.save(hoaDonChiTiet);
+
+            // Lấy thông tin sản phẩm chi tiết (CTSP)
             ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
             int soLuongSauUpdate;
+
+            // Kiểm tra số lượng tồn kho có đủ không
             if (chiTietSanPham1.getSoLuong() < soLuongMua) {
                 soLuongSauUpdate = chiTietSanPham1.getSoLuong();
             } else {
                 soLuongSauUpdate = chiTietSanPham1.getSoLuong() - soLuongMua;
             }
+
+            // Cập nhật lại số lượng tồn kho
             chiTietSanPham1.setSoLuong(soLuongSauUpdate);
             chiTietSanPhamService.save(chiTietSanPham1);
+
+            // Cập nhật tổng tiền hóa đơn
             List<HoaDonChiTiet> listHdct = hoaDonChiTietService.getListHdctByIdHd(idhd);
             Double tongTien = 0.0;
-            for (HoaDonChiTiet hdct: listHdct) {
-                tongTien+= hdct.getChiTietSanPham().getGiaBan()*hdct.getSoLuong();
+            for (HoaDonChiTiet hdct : listHdct) {
+                tongTien += hdct.getChiTietSanPham().getGiaBan() * hdct.getSoLuong();
             }
-            hoaDonService.updateTongTien(idhd,tongTien);
+            hoaDonService.updateTongTien(idhd, tongTien);
+
+            // Thông báo thêm thành công
             redirectAttributes.addFlashAttribute("addSuccess", true);
         }
-
-
-        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
-
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
 
 
@@ -494,11 +528,11 @@ public class BanHangController {
     public String chonKhachHang(@RequestParam("idhd") Long idhd,
                                 @RequestParam("idkh") Long idkh) {
         HoaDon existingHoaDon = hoaDonRepository.findById(idhd).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idhd));
-        User khachHang = new  User();
+        User khachHang = new User();
         khachHang.setId(idkh);
         existingHoaDon.setKhachHang(khachHang);
         hoaDonService.save(existingHoaDon);
-        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
 
     @PostMapping("/chon-khuyen-mai")
@@ -511,7 +545,6 @@ public class BanHangController {
         hoaDonService.save(existingHoaDon);
         return "redirect:/admin/ban-hang";
     }
-
 
 
     @GetMapping("/hoa-don/xoa-sp")
@@ -530,24 +563,24 @@ public class BanHangController {
         redirectAttributes.addFlashAttribute("deleteSuccess", true);
         List<HoaDonChiTiet> listHdct = hoaDonChiTietService.getListHdctByIdHd(idhd);
         Double tongTien = 0.0;
-        for (HoaDonChiTiet hdct: listHdct) {
-            tongTien+= hdct.getChiTietSanPham().getGiaBan()*hdct.getSoLuong();
+        for (HoaDonChiTiet hdct : listHdct) {
+            tongTien += hdct.getChiTietSanPham().getGiaBan() * hdct.getSoLuong();
         }
-        hoaDonService.updateTongTien(idhd,tongTien);
+        hoaDonService.updateTongTien(idhd, tongTien);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
 
     @PostMapping("/hoa-don/xoa-het-ctsp/{idHD}")
     public String xoaHetCtspKhoiHD(@PathVariable("idHD") Long idHD,
                                    RedirectAttributes redirectAttributes) {
-            List<HoaDonChiTiet> listHoaDonChiTiet = hoaDonChiTietService.getListHdctByIdHd(idHD);
-        for (HoaDonChiTiet hoaDonChiTiet: listHoaDonChiTiet) {
+        List<HoaDonChiTiet> listHoaDonChiTiet = hoaDonChiTietService.getListHdctByIdHd(idHD);
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiet) {
             Integer soLuongHoi = hoaDonChiTiet.getSoLuong();
             ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
-            chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong()+soLuongHoi),chiTietSanPham.getId());
+            chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong() + soLuongHoi), chiTietSanPham.getId());
             hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
         }
-        hoaDonService.updateTongTien(idHD,0.0);
+        hoaDonService.updateTongTien(idHD, 0.0);
         redirectAttributes.addFlashAttribute("deleteAllSuccess", true);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
     }
@@ -565,7 +598,7 @@ public class BanHangController {
 
         ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
         Integer soLuongKhaDung = chiTietSanPham.getSoLuong();
-        if (soLuongSua>soLuongKhaDung) {
+        if (soLuongSua > soLuongKhaDung) {
             redirectAttributes.addFlashAttribute("QuantityUpdateError", true);
             return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
 
