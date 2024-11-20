@@ -15,6 +15,6 @@ public class AutoHuyHoaDon {
     @Scheduled(cron = "0 0 * * * *")
     public void tuDongHuyHoaDonCho(){
         hoaDonService.huyHoaDonCho();
-        System.out.println("đã chạy check tự động hủy hóa đơn chờ");
+        System.out.println("đã tự động check hóa đơn chờ");
     }
 }

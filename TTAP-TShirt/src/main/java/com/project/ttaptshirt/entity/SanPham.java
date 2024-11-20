@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Random;
 
 @Getter
@@ -51,6 +52,11 @@ public class SanPham extends CreatedUpdatedAt{
     @Column(name = "trang_thai")
     private int trangThai;
 
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ChiTietSanPham> chiTietSanPhamList;
+
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<HinhAnh> hinhAnhList;
 
 
 }
