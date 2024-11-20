@@ -18,6 +18,11 @@
     <div class="main-content content flex-grow-1 p-4">
         <h2 class="text-center">Thêm mã giảm giá</h2>
         <hr>
+        <div class="d-flex">
+            <a th:href="@{/admin/ma-giam-gia/hien-thi}" class="fw-medium fs-5 text-black" style="text-decoration:none">Mã giảm giá</a>
+            <a>&nbsp / &nbsp</a>
+            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Thêm mã giảm giá</a>
+        </div>
 <form th:action="@{/admin/ma-giam-gia/add}" method="post">
     <div class="mb-3">
         <label class="form-label">Tên giảm giá</label>
@@ -51,7 +56,7 @@
 
         <div class="mb-3 col-8">
             <label class="form-label">Giá trị giảm</label>
-            <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam" th:value="${mgg.giaTriGiam ?: ''}">
+            <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam" th:value="${mgg.giaTriGiam ?: ''}"  onchange="checkGiaTriToiDa()">
         </div>
         <div class="col-1">
 
@@ -59,7 +64,7 @@
 
         <div class="mb-3 col-3">
             <label class="form-label">Hình thức</label>
-            <select class="form-select" name="hinhThuc" th:field="*{mgg.hinhThuc}">
+            <select class="form-select" name="hinhThuc" th:field="*{mgg.hinhThuc}" id="hinhThuc" onchange="checkGiaTriToiDa()">
                 <option value="true">VND</option>
                 <option value="false">%</option>
             </select>
@@ -82,6 +87,7 @@
             <span class="input-group-text" id="basic-addon">đ</span>
         </div>
     </div>
+    <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${mgg.giaTriToiDa ?: ''}">
 
     <label class="form-label">Trạng thái</label>
     <div class="form-check">
@@ -96,8 +102,6 @@
             Ngưng hoạt động
         </label>
     </div>
-
-    <a th:href="@{/admin/ma-giam-gia/hien-thi}" class="btn btn-primary">Quay lại</a>
     <button class="btn btn-primary">Thêm</button>
     <h4 class="text-danger mt-3">[[${errors}]]</h4>
 </form>
@@ -120,5 +124,22 @@
         ma.value = result
         event.preventDefault();
     }
+</script>
+
+<script>
+    let hinhThuc = document.getElementById('hinhThuc')
+    let giaTriToiDa = document.getElementById('giaTriToiDa')
+    let giaTriGiam = document.getElementById('giaTriGiam')
+    let gttoida = document.getElementById('gttoida')
+    function checkGiaTriToiDa(){
+        if (hinhThuc.value === "true"){
+            giaTriToiDa.disabled = true
+            giaTriToiDa.value = giaTriGiam.value
+            gttoida.value = giaTriToiDa.value
+        }else {
+            giaTriToiDa.disabled = false
+        }
+    }
+    checkGiaTriToiDa()
 </script>
 </html>

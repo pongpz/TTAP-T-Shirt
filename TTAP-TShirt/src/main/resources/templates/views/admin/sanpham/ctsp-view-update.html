@@ -16,9 +16,15 @@
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
 
     <div class="main-content content flex-grow-1 p-4">
-        <h2 class="text-center">Sửa Sản Phẩm</h2>
+        <h2 class="text-center">Sửa chi tiết sản phẩm</h2>
         <hr>
-
+        <div class="d-flex">
+            <a th:href="@{/admin/san-pham}" class="fw-medium fs-5 text-black" style="text-decoration:none">Sản phẩm</a>
+            <a>&nbsp / &nbsp</a>
+            <a th:href="@{/admin/chi-tiet-san-pham/{id}(id=${ctsp.sanPham.id})}" class="fw-medium fs-5 text-black" style="text-decoration: none">Chi tiết sản phẩm</a>
+            <a>&nbsp / &nbsp</a>
+            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Sửa chi tiết sản phẩm</a>
+        </div>
                             <!-- Main content -->
                             <section class="content">
                                 <div class="box box-default">
@@ -62,7 +68,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a th:href="@{/admin/san-pham}" class="btn btn-primary">Trở về</a>
                             </section>
                         </div>
                     </div>

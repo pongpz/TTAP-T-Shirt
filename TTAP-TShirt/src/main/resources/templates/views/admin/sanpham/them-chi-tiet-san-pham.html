@@ -18,7 +18,13 @@
     <div class="main-content content flex-grow-1 p-4">
         <h2 class="text-center">Thêm Chi Tiết Sản Phẩm</h2>
         <hr>
-
+        <div class="d-flex">
+            <a th:href="@{/admin/san-pham}" class="fw-medium fs-5 text-black" style="text-decoration:none">Sản phẩm</a>
+            <a>&nbsp / &nbsp</a>
+            <a th:href="@{/admin/chi-tiet-san-pham/{id}(id=${listSP.id})}" class="fw-medium fs-5 text-black" style="text-decoration: none">Chi tiết sản phẩm</a>
+            <a>&nbsp / &nbsp</a>
+            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Thêm chi tiết sản phẩm</a>
+        </div>
         <div class="box box-default">
             <div class="box-body">
                 <div class="row">

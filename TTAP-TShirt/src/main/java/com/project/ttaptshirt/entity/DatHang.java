@@ -44,6 +44,6 @@ public class DatHang {
     private Double tongTien;
 
     @OneToMany(mappedBy = "datHang")
-    private Set<DatHangChiTiet> items;
+    private List<DatHangChiTiet> items;
     // Getters and Setters
 }
