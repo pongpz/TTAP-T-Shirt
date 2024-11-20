@@ -1,11 +1,11 @@
 package com.project.ttaptshirt.service;
 
-<<<<<<< HEAD
+
 
 import com.cloudinary.Cloudinary;
 import com.project.ttaptshirt.dto.HinhAnhDTO;
 import com.project.ttaptshirt.exception.FuncErrorException;
-=======
+
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.FileContent;
@@ -17,7 +17,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.project.ttaptshirt.entity.HinhAnh;
->>>>>>> 0cfbc536175531a88cc860775e234d4df03a0b89
+
 import com.project.ttaptshirt.repository.HinhAnhRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,8 +53,7 @@ public class HinhAnhService {
                 .get("url").toString();
     }
 
-<<<<<<< HEAD
-=======
+
     public String uploadImageToDrive(File file) throws GeneralSecurityException, IOException {
 
         try{

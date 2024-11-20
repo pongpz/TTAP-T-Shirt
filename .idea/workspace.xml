@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8676785-309e-46b5-8c91-c21db6f8148d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/DatHangController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/impl/DatHangService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/HomeCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/HomeCustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/SanPhamCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/SanPhamCustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/repository/DatHangRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/repository/DatHangRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/HoaDonService.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/HoaDonService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/impl/HoaDonServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/impl/HoaDonServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/fragment/header-customer.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/fragment/header-customer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/HinhAnhService.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/HinhAnhService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +151,7 @@
       <workItem from="1731772076399" duration="24929000" />
       <workItem from="1731931107334" duration="8166000" />
       <workItem from="1732016392701" duration="10918000" />
-      <workItem from="1732101703985" duration="5834000" />
+      <workItem from="1732101703985" duration="8468000" />
     </task>
     <servers />
   </component>
