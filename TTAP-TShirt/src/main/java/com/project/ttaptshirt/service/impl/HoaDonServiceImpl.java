@@ -6,8 +6,10 @@ import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
+import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -121,6 +123,15 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     }
 
+
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof CustomUserDetail) {
+            return ((CustomUserDetail) principal).getUser();
+        }
+        throw new IllegalStateException("Người dùng chưa đăng nhập.");
+    }
+
     @Override
     public HoaDon createHoaDon2(DatHang cart,List<Long> selectedProductIds, String fullName, String phoneNumber, String address) {
         if (cart == null|| cart.getItems() == null || cart.getItems().isEmpty()){
@@ -136,15 +147,18 @@ public class HoaDonServiceImpl implements HoaDonService {
             throw new IllegalArgumentException("Không có sản phẩm nào được chọn để tạo hóa đơn.");
         }
 
+        double tongTien = selectedItems.stream().mapToDouble(item -> item.getGia().doubleValue() * item.getSoLuong()).sum();
+
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
+        hoaDon.setKhachHang(getCurrentUser());
         hoaDon.setTenNguoiNhan(fullName);
         hoaDon.setSdtNguoiNhan(phoneNumber);
         hoaDon.setDiaChiGiaoHang(address);
         hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(3);
         hoaDon.setLoaiDon(0);
-        hoaDon.setTongTien(cart.getTongTien().floatValue());
+        hoaDon.setTongTien((float) tongTien);
 
         HoaDon saveHd = hoaDonRepository.save(hoaDon);
 
