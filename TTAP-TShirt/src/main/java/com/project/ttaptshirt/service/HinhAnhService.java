@@ -1,16 +1,21 @@
 package com.project.ttaptshirt.service;
 
 
+
 import com.cloudinary.Cloudinary;
-import com.project.ttaptshirt.entity.HinhAnh;
 import com.project.ttaptshirt.repository.HinhAnhRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
