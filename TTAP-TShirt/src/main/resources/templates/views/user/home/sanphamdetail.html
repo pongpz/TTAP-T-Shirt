@@ -27,9 +27,7 @@
 <header th:replace="~{/fragment/header-customer :: header-customer}"></header>
 
 <div class="container mt-5">
-    <!-- Phần thông tin sản phẩm -->
     <div class="row">
-        <!-- Hình ảnh sản phẩm -->
         <div class="col-md-5">
             <div class="product-images mb-3">
                 <img th:src="${mainImage}" alt="Main Product Image" id="mainImage" class="img-fluid">
@@ -42,7 +40,7 @@
 <!--                     class="img-thumbnail">-->
 <!--            </div>-->
         </div>
-        <!-- Thông tin chi tiết -->
+
         <div class="col-md-7">
             <h3 th:text="${sanPham.ten}"></h3>
             <div>
@@ -54,12 +52,10 @@
             <div class="mt-3">
                 <label><strong>Màu sắc:</strong></label>
                 <div>
-                    <!-- Nếu không có chi tiết sản phẩm -->
                     <div th:if="${noDetails}">
                         <p>Không có màu sắc cho sản phẩm này.</p>
                     </div>
 
-                    <!-- Hiển thị màu sắc nếu có -->
                     <button th:each="color : ${colors}"
                             th:text="${color.ten}"
                             th:data-id="${color.id}"
@@ -67,16 +63,13 @@
                 </div>
             </div>
 
-            <!-- Kích cỡ -->
             <div class="mt-3">
                 <label><strong>Kích cỡ:</strong></label>
                 <div>
-                    <!-- Nếu không có chi tiết sản phẩm -->
                     <div th:if="${noDetails}">
                         <p>Không có kích cỡ cho sản phẩm này.</p>
                     </div>
 
-                    <!-- Hiển thị kích cỡ nếu có -->
                     <button th:each="size : ${sizes}"
                             th:text="${size.ten}"
                             th:data-id="${size.id}"
@@ -85,7 +78,6 @@
             </div>
 
 
-            <!-- Nút hành động -->
             <div class="mt-4">
                 <button class="btn btn-danger btn-buy">Mua ngay</button>
                 <button class="btn btn-outline-primary btn-add-cart">Thêm vào giỏ hàng</button>
@@ -93,7 +85,6 @@
         </div>
     </div>
 
-    <!-- Thông tin thêm -->
     <div class="mt-5">
         <h4>Chi tiết sản phẩm</h4>
         <table class="table">

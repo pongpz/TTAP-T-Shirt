@@ -158,22 +158,17 @@ public class SanPhamCustomerController {
 
     @GetMapping("/san-pham-detail/{idSP}")
     public String sanPhamDetail(@PathVariable Long idSP, Model model) {
-        // Lấy thông tin sản phẩm
         SanPham sanPham = sanPhamRepository.findById(idSP)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm!"));
 
-        // Lấy hình ảnh sản phẩm
         List<String> images = hinhAnhRepository.findBySanPhamId(idSP);
 
-        // Lấy danh sách chi tiết sản phẩm (bao gồm màu sắc và kích cỡ)
         List<ChiTietSanPham> chiTietSanPhamList = chiTietSanPhamRepository.findBySanPhamId(idSP);
 
-        // Kiểm tra nếu không có chi tiết sản phẩm
         if (chiTietSanPhamList.isEmpty()) {
-            model.addAttribute("noDetails", true); // Thêm thuộc tính để kiểm tra trên template
+            model.addAttribute("noDetails", true);
         }
 
-        // Extract danh sách màu sắc và kích cỡ từ chi tiết sản phẩm
         Set<MauSac> colors = chiTietSanPhamList.stream()
                 .map(ChiTietSanPham::getMauSac)
                 .collect(Collectors.toSet());
@@ -182,14 +177,12 @@ public class SanPhamCustomerController {
                 .map(ChiTietSanPham::getKichCo)
                 .collect(Collectors.toSet());
 
-        // Chọn chi tiết sản phẩm đầu tiên nếu có
         ChiTietSanPham chiTietSanPham = !chiTietSanPhamList.isEmpty() ? chiTietSanPhamList.get(0) : null;
         double giaBan = chiTietSanPham != null ? chiTietSanPham.getGiaBan() : 0;
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         String giaBan1 = decimalFormat.format(giaBan);
 
-        // Gắn dữ liệu vào model
         model.addAttribute("giaBan", giaBan1);
         model.addAttribute("sanPham", sanPham);
         model.addAttribute("mainImage", images.isEmpty() ? "/images/no-image.png" : images.get(0));
