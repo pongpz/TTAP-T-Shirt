@@ -54,6 +54,12 @@
             <div class="mt-3">
                 <label><strong>Màu sắc:</strong></label>
                 <div>
+                    <!-- Nếu không có chi tiết sản phẩm -->
+                    <div th:if="${noDetails}">
+                        <p>Không có màu sắc cho sản phẩm này.</p>
+                    </div>
+
+                    <!-- Hiển thị màu sắc nếu có -->
                     <button th:each="color : ${colors}"
                             th:text="${color.ten}"
                             th:data-id="${color.id}"
@@ -61,11 +67,16 @@
                 </div>
             </div>
 
-
             <!-- Kích cỡ -->
             <div class="mt-3">
                 <label><strong>Kích cỡ:</strong></label>
                 <div>
+                    <!-- Nếu không có chi tiết sản phẩm -->
+                    <div th:if="${noDetails}">
+                        <p>Không có kích cỡ cho sản phẩm này.</p>
+                    </div>
+
+                    <!-- Hiển thị kích cỡ nếu có -->
                     <button th:each="size : ${sizes}"
                             th:text="${size.ten}"
                             th:data-id="${size.id}"

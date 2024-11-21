@@ -168,6 +168,11 @@ public class SanPhamCustomerController {
         // Lấy danh sách chi tiết sản phẩm (bao gồm màu sắc và kích cỡ)
         List<ChiTietSanPham> chiTietSanPhamList = chiTietSanPhamRepository.findBySanPhamId(idSP);
 
+        // Kiểm tra nếu không có chi tiết sản phẩm
+        if (chiTietSanPhamList.isEmpty()) {
+            model.addAttribute("noDetails", true); // Thêm thuộc tính để kiểm tra trên template
+        }
+
         // Extract danh sách màu sắc và kích cỡ từ chi tiết sản phẩm
         Set<MauSac> colors = chiTietSanPhamList.stream()
                 .map(ChiTietSanPham::getMauSac)
@@ -177,15 +182,15 @@ public class SanPhamCustomerController {
                 .map(ChiTietSanPham::getKichCo)
                 .collect(Collectors.toSet());
 
-        ChiTietSanPham chiTietSanPham = sanPham.getChiTietSanPhamList().get(0);
-        double giaBan = chiTietSanPham.getGiaBan();
+        // Chọn chi tiết sản phẩm đầu tiên nếu có
+        ChiTietSanPham chiTietSanPham = !chiTietSanPhamList.isEmpty() ? chiTietSanPhamList.get(0) : null;
+        double giaBan = chiTietSanPham != null ? chiTietSanPham.getGiaBan() : 0;
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         String giaBan1 = decimalFormat.format(giaBan);
 
-
         // Gắn dữ liệu vào model
-        model.addAttribute("giaBan",giaBan1);
+        model.addAttribute("giaBan", giaBan1);
         model.addAttribute("sanPham", sanPham);
         model.addAttribute("mainImage", images.isEmpty() ? "/images/no-image.png" : images.get(0));
         model.addAttribute("images", images);
@@ -194,6 +199,8 @@ public class SanPhamCustomerController {
 
         return "user/home/sanphamdetail";
     }
+
+
 
 
 }
