@@ -14,4 +14,6 @@ public interface HinhAnhRepository extends JpaRepository<HinhAnh,Long> {
 
     @Query("select h.path FROM HinhAnh h where h.sanPham.id =:sanPhamId")
     List<String> findBySanPhamId(@Param("sanPhamId") Long sanPhamId);
+
+
 }
