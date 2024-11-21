@@ -1,7 +1,9 @@
 package com.project.ttaptshirt.service;
 
 import com.project.ttaptshirt.dto.CartDTO;
+import com.project.ttaptshirt.entity.DatHang;
 import com.project.ttaptshirt.entity.HoaDon;
+import com.project.ttaptshirt.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +22,9 @@ public interface HoaDonService extends CommonService<HoaDon> {
 
     public void updateTongTien(Long idHd, Double tongTien);
 
-    HoaDon createHoaDon(CartDTO cart, String fullName, String phoneNumber, String address);
+    public HoaDon createHoaDon(CartDTO cart, String fullName, String phoneNumber, String address);
+
+    public HoaDon createHoaDon2(DatHang cart, List<Long> selectedProductIds, String fullName, String phoneNumber, String address);
 
     void xacNhanHoaDon(Long idHoaDon);
 

@@ -5,13 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.entity.HoaDon;
+import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
+import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.CartService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +55,12 @@ public class CartController {
     }
 
     @GetMapping("/view")
-    public String viewCart(@ModelAttribute("cart") CartDTO cart, Model model) {
+    public String viewCart(@ModelAttribute("cart") CartDTO cart, Model model, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         if (cart.getItems() != null && !cart.getItems().isEmpty()) {
             model.addAttribute("cart", cart); // Thêm giỏ hàng vào Model
             System.out.println("all:"+model.asMap());
@@ -96,7 +104,12 @@ public class CartController {
 
 
     @GetMapping("/hoa-don-chi-tiet/hien-thi")
-    public String hienThi(@RequestParam Long id, Model model,HttpSession session){
+    public String hienThi(@RequestParam Long id, Model model,HttpSession session, Authentication authentication){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         HoaDon hoaDon = (HoaDon) session.getAttribute("hoaDon");
         model.addAttribute("hoaDon", hoaDon);
         model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));

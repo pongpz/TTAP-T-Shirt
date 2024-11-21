@@ -2,17 +2,19 @@ package com.project.ttaptshirt.service.impl;
 
 import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.dto.CartItemDTO;
-import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.HoaDon;
-import com.project.ttaptshirt.entity.HoaDonChiTiet;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
+import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,6 +31,20 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+
+    //huy hoa don cho
+    @Transactional
+    public void huyHoaDonCho(){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiredTime = now.minusDays(1);
+
+        List<HoaDon> hoadons = hoaDonRepository.findByTrangThaiAndNgayTaoBefore(0,expiredTime);
+
+        hoadons.forEach(hoadon -> hoadon.setTrangThai(5));
+        hoaDonRepository.saveAll(hoadons);
+
+    }
 
     public HoaDonServiceImpl(HoaDonRepository hoadonRepository, HoaDonChiTietRepository hoadonChiTietRepository) {
         this.hoadonRepository = hoadonRepository;
@@ -71,11 +87,11 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-
     public void updateTongTien(Long idHd, Double tongTien) {
         hoaDonRepository.updateTongTienHd(idHd,tongTien);
     }
 
+    @Override
     public HoaDon createHoaDon(CartDTO cart, String fullName, String phoneNumber, String address) {
         if (cart == null|| cart.getItems() == null || cart.getItems().isEmpty()){
             throw new IllegalArgumentException("Giỏ hàng trống, không thể tạo hóa đơn.");
@@ -85,7 +101,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setTenNguoiNhan(fullName);
         hoaDon.setSdtNguoiNhan(phoneNumber);
         hoaDon.setDiaChiGiaoHang(address);
-        hoaDon.setNgayTao(LocalDate.now());
+        hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(3);
         hoaDon.setLoaiDon(0);
         hoaDon.setTongTien(cart.getTotalAmount().floatValue());
@@ -100,6 +116,60 @@ public class HoaDonServiceImpl implements HoaDonService {
             chiTiet.setChiTietSanPham(chiTietSanPham);
             chiTiet.setSoLuong(item.getQuantity());
             chiTiet.setDonGia(item.getPrice().floatValue());
+
+            hoadonChiTietRepository.save(chiTiet);
+        }
+        return saveHd;
+
+    }
+
+
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof CustomUserDetail) {
+            return ((CustomUserDetail) principal).getUser();
+        }
+        throw new IllegalStateException("Người dùng chưa đăng nhập.");
+    }
+
+    @Override
+    public HoaDon createHoaDon2(DatHang cart,List<Long> selectedProductIds, String fullName, String phoneNumber, String address) {
+        if (cart == null|| cart.getItems() == null || cart.getItems().isEmpty()){
+            throw new IllegalArgumentException("Giỏ hàng trống, không thể tạo hóa đơn.");
+        }
+
+        // Lọc các sản phẩm được chọn từ giỏ hàng
+        List<DatHangChiTiet> selectedItems = cart.getItems().stream()
+                .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId()))
+                .toList();
+
+        if (selectedItems.isEmpty()) {
+            throw new IllegalArgumentException("Không có sản phẩm nào được chọn để tạo hóa đơn.");
+        }
+
+        double tongTien = selectedItems.stream().mapToDouble(item -> item.getGia().doubleValue() * item.getSoLuong()).sum();
+
+        HoaDon hoaDon = new HoaDon();
+        hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
+        hoaDon.setKhachHang(getCurrentUser());
+        hoaDon.setTenNguoiNhan(fullName);
+        hoaDon.setSdtNguoiNhan(phoneNumber);
+        hoaDon.setDiaChiGiaoHang(address);
+        hoaDon.setNgayTao(LocalDateTime.now());
+        hoaDon.setTrangThai(3);
+        hoaDon.setLoaiDon(0);
+        hoaDon.setTongTien((float) tongTien);
+
+        HoaDon saveHd = hoaDonRepository.save(hoaDon);
+
+        for(DatHangChiTiet item : cart.getItems()) {
+            HoaDonChiTiet chiTiet = new HoaDonChiTiet();
+            chiTiet.setHoaDon(saveHd);
+            ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository.findById(item.getId())
+                    .orElseThrow(() -> new RuntimeException("Chi tiết sản phẩm không tồn tại: " + item.getId()));
+            chiTiet.setChiTietSanPham(chiTietSanPham);
+            chiTiet.setSoLuong(item.getSoLuong());
+            chiTiet.setDonGia(item.getGia().floatValue());
 
             hoadonChiTietRepository.save(chiTiet);
         }

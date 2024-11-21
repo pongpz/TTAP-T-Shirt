@@ -7,6 +7,8 @@ import com.project.ttaptshirt.entity.MauSac;
 import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.repository.*;
 //import com.project.ttaptshirt.service.HinhAnhService;
+import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
+import com.project.ttaptshirt.service.impl.SanPhamServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -52,6 +52,15 @@ public class SanPhamCustomerController {
 
     @Autowired
     private ChatLieuRepository chatLieuRepository;
+    @Autowired
+    private SanPhamServiceImpl sanPhamServiceImpl;
+    @Autowired
+    private ChiTietSanPhamServiceImpl chiTietSanPhamServiceImpl;
+    @Autowired
+    private HinhAnhRepository hinhAnhRepository;
+
+    @Autowired
+    private  MauSacRepository mauSacRepository;
 
 //    @Autowired
 //    HinhAnhService hinhAnhService;
@@ -73,60 +82,85 @@ public class SanPhamCustomerController {
             new PriceRanger(3, 500000, 1000000, "Từ 500-1 triệu"),
             new PriceRanger(4, 1000000, 2000000, "Từ 1-2 triệu"),
             new PriceRanger(5, 2000000, 5000000, "Từ 2-5 triệu"),
-            new PriceRanger(6, 5000000, Double.MAX_VALUE, "Trên 5 triệu") // Sửa 'Từ 2-5 triệu' thành 'Trên 5 triệu'
+            new PriceRanger(6, 5000000, Double.MAX_VALUE, "Trên 5 triệu")
     );
 
     @GetMapping("/san-pham")
     public String sanPhamCustomer(HttpServletRequest request, Model model,
-                                  @RequestParam(defaultValue = "") String ten,
-                                  @RequestParam(defaultValue = "0") int priceRangerId,
-                                  @RequestParam(defaultValue = "0") int kichCoId,
-                                  @RequestParam(defaultValue = "0") int page) {
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(required = false) String ten,
+                                  @RequestParam(required = false) Long nhaSanXuatId,
+                                  @RequestParam(required = false) Long thuongHieuId,
+                                  @RequestParam(required = false) Long kieuDangId,
+                                  @RequestParam(required = false) Long chatLieuId,
+                                  @RequestParam(defaultValue = "0") int priceRangerId) {
 
-        // Kiểm tra và xử lý giá trị của priceRanger
         double minPrice = 0;
-        double maxPrice = Double.MAX_VALUE; // Giá trị mặc định nếu không chọn khoảng giá
-
+        double maxPrice = Double.MAX_VALUE;
         if (priceRangerId >= 0 && priceRangerId < priceRangerList.size()) {
             minPrice = priceRangerList.get(priceRangerId).getMinValue();
             maxPrice = priceRangerList.get(priceRangerId).getMaxValue();
         }
 
-        // Phân trang với page và size cố định (6 sản phẩm mỗi trang)
         Pageable pageable = PageRequest.of(page, 6);
 
-        // Truy vấn sản phẩm với các tiêu chí tìm kiếm
-        Page<ChiTietSanPham> sanPhamPage = chiTietSanPhamRepository.findByTenContainingAndPriceBetween(
-                ten.isEmpty() ? null : ten,
-                minPrice,
-                maxPrice,
-                kichCoId == 0 ? null : kichCoId,
-                pageable);
-
-        // Cập nhật hình ảnh cho mỗi ChiTietSanPham
-        for (ChiTietSanPham chiTietSanPham : sanPhamPage.getContent()) {
-//            String imageLink = hinhAnhService.getFirstImageLinkBySanPhamId(chiTietSanPham.getSanPham().getId());
-//            chiTietSanPham.setImageLink(imageLink);
+        Page<SanPham> sanPhamPage;
+        if (ten != null || nhaSanXuatId != null || thuongHieuId != null ||
+                kieuDangId != null || chatLieuId != null ) {
+            sanPhamPage = sanPhamRepository.filterSanPham(
+                    ten, nhaSanXuatId, thuongHieuId, kieuDangId, chatLieuId,
+                    minPrice, maxPrice,pageable
+            );
+        } else {
+            sanPhamPage = sanPhamRepository.findAll(pageable);
         }
 
-        // Thêm các thông tin cần thiết vào model
+
+//        Pageable pageable = PageRequest.of(page, 6);
+//        Page<SanPham> sanPhamPage = sanPhamRepository.findAll(pageable);
+
+        // Lấy giá sp
+        Map<Long, Double> giaSanPham = new HashMap<>();
+        for (SanPham sanPham : sanPhamPage) {
+            Double giaMin = chiTietSanPhamServiceImpl.getMinGiaBan(sanPham.getId());
+            giaSanPham.put(sanPham.getId(), giaMin != null ? giaMin : 0);
+        }
+
+        // Lấy hình ảnh
+        Map<Long, String> hinhAnhSanPham = new HashMap<>();
+        for (SanPham sanPham : sanPhamPage) {
+            if (sanPham.getHinhAnhList() != null && !sanPham.getHinhAnhList().isEmpty()) {
+                String imageUrl = sanPham.getHinhAnhList().get(0).getPath();
+                hinhAnhSanPham.put(sanPham.getId(), imageUrl);
+            }
+        }
+
+        model.addAttribute("listsp", sanPhamPage);
+        model.addAttribute("giasanpham", giaSanPham);
+        model.addAttribute("hinhAnhSanPham", hinhAnhSanPham);
         model.addAttribute("kichCoList", kichCoRepository.findAll());
-        model.addAttribute("kichCoId", kichCoId);
-        model.addAttribute("requestURI", request.getRequestURI());
-        model.addAttribute("listctsp", sanPhamPage.getContent());
-        model.addAttribute("totalPage", sanPhamPage.getTotalPages());
+        model.addAttribute("mauSacList", mauSacRepository.findAll());
+        model.addAttribute("nhaSanXuatList", nsxRepository.findAll());
+        model.addAttribute("chatLieuList", chatLieuRepository.findAll());
+        model.addAttribute("thuongHieuList", thuongHieuRepository.findAll());
+        model.addAttribute("kieuDangList", kieuDangRepository.findAll());
         model.addAttribute("priceRangerList", priceRangerList);
-        model.addAttribute("ten", ten);
-        model.addAttribute("priceRangerId", priceRangerId);
-        model.addAttribute("currentPage", page);  // Thêm trang hiện tại vào model
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", sanPhamPage.getTotalPages());
+        model.addAttribute("totalItems", sanPhamPage.getTotalElements());
+        model.addAttribute("requestURI", request.getRequestURI());
 
         return "user/home/sanpham";
     }
 
 
 
+
     @GetMapping("/san-pham-detail/{idSP}")
-    public String sanPhamDetail(@PathVariable Long idSP, Model model,@RequestParam(required = false, value = "mauSac") String mauSac,@RequestParam(required = false, value = "kichCo") String kichCo){
+    public String sanPhamDetail(@PathVariable Long idSP,
+                                Model model,
+                                @RequestParam(required = false, value = "mauSac") String mauSac,
+                                @RequestParam(required = false, value = "kichCo") String kichCo){
         List<ChiTietSanPham> ls = chiTietSanPhamRepository.findByIDSanPham(idSP,kichCo,mauSac);
         model.addAttribute("SPCTFist", ls.stream().findFirst().orElse(null));
         List<MauSac> lsms = new ArrayList<>();

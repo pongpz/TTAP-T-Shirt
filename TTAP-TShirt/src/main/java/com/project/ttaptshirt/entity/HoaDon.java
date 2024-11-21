@@ -29,7 +29,7 @@ public class HoaDon {
     private String ma;
 
     @Column(name = "ngay_tao")
-    private LocalDate ngayTao;
+    private LocalDateTime ngayTao;
 
     @Column(name = "ngay_thanh_toan")
     private LocalDate ngayThanhToan;

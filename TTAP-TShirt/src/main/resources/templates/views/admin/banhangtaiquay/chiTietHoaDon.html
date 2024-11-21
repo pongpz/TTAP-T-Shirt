@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="/customcss/banhang.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
@@ -25,17 +25,15 @@
         <h2 class="text-center">Bán Hàng Tại Quầy</h2>
         <hr>
         <div class="d-flex">
-        <a th:href="@{/admin/ban-hang}" class="fw-medium fs-5 text-black" style="text-decoration:none">Bán hàng</a>
+            <a th:href="@{/admin/ban-hang}" class="fw-medium fs-5 text-black" style="text-decoration:none">Bán hàng</a>
             <a>&nbsp / &nbsp</a>
-        <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Chi tiết hóa đơn</a>
+            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Chi tiết hóa đơn</a>
         </div>
         <div id="toast-root"></div>
         <div>
-            <h1 th:text="${hoadon.ma}"></h1>
-            <span th:text="${updateSuccess}">Update Success </span>
-            <span th:text="${deleteSuccess}">Update Success</span>
-
-
+            <h1 th:text="'Mã Hóa Đơn: '+${hoadon.ma}"></h1>
+            <input type="hidden" id="lengthlistHDCT" th:value="${listHDCT.size()}" readonly>
+            <label th:text="'Số chi tiết sản phẩm: '+${listHDCT.size()}"></label>
         </div>
 
         <br/>
@@ -139,29 +137,44 @@
                     </div>
 
 
-                    <button
-                            style="margin-left: 20px"
-                            class="col-3 btn btn-danger"
-                            onclick="if(confirm('Are you sure to delete all the product from this invoice?')) { toastWarning('Hello','cái này dễ để làm sau =))') }">
-                        Xóa Hết Sản Phẩm
-                    </button>
+                    <form th:action="@{/admin/ban-hang/hoa-don/xoa-het-ctsp/{id}(id=${hoadon.id})}" method="POST"
+                          style="width: 150px;height: 60px">
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Bạn Có chắc chắn xóa hết sản phẩm khỏi hóa đơn không ?');">
+                            Xóa Hết Sản Phẩm
+                        </button>
+                    </form>
+
+
                 </div>
 
                 <hr/>
                 <!-- Example list of cart items -->
-                <div th:each="hdct : ${listHDCT}" class="product-cart bg-light row"
+                <div th:each="hdct,status: ${listHDCT}" class="product-cart bg-light row"
                      style="width: 95%; height: 200px; margin-left: 20px; margin-top: 60px"
                      id="product-row-${hdct.id}">
                     <div class="col-2">
+                        <h6 th:text="'STT: '+${status.index+1}"></h6>
+                        <br>
                         <img src="https://res.cloudinary.com/dld7uoqyh/image/upload/v1728726810/productImg/bbe9a9e0-9b71-45cc-b1c1-778fba4b2a25.jpg"
                              style="width: 80px; height: 80px" alt="product image"/>
                     </div>
                     <div class="col-2">
                         <h5 th:text="${hdct.chiTietSanPham.sanPham.ten}">Product Name</h5>
+                        <br>
+                        <span th:text="'Mã SP: ' + ${hdct.chiTietSanPham.sanPham.ma}"></span><br/>
+                        <br>
+                        <span th:text="'Số lượng còn lại: ' + ${hdct.chiTietSanPham.soLuong}"></span><br/>
+
+
                     </div>
                     <div class="col-2">
-                        <span th:text="'Color: ' + ${hdct.chiTietSanPham.mauSac.ten}"></span><br/>
+                        <span th:text="'Kiểu Dáng: ' + ${hdct.chiTietSanPham.sanPham.kieuDang.ten}"></span><br/>
+                        <span th:text="'Màu Sắc: ' + ${hdct.chiTietSanPham.mauSac.ten}"></span><br/>
                         <span th:text="'Size: ' + ${hdct.chiTietSanPham.kichCo.ten}"></span><br/>
+                        <span th:text="'Thương Hiệu: ' + ${hdct.chiTietSanPham.sanPham.thuongHieu.ten}"></span><br/>
+
+
                     </div>
                     <div class="col-2">
                         <h6>Price</h6>
@@ -178,7 +191,7 @@
                         <button class="btn btn-warning"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalUpdateQuantity"
-                                th:onclick="'openModal(' + ${hdct.id} + ',' + ${hdct.soLuong} + ');'">
+                                th:onclick="'openModal(' + ${hdct.id} + ',' + ${hdct.soLuong} + ',' + ${hdct.chiTietSanPham.soLuong} + ');'">
                             Sửa Số Lượng
                         </button>
                         <script>
@@ -197,9 +210,10 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="updateQuantityForm" action="/hoa-don/sua-so-luong1" method="POST">
+                                        <form id="updateQuantityForm" action="/admin/ban-hang/hoa-don/sua-so-luong"
+                                              method="POST">
                                             <div class="mb-3">
-                                                <label for="quantityInput" class="form-label">Quantity</label>
+                                                <label for="quantityInput" id="quantityAvaliable" class="form-label"></label>
                                                 <input type="number" class="form-control" id="quantityInput"
                                                        name="soLuongSua" min="1" required>
                                             </div>
@@ -209,7 +223,8 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
                                         </button>
-                                        <button type="submit" class="btn btn-primary" id="updateQuantityBtn">Update
+                                        <!-- Use a button with type="submit" within the form -->
+                                        <button type="submit" class="btn btn-primary" form="updateQuantityForm">Update
                                         </button>
                                     </div>
                                 </div>
@@ -224,8 +239,6 @@
                            onclick="return confirm('Bạn Có chắc muốn xóa sản phẩm?')">
                             Xóa
                         </a>
-
-
 
 
                     </div>
@@ -344,14 +357,13 @@
                 </div>
 
 
-
-
                 <br/>
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher(nếu
                         có):</label>
                     <label class="col-4" style="font-size: 18px; font-weight: bold">0 VND</label>
-                    <button class="col-3 btn btn-primary"onclick="toastWarning('Thông Báo','Chức năng đang được phát triển !')">
+                    <button class="col-3 btn btn-primary"
+                            onclick="toastWarning('Thông Báo','Chức năng đang được phát triển !')">
                         Chọn
                         Voucher
                     </button>
@@ -360,9 +372,40 @@
                 <hr/>
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Số Tiền Thanh toán:</label>
-                    <label class="col-4" style="font-size: 18px; font-weight: bold" th:text="${hoadon != null && hoadon.tongTien != null ? hoadon.tongTien + ' đ' : 'Chưa có dữ liệu'}"></label>
+                    <label class="col-4" style="font-size: 18px; font-weight: bold"
+                           th:text="${hoadon != null && hoadon.tongTien != null ? hoadon.tongTien + ' đ' : 'Chưa có dữ liệu'}"
+                           id="tongTienLabel"></label>
                 </div>
                 <br/>
+                <div class="row">
+                    <label class="col-5" style="font-size: 18px; font-weight: bold">Tiền khách trả:</label>
+                    <input style="width: 280px;height: 40px;border-radius: 10px;" type="number" placeholder="Nhập tiền khách trả..." id="tienKhachTraInput" oninput="calculateTienThua()">
+                </div>
+                <br/>
+                <div class="row">
+                    <label class="col-5" style="font-size: 18px; font-weight: bold">Tiền thừa:</label>
+                    <label class="col-4" style="font-size: 18px; font-weight: bold" id="tienThuaLabel"></label>
+                </div>
+
+                <script>
+                    function calculateTienThua() {
+                        // Get the total amount (tongTien) from the label
+                        const tongTienText = document.getElementById('tongTienLabel').innerText;
+                        const tongTien = parseFloat(tongTienText.replace(' đ', '').replace(/,/g, '')) || 0;
+
+                        // Get the amount paid by the customer from the input
+                        const tienKhachTra = parseFloat(document.getElementById('tienKhachTraInput').value) || 0;
+
+                        // Calculate the change (tien thua)
+                        const tienThua = tienKhachTra - tongTien;
+
+                        // Display the change in the corresponding label
+                        document.getElementById('tienThuaLabel').innerText = tienThua >= 0 ? tienThua.toLocaleString() + ' đ' : 'Chưa đủ';
+
+                        // Return the calculated change for further validation if needed
+                        return tienThua;
+                    }
+                </script>
 
 
                 <br/>
@@ -373,55 +416,58 @@
                 <br/><br/>
 
                 <div class="paying">
-                    <button class="col-4 btn btn-primary" style="height: 50px" onclick="checkout()">Thanh Toán
+                    <button class="col-4 btn btn-primary" style="height: 50px"
+                            onclick="confirmCheckout()">Thanh Toán
                         <!-- Hidden input field to hold the HoaDon ID -->
                         <input type="hidden" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
                     </button>
-                    <a class="col-4 btn btn-primary" style="height: 50px" th:href="@{/admin/ban-hang/hoa-don/thanh-toan-vnpay?idhd={idhd}(idhd=${hoadon.id})}">Chuyển khoản
+                    <a class="col-4 btn btn-primary" style="height: 50px"
+                       th:href="@{/admin/ban-hang/hoa-don/thanh-toan-vnpay?idhd={idhd}(idhd=${hoadon.id})}">Chuyển khoản
                         <!-- Hidden input field to hold the HoaDon ID -->
-<!--                        <input type="hidden" id="hoaDonIdCheckOut2" th:value="${hoadon.id}">-->
+                        <!--                        <input type="hidden" id="hoaDonIdCheckOut2" th:value="${hoadon.id}">-->
                     </a>
                 </div>
+
+                <script>
+                    function confirmCheckout() {
+                        // Get the length of the listHDCT from the hidden input
+                        const lengthlistHDCT = parseInt(document.getElementById('lengthlistHDCT').value) || 0;
+                        console.log(lengthlistHDCT)
+                        // Check if the list is empty
+                        if (lengthlistHDCT === 0) {
+                            toastWarning('Cảnh báo!', 'Hóa đơn trống. Không thể thực hiện thanh toán!');
+                            return false; // Prevent the checkout if the list is empty
+                        }
+
+                        // Call the function to calculate the change (tiền thừa)
+                        const tienThua = calculateTienThua();
+
+                        // Check if the total amount is sufficient
+                        if (tienThua < 0) {
+                            toastWarning('Cảnh báo!', 'Tiền khách trả không đủ. Vui lòng nhập số tiền lớn hơn hoặc bằng số tiền thanh toán!');
+                            return false; // Prevent the checkout if the amount is insufficient
+                        }
+
+                        // Show confirmation if the total amount is sufficient
+                        if (confirm('Bạn có chắc chắn muốn thanh toán hóa đơn này?')) {
+                            // Call the actual checkout function if confirmed
+                            // checkout();
+                        }
+                    }
+
+                </script>
+
 
             </div>
         </div>
         <script>
 
             // Function to populate the modal with the correct item data
-            function openModal(idHdct, currentQuantity) {
+            function openModal(idHdct, currentQuantity,quantityAvaliable) {
                 document.getElementById('quantityInput').value = currentQuantity;
                 document.getElementById('idHdctInput').value = idHdct;
-            }
-
-            document.getElementById('updateQuantityBtn').addEventListener('click', function () {
-                const quantity = document.getElementById('quantityInput').value;
-                const idHdct = document.getElementById('idHdctInput').value;
-                console.log("quantity: " + quantity, "idHdct: " + idHdct)
-                if (quantity && idHdct) {
-                    const formData = new FormData();
-                    formData.append('soLuongSua', quantity);
-                    formData.append('idHdctSua', idHdct);
-
-                    fetch('/admin/ban-hang/hoa-don/sua-so-luong', {
-                        method: 'POST',
-                        body: formData
-                    })
-                        .then(response => {
-                            if (response.redirected) {
-                                window.location.href = response.url;
-                            } else {
-                                return response.text();
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error updating quantity:', error);
-                        });
-                } else {
-                    alert('Please fill in all fields.');
-                }
-            });
-
-
+                document.getElementById('quantityAvaliable').innerText ='Số Lượng khả dụng: '+ quantityAvaliable;
+             }
 
             function checkout() {
                 // Get the ID of the invoice (HoaDon) you want to process
@@ -471,25 +517,20 @@
 
         </script>
 
-        <script th:inline="javascript">
-            /*<![CDATA[*/
-            /* Check if the deleteSuccess attribute is present in the model */
-            var quantityUpdateInvalid = [[${QuantityUpdateError}]];
-            if (quantityUpdateInvalid) {
-                toastError('Error!', 'số lượng không hợp lệ, vui lòng kiểm tra lại !');
-            }
-            /*]]>*/
-
-
-        </script>
 
         <script th:inline="javascript">
             /*<![CDATA[*/
             /* Check if the deleteSuccess attribute is present in the model */
             var addSuccess = [[${addSuccess}]];
+            var isQuantityNotEnough = [[${isQuantityNotEnough}]];
+
+            var messageQuantityNotEnough = [[${messageQuantityNotEnough}]];
             console.log(123);
             if (addSuccess) {
                 toastSuccess('Thành Công !', 'Thêm Thành Công Sản Phẩm !');
+            }
+            if (isQuantityNotEnough) {
+                toastWarning("Lỗi !", messageQuantityNotEnough);
             }
             /*]]>*/
 
@@ -500,13 +541,40 @@
             /*<![CDATA[*/
             /* Check if the deleteSuccess attribute is present in the model */
             var updateSuccess = [[${updateSuccess}]];
-            console.log(123);
             if (updateSuccess) {
-                toastSuccess('Thành Công !', 'Update Thành Công Số Lượng Sản Phẩm !');
+                toastSuccess('Thành Công !', 'Cập nhật Thành Công Số Lượng Sản Phẩm !');
             }
             /*]]>*/
+        </script>
 
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var QuantityUpdateError = [[${QuantityUpdateError}]];
+            if (QuantityUpdateError) {
+                toastError('Thất bại !', 'Số lượng sản phẩm không hợp lệ !');
+            }
+            /*]]>*/
+        </script>
 
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var isInvoiceEmptyCheckout = [[${isInvoiceEmptyCheckout}]];
+            if (isInvoiceEmptyCheckout) {
+                toastError('Lỗi !', 'Hóa đơn trống không có sản phẩm!');
+            }
+            /*]]>*/
+        </script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var deleteAllSuccess = [[${deleteAllSuccess}]];
+            if (deleteAllSuccess) {
+                toastSuccess('Thành Công !', ' Xóa thành công tất cả sản phẩm trong hóa đơn!');
+            }
+            /*]]>*/
         </script>
 
         <script th:inline="javascript">
@@ -521,7 +589,6 @@
 
 
         </script>
-
 
 
 </body>
