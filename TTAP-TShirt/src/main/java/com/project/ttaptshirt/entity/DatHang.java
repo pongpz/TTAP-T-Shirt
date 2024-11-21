@@ -43,7 +43,7 @@ public class DatHang {
     @Column(name = "tong_tien")
     private Double tongTien;
 
-    @OneToMany(mappedBy = "datHang")
+    @OneToMany(mappedBy = "datHang",fetch = FetchType.EAGER)
     private List<DatHangChiTiet> items;
     // Getters and Setters
 }

@@ -157,28 +157,43 @@ public class SanPhamCustomerController {
 
 
     @GetMapping("/san-pham-detail/{idSP}")
-    public String sanPhamDetail(@PathVariable Long idSP,
-                                Model model,
-                                @RequestParam(required = false, value = "mauSac") String mauSac,
-                                @RequestParam(required = false, value = "kichCo") String kichCo){
-        List<ChiTietSanPham> ls = chiTietSanPhamRepository.findByIDSanPham(idSP,kichCo,mauSac);
-        model.addAttribute("SPCTFist", ls.stream().findFirst().orElse(null));
-        List<MauSac> lsms = new ArrayList<>();
-        List<KichCo> lskk = new ArrayList<>();
-        List<ChiTietSanPham> lsctsp = chiTietSanPhamRepository.getThuocTinhSPCT(idSP);
-        for (int i = 0 ; i < lsctsp.size() ; i++){
-            lsms.add(lsctsp.get(i).getMauSac());
-            lskk.add(lsctsp.get(i).getKichCo());
+    public String sanPhamDetail(@PathVariable Long idSP, Model model) {
+        SanPham sanPham = sanPhamRepository.findById(idSP)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm!"));
+
+        List<String> images = hinhAnhRepository.findBySanPhamId(idSP);
+
+        List<ChiTietSanPham> chiTietSanPhamList = chiTietSanPhamRepository.findBySanPhamId(idSP);
+
+        if (chiTietSanPhamList.isEmpty()) {
+            model.addAttribute("noDetails", true);
         }
-        model.addAttribute("lsms",lsms);
-        model.addAttribute("lskk",lskk);
+
+        Set<MauSac> colors = chiTietSanPhamList.stream()
+                .map(ChiTietSanPham::getMauSac)
+                .collect(Collectors.toSet());
+
+        Set<KichCo> sizes = chiTietSanPhamList.stream()
+                .map(ChiTietSanPham::getKichCo)
+                .collect(Collectors.toSet());
+
+        ChiTietSanPham chiTietSanPham = !chiTietSanPhamList.isEmpty() ? chiTietSanPhamList.get(0) : null;
+        double giaBan = chiTietSanPham != null ? chiTietSanPham.getGiaBan() : 0;
+
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String giaBan1 = decimalFormat.format(giaBan);
+
+        model.addAttribute("giaBan", giaBan1);
+        model.addAttribute("sanPham", sanPham);
+        model.addAttribute("mainImage", images.isEmpty() ? "/images/no-image.png" : images.get(0));
+        model.addAttribute("images", images);
+        model.addAttribute("colors", colors);
+        model.addAttribute("sizes", sizes);
+
         return "user/home/sanphamdetail";
     }
 
-    public String formatCurrency(double amount) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(amount);
-    }
+
 
 
 }

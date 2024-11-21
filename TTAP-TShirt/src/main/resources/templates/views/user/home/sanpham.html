@@ -193,7 +193,8 @@
                 <b><span th:text="|${giasanpham[sp.id]} vnđ|"></span></b>
                 <div class="text-center">
                   <div class="d-flex flex-column justify-content-center align-items-center mt-2">
-                    <a class="abc">
+                    <a class="abc"
+                       th:href="@{'/TTAP/san-pham-detail/' + ${sp.id}}">
                       <span>Xem sản phẩm</span>
                     </a>
                     <br>

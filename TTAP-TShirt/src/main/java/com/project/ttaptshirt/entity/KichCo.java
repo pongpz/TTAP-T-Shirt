@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Random;
 
 @Getter
@@ -31,6 +32,9 @@ public class KichCo {
 
     @Column(name = "trang_thai")
     private double trangThai;
+
+    @OneToMany(mappedBy = "kichCo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ChiTietSanPham> chiTietSanPhamList;
 
     @PrePersist
     private void prePersist() {
