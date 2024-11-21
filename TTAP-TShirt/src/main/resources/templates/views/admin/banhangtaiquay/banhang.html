@@ -72,7 +72,7 @@
                                 <td th:text="${hoaDon.trangThai==0?'Chưa Thanh Toán':''}"></td>
 
                                 <td>
-                                    <a th:href="@{/admin/ban-hang/huy(hoadonId=${hoaDon.id})}"
+                                    <a th:href="@{/admin/ban-hang/huy-hoa-don-tai-quay(hoadonId=${hoaDon.id})}"
                                        class="btn btn-outline-danger"
                                        onclick="return confirm('Bạn có chắc chắn muốn hủy hóa đơn này?');">
                                         Hủy

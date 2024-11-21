@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8676785-309e-46b5-8c91-c21db6f8148d" name="Changes" comment="" />
+    <list default="true" id="e8676785-309e-46b5-8c91-c21db6f8148d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/PreventNonApiRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/CartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/SanPhamCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/SanPhamCustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/repository/SanPhamRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/repository/SanPhamRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/banhang.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/banhang.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/sanpham.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/sanpham.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,7 +78,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.TtapTShirtApplication.executor": "Run",
-    "git-widget-placeholder": "dao-thanh",
+    "git-widget-placeholder": "Merging dao-thanh",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "F:/assignment2/assignment2",
     "node.js.detected.package.eslint": "true",
@@ -148,7 +158,7 @@
       <workItem from="1731772076399" duration="24929000" />
       <workItem from="1731931107334" duration="8166000" />
       <workItem from="1732016392701" duration="10918000" />
-      <workItem from="1732101703985" duration="14110000" />
+      <workItem from="1732101703985" duration="14495000" />
     </task>
     <servers />
   </component>
