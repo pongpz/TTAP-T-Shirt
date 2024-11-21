@@ -193,6 +193,9 @@
                 <b><span th:text="|${giasanpham[sp.id]} vnđ|"></span></b>
                 <div class="text-center">
                   <div class="d-flex flex-column justify-content-center align-items-center mt-2">
+                    <a class="abc" th:href="@{/add(productId=${sp.id}, quantity=1)}">
+                      <span>Them sản phẩm</span>
+                    </a>
                     <a class="abc">
                       <span>Xem sản phẩm</span>
                     </a>

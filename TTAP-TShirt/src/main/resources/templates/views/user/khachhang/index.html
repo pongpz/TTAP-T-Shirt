@@ -51,6 +51,7 @@
                             <tbody>
                             <tr th:each="user, stt : ${cus}">
                                 <td th:text="${stt.index + 1}"></td>
+
                                 <td th:text="${user.hoTen}"></td>
                                 <td>
                                     <span th:switch="${user.gioiTinh}">
