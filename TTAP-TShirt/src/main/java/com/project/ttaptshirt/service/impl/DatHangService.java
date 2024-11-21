@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DatHangService {
@@ -110,11 +111,52 @@ public class DatHangService {
         cart.setTongTien(total.doubleValue());
     }
 
-//    // Thanh toán giỏ hàng
-//    public void checkoutCart(User user) {
-//         cart = getOrCreateCart(user);
-//        cart.setStatus("CHECKED_OUT");
-//        cartRepository.save(cart);
-//    }
+    public DatHang createOrderFromCart(User user, List<CartItemDTO> selectedItems) {
+        if (selectedItems.isEmpty()) {
+            throw new RuntimeException("Không có sản phẩm nào được chọn");
+        }
+
+        DatHang cart = getOrCreateCart(user);
+
+        // Nếu giỏ hàng rỗng, ném lỗi
+        if (cart.getItems().isEmpty()) {
+            throw new RuntimeException("Giỏ hàng trống, không thể tạo đơn hàng");
+        }
+
+        // Tạo đơn hàng mới từ giỏ hàng
+        DatHang order = new DatHang();
+        order.setUser(user);
+        order.setTongTien(cart.getTongTien());
+        datHangRepository.save(order);
+
+        // Lưu các chi tiết đơn hàng
+        List<DatHangChiTiet> orderDetails = cart.getItems().stream().map(item -> {
+            DatHangChiTiet orderDetail = new DatHangChiTiet();
+            orderDetail.setDatHang(order);
+            orderDetail.setChiTietSanPham(item.getChiTietSanPham());
+            orderDetail.setSoLuong(item.getSoLuong());
+            orderDetail.setGia(item.getGia());
+            return orderDetail;
+        }).collect(Collectors.toList());
+
+        datHangChiTietRepository.saveAll(orderDetails);
+
+        return order;
+    }
+
+    // Xóa sản phẩm khỏi giỏ hàng
+    public void removeProductFromCart(User user, Long productId) {
+        DatHang cart = getOrCreateCart(user);
+
+        Optional<DatHangChiTiet> itemToRemove = cart.getItems().stream()
+                .filter(item -> item.getChiTietSanPham().getId().equals(productId))
+                .findFirst();
+
+        itemToRemove.ifPresent(item -> {
+            cart.getItems().remove(item);
+            datHangChiTietRepository.delete(item);
+            updateTotalPrice(cart);
+        });
+    }
     
 }

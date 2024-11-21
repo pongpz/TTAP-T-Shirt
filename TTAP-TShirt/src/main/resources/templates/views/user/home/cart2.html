@@ -69,15 +69,15 @@
                     <tbody>
                     <tr th:each="item, iterStat : ${cart.items}">
                         <td>
-                            <input type="checkbox" name="selectedProductIds" th:value="${item.idItem}" class="product-checkbox" onchange="calculateTotal()">
+                            <input type="checkbox" name="selectedProductIds" th:value="${item.id}" class="product-checkbox" onchange="calculateTotal()">
                         </td>
                         <td th:text="${iterStat.index + 1}"></td>
-                        <td th:text="${item.name}"></td>
-                        <td th:text="${item.price}"></td>
-                        <td th:text="${item.quantity}"></td>
-                        <td th:text="${item.price * item.quantity}"></td>
+                        <td th:text="${item.chiTietSanPham.sanPham.ten}"></td>
+                        <td th:text="${item.gia}"></td>
+                        <td th:text="${item.soLuong}"></td>
+                        <td th:text="${item.gia * item.soLuong}"></td>
                         <td>
-                            <a th:href="@{/TTAP/cart/remove(productId=${item.idItem})}" class="btn btn-danger btn-sm">Xóa</a>
+                            <a th:href="@{/TTAP/cart/remove(productId=${item.id})}" class="btn btn-danger btn-sm">Xóa</a>
                         </td>
                     </tr>
                     </tbody>
