@@ -60,7 +60,7 @@ public class SanPhamCustomerController {
     private HinhAnhRepository hinhAnhRepository;
 
     @Autowired
-    private MauSacRepository mauSacRepository;
+    private  MauSacRepository mauSacRepository;
 
 //    @Autowired
 //    HinhAnhService hinhAnhService;
@@ -89,16 +89,12 @@ public class SanPhamCustomerController {
     public String sanPhamCustomer(HttpServletRequest request, Model model,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(required = false) String ten,
-                                  @RequestParam(required = false) String nhaSanXuat,
-                                  @RequestParam(required = false) String thuongHieu,
-                                  @RequestParam(required = false) String kieuDang,
-                                  @RequestParam(required = false) String chatLieu,
-                                  @RequestParam(defaultValue = "0") int priceRangerId,
-                                  @RequestParam(required = false) Long kichCoId,
-                                  @RequestParam(required = false) Long mauSacId) {
+                                  @RequestParam(required = false) Long nhaSanXuatId,
+                                  @RequestParam(required = false) Long thuongHieuId,
+                                  @RequestParam(required = false) Long kieuDangId,
+                                  @RequestParam(required = false) Long chatLieuId,
+                                  @RequestParam(defaultValue = "0") int priceRangerId) {
 
-
-        // Xác định khoảng giá
         double minPrice = 0;
         double maxPrice = Double.MAX_VALUE;
         if (priceRangerId >= 0 && priceRangerId < priceRangerList.size()) {
@@ -108,13 +104,22 @@ public class SanPhamCustomerController {
 
         Pageable pageable = PageRequest.of(page, 6);
 
-        // Gọi repository để lọc sản phẩm
-        Page<SanPham> sanPhamPage = sanPhamRepository.filterSanPham(
-                ten, nhaSanXuat, thuongHieu, kieuDang, chatLieu,
-                minPrice, maxPrice, kichCoId, mauSacId, pageable
-        );
+        Page<SanPham> sanPhamPage;
+        if (ten != null || nhaSanXuatId != null || thuongHieuId != null ||
+                kieuDangId != null || chatLieuId != null ) {
+            sanPhamPage = sanPhamRepository.filterSanPham(
+                    ten, nhaSanXuatId, thuongHieuId, kieuDangId, chatLieuId,
+                    minPrice, maxPrice,pageable
+            );
+        } else {
+            sanPhamPage = sanPhamRepository.findAll(pageable);
+        }
 
-        // Lấy giá sản phẩm
+
+//        Pageable pageable = PageRequest.of(page, 6);
+//        Page<SanPham> sanPhamPage = sanPhamRepository.findAll(pageable);
+
+        // Lấy giá sp
         Map<Long, Double> giaSanPham = new HashMap<>();
         for (SanPham sanPham : sanPhamPage) {
             Double giaMin = chiTietSanPhamServiceImpl.getMinGiaBan(sanPham.getId());
@@ -130,7 +135,6 @@ public class SanPhamCustomerController {
             }
         }
 
-        // Thêm vào model
         model.addAttribute("listsp", sanPhamPage);
         model.addAttribute("giasanpham", giaSanPham);
         model.addAttribute("hinhAnhSanPham", hinhAnhSanPham);
@@ -146,14 +150,17 @@ public class SanPhamCustomerController {
         model.addAttribute("totalItems", sanPhamPage.getTotalElements());
         model.addAttribute("requestURI", request.getRequestURI());
 
-
         return "user/home/sanpham";
     }
 
 
 
+
     @GetMapping("/san-pham-detail/{idSP}")
-    public String sanPhamDetail(@PathVariable Long idSP, Model model,@RequestParam(required = false, value = "mauSac") String mauSac,@RequestParam(required = false, value = "kichCo") String kichCo){
+    public String sanPhamDetail(@PathVariable Long idSP,
+                                Model model,
+                                @RequestParam(required = false, value = "mauSac") String mauSac,
+                                @RequestParam(required = false, value = "kichCo") String kichCo){
         List<ChiTietSanPham> ls = chiTietSanPhamRepository.findByIDSanPham(idSP,kichCo,mauSac);
         model.addAttribute("SPCTFist", ls.stream().findFirst().orElse(null));
         List<MauSac> lsms = new ArrayList<>();
