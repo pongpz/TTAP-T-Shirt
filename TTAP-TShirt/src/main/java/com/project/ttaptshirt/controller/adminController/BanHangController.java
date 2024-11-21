@@ -10,6 +10,7 @@ import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -534,6 +535,15 @@ public class BanHangController {
         existingHoaDon.setKhachHang(khachHang);
         hoaDonService.save(existingHoaDon);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+    }
+
+    @Transactional
+    @GetMapping("/huy-khach-hang")
+    public String huyKhachHang(@RequestParam("hoadonId") Long idhd) {
+        HoaDon hoaDon = hoaDonRepository.getReferenceById(idhd);
+        hoaDon.setKhachHang(null);
+        hoaDonRepository.save(hoaDon);
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
     }
 
     @PostMapping("/chon-khuyen-mai")

@@ -276,6 +276,8 @@
                         Chọn Khách Hàng
                     </button>
 
+                    <a class="col-4 btn btn-primary" th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}">Bỏ chọn khách hàng</a>
+
                     <div class="modal fade" th:id="'modalAddCustomer'" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog1">

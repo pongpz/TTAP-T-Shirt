@@ -223,15 +223,17 @@ public class MaGiamGiaController {
         return "admin/magiamgia/form-add-voucher";
     }
 
-//    @Scheduled(fixedRate = 5000)
-//    public void ChangeStatus(){
-//        List<MaGiamGia> ls = mggr.getMGGHetHan(LocalDateTime.now());
-//        for (int i = 0 ; i < ls.size() ; i ++){
-//            MaGiamGia mgg = new MaGiamGia();
-//            mgg = ls.get(i);
-//            mgg.setTrangThai(false);
-//            mgg.setId(ls.get(i).getId());
-//            mggr.save(mgg);
-//        }
-//    }
+    @Scheduled(fixedRate = 1000)
+    public void ChangeStatus(){
+        List<MaGiamGia> ls = mggr.getMGGHetHan(LocalDateTime.now());
+        if (ls.size()>0){
+            for (int i = 0 ; i < ls.size() ; i ++){
+                MaGiamGia mgg = new MaGiamGia();
+                mgg = ls.get(i);
+                mgg.setTrangThai(false);
+                mgg.setId(ls.get(i).getId());
+                mggr.save(mgg);
+            }
+        }
+    }
 }
