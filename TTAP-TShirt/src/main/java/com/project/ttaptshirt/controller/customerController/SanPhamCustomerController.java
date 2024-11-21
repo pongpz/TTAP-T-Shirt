@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -95,22 +96,25 @@ public class SanPhamCustomerController {
                                   @RequestParam(required = false) Long chatLieuId,
                                   @RequestParam(defaultValue = "0") int priceRangerId) {
 
-        double minPrice = 0;
-        double maxPrice = Double.MAX_VALUE;
-        if (priceRangerId >= 0 && priceRangerId < priceRangerList.size()) {
-            minPrice = priceRangerList.get(priceRangerId).getMinValue();
-            maxPrice = priceRangerList.get(priceRangerId).getMaxValue();
-        }
+        double minPrice = priceRangerList.get(priceRangerId).getMinValue();
+        double maxPrice = priceRangerList.get(priceRangerId).getMaxValue();
 
         Pageable pageable = PageRequest.of(page, 6);
 
+//        if (priceRangerId >= 0 && priceRangerId < priceRangerList.size()) {
+//            minPrice = priceRangerList.get(priceRangerId).getMinValue();
+//            maxPrice = priceRangerList.get(priceRangerId).getMaxValue();
+//        }
+
+//        Pageable pageable = PageRequest.of(page, 6);
+
         Page<SanPham> sanPhamPage;
-        if (ten != null || nhaSanXuatId != null || thuongHieuId != null ||
-                kieuDangId != null || chatLieuId != null ) {
+        if (ten!=null || priceRangerId != 0 || nhaSanXuatId != 0 || thuongHieuId != 0 ||
+                kieuDangId != 0 || chatLieuId != 0 ) {
             sanPhamPage = sanPhamRepository.filterSanPham(
                     ten, nhaSanXuatId, thuongHieuId, kieuDangId, chatLieuId,
                     minPrice, maxPrice,pageable
-            );
+            );;
         } else {
             sanPhamPage = sanPhamRepository.findAll(pageable);
         }
