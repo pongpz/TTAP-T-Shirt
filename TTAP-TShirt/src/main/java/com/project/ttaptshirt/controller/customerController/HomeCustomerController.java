@@ -1,10 +1,9 @@
 package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
-import com.project.ttaptshirt.repository.DatHangRepository;
+import com.project.ttaptshirt.repository.GioHangRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.SanPhamRepository;
 import com.project.ttaptshirt.security.CustomUserDetail;
@@ -20,11 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/TTAP")
@@ -49,7 +45,7 @@ public class HomeCustomerController {
     CartService serDatHang;
 
     @Autowired
-    DatHangRepository repoDathang;
+    GioHangRepository repoDathang;
 
     @GetMapping("/trang-chu")
     public String home(HttpServletRequest request, Model model, Authentication authentication) {

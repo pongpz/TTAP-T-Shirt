@@ -77,7 +77,7 @@
                         <td th:text="${item.soLuong}"></td>
                         <td th:text="${item.gia * item.soLuong}"></td>
                         <td>
-                            <a th:href="@{/TTAP/cart/remove(productId=${item.id})}" class="btn btn-danger btn-sm">Xóa</a>
+                            <a th:href="@{/remove(productId=${item.id})}" class="btn btn-danger btn-sm">Xóa</a>
                         </td>
                     </tr>
                     </tbody>
@@ -133,7 +133,7 @@
             if (checkbox.checked) {
                 selectedProductIds.push(checkbox.value);
                 let row = checkbox.closest('tr');
-                let amount = parseFloat(row.querySelector('td:nth-child(6)').textContent.replace(/,/g, ''));
+                let amount = parseFloat(row.querySelector('td:nth-child(6)').textContent.replace(/[^0-9.]/g, ''));
                 total += amount;
             }
         });
@@ -141,14 +141,19 @@
         // Cập nhật tổng tiền
         document.getElementById('totalAmount').textContent = new Intl.NumberFormat('vi-VN').format(total);
 
-        // Gửi danh sách các sản phẩm đã chọn tới backend
-        let inputSelectedProductIds = document.createElement('input');
-        inputSelectedProductIds.type = 'hidden';
-        inputSelectedProductIds.name = 'selectedProductIds';
+        // Xử lý input hidden
+        let cartForm = document.getElementById('cartForm');
+        let inputSelectedProductIds = cartForm.querySelector('input[name="selectedProductIds"]');
+        if (!inputSelectedProductIds) {
+            inputSelectedProductIds = document.createElement('input');
+            inputSelectedProductIds.type = 'hidden';
+            inputSelectedProductIds.name = 'selectedProductIds';
+            cartForm.appendChild(inputSelectedProductIds);
+        }
         inputSelectedProductIds.value = selectedProductIds.join(',');
-        document.getElementById('cartForm').appendChild(inputSelectedProductIds);
     }
 </script>
+
 
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
     <p>&copy; 2024 TTAP T-SHIRT. All rights reserved.</p>
