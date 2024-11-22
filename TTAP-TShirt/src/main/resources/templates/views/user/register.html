@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -31,14 +31,16 @@
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <div data-mdb-input-init class="form-outline">
-                                        <input type="text" id="firstName" name="username" class="form-control form-control-lg" />
+                                        <input type="text" id="firstName" name="username" class="form-control form-control-lg" th:field="*{user.username}" />
                                         <label class="form-label" for="firstName">Tên Đăng Nhập</label>
+                                        <span class="text-danger">[[${usernameIsInvalid}]]</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <div data-mdb-input-init class="form-outline">
-                                        <input type="text" id="lastName" name="hoTen" class="form-control form-control-lg" />
+                                        <input type="text" id="lastName" name="hoTen" class="form-control form-control-lg" th:field="*{user.hoTen}" />
                                         <label class="form-label">Họ Tên</label>
+                                        <span class="text-danger">[[${nameError}]]</span>
                                     </div>
                                 </div>
                             </div>
@@ -46,18 +48,19 @@
                             <div class="row">
                                 <div class="col-md-6 mb-4 d-flex align-items-center">
                                     <div data-mdb-input-init class="form-outline datepicker w-100">
-                                        <input type="password" name="password" class="form-control form-control-lg" />
+                                        <input type="password" name="password" class="form-control form-control-lg"  th:field="*{user.password}"/>
                                         <label  class="form-label">Mật khẩu</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <h6 class="mb-2 pb-1">Giới Tính: </h6>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" value="0" id="femaleGender" checked/>
+                                        <input class="form-check-input" type="radio" name="gioiTinh" value="0" id="femaleGender"  th:field="*{user.gioiTinh}" checked/>
+
                                         <label class="form-check-label" for="femaleGender">Nữ</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" value="1" id="maleGender" />
+                                        <input class="form-check-input" type="radio" name="gioiTinh" value="1" id="maleGender"  th:field="*{user.gioiTinh}"/>
                                         <label class="form-check-label" for="maleGender">Nam</label>
                                     </div>
                                 </div>
@@ -66,13 +69,14 @@
                             <div class="row">
                                 <div class="col-md-6 mb-4 pb-2">
                                     <div data-mdb-input-init class="form-outline">
-                                        <input type="email" id="emailAddress" name="email" class="form-control form-control-lg" />
+                                        <input type="email" id="emailAddress" name="email" class="form-control form-control-lg"  th:field="*{user.email}"/>
                                         <label class="form-label" for="emailAddress">Email</label>
+                                        <span class="text-danger">[[${emailIsInvalid}]]</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4 pb-2">
                                     <div data-mdb-input-init class="form-outline">
-                                        <input type="tel" id="phoneNumber" name="soDienthoai" class="form-control form-control-lg" />
+                                        <input type="tel" id="phoneNumber" name="soDienthoai" class="form-control form-control-lg"  th:field="*{user.soDienthoai}"/>
                                         <label class="form-label" for="phoneNumber">Số Điện Thoại</label>
                                     </div>
                                 </div>

@@ -59,4 +59,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Modifying
     @Query(value = "update hoa_don set trang_thai = 2 where id=?1" ,nativeQuery = true)
     void huyHoaDonOnline(Long idHd);
+
+
+    List<HoaDon> findByTrangThaiAndNgayTaoBefore(int trangThai, LocalDateTime ngayTao);
+
 }

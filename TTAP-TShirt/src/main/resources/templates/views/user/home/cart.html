@@ -53,7 +53,7 @@
 
         <!-- Hiển thị giỏ hàng -->
         <div class="table-responsive" th:if="${cart.items != null and !cart.items.isEmpty()}">
-            <form th:action="@{/TTAP/cart/checkout}" method="POST" id="cartForm">
+            <form th:action="@{/TTAP/checkout}" method="POST" id="cartForm">
                 <table class="table table-bordered table-hover">
                     <thead class="table-primary">
                     <tr>

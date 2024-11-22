@@ -90,17 +90,6 @@ public class SanPhamController {
                       @RequestParam("idThuongHieu") Long idThuongHieu,
                       @RequestParam("idKieuDang") Long idKieuDang) throws IOException, GeneralSecurityException {
 
-
-        if (file.isEmpty()) {
-            return "FIle is empty";
-        }
-        File tempFile = File.createTempFile("temp", null);
-        file.transferTo(tempFile);
-        String imagePath = hinhAnhService.uploadImageToDrive(tempFile);
-
-        HinhAnh hinhAnh = new HinhAnh();
-        hinhAnh.setPath(imagePath);
-
         // Thiết lập các thuộc tính cho sản phẩm
         sanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
         sanPham.setChatLieu(chatLieuRepository.findById(idChatLieu).orElse(null));
@@ -110,13 +99,24 @@ public class SanPhamController {
         // Sinh mã duy nhất cho sản phẩm
         sanPham.setMa(generateUniqueCode());
 
-
-
+        // Lưu sản phẩm vào cơ sở dữ liệu
         SanPham sanPham1 = sanPhamRepository.save(sanPham);
+
+        // Tải ảnh lên Cloudinary
+        String imageUrl = hinhAnhService.uploadFile(file); // Gọi phương thức uploadFile để lấy URL ảnh
+
+        // Tạo và lưu thông tin hình ảnh vào cơ sở dữ liệu
+        HinhAnh hinhAnh = new HinhAnh();
         hinhAnh.setSanPham(sanPham1);
+        hinhAnh.setPath(imageUrl); // Lưu đường dẫn URL ảnh từ Cloudinary
+        hinhAnh.setTrangThai(1); // Ví dụ, trạng thái ảnh là 1 (hoặc có thể thay đổi tùy yêu cầu của bạn)
+
         hinhAnhRepository.save(hinhAnh);
+
+        // Chuyển hướng về trang danh sách sản phẩm
         return "redirect:/admin/san-pham";
     }
+
 
     private String generateUniqueCode() {
         String generatedMa;

@@ -26,94 +26,103 @@
 
 <header th:replace="~{/fragment/header-customer :: header-customer}"></header>
 
-<div class="container">
-    <div class="row mt-3" style="display: flex" th:object="${spct}">
-    <img th:src="${spct != null && spct.hinhAnh != null ? spct.hinhAnh.getphotoPath() : ''}" alt="image" class="col-5">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="product-images mb-3">
+                <img th:src="${mainImage}" alt="Main Product Image" id="mainImage" class="img-fluid">
+            </div>
+<!--            <div class="small-images d-flex">-->
+<!--                <img th:each="image : ${images}"-->
+<!--                     th:src="${image.path}"-->
+<!--                     alt="Product Image"-->
+<!--                     onclick="changeImage(this)"-->
+<!--                     class="img-thumbnail">-->
+<!--            </div>-->
+        </div>
 
-        <div class="col-1"></div>
-        <div class="col-6">
-        <div class="col-12" >
-            <span style="font-size: xxx-large; font-weight: bold">
-                [[${spct.sanPham.ten?:''}]]
-            </span> <br>
-            <div class="d-flex">
-                <h4 style="font-size: x-large; color: #0f6674">Số lượng: </h4>
-                <h4 style="font-size: x-large;"th:text="${spct != null && spct.soLuong != null ? spct.soLuong : ''}"></h4>
+        <div class="col-md-7">
+            <h3 th:text="${sanPham.ten}"></h3>
+            <div>
+                <span class="price" th:text="${giaBan} + ' VNĐ'"
+                      style="font-size: 30px; font-weight: bold; color: red;"></span>
             </div>
-            <span style="font-size: xx-large; font-weight: bold ; color: red" class="mt-3"
-                  th:text="${spct != null && spct.giaBan != null ? spct.giaBan : ''} + ' đ'"></span>
-            <br>
-            <div class="d-flex mt-3" th:each="kk :${lskk}">
-                <h4 style="font-size: x-large; color: #0f6674; margin-right: 3ch">Kích cỡ: </h4>
-                    <input type="radio" class="btn-check btn-sm" th:value="${kk.id}" name="sizeId" id="size-${kk.id}" autocomplete="off" required>
-                    <label class="btn btn-outline-dark" for="size-${kk.id}">[[${kk.ten}]]</label>
+
+            <!-- Màu sắc -->
+            <div class="mt-3">
+                <label><strong>Màu sắc:</strong></label>
+                <div>
+                    <div th:if="${noDetails}">
+                        <p>Không có màu sắc cho sản phẩm này.</p>
+                    </div>
+
+                    <button th:each="color : ${colors}"
+                            th:text="${color.ten}"
+                            th:data-id="${color.id}"
+                            class="btn btn-outline-secondary btn-sm me-1"></button>
+                </div>
             </div>
-            <div class="d-flex mt-3" th:each="ms :${lsms}">
-                <h4 style="font-size: x-large; color: #0f6674; margin-right: 3ch">Màu sắc: </h4>
-                    <input type="radio" class="btn-check btn-sm" th:value="${ms.id}" name="colorId" id="color-${ms.id}" autocomplete="off" required>
-                    <label class="btn btn-outline-dark" for="color-${ms.id}">[[${ms.ten}]]</label>
+
+            <div class="mt-3">
+                <label><strong>Kích cỡ:</strong></label>
+                <div>
+                    <div th:if="${noDetails}">
+                        <p>Không có kích cỡ cho sản phẩm này.</p>
+                    </div>
+
+                    <button th:each="size : ${sizes}"
+                            th:text="${size.ten}"
+                            th:data-id="${size.id}"
+                            class="btn btn-outline-secondary btn-sm me-1"></button>
+                </div>
             </div>
-            <br>
-            <div class="input-group mb-3">
-                <h4 style="font-size: x-large; color: #0f6674; margin-right: 2ch">Số lượng: </h4>
-                <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">-</button>
-                <input type="number" name="quantity" class="form-control col-2" min="1" value="1" id="quantityInput">
-                <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+
+
+            <div class="mt-4">
+                <button class="btn btn-danger btn-buy">Mua ngay</button>
+                <button class="btn btn-outline-primary btn-add-cart">Thêm vào giỏ hàng</button>
             </div>
-            <br>
-            <form action="" method="post"></form>
-            <a class="abc my-2" th:href="@{/TTAP/cart/add(productId=${spct.sanPham.id}, quantity=1)}">
-                <span>Thêm vào giỏ hàng</span>
-            </a>
-            <button class="btn btn-danger">Mua ngay</button>
         </div>
     </div>
-        <div class="mt-5 mb-5">
-            <h2 style="font-weight: bold; color: #0f6674">Mô tả</h2>
-            <h4>[[${spct.sanPham.moTa?:''}]]</h4>
-        </div>
-</div>
+
+    <div class="mt-5">
+        <h4>Chi tiết sản phẩm</h4>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Thương Hiệu</th>
+                <td th:text="${sanPham.thuongHieu.ten}"></td>
+            </tr>
+            <tr>
+                <th>Chất liệu</th>
+                <td th:text="${sanPham.chatLieu.ten}"></td>
+            </tr>
+            <tr>
+                <th>Nhà Sản Xuất</th>
+                <td th:text="${sanPham.nsx.ten}"></td>
+            </tr>
+            <tr>
+                <th>Kiểu Dáng</th>
+                <td th:text="${sanPham.kieuDang.ten}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <b>Mô tả:</b> <span th:text="${sanPham.moTa}"></span>
+    </div>
 </div>
 
-<!-- Footer Section Begin -->
-<footer th:replace="~{/fragment/footer-customer :: footer-customer}"></footer>
-<script src="/js/jquery-3.3.1.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.nice-select.min.js"></script>
-<script src="/js/jquery-ui.min.js"></script>
-<script src="/js/jquery.slicknav.js"></script>
-<script src="/js/mixitup.min.js"></script>
-<script src="/js/owl.carousel.min.js"></script>
-<script src="/js/main.js"></script>
 <script>
-    function increaseQuantity() {
-        var quantityInput = document.getElementById('quantityInput');
-        quantityInput.value = parseInt(quantityInput.value) + 1;
-    }
-
-    function decreaseQuantity() {
-        var quantityInput = document.getElementById('quantityInput');
-        if (parseInt(quantityInput.value) > 1) {
-            quantityInput.value = parseInt(quantityInput.value) - 1;
-        }
-    }
-
-    let pageInput = document.getElementById('input-page').value;
-    let linkSearch = new URLSearchParams(window.location.search);
-    let page = parseInt(pageInput)
-
-    function changeItem(){
-        if (page >= 1) {
-            linkSearch.set('page', page-1); // Cập nhật giá trị 'page'
-        } else {
-            linkSearch.set('page', 0); // Nếu page nhỏ hơn 1, đặt thành 0
-        }
-
-        // Cập nhật lại URL với các tham số đã sửa
-        window.location.href = window.location.origin + '/admin/ma-giam-gia/tim-kiem?' + linkSearch.toString();
-    }
-
+    document.querySelectorAll('button[data-id]').forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.dataset.id; // Lấy ID của màu sắc hoặc kích cỡ
+            document.querySelectorAll('button[data-id]').forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            console.log("Bạn đã chọn ID: " + id);
+        });
+    });
 </script>
+
 </body>
 
 </html>

@@ -10,6 +10,7 @@ import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +33,15 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -422,7 +426,7 @@ public class BanHangController {
         }
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
         hoaDon.setLoaiDon(1);
-        hoaDon.setNgayTao(LocalDate.now());
+        hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
 
@@ -541,6 +545,15 @@ public class BanHangController {
         existingHoaDon.setKhachHang(khachHang);
         hoaDonService.save(existingHoaDon);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+    }
+
+    @Transactional
+    @GetMapping("/huy-khach-hang")
+    public String huyKhachHang(@RequestParam("hoadonId") Long idhd) {
+        HoaDon hoaDon = hoaDonRepository.getReferenceById(idhd);
+        hoaDon.setKhachHang(null);
+        hoaDonRepository.save(hoaDon);
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
     }
 
     @PostMapping("/chon-khuyen-mai")

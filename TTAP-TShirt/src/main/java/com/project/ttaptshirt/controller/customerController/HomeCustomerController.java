@@ -59,45 +59,27 @@ public class HomeCustomerController {
             model.addAttribute("userLogged", user);
         }
         model.addAttribute("requestURI", request.getRequestURI());
-        List<HoaDonChiTiet> ls = hdctrp.findAll();
-              List<?> newList = ls.stream()
-                .collect(Collectors.groupingBy(hd -> hd.getChiTietSanPham().getId(),Collectors.summingInt(HoaDonChiTiet::getSoLuong)))
-                .entrySet()
-                .stream()
-                .sorted((hd1,hd2) -> Integer.compare(hd2.getValue(),hd1.getValue()))
-                .map(entry -> Map.of("id_chi_tiet_sp",entry.getKey(),"so_luong",entry.getValue()))
-                .collect(Collectors.toList());
-        List<Long> lsIDSPCT = new ArrayList<>();
-        newList.forEach(item -> {
-            Map<String, Object> map = (Map<String, Object>) item;
-            lsIDSPCT.add((Long) map.get("id_chi_tiet_sp"));
-            System.out.println("ID Chi Tiet SP: " + map.get("id_chi_tiet_sp") + ", So Luong: " + map.get("so_luong"));
-        });
-        List<ChiTietSanPham> lsCTSP = new ArrayList<>();
-        if (ctspr.getListNewCTSP().size() < 6){
-            for (int i = 0 ; i < ctspr.getListNewCTSP().size() ; i ++){
-                model.addAttribute("lsSPMoi",ctspr.getListNewCTSP());
-            }
-        }else {
-            for (int i = 0 ; i < 6 ; i ++){
-                model.addAttribute("lsSPMoi",ctspr.getListNewCTSP());
+        // Lấy danh sách tất cả chi tiết sản phẩm
+        List<ChiTietSanPham> lsCTSP = ctspr.findAll();
+        for(ChiTietSanPham sp : lsCTSP){
+            if (sp == null || sp.getGiaBan() == null) {
+                System.out.println("KO cos gia");
+            }else {
+                System.out.println(sp.getGiaBan());
             }
         }
-        if (newList.size() < 6){
-            for (int i = 0 ; i < newList.size() ; i++){
-                lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
-            }
-            model.addAttribute("lsSPCT",lsCTSP);
-        }else {
-            for (int i = 0 ; i < 6 ; i++){
-                lsCTSP.add(ctspr.getReferenceById(lsIDSPCT.get(i)));
-            }
-            model.addAttribute("lsSPCT",lsCTSP);
-        }
-        return "user/home/trangchu";
+        model.addAttribute("lsSPCT", lsCTSP);
+
+        return "user/home/trangchu"; // Trả về trang chủ
     }
     @GetMapping("/san-pham/{id}")
-    public String detailSP(Model model, @PathVariable Long id){
+    public String detailSP(HttpServletRequest request, Model model, Authentication authentication, @PathVariable Long id){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
+        model.addAttribute("requestURI", request.getRequestURI());
         // Kiểm tra danh sách trả về từ findByIDSanPham trước khi truy cập phần tử
 //        model.addAttribute("mauSac", mauSacService.findAll());
 //        model.addAttribute("kc", kichCoService.findAll());

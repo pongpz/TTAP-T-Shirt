@@ -90,4 +90,5 @@ public class User {
     @OneToOne
     @JoinColumn(name = "id_dia_chi")
     private DiaChi dc;
+
 }
