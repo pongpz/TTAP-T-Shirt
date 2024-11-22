@@ -16,7 +16,6 @@ import lombok.ToString;
 public class CartItemDTO {
     private Long idItem;
     private String name;
-    private String imagePath;
     private Double price;
     private int quantity;
 

@@ -1,14 +1,13 @@
 package com.project.ttaptshirt.service.impl;
 
-import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.DatHang;
-import com.project.ttaptshirt.entity.DatHangChiTiet;
+import com.project.ttaptshirt.entity.GioHang;
+import com.project.ttaptshirt.entity.GioHangChiTiet;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
-import com.project.ttaptshirt.repository.DatHangChiTietRepository;
-import com.project.ttaptshirt.repository.DatHangRepository;
+import com.project.ttaptshirt.repository.GioHangChiTietRepository;
+import com.project.ttaptshirt.repository.GioHangRepository;
 import com.project.ttaptshirt.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +19,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class DatHangService {
+public class GioHangService {
     @Autowired
-    private DatHangRepository datHangRepository;
+    private GioHangRepository gioHangRepository;
 
     @Autowired
-    private DatHangChiTietRepository datHangChiTietRepository;
+    private GioHangChiTietRepository gioHangChiTietRepository;
 
     @Autowired
     private ChiTietSanPhamRepository chiTietSanPhamRepository;
@@ -33,50 +32,50 @@ public class DatHangService {
     @Autowired
     UserRepo userRepo;
 
-    public DatHang taoDon(String userName, List<CartItemDTO> cartItems ) {
+    public GioHang taoDon(String userName, List<CartItemDTO> cartItems ) {
         User user = userRepo.findByUsername(userName);
 
-        DatHang datHang = new DatHang();
-        datHang.setUser(user);
+        GioHang gioHang = new GioHang();
+        gioHang.setUser(user);
 
         Double tongTien = cartItems.stream()
                 .mapToDouble(item -> item.getPrice() * item.getQuantity())
                 .sum();
-        datHang.setTongTien(tongTien);
-        datHangRepository.save(datHang);
+        gioHang.setTongTien(tongTien);
+        gioHangRepository.save(gioHang);
 
-        List<DatHangChiTiet> hangChiTiets = new ArrayList<>();
+        List<GioHangChiTiet> hangChiTiets = new ArrayList<>();
         for(CartItemDTO cartItem : cartItems) {
             ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository.findById(cartItem.getIdItem())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
-            DatHangChiTiet datHangChiTiet = new DatHangChiTiet();
-            datHangChiTiet.setDatHang(datHang);
-            datHangChiTiet.setChiTietSanPham(chiTietSanPham);
-            datHangChiTiet.setSoLuong(cartItem.getQuantity());
-            datHangChiTiet.setGia(cartItem.getPrice());
-            hangChiTiets.add(datHangChiTiet);
+            GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
+            gioHangChiTiet.setGioHang(gioHang);
+            gioHangChiTiet.setChiTietSanPham(chiTietSanPham);
+            gioHangChiTiet.setSoLuong(cartItem.getQuantity());
+            gioHangChiTiet.setGia(cartItem.getPrice());
+            hangChiTiets.add(gioHangChiTiet);
         }
-        datHangChiTietRepository.saveAll(hangChiTiets);
-        datHang.setItems(hangChiTiets);
-        return datHang;
+        gioHangChiTietRepository.saveAll(hangChiTiets);
+        gioHang.setItems(hangChiTiets);
+        return gioHang;
     }
 
-    public DatHang getOrCreateCart(User user) {
-        return datHangRepository.findByUserAndStatus(user, true)
+    public GioHang getOrCreateCart(User user) {
+        return gioHangRepository.findByUserAndStatus(user, true)
                 .orElseGet(() -> {
-                    DatHang newCart = new DatHang();
+                    GioHang newCart = new GioHang();
                     newCart.setUser(user);
                     newCart.setTongTien(BigDecimal.ZERO.doubleValue());
-                    return datHangRepository.save(newCart);
+                    return gioHangRepository.save(newCart);
                 });
     }
 
     // Thêm sản phẩm vào giỏ
     public void addItemToCart(User user, Long productId, int quantity) {
-        DatHang cart = getOrCreateCart(user);
+        GioHang cart = getOrCreateCart(user);
 
         // Kiểm tra sản phẩm có trong giỏ chưa
-        Optional<DatHangChiTiet> existingItem = cart.getItems().stream()
+        Optional<GioHangChiTiet> existingItem = cart.getItems().stream()
                 .filter(item -> item.getChiTietSanPham().getId().equals(productId))
                 .findFirst();
 
@@ -84,24 +83,24 @@ public class DatHangService {
                 .orElseThrow(() -> new RuntimeException("Sản phẩm không tồn tại"));
 
         if (existingItem.isPresent()) {
-            DatHangChiTiet item = existingItem.get();
+            GioHangChiTiet item = existingItem.get();
             item.setSoLuong(item.getSoLuong() + quantity);
-            datHangChiTietRepository.save(item);
+            gioHangChiTietRepository.save(item);
         } else {
-            DatHangChiTiet newItem = new DatHangChiTiet();
-            newItem.setDatHang(cart);
+            GioHangChiTiet newItem = new GioHangChiTiet();
+            newItem.setGioHang(cart);
             newItem.setChiTietSanPham(product);
             newItem.setSoLuong(quantity);
             newItem.setGia(product.getGiaBan());
             cart.getItems().add(newItem);
-            datHangChiTietRepository.save(newItem);
+            gioHangChiTietRepository.save(newItem);
         }
 
         updateTotalPrice(cart);
     }
 
     // Cập nhật tổng giá trị giỏ hàng
-    private void updateTotalPrice(DatHang cart) {
+    private void updateTotalPrice(GioHang cart) {
         BigDecimal total = cart.getItems() != null
                 ? cart.getItems().stream()
                 .map(item -> BigDecimal.valueOf(item.getGia() * item.getSoLuong()))
@@ -111,12 +110,12 @@ public class DatHangService {
         cart.setTongTien(total.doubleValue());
     }
 
-    public DatHang createOrderFromCart(User user, List<CartItemDTO> selectedItems) {
+    public GioHang createOrderFromCart(User user, List<CartItemDTO> selectedItems) {
         if (selectedItems.isEmpty()) {
             throw new RuntimeException("Không có sản phẩm nào được chọn");
         }
 
-        DatHang cart = getOrCreateCart(user);
+        GioHang cart = getOrCreateCart(user);
 
         // Nếu giỏ hàng rỗng, ném lỗi
         if (cart.getItems().isEmpty()) {
@@ -124,39 +123,40 @@ public class DatHangService {
         }
 
         // Tạo đơn hàng mới từ giỏ hàng
-        DatHang order = new DatHang();
+        GioHang order = new GioHang();
         order.setUser(user);
         order.setTongTien(cart.getTongTien());
-        datHangRepository.save(order);
+        gioHangRepository.save(order);
 
         // Lưu các chi tiết đơn hàng
-        List<DatHangChiTiet> orderDetails = cart.getItems().stream().map(item -> {
-            DatHangChiTiet orderDetail = new DatHangChiTiet();
-            orderDetail.setDatHang(order);
+        List<GioHangChiTiet> orderDetails = cart.getItems().stream().map(item -> {
+            GioHangChiTiet orderDetail = new GioHangChiTiet();
+            orderDetail.setGioHang(order);
             orderDetail.setChiTietSanPham(item.getChiTietSanPham());
             orderDetail.setSoLuong(item.getSoLuong());
             orderDetail.setGia(item.getGia());
             return orderDetail;
         }).collect(Collectors.toList());
 
-        datHangChiTietRepository.saveAll(orderDetails);
+        gioHangChiTietRepository.saveAll(orderDetails);
 
         return order;
     }
 
     // Xóa sản phẩm khỏi giỏ hàng
     public void removeProductFromCart(User user, Long productId) {
-        DatHang cart = getOrCreateCart(user);
-
-        Optional<DatHangChiTiet> itemToRemove = cart.getItems().stream()
-                .filter(item -> item.getChiTietSanPham().getId().equals(productId))
+        GioHang cart = getOrCreateCart(user);
+        Optional<GioHangChiTiet> itemToRemove = cart.getItems().stream()
+                .filter(item -> item.getId().equals(productId))
                 .findFirst();
-
-        itemToRemove.ifPresent(item -> {
-            cart.getItems().remove(item);
-            datHangChiTietRepository.delete(item);
-            updateTotalPrice(cart);
-        });
+        if (itemToRemove.isEmpty()) {
+            System.out.println("Sản phẩm không tìm thấy trong giỏ hàng");
+        } else {
+            itemToRemove.ifPresent(item -> {
+                cart.getItems().remove(item);
+                gioHangChiTietRepository.delete(item);
+                updateTotalPrice(cart);
+            });
+        }
     }
-    
 }

@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -133,13 +132,13 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public HoaDon createHoaDon2(DatHang cart,List<Long> selectedProductIds, String fullName, String phoneNumber, String address) {
+    public HoaDon createHoaDon2(GioHang cart, List<Long> selectedProductIds, String fullName, String phoneNumber, String address) {
         if (cart == null|| cart.getItems() == null || cart.getItems().isEmpty()){
             throw new IllegalArgumentException("Giỏ hàng trống, không thể tạo hóa đơn.");
         }
 
         // Lọc các sản phẩm được chọn từ giỏ hàng
-        List<DatHangChiTiet> selectedItems = cart.getItems().stream()
+        List<GioHangChiTiet> selectedItems = cart.getItems().stream()
                 .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId()))
                 .toList();
 
@@ -162,7 +161,7 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         HoaDon saveHd = hoaDonRepository.save(hoaDon);
 
-        for(DatHangChiTiet item : cart.getItems()) {
+        for(GioHangChiTiet item : cart.getItems()) {
             HoaDonChiTiet chiTiet = new HoaDonChiTiet();
             chiTiet.setHoaDon(saveHd);
             ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository.findById(item.getId())
