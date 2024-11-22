@@ -276,8 +276,9 @@
                         Chọn Khách Hàng
                     </button>
 
-                    <a class="col-4 btn btn-primary" th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}">Bỏ chọn khách hàng</a>
 
+<!--                    Modal khach hang-->
+                    <a class="col-4 btn btn-primary" th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}">Bỏ chọn khách hàng</a>
                     <div class="modal fade" th:id="'modalAddCustomer'" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog1">
@@ -290,12 +291,14 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <div>
-                                        <form class="row" action="#">
-                                            <input class="col-7" type="text" name="tenSpSearch">
-                                            <button class="col-1 btn btn-primary" type="submit">Tìm kiếm
+                                    <div class="row">
+                                        <form class="row" style="width: 900px" action="#">
+                                            <input placeholder="Tìm kiếm theo số điện thoại khách hàng" style="width: 620px;height: 60px" class="col-7" type="text" name="tenSpSearch">
+                                            <button style="width: 120px;height: 60px;margin-left: 30px" class="col-1 btn btn-primary" type="submit">Tìm kiếm
                                             </button>
                                         </form>
+                                        <button class="btn btn-primary" style="width: 120px;height: 60px;margin-right: 30px">Khách vãng lai</button>
+                                        <button  class="btn btn-primary" style="width: 120px;height: 60px">Thêm Khách Hàng</button>
                                     </div>
                                     <table class="table">
                                         <thead>
@@ -303,7 +306,6 @@
                                             <th scope="col">Id</th>
                                             <th scope="col">Họ tên</th>
                                             <th scope="col">Số điện thoại</th>
-                                            <th scope="col">Email</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                         </thead>
@@ -311,8 +313,7 @@
                                         <tr th:each="kh : ${listKh}">
                                             <td th:text="${kh.id}"></td>
                                             <th scope="row" th:text="${kh.hoTen}"></th>
-                                            <th scope="row" th:text="${kh.soDienthoai}"></th>
-                                            <th scope="row" th:text="${kh.email}"></th>
+                                            <th scope="row" th:text="${kh.soDienThoai}"></th>
                                             <td>
                                                 <form class="row"
                                                       th:action="@{/admin/ban-hang/chon-khach-hang}"
@@ -325,8 +326,11 @@
                                                     <button
                                                             type="submit"
                                                             class="btn btn-primary col-4"
-                                                    >Thêm khách hàng
+                                                            onclick="return confirm('Bạn Có muốn thêm khách hàng này?');"
+                                                    >
+                                                        Thêm khách hàng
                                                     </button>
+
                                                 </form>
 
                                             </td>
@@ -451,7 +455,7 @@
                         // Show confirmation if the total amount is sufficient
                         if (confirm('Bạn có chắc chắn muốn thanh toán hóa đơn này?')) {
                             // Call the actual checkout function if confirmed
-                            // checkout();
+                            checkout();
                         }
                     }
 
