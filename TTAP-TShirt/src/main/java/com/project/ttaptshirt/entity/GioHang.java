@@ -9,7 +9,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -18,7 +17,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "dat_hang")
-public class DatHang {
+public class GioHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,7 +42,7 @@ public class DatHang {
     @Column(name = "tong_tien")
     private Double tongTien;
 
-    @OneToMany(mappedBy = "datHang",fetch = FetchType.EAGER)
-    private List<DatHangChiTiet> items;
+    @OneToMany(mappedBy = "gioHang",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    private List<GioHangChiTiet> items;
     // Getters and Setters
 }
