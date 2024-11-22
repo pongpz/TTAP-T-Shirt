@@ -1,7 +1,9 @@
 package com.project.ttaptshirt.controller.authController;
 
 
+import com.project.ttaptshirt.entity.KhachHang;
 import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.service.KhachHangService;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +80,13 @@ public class AccountController {
             user.setNgayTao(LocalDate.now());
             userService.save(user);
             System.out.println( user.toString());
-
+            KhachHang khachHang = new KhachHang();
+            khachHang.setHoTen(user.getHoTen());
+            khachHang.setSoDienThoai(user.getSoDienthoai());
+            khachHang.setNgayTao(LocalDate.now());
             User user1 = userService.findUserByUsername(user.getUsername());
+            khachHang.setUser(user1);
+            khachHangService.save(khachHang);
             userService.insertDefaultUserRole(user1.getId());
             System.out.println("thanh cong roi");
             redirectAttributes.addFlashAttribute("isRegisterSuccess", true);
