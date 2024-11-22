@@ -11,6 +11,8 @@
           type="text/css"/>
     <link rel="stylesheet" href="/customcss/toastMessage.css ">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
@@ -30,9 +32,8 @@
                 <div style="margin-top: 0px; border: 1px solid rgb(182, 172, 172); padding: 5ch; border-radius: 0.5cap; box-shadow: 1px 1px 10px 3px rgb(232, 230, 230);">
                     <div style="display: flex;">
                         <div class="mt-3 col-8">
-                            <label for="exampleInputText" style="font-weight: bold;">Thông tin hóa đơn</label>
-                            <input type="text" class="form-control mt-3" id="exampleInputText"
-                                   placeholder="Tìm kiếm hóa đơn">
+                            <label style="font-weight: bold;" th:text="'Số lượng hóa đơn chờ: '+${listHoaDon.size()}"></label>
+                            <input id="numbersInvoice" type="hidden" th:value="${listHoaDon.size()}">
                         </div>
                         <div class="col-5 mt-5" style="margin-left: 5%;">
                             <div class="btn-group mt-2" role="group" aria-label="Basic mixed styles example">
@@ -44,7 +45,13 @@
 
                                 <script>
                                     function confirmSubmit() {
-                                        return window.confirm('Bạn có chắc chắn muốn tạo hóa đơn?');
+                                      var  numbersInvoice = document.getElementById("numbersInvoice").value;
+                                      if(numbersInvoice>=3) {
+                                          toastWarning("Không hợp lệ !","Số lượng hóa đơn chờ đã đạt số lượng tối đa(10 hóa đơn) !");
+                                          return false;
+                                      } else {
+                                          return window.confirm('Bạn có chắc chắn muốn tạo hóa đơn?');
+                                      }
                                     }
                                 </script>
                             </div>

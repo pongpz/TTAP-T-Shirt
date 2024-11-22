@@ -46,7 +46,7 @@ public class HoaDon {
 
     @ManyToOne
     @JoinColumn(name = "id_khach_hang")
-    private User khachHang;
+    private KhachHang khachHang;
 
     @ManyToOne
     @JoinColumn(name = "id_nhan_vien")
