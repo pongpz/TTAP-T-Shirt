@@ -32,6 +32,8 @@ public class AccountController {
     UserService userService;
 
     @Autowired
+    KhachHangService khachHangService;
+    @Autowired
     UserRepo userRepo;
 
 

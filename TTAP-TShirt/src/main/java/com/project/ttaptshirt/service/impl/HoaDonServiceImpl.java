@@ -151,7 +151,9 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
-        hoaDon.setKhachHang(getCurrentUser());
+        User user = getCurrentUser();
+        KhachHang khachHang = user.getKhachHang();
+        hoaDon.setKhachHang(khachHang);
         hoaDon.setTenNguoiNhan(fullName);
         hoaDon.setSdtNguoiNhan(phoneNumber);
         hoaDon.setDiaChiGiaoHang(address);

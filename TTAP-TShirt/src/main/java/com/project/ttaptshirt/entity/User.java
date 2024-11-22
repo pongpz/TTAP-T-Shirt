@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -90,5 +91,10 @@ public class User {
     @OneToOne
     @JoinColumn(name = "id_dia_chi")
     private DiaChi dc;
+
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private KhachHang khachHang;
+
 
 }
