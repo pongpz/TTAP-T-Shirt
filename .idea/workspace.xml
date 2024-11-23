@@ -5,6 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8676785-309e-46b5-8c91-c21db6f8148d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/92b012e6-bf77-4499-b458-1fd02c1b76e0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/KhachHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/KhachHangController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/authController/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/authController/AccountController.java" afterDir="false" />
     </list>
@@ -38,6 +43,9 @@
 }</component>
   <component name="JpbToolWindowState">
     <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -89,25 +97,26 @@
     ]
   }
 }</component>
+
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\TTAP-T-Shirt\TTAP-TShirt\src\main\resources\templates\views\user\home" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.TtapTShirtApplication">
+    <configuration name="generated-requests | #10" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="10" requestIdentifier="#10" runType="Run single request">
+      <method v="2" />
+    </configuration>
     <configuration name="generated-requests | #13" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="13" requestIdentifier="#13" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="generated-requests | #25" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="25" requestIdentifier="#25" runType="Run single request">
+    <configuration name="generated-requests | #5" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="5" requestIdentifier="#5" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="generated-requests | #26" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="26" requestIdentifier="#26" runType="Run single request">
+    <configuration name="generated-requests | #7" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="7" requestIdentifier="#7" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="generated-requests | #28" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="28" requestIdentifier="#28" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #6" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="6" requestIdentifier="#6" runType="Run single request">
+    <configuration name="generated-requests | #8" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="8" requestIdentifier="#8" runType="Run single request">
       <method v="2" />
     </configuration>
     <configuration name="TtapTShirtApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
@@ -120,11 +129,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="HTTP Request.generated-requests | #28" />
-        <item itemvalue="HTTP Request.generated-requests | #26" />
-        <item itemvalue="HTTP Request.generated-requests | #25" />
-        <item itemvalue="HTTP Request.generated-requests | #6" />
         <item itemvalue="HTTP Request.generated-requests | #13" />
+        <item itemvalue="HTTP Request.generated-requests | #10" />
+        <item itemvalue="HTTP Request.generated-requests | #8" />
+        <item itemvalue="HTTP Request.generated-requests | #7" />
+        <item itemvalue="HTTP Request.generated-requests | #5" />
       </list>
     </recent_temporary>
   </component>
@@ -161,14 +170,8 @@
       <workItem from="1732126817062" duration="120000" />
       <workItem from="1732207467799" duration="6590000" />
       <workItem from="1732278712050" duration="151000" />
-      <workItem from="1732287030012" duration="3302000" />
-      <workItem from="1731772076399" duration="24929000" />
-      <workItem from="1731931107334" duration="8166000" />
-      <workItem from="1732016392701" duration="10918000" />
-      <workItem from="1732101703985" duration="28066000" />
-      <workItem from="1732194233957" duration="5335000" />
-      <workItem from="1732281173212" duration="4277000" />
-      <workItem from="1732286572792" duration="9452000" />
+      <workItem from="1732287030012" duration="7839000" />
+      <workItem from="1732366804320" duration="4350000" />
     </task>
     <servers />
   </component>
@@ -185,16 +188,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/ChiTietSanPhamController.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
