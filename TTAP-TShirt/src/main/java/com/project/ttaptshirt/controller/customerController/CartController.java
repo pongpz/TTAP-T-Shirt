@@ -103,18 +103,18 @@ public class CartController {
     }
 
 
-    @GetMapping("/hoa-don-chi-tiet/hien-thi")
-    public String hienThi(@RequestParam Long id, Model model,HttpSession session, Authentication authentication){
-        if (authentication != null) {
-            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
-            model.addAttribute("userLogged", user);
-        }
-        HoaDon hoaDon = (HoaDon) session.getAttribute("hoaDon");
-        model.addAttribute("hoaDon", hoaDon);
-        model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
-        return "/user/home/checkout";
-    }
+//    @GetMapping("/hoa-don-chi-tiet/hien-thi")
+//    public String hienThi(@RequestParam Long id, Model model,HttpSession session, Authentication authentication){
+//        if (authentication != null) {
+//            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+//            User user = customUserDetail.getUser();
+//            model.addAttribute("userLogged", user);
+//        }
+//        HoaDon hoaDon = (HoaDon) session.getAttribute("hoaDon");
+//        model.addAttribute("hoaDon", hoaDon);
+//        model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
+//        return "/user/home/checkout";
+//    }
 
     @GetMapping("/viewInvoice")
     public String viewInvoice(HttpSession session, Model model) {

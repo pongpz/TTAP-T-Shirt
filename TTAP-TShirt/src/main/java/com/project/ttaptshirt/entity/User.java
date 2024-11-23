@@ -91,4 +91,7 @@ public class User {
     @JoinColumn(name = "id_dia_chi")
     private DiaChi dc;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private KhachHang khachHang;
+
 }

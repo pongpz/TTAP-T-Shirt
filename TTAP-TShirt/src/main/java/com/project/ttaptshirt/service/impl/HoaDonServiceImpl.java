@@ -86,6 +86,16 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
+    public List<HoaDon> getListDonHang(KhachHang khachHang) {
+        return hoaDonRepository.findByKhachHang(khachHang);
+    }
+
+    @Override
+    public HoaDon getDonHang(Long id) {
+        return hoaDonRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public void updateTongTien(Long idHd, Double tongTien) {
         hoaDonRepository.updateTongTienHd(idHd,tongTien);
     }
@@ -150,13 +160,13 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
-        hoaDon.setKhachHang(getCurrentUser());
+//
         hoaDon.setTenNguoiNhan(fullName);
         hoaDon.setSdtNguoiNhan(phoneNumber);
         hoaDon.setDiaChiGiaoHang(address);
         hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(3);
-        hoaDon.setLoaiDon(0);
+        hoaDon.setLoaiDon(2);
         hoaDon.setTongTien((float) tongTien);
 
         HoaDon saveHd = hoaDonRepository.save(hoaDon);
@@ -190,4 +200,5 @@ public class HoaDonServiceImpl implements HoaDonService {
     public void huyHoaDonOnline(Long idHoaDon) {
         hoaDonRepository.huyHoaDonOnline(idHoaDon);
     }
+
 }

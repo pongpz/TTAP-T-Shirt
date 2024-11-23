@@ -53,7 +53,7 @@
 
         <!-- Hiển thị giỏ hàng -->
         <div class="table-responsive" th:if="${cart.items != null and !cart.items.isEmpty()}">
-            <form th:action="@{/TTAP/checkout}" method="POST" id="cartForm">
+            <form th:action="@{/checkout}" method="POST" id="cartForm">
                 <table class="table table-bordered table-hover">
                     <thead class="table-primary">
                     <tr>
@@ -77,7 +77,8 @@
                         <td th:text="${item.soLuong}"></td>
                         <td th:text="${item.gia * item.soLuong}"></td>
                         <td>
-                            <a th:href="@{/remove(productId=${item.id})}" class="btn btn-danger btn-sm">Xóa</a>
+                            <a th:href="@{/remove(productId=${item.id})}" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')">Xóa</a>
                         </td>
                     </tr>
                     </tbody>

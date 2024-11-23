@@ -28,7 +28,7 @@ public class GioHangChiTiet {
     private Double gia;
 
     @ManyToOne
-    @JoinColumn(name = "id_dat_hang")
+    @JoinColumn(name = "id_gio_hang")
     private GioHang gioHang;
 
     @Column(name = "so_luong")
