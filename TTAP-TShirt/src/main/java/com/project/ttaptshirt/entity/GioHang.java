@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "dat_hang")
+@Table(name = "gio_hang")
 public class GioHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
