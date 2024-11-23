@@ -6,6 +6,7 @@ import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.service.KhachHangService;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.service.UserService;
+import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,7 +34,8 @@ public class AccountController {
 
     @Autowired
     UserRepo userRepo;
-
+    @Autowired
+    private KhachHangServiceImpl khachHangServiceImpl;
 
 
     @GetMapping("/login")
@@ -86,7 +88,7 @@ public class AccountController {
             khachHang.setNgayTao(LocalDate.now());
             User user1 = userService.findUserByUsername(user.getUsername());
             khachHang.setUser(user1);
-            khachHangService.save(khachHang);
+            khachHangServiceImpl.save(khachHang);
             userService.insertDefaultUserRole(user1.getId());
             System.out.println("thanh cong roi");
             redirectAttributes.addFlashAttribute("isRegisterSuccess", true);
