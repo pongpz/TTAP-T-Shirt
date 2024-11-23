@@ -23,20 +23,20 @@
             <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Sản phẩm</a>
         </div>
                         <div class="row">
-                            <form th:action="@{/admin/chi-tiet-san-pham/search}" method="get" class="row mb-3">
+                            <form th:action="@{/admin/san-pham/tim-kiem}" method="get" class="row mb-3">
                                 <div class="form-group col-md-5">
                                     <div class="form-outline">
-                                        <input type="search" id="form1" name="searchTerm" placeholder="Tìm kiếm" class="form-control" th:value="${searchTerm}" />
+                                        <input type="text" id="form1" name="ten" placeholder="Tìm kiếm" class="form-control" th:value="${ten}" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <div class="form-outline">
-                                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-md-3 text-end">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
                                         Thêm Sản Phẩm
                                     </button>
                                 </div>
@@ -44,12 +44,14 @@
                         </div>
                         <span class="d-block text-center mt-3" th:if="${listSP.isEmpty()}">Không có sản phẩm nào</span>
                         <div th:if="${not listSP.isEmpty()}">
-                            <table class="table table-hover">
+                            <table class="table table-bordered">
                                 <thead>
                                 <tr style="border: 1px solid #ccc; background-color: lightskyblue">
                                     <th>STT</th>
                                     <th>Mã sản phẩm</th>
                                     <th>Tên sản phẩm</th>
+                                    <th>Ảnh</th>
+                                    <th>Tổng số lượng</th>
                                     <th>Nhà sản xuất</th>
                                     <th>Chất liệu</th>
                                     <th>Thương hiệu</th>
@@ -64,6 +66,12 @@
                                     <td th:text="${iterStat.index + 1}"></td>
                                     <td th:text="${sanPham.ma}"></td>
                                     <td th:text="${sanPham.ten}"></td>
+                                    <td>
+                                        <div th:each="hinhAnh : ${sanPham.hinhAnhList}">
+                                            <img th:src="${hinhAnh.path}" alt="Ảnh sản phẩm" style="max-width: 100px; height: 120px;">
+                                        </div>
+                                    </td>
+                                    <td th:text="${sanPham.tongSoLuong}"></td>
                                     <td th:text="${sanPham.nsx==null ?'':sanPham.nsx.ten}"></td>
                                     <td th:text="${sanPham.chatLieu==null ?'':sanPham.chatLieu.ten}"></td>
                                     <td th:text="${sanPham.thuongHieu==null ?'':sanPham.thuongHieu.ten}"></td>
@@ -78,30 +86,47 @@
 <!--                                </span>-->
 <!--                                    </td>-->
                                     <td>
-                                        <a th:href="@{'chi-tiet-san-pham/' + ${sanPham.id}}" class="btn btn-primary">Chi tiết</a>
-                                        <a th:href="@{'san-pham/sua-san-pham/' + ${sanPham.id} }" class="btn btn-primary">Sửa</a>
+                                        <a th:href="@{'chi-tiet-san-pham/' + ${sanPham.id}}" class="btn btn-secondary">Chi tiết</a>
+                                        <a th:href="@{'san-pham/sua-san-pham/' + ${sanPham.id} }" class="btn btn-secondary">Sửa</a>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
 
-                            <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-center">
                                 <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="">
-                                            <img src="/assets/images/chevron-left.svg" height="15px" alt="" />
-                                        </a>
+                                    <li class="page-item" th:classappend="${listSP.hasPrevious() ? '' : 'disabled'}">
+                                        <a class="page-link"
+                                           th:href="@{|/admin/san-pham/tim-kiem?ten=${ten}&page=${listSP.number - 1}|}"
+                                           th:if="${ten != null}"
+                                           th:text="'<<'"></a>
+                                        <a class="page-link"
+                                           th:href="@{|/admin/san-pham?page=${listSP.number - 1}|}"
+                                           th:unless="${ten != null}"
+                                           th:text="'<<'"></a>
                                     </li>
-                                    <li class="page-item">
-                                        <a class="page-link">1</a>
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, listSP.totalPages - 1)}"
+                                        th:classappend="${i == listSP.number ? 'active' : ''}">
+                                        <a class="page-link"
+                                           th:href="@{|/admin/san-pham/tim-kiem?ten=${ten}&page=${i}|}"
+                                           th:if="${ten != null}"
+                                           th:text="${i + 1}"></a>
+                                        <a class="page-link"
+                                           th:href="@{|/admin/san-pham?page=${i}|}"
+                                           th:unless="${ten != null}"
+                                           th:text="${i + 1}"></a>
                                     </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="">
-                                            <img src="/assets/images/chevron-right.svg" height="15px" alt="" />
-                                        </a>
+                                    <li class="page-item" th:classappend="${listSP.hasNext() ? '' : 'disabled'}">
+                                        <a class="page-link"
+                                           th:href="@{|/admin/san-pham/tim-kiem?ten=${ten}&page=${listSP.number + 1}|}"
+                                           th:if="${ten != null}"> >></a>
+                                        <a class="page-link"
+                                           th:href="@{|/admin/san-pham?page=${listSP.number + 1}|}"
+                                           th:unless="${ten != null}"> >></a>
                                     </li>
                                 </ul>
-                            </nav>
+                            </div>
+
                         </div>
                     </div>
                 </div>

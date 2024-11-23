@@ -58,5 +58,13 @@ public class SanPham extends CreatedUpdatedAt{
     @OneToMany(mappedBy = "sanPham", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<HinhAnh> hinhAnhList;
 
+    public int tongSoLuong(){
+        if(chiTietSanPhamList == null || chiTietSanPhamList.isEmpty()){
+            return 0;
+        }
+        return chiTietSanPhamList.stream().mapToInt(ChiTietSanPham::getSoLuong).sum();
+    }
+
+
 
 }
