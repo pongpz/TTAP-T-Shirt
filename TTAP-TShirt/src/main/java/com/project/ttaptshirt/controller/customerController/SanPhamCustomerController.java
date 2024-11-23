@@ -1,12 +1,9 @@
 package com.project.ttaptshirt.controller.customerController;
 
-import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.KichCo;
-import com.project.ttaptshirt.entity.KieuDang;
-import com.project.ttaptshirt.entity.MauSac;
-import com.project.ttaptshirt.entity.SanPham;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.*;
 //import com.project.ttaptshirt.service.HinhAnhService;
+import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
 import com.project.ttaptshirt.service.impl.SanPhamServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,7 +91,14 @@ public class SanPhamCustomerController {
                                   @RequestParam(required = false) Long thuongHieuId,
                                   @RequestParam(required = false) Long kieuDangId,
                                   @RequestParam(required = false) Long chatLieuId,
-                                  @RequestParam(defaultValue = "0") int priceRangerId) {
+                                  @RequestParam(defaultValue = "0") int priceRangerId,
+                                  Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
+        model.addAttribute("requestURI", request.getRequestURI());
 
         double minPrice = 0;
         double maxPrice = Double.MAX_VALUE;

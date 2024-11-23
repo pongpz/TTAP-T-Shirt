@@ -3,6 +3,7 @@ package com.project.ttaptshirt.service;
 import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.entity.GioHang;
 import com.project.ttaptshirt.entity.HoaDon;
+import com.project.ttaptshirt.entity.KhachHang;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public interface HoaDonService extends CommonService<HoaDon> {
 
     public List<HoaDon> getListHDDaThanhToan();
 
+    public List<HoaDon> getListDonHang(KhachHang khachHang );
+
+    public HoaDon getDonHang(Long id);
 
     public void updateTongTien(Long idHd, Double tongTien);
 
