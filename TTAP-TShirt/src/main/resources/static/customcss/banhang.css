@@ -88,3 +88,10 @@
     }
 
 
+
+.table td {
+    white-space: nowrap; /* Không cho văn bản xuống dòng */
+    overflow: hidden; /* Ẩn nội dung tràn */
+    text-overflow: ellipsis; /* Thêm dấu "..." khi nội dung bị cắt */
+    max-width: 150px; /* Đặt chiều rộng tối đa cho ô */
+}

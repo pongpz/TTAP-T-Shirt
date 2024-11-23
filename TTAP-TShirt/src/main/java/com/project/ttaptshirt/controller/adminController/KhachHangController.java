@@ -1,13 +1,17 @@
 package com.project.ttaptshirt.controller.adminController;
 
 import com.project.ttaptshirt.entity.DiaChi;
+import com.project.ttaptshirt.entity.KhachHang;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.security.CustomUserDetail;
+import com.project.ttaptshirt.service.KhachHangService;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,18 +20,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/admin/users")
+@RequestMapping("/admin/khach-hang")
 public class KhachHangController {
+
+    @Autowired
+    private KhachHangService khachHangService;
     @Autowired
     private UserServiceImpl serUser;
     @Autowired
@@ -35,23 +46,23 @@ public class KhachHangController {
 
 
     @GetMapping("/home")
-    public String home(Model mol){
+    public String home(Model mol) {
         List<User> cusLst = serUser.findAll();
         System.out.println("danh sanh kh: " + cusLst);
-        mol.addAttribute("cusLst",cusLst);
+        mol.addAttribute("cusLst", cusLst);
         return "user/khachhang/index";
     }
 
     @GetMapping("/view")
-    public String viewChatLieu(Model mol, Authentication authentication, @RequestParam("p") Optional<Integer> page){
+    public String viewChatLieu(Model mol, Authentication authentication, @RequestParam("p") Optional<Integer> page) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
             mol.addAttribute("userLogged", user);
         }
-        Pageable pageable = PageRequest.of(page.orElse(0),5);
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
         Page<User> userPage = serUser.findAll(pageable);
-        mol.addAttribute("cus",userPage);
+        mol.addAttribute("cus", userPage);
         return "user/khachhang/index";
     }
 
@@ -60,6 +71,65 @@ public class KhachHangController {
         model.addAttribute("user", new User());
         return "user/khachhang/register";
     }
+
+    @PostMapping("/them-nhanh-khach-hang")
+    public String createQuickCustomer(
+            @RequestParam("idInvoice") Long idHD,
+            @RequestParam("hoTen") String hoTen,
+            @RequestParam("soDienThoai") String soDienThoai,
+            RedirectAttributes redirectAttributes) {
+        // Validate inputs
+        if (hoTen == null || hoTen.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("addCustomerFailed", true);
+            redirectAttributes.addFlashAttribute("messageAddCustomer", "Họ tên không được để trống.");
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+        }
+        if (hoTen.length() < 8) {
+            redirectAttributes.addFlashAttribute("addCustomerFailed", true);
+            redirectAttributes.addFlashAttribute("messageAddCustomer", "Họ tên phải có ít nhất 8 ký tự.");
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+        }
+        if (soDienThoai == null || soDienThoai.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("addCustomerFailed", true);
+            redirectAttributes.addFlashAttribute("messageAddCustomer", "Số điện thoại không được để trống.");
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+        }
+        if (!soDienThoai.matches("\\d+")) {
+            redirectAttributes.addFlashAttribute("addCustomerFailed", true);
+            redirectAttributes.addFlashAttribute("messageAddCustomer", "Số điện thoại phải chỉ chứa các chữ số.");
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+        }
+        if (soDienThoai.length() < 10) {
+            redirectAttributes.addFlashAttribute("addCustomerFailed", true);
+            redirectAttributes.addFlashAttribute("messageAddCustomer", "Số điện thoại phải có ít nhất 10 chữ số.");
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+        }
+
+        List<KhachHang> listKH = khachHangService.findAll();
+        for (KhachHang khachHang: listKH) {
+               if ( khachHang.getSoDienThoai().equalsIgnoreCase(soDienThoai)){
+                   redirectAttributes.addFlashAttribute("addCustomerFailed", true);
+                   redirectAttributes.addFlashAttribute("messageAddCustomer", "Số điện thoại đã tồn tại.");
+                   return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+               }
+        }
+        try {
+            // Save customer logic
+            KhachHang khachHang = new KhachHang();
+            khachHang.setHoTen(hoTen);
+            khachHang.setSoDienThoai(soDienThoai);
+            khachHangService.save(khachHang);
+            redirectAttributes.addFlashAttribute("addCustomerSuccess", true);
+            redirectAttributes.addFlashAttribute("messageAddCustomer", "Thêm khách hàng thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("addCustomerFailed", true);
+            redirectAttributes.addFlashAttribute("messageAddCustomer", "Thêm khách hàng thất bại!");
+        }
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+    }
+
+
+
 
     // Xử lý việc đăng ký người dùng
     @PostMapping("/register")

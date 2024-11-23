@@ -20,6 +20,20 @@
     <link th:href="@{/customercss/style.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/customercss/style-customer.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/customercss/cart-hover.css}" rel="stylesheet" type="text/css" />
+    <style>
+        .product-name {
+            font-size: 24px; /* Cỡ chữ tùy chỉnh */
+            font-weight: bold; /* Đậm chữ */
+            color: #333; /* Màu chữ */
+            white-space: normal; /* Cho phép xuống dòng */
+            word-wrap: break-word; /* Tự động xuống dòng nếu quá dài */
+            overflow: hidden; /* Ẩn phần tràn */
+            text-overflow: ellipsis; /* Hiển thị dấu "..." nếu tràn */
+            max-width: 100%; /* Giới hạn chiều rộng tối đa */
+            display: block; /* Đảm bảo áp dụng xuống dòng */
+        }
+
+    </style>
 </head>
 
 <body>
@@ -42,9 +56,15 @@
                 <!--            </div>-->
             </div>
 
+
             <div class="col-md-7">
                 <h3 th:text="${sanPham.ten}"></h3>
                 <div>
+
+        <div class="col-md-7">
+            <h3 class="product-name" th:text="${sanPham.ten}"></h3>
+            <div>
+
                 <span class="price" th:text="${giaBan} + ' VNĐ'"
                       style="font-size: 30px; font-weight: bold; color: red;"></span>
                 </div>

@@ -6,6 +6,9 @@ import com.project.ttaptshirt.repository.*;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.HinhAnhService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,7 +53,7 @@ public class SanPhamController {
     HinhAnhRepository hinhAnhRepository;
 
     @GetMapping
-    public String index(Model model, Authentication authentication) {
+    public String index(Model model, Authentication authentication, @RequestParam(defaultValue = "0") int page) {
         System.out.println(authentication);
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
@@ -58,7 +61,9 @@ public class SanPhamController {
             model.addAttribute("userLogged", user);
             System.out.println(user);
         }
-        List<SanPham> listSP = sanPhamRepository.findAll();
+
+        Pageable pageable = PageRequest.of(page, 6);
+        Page<SanPham> listSP = sanPhamRepository.findAllByOrderByNgayTaoDesc(pageable);
         model.addAttribute("listSP", listSP);
 
         List<NSX> listNsx = nsxRepository.findAll();
@@ -72,6 +77,32 @@ public class SanPhamController {
 
         List<KieuDang> kieuDang = kieuDangRepository.findAll();
         model.addAttribute("listKieuDang", kieuDang);
+
+        return "/admin/sanpham/san-pham";
+    }
+
+    @GetMapping("/tim-kiem")
+    public String timKiem(@RequestParam("ten") String ten, Model model, @RequestParam(defaultValue = "0") int page){
+
+        Pageable pageable = PageRequest.of(page, 6);
+        Page<SanPham> timSp = ten.isEmpty()
+                ? sanPhamRepository.findAllByOrderByNgayTaoDesc(pageable)
+                : sanPhamRepository.findByTenContaining(ten, pageable);
+
+        model.addAttribute("listSP", timSp);
+        model.addAttribute("ten",ten);
+
+        List<NSX> listNsx = nsxRepository.findAll();
+        model.addAttribute("listNsx", listNsx);
+
+        List<ChatLieu> listChatLieu = chatLieuRepository.findAll();
+        model.addAttribute("listChatLieu", listChatLieu);
+
+        List<ThuongHieu> listThuongHieu = thuongHieuRepository.findAll();
+        model.addAttribute("listThuongHieu", listThuongHieu);
+
+        List<KieuDang> listKieuDang = kieuDangRepository.findAll();
+        model.addAttribute("listKieuDang", listKieuDang);
 
         return "/admin/sanpham/san-pham";
     }
@@ -99,7 +130,6 @@ public class SanPhamController {
         // Sinh mã duy nhất cho sản phẩm
         sanPham.setMa(generateUniqueCode());
 
-        // Lưu sản phẩm vào cơ sở dữ liệu
         SanPham sanPham1 = sanPhamRepository.save(sanPham);
 
         // Tải ảnh lên Cloudinary
@@ -109,11 +139,10 @@ public class SanPhamController {
         HinhAnh hinhAnh = new HinhAnh();
         hinhAnh.setSanPham(sanPham1);
         hinhAnh.setPath(imageUrl); // Lưu đường dẫn URL ảnh từ Cloudinary
-        hinhAnh.setTrangThai(1); // Ví dụ, trạng thái ảnh là 1 (hoặc có thể thay đổi tùy yêu cầu của bạn)
+        hinhAnh.setTrangThai(1);
 
         hinhAnhRepository.save(hinhAnh);
 
-        // Chuyển hướng về trang danh sách sản phẩm
         return "redirect:/admin/san-pham";
     }
 
