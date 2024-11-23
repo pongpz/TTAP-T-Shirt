@@ -14,8 +14,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "dat_hang_chi_tiet")
-public class DatHangChiTiet {
+@Table(name = "gio_hang_chi_tiet")
+public class GioHangChiTiet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +29,7 @@ public class DatHangChiTiet {
 
     @ManyToOne
     @JoinColumn(name = "id_dat_hang")
-    private DatHang datHang;
+    private GioHang gioHang;
 
     @Column(name = "so_luong")
     private Integer soLuong;

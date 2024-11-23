@@ -1,6 +1,5 @@
 package com.project.ttaptshirt.repository;
 
-import com.project.ttaptshirt.entity.DatHang;
 import com.project.ttaptshirt.entity.HoaDon;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,13 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
-    @Query("select hd from HoaDon hd where (:ma is null or hd.ma like %:ma%) and (hd.khachHang is null or hd.khachHang.hoTen like %:keyword% or hd.khachHang.soDienthoai like %:keyword%) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) order by hd.id desc")
+    @Query("select hd from HoaDon hd where (:ma is null or hd.ma like %:ma%) and (hd.khachHang is null or hd.khachHang.hoTen like %:keyword% or hd.khachHang.soDienThoai like %:keyword%) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) order by hd.id desc")
     List<HoaDon> search(String ma,String keyword, Integer trangThai, LocalDate ngayThanhToan, Pageable pageable);
 
     @Query("select hd from HoaDon hd where (:keyword is null or hd.ma like %:keyword% ) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) order by hd.id desc")

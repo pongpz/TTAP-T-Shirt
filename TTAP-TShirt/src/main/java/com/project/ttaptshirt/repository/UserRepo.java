@@ -22,6 +22,12 @@ public interface UserRepo extends JpaRepository<User, Long> {
     @Query(value = "insert into user_role(user_id,role_id) values(?1,?2)",nativeQuery = true)
     void insertUserRole(Long userId,Long roleId);
 
+    @Query("select us from User us where us.username =:username")
+            User findUserByUsername(String username);
+
+    @Query("select us from User us where us.email =:email")
+    User findUserByEmail(String email);
+
 
 //    Optional<User> findByEmail(String email);
 //

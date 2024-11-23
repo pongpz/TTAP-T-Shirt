@@ -10,6 +10,7 @@ import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +63,7 @@ public class BanHangController {
     VoucherRepo voucherRepo;
 
     @Autowired
-    UserRepo userRepo;
+    KhachHangService khachHangService;
 
     @Autowired
     HoaDonRepository hoaDonRepository;
@@ -80,8 +81,6 @@ public class BanHangController {
         List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<MaGiamGia> listKM = voucherRepo.findAll();
-        List<User> listkh = userRepo.findAll();
-        model.addAttribute("listUser", listkh);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listLs", listHd);
@@ -102,8 +101,7 @@ public class BanHangController {
 
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<MaGiamGia> listKM = voucherRepo.findAll();
-        List<User> listkh = userRepo.findAll();
-
+        List<KhachHang> listkh = khachHangService.findAll();
         model.addAttribute("listKh", listkh);
         model.addAttribute("listKM", listKM);
         model.addAttribute("listCTSP", listCTSP);
@@ -148,55 +146,68 @@ public class BanHangController {
     public String xacNhanThanhToan(
             @RequestParam("idhd") Long idHD, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
 
+        // Kiểm tra người dùng đã đăng nhập hay chưa
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
-            model.addAttribute("userLogged", user);
+            model.addAttribute("userLogged", user); // Gửi thông tin người dùng vào model
         }
 
+        // Tìm hóa đơn theo ID
         HoaDon hoaDon = hoaDonService.findById(idHD);
+        // Lấy danh sách chi tiết hóa đơn theo ID hóa đơn
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idHD);
+
+        // Nếu hóa đơn không có chi tiết, chuyển hướng về trang chi tiết hóa đơn với thông báo lỗi
         if (listHDCT.isEmpty()) {
-            System.out.println("hóa đơn trống");
+            System.out.println("Hóa đơn trống");
             redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
             return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
         }
 
-        // Calculating the total money before discount and applying the discount
+        // Tính tổng tiền trước giảm giá
         double totalMoneyBefore = listHDCT.stream()
                 .mapToDouble(hdct -> {
-                    int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
-                    double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null) ? hdct.getChiTietSanPham().getGiaBan() : 0.0;
+                    int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0; // Kiểm tra số lượng
+                    double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null)
+                            ? hdct.getChiTietSanPham().getGiaBan() : 0.0; // Kiểm tra giá bán
                     return soLuong * giaBan;
                 })
                 .sum();
 
+        // Lấy thông tin mã giảm giá từ hóa đơn
         MaGiamGia voucher = hoaDon.getMaGiamGia();
         double discount = 0.0;
 
+        // Nếu có mã giảm giá, tính tiền giảm
         if (voucher != null) {
+            // Trường hợp giảm giá theo %
             if (voucher.getHinhThuc().equals(false)) {
-                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore; // Tính tiền giảm
                 if (discount > voucher.getGiaTriToiDa()) {
-                    discount = voucher.getGiaTriToiDa();
+                    discount = voucher.getGiaTriToiDa(); // Áp dụng giới hạn tối đa nếu có
                 }
-            } else if (voucher.getHinhThuc().equals(true)) {
+            }
+            // Trường hợp giảm giá cố định
+            else if (voucher.getHinhThuc().equals(true)) {
                 discount = voucher.getGiaTriGiam();
             }
         }
 
+        // Tính tổng tiền sau khi giảm giá, đảm bảo không âm
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0);
 
+        // Cập nhật thông tin giảm giá, tổng tiền và trạng thái cho hóa đơn
         hoaDon.setSoTienGiamGia((float) discount);
         hoaDon.setTongTien((float) totalMoneyAfter);
-        hoaDon.setTrangThai(1);
+        hoaDon.setTrangThai(1); // Đặt trạng thái hóa đơn đã thanh toán
         hoaDonService.save(hoaDon);
 
-        // Set flash attribute before redirecting
+        // Thêm thông báo thành công trước khi chuyển hướng
         redirectAttributes.addFlashAttribute("checkoutSuccess", true);
 
-        // Redirect to the /admin/ban-hang page
+        // Chuyển hướng về trang /admin/ban-hang
         return "redirect:/admin/ban-hang";
     }
 
@@ -382,7 +393,7 @@ public class BanHangController {
             hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
         }
         hoaDonService.updateTongTien(idhd, 0.0);
-        hoaDonService.updateTrangThaiHD(1, idhd);
+        hoaDonService.updateTrangThaiHD(2, idhd);
         redirectAttributes.addFlashAttribute("isCancelInvoice", true);
         return "redirect:/admin/ban-hang";
     }
@@ -529,11 +540,20 @@ public class BanHangController {
     public String chonKhachHang(@RequestParam("idhd") Long idhd,
                                 @RequestParam("idkh") Long idkh) {
         HoaDon existingHoaDon = hoaDonRepository.findById(idhd).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idhd));
-        User khachHang = new User();
+        KhachHang khachHang = new KhachHang();
         khachHang.setId(idkh);
         existingHoaDon.setKhachHang(khachHang);
         hoaDonService.save(existingHoaDon);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+    }
+
+    @Transactional
+    @GetMapping("/huy-khach-hang")
+    public String huyKhachHang(@RequestParam("hoadonId") Long idhd) {
+        HoaDon hoaDon = hoaDonRepository.getReferenceById(idhd);
+        hoaDon.setKhachHang(null);
+        hoaDonRepository.save(hoaDon);
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
     }
 
     @PostMapping("/chon-khuyen-mai")

@@ -48,4 +48,11 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
     @Query("select Min(c.giaBan) FROM ChiTietSanPham c WHERE c.sanPham.id = :sanPhamId")
     Double findMinGiaBan(@Param("sanPhamId") Long sanPhamId);
 
+//    @Query("select ctsp from ChiTietSanPham ctsp where (:ten is null or ctsp.sanPham.ten like %:ten%) and (ctsp.giaBan between :giaMin and :giaMax) and (ctsp.sanPham.nsx.id=:nsx) and (ctsp.sanPham.kieuDang.id=:kieuDang) and (ctsp.sanPham.thuongHieu.id=:thuongHieu) and (ctsp.sanPham.chatLieu.id=:chatLieu)")
+//    List<ChiTietSanPham> searchCTSP(String ten,Double giaMax, Double giaMin,Long nsx,Long thuongHieu,Long kieuDang,Long chatLieu,Pageable pageable);
+
+//    @Query("select ctsp from ChiTietSanPham ctsp where (:ten is null or ctsp.sanPham.ten like %:ten%) and (:giaMax is null or ctsp.giaBan<=:giaMax) and (:giaMin is null or ctsp.giaBan>=:giaMin) and (:nsx is null or ctsp.sanPham.nsx.id=:nsx) and (:kieuDang is null or ctsp.sanPham.kieuDang.id=:kieuDang) and (:thuongHieu is null or ctsp.sanPham.thuongHieu.id=:thuongHieu) and (:chatLieu is null or ctsp.sanPham.chatLieu.id=:chatLieu) order by ctsp.sanPham.id desc")
+//    Page<ChiTietSanPham> searchCTSP(String ten, Double giaMax, Double giaMin, Long nsx, Long thuongHieu, Long kieuDang, Long chatLieu, Pageable pageable);
+
+
 }
