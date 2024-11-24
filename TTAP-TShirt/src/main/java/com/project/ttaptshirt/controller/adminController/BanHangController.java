@@ -539,6 +539,7 @@ public class BanHangController {
     @PostMapping("/chon-khach-hang")
     public String chonKhachHang(@RequestParam("idhd") Long idhd,
                                 @RequestParam("idkh") Long idkh) {
+        System.out.println(idhd);
         HoaDon existingHoaDon = hoaDonRepository.findById(idhd).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idhd));
         KhachHang khachHang = new KhachHang();
         khachHang.setId(idkh);

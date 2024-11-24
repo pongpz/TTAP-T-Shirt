@@ -106,18 +106,19 @@ public class KhachHangController {
         }
 
         List<KhachHang> listKH = khachHangService.findAll();
-        for (KhachHang khachHang: listKH) {
-               if ( khachHang.getSoDienThoai().equalsIgnoreCase(soDienThoai)){
-                   redirectAttributes.addFlashAttribute("addCustomerFailed", true);
-                   redirectAttributes.addFlashAttribute("messageAddCustomer", "Số điện thoại đã tồn tại.");
-                   return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
-               }
+        for (KhachHang khachHang : listKH) {
+            if (khachHang.getSoDienThoai().equalsIgnoreCase(soDienThoai)) {
+                redirectAttributes.addFlashAttribute("addCustomerFailed", true);
+                redirectAttributes.addFlashAttribute("messageAddCustomer", "Số điện thoại đã tồn tại.");
+                return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+            }
         }
         try {
             // Save customer logic
             KhachHang khachHang = new KhachHang();
             khachHang.setHoTen(hoTen);
             khachHang.setSoDienThoai(soDienThoai);
+            khachHang.setNgayTao(LocalDate.now());
             khachHangService.save(khachHang);
             redirectAttributes.addFlashAttribute("addCustomerSuccess", true);
             redirectAttributes.addFlashAttribute("messageAddCustomer", "Thêm khách hàng thành công!");
@@ -129,7 +130,11 @@ public class KhachHangController {
     }
 
 
-
+    @GetMapping("/searchByPhoneNumber")
+    public ResponseEntity<List<KhachHang>> searchKhachHangBySdt(@RequestParam("phoneNumber") String phoneNumber) {
+        List<KhachHang> listKhachHang = khachHangService.searchCustomerByPhoneNumber(phoneNumber);
+        return ResponseEntity.ok(listKhachHang);
+    }
 
     // Xử lý việc đăng ký người dùng
     @PostMapping("/register")
