@@ -443,6 +443,13 @@ public class BanHangController {
                                   @RequestParam("soLuong") Integer soLuongMua,
                                   RedirectAttributes redirectAttributes) {
 
+        // Check if 'soLuong' is null or invalid
+        if (soLuongMua == null || soLuongMua < 1) {
+            redirectAttributes.addFlashAttribute("error", "Số lượng không hợp lệ.");
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+        }
+
+
         // Lấy danh sách chi tiết hóa đơn (HDCT) dựa trên ID hóa đơn (idhd)
         List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietService.getListHdctByIdHd(idhd);
         Boolean isHdctExist = false;
@@ -494,6 +501,16 @@ public class BanHangController {
             }
         } else {
             // Nếu sản phẩm chưa tồn tại trong HDCT, tạo mới một HDCT
+
+            // Lấy thông tin sản phẩm chi tiết (CTSP)
+            ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
+
+            // Kiểm tra số lượng tồn kho có đủ không
+            if (soLuongMua > chiTietSanPham1.getSoLuong()) {
+                redirectAttributes.addFlashAttribute("isQuantityNotEnough", true);
+                redirectAttributes.addFlashAttribute("messageQuantityNotEnough", "Số lượng không đủ, chỉ còn " + chiTietSanPham1.getSoLuong() + " sản phẩm");
+                return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+            }
             HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
             HoaDon hoaDon = new HoaDon();
             hoaDon.setId(idhd);
@@ -507,7 +524,6 @@ public class BanHangController {
             hoaDonChiTietService.save(hoaDonChiTiet);
 
             // Lấy thông tin sản phẩm chi tiết (CTSP)
-            ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
             int soLuongSauUpdate;
 
             // Kiểm tra số lượng tồn kho có đủ không

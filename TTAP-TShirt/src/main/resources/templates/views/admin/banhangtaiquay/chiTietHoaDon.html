@@ -25,7 +25,6 @@
         <h2 class="text-center">Bán Hàng Tại Quầy</h2>
         <hr>
         <input type="hidden" id="hoaDonID" th:value="${hoadon.id}">
-        <input type="text" id="hoaDonID1" th:value="${hoadon.id}">
 
         <div class="d-flex">
             <a th:href="@{/admin/ban-hang}" class="fw-medium fs-5 text-black" style="text-decoration:none">Bán hàng</a>
@@ -53,12 +52,13 @@
                     <!-- Modal Sản Phẩm -->
                     <div class="modal fade" th:id="'modalAddSP'" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog">
+                        <div class="modal-dialog modal-xl modal-dialog-centered"
+                             id="modal-dialog"
+                             style="max-width: 90%;"> <!-- Modal wider -->
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn
-                                        mua
-                                        vào hóa đơn</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn mua vào hóa
+                                        đơn</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -66,8 +66,7 @@
                                     <div>
                                         <form class="row" action="#">
                                             <input class="col-7" type="text" name="tenSpSearch">
-                                            <button class="col-1 btn btn-primary" type="submit">Tìm kiếm
-                                            </button>
+                                            <button class="col-1 btn btn-primary" type="submit">Tìm kiếm</button>
                                         </form>
                                     </div>
                                     <table class="table">
@@ -83,7 +82,7 @@
                                             <th scope="col">Mau Sac</th>
                                             <th scope="col">Số Lượng Tồn</th>
                                             <th scope="col">Giá bán</th>
-                                            <th scope="col">Số lượng mua</th>
+                                            <th scope="col">Số lượng mua Hành động</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -101,29 +100,31 @@
                                             <td>
                                                 <form class="row"
                                                       th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
-                                                      method="post" onsubmit="setQuantity(${ctsp.id})">
-                                                    <input type="hidden" name="idctsp"
-                                                           th:value="${ctsp.id}"/>
-
+                                                      method="post"
+                                                      onsubmit="setQuantity(${ctsp.id})">
+                                                    <input type="hidden" name="idctsp" th:value="${ctsp.id}"/>
+                                                    <input type="hidden" th:value="${hoadon.id}" name="idhd">
                                                     <input
                                                             class="col-3"
                                                             type="number"
                                                             name="soLuong"
-                                                            value="0" min="1" max="${ctsp.soLuong}"/>
-                                                    <input type="hidden" th:value="${hoadon.id}" name="idhd">
+                                                            value="0"
+                                                            min="1"
+                                                            th:max="${ctsp.soLuong}"
+                                                            style="font-size: 1.2rem; padding: 0.5rem; width: 100px;"
+                                                            oninvalid="customValidationMessage(this)"
+                                                            oninput="this.setCustomValidity('')"
+                                                            required
+                                                    />
+
                                                     <button
                                                             type="submit"
                                                             class="btn btn-primary col-4"
-                                                    >Thêm vào hóa đơn
+                                                            style="font-size: 1.2rem; padding: 0.5rem 1rem; border-radius: 0.5rem;">
+                                                        <!-- Button styled -->
+                                                        Thêm
                                                     </button>
                                                 </form>
-                                                <!--                                                <script th:inline="javascript">-->
-                                                <!--                                                    function setQuantity(ctspId) {-->
-                                                <!--                                                        var quantityInput = document.getElementById('quantity-' + ctspId);-->
-                                                <!--                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);-->
-                                                <!--                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);-->
-                                                <!--                                                    }-->
-                                                <!--                                                </script>-->
                                             </td>
                                         </tr>
                                         </tbody>
@@ -138,6 +139,28 @@
                             </div>
                         </div>
                     </div>
+
+
+                    <script>
+                        function customValidationMessage(input) {
+                            const value = input.value;
+                            const min = parseInt(input.min, 10);
+                            const max = parseInt(input.max, 10);
+                            const numericValue = Number(value);
+
+                            if (value === "") {
+                                input.setCustomValidity("Vui lòng nhập số lượng.");
+                            } else if (!Number.isInteger(numericValue)) {
+                                input.setCustomValidity("Giá trị nhập phải là số nguyên.");
+                            } else if (numericValue < min) {
+                                input.setCustomValidity(`Số lượng không được nhỏ hơn ${min}.`);
+                            } else if (numericValue > max) {
+                                input.setCustomValidity(`Số lượng không được lớn hơn ${max}.`);
+                            } else {
+                                input.setCustomValidity("");
+                            }
+                        }
+                    </script>
 
 
                     <form th:action="@{/admin/ban-hang/hoa-don/xoa-het-ctsp/{id}(id=${hoadon.id})}" method="POST"
@@ -180,13 +203,13 @@
 
                     </div>
                     <div class="col-2">
-                        <h6>Price</h6>
+                        <h6>Đơn giá</h6>
                         <span th:text="${hdct.chiTietSanPham.giaBan + ' VND'}">100,000 VND</span><br/><br/><br/>
-                        <h6>Quantity</h6>
+                        <h6>Số lượng</h6>
                         <span th:text="${hdct.soLuong}">1</span>
                     </div>
                     <div class="col-2">
-                        <h6>Total</h6>
+                        <h6>Tổng tiền</h6>
                         <span th:text="${hdct.chiTietSanPham.giaBan * hdct.soLuong + ' VND'}">100,000 VND</span>
                     </div>
                     <div class="col-2">
@@ -208,7 +231,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="modalUpdateQuantityLabel">Update Quantity</h5>
+                                        <h5 class="modal-title" id="modalUpdateQuantityLabel">Sửa số lượng</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                     </div>
@@ -225,10 +248,10 @@
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy
                                         </button>
                                         <!-- Use a button with type="submit" within the form -->
-                                        <button type="submit" class="btn btn-primary" form="updateQuantityForm">Update
+                                        <button type="submit" class="btn btn-primary" form="updateQuantityForm">Sửa
                                         </button>
                                     </div>
                                 </div>
@@ -298,9 +321,9 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                            <input placeholder="Tìm kiếm theo số điện thoại khách hàng"
-                                                   style="width: 620px;height: 60px" class="col-7" type="number"
-                                                   name="tenSpSearch">
+                                        <input placeholder="Tìm kiếm theo số điện thoại khách hàng"
+                                               style="width: 620px;height: 60px" class="col-7" type="number"
+                                               name="soDienThoaiKH">
                                         <a href="#" class="btn btn-primary"
                                            style="width: 120px;height: 60px;margin-right: 30px">Khách vãng lai</a>
                                         <button class="btn btn-primary"
@@ -564,61 +587,60 @@
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
-            const hoadonElement = document.getElementById("hoaDonID");
-            const hoadonId = hoadonElement ? hoadonElement.value : null;
-            console.log(hoadonId)
-
             $(document).ready(function () {
-                // Attach an event listener to the search input
-                $('input[name="tenSpSearch"]').on('input', function () {
-                    const phoneNumber = $(this).val(); // Get the phone number from the input
+                const hoadonId = $('#hoaDonID').val(); // Get hoadonId from the hidden input
 
-                    // Check if the input is not empty
-                    if (phoneNumber.trim() !== "") {
-                        // Make an AJAX GET request
-                        $.ajax({
-                            url: '/admin/khach-hang/searchByPhoneNumber',
-                            type: 'GET',
-                            data: { phoneNumber: phoneNumber },
-                            success: function (response) {
-                                // Clear the existing table body
-                                const tbody = $('table tbody');
-                                tbody.empty();
+                $('input[name="soDienThoaiKH"]').on('input', function () {
+                    let phoneNumber = $(this).val().trim(); // Get the phone number and trim any whitespace
 
-                                // Populate the table with the search results
-                                response.forEach(function (customer) {
-                                    const row = `
-                                <tr>
-                                    <td>${customer.id}</td>
-                                    <td>${customer.hoTen}</td>
-                                    <td>${customer.soDienThoai}</td>
-                                    <td>
-                                        <form class="row" action="/admin/ban-hang/chon-khach-hang" method="post">
-                                            <input type="hidden" name="idkh" value="${customer.id}" />
-                                            <input type="hidden" name="idhd" value="${hoadonId}" />
-                                            <button
-                                                type="submit"
-                                                class="btn btn-primary col-4"
-                                                onclick="return confirm('Bạn Có muốn thêm khách hàng này?');">
-                                                Thêm khách hàng
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            `;
-                                    tbody.append(row);
-                                });
-                            },
-                            error: function () {
-                                alert('Có lỗi xảy ra khi tìm kiếm khách hàng!');
-                            }
-                        });
+                    // If phoneNumber is empty, set it to an empty string to send to the server
+                    if (phoneNumber === "") {
+                        phoneNumber = "";  // Empty string to request all customers
                     }
+
+                    // Make an AJAX GET request
+                    $.ajax({
+                        url: '/admin/khach-hang/searchByPhoneNumber',
+                        type: 'GET',
+                        data: { phoneNumber: phoneNumber },
+                        success: function (response) {
+                            // Clear the existing table body within the modal
+                            const tbody = $('#modalAddCustomer table tbody');
+                            tbody.empty();
+
+                            // Populate the table with the search results
+                            response.forEach(function (customer) {
+                                const row = `
+                        <tr>
+                            <td>${customer.id}</td>
+                            <td>${customer.hoTen}</td>
+                            <td>${customer.soDienThoai}</td>
+                            <td>
+                                <form class="row" action="/admin/ban-hang/chon-khach-hang" method="post">
+                                    <input type="hidden" name="idkh" value="${customer.id}" />
+                                    <input type="hidden" name="idhd" value="${hoadonId}" />
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary col-4"
+                                        onclick="return confirm('Bạn Có muốn thêm khách hàng này?');">
+                                        Thêm khách hàng
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    `;
+                                tbody.append(row);
+                            });
+                        },
+                        error: function () {
+                            alert('Có lỗi xảy ra khi tìm kiếm khách hàng!');
+                        }
+                    });
                 });
             });
+
+
         </script>
-
-
 
 
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
