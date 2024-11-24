@@ -242,18 +242,28 @@ public class GioHangService {
         // Lấy hoặc tạo mới giỏ hàng cho user
         GioHang gioHang = getOrCreateCart(user);
 
-        // Thêm chi tiết sản phẩm vào giỏ hàng
-        GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
-        gioHangChiTiet.setGioHang(gioHang);
-        gioHangChiTiet.setChiTietSanPham(chiTietSanPham);
-        gioHangChiTiet.setSoLuong(request.getQuantity());
-        gioHangChiTiet.setGia(chiTietSanPham.getGiaBan());
+        Optional<GioHangChiTiet> existingItem = gioHang.getItems().stream()
+                .filter(item -> item.getChiTietSanPham().getId().equals(request.getProductId()))
+                .findFirst();
 
-        gioHangChiTietRepository.save(gioHangChiTiet);
+        if (existingItem.isPresent()) {
+            GioHangChiTiet item = existingItem.get();
+            item.setSoLuong(item.getSoLuong() + request.getQuantity());
+            gioHangChiTietRepository.save(item);
+        }else {
+            // Thêm chi tiết sản phẩm vào giỏ hàng
+            GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
+            gioHangChiTiet.setGioHang(gioHang);
+            gioHangChiTiet.setChiTietSanPham(chiTietSanPham);
+            gioHangChiTiet.setSoLuong(request.getQuantity());
+            gioHangChiTiet.setGia(chiTietSanPham.getGiaBan());
 
-        // Cập nhật số lượng tồn kho
-        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - request.getQuantity());
-        chiTietSanPhamRepository.save(chiTietSanPham);
+            gioHangChiTietRepository.save(gioHangChiTiet);
+
+            // Cập nhật số lượng tồn kho
+            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - request.getQuantity());
+            chiTietSanPhamRepository.save(chiTietSanPham);
+        }
         updateTotalPrice(gioHang);
     }
 
