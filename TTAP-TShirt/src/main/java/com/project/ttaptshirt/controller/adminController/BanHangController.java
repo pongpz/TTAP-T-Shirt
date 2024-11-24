@@ -443,6 +443,13 @@ public class BanHangController {
                                   @RequestParam("soLuong") Integer soLuongMua,
                                   RedirectAttributes redirectAttributes) {
 
+        // Check if 'soLuong' is null or invalid
+        if (soLuongMua == null || soLuongMua < 1) {
+            redirectAttributes.addFlashAttribute("error", "Số lượng không hợp lệ.");
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+        }
+
+
         // Lấy danh sách chi tiết hóa đơn (HDCT) dựa trên ID hóa đơn (idhd)
         List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietService.getListHdctByIdHd(idhd);
         Boolean isHdctExist = false;

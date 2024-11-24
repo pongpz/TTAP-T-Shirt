@@ -31,7 +31,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 @Table(name = "users")
 @Entity
@@ -85,17 +84,27 @@ public class User {
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
+    )
     private List<Role> roles = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore
+    private KhachHang khachHang;
+
+    @Override
+    public String toString() {
+        // Avoid recursive call by not including `khachHang`
+        return "User{" +
+                "id=" + id +
+                ", hoTen='" + hoTen + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 
     @OneToOne
     @JoinColumn(name = "id_dia_chi")
     private DiaChi dc;
-
-
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JsonIgnore
-    private KhachHang khachHang;
 
 
 }
