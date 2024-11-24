@@ -105,7 +105,6 @@
                    th:if="${hd.trangThai == 3 && hd.loaiDon == 0}"
                    class="btn btn-danger"
                    th:onclick="'return confirm(\'Are you sure you want to cancel this invoice?\')'">Hủy hóa đơn</a>
-
                 <!-- Confirm Invoice button -->
                 <a th:href="@{/admin/hoa-don/xac-nhan-hoa-don/{idHD}(idHD=${hd.id})}"
                    th:if="${hd.trangThai == 3 && hd.loaiDon == 0}"

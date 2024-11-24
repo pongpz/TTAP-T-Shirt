@@ -188,8 +188,8 @@ public class GioHangService {
         hoaDon.setTenNguoiNhan(fullName);
         hoaDon.setSdtNguoiNhan(phoneNumber);
         hoaDon.setDiaChiGiaoHang(address);
-        hoaDon.setLoaiDon(1);
-        hoaDon.setTrangThai(1); // Đặt trạng thái hóa đơn là chờ xử lý
+        hoaDon.setLoaiDon(0);
+        hoaDon.setTrangThai(3); // Đặt trạng thái hóa đơn là chờ xử lý
         hoaDonRepository.save(hoaDon);
 
         // Duyệt qua danh sách sản phẩm được chọn trong giỏ hàng

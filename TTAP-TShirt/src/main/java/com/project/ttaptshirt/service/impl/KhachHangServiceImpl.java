@@ -31,4 +31,12 @@ public class KhachHangServiceImpl implements KhachHangService {
     public List<KhachHang> findAll() {
         return khachHangRepository.findAll();
     }
+
+    @Override
+    public List<KhachHang> searchCustomerByPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            return khachHangRepository.findAll();
+        }
+        return khachHangRepository.searchKhachHangBySoDienThoai(phoneNumber);
+    }
 }
