@@ -1,6 +1,7 @@
 package com.project.ttaptshirt.repository;
 
 import com.project.ttaptshirt.entity.HoaDon;
+import com.project.ttaptshirt.entity.KhachHang;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -59,5 +60,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
 
 
     List<HoaDon> findByTrangThaiAndNgayTaoBefore(int trangThai, LocalDateTime ngayTao);
+
+    List<HoaDon> findByKhachHang(KhachHang khachHang);
 
 }

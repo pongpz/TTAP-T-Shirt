@@ -49,37 +49,47 @@
 
 <section>
   <div class="container">
-    <h1>Hóa đơn của bạn</h1>
-    <p><strong>Mã hóa đơn:</strong> <span th:text="${hoaDon.ma}"></span></p>
-    <p><strong>Tên người nhận:</strong> <span th:text="${hoaDon.tenNguoiNhan}"></span></p>
-    <p><strong>Số điện thoại:</strong> <span th:text="${hoaDon.sdtNguoiNhan}"></span></p>
-    <p><strong>Địa chỉ giao hàng:</strong> <span th:text="${hoaDon.diaChiGiaoHang}"></span></p>
-    <p><strong>Ngày tạo:</strong> <span th:text="${hoaDon.ngayTao}"></span></p>
-    <p><strong>Tổng tiền:</strong> <span th:text="${hoaDon.tongTien}"></span> VND</p>
-    <a th:href="@{/TTAP/cart/hoa-don-chi-tiet/hien-thi(id=${hoaDon.id})}" class="btn btn-info">Chi tiết</a>
+    <h2 class="text-center">Danh sách hóa đơn</h2>
 
-    <h2>Chi tiết sản phẩm</h2>
-    <table class="table table-bordered table-hover">
-      <thead class="table-primary">
-      <tr>
-        <th>Tên sản phẩm</th>
-        <th>Giá</th>
-        <th>Số lượng</th>
-        <th>Thành tiền</th>
-        <th>Hành động</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="chiTiet : ${listHDCT}">
-        <td th:text="${chiTiet.chiTietSanPham.sanPham.ten}"></td>
-        <td th:text="${chiTiet.donGia != null ? chiTiet.donGia : 'Không có'}"></td>
-        <td th:text="${chiTiet.soLuong != null ? chiTiet.donGia : 'Không có'}"></td>
-        <td th:text="${chiTiet.donGia  * chiTiet.soLuong}"></td>
-      </tr>
-      </tbody>
-    </table>
+    <!-- Thông báo nếu có -->
+    <div th:if="${message}" class="alert alert-info" th:text="${message}"></div>
 
-    <a href="/TTAP/cart/view">Quay lại giỏ hàng</a>
+    <div th:if="${hoaDon}" class="table-responsive">
+      <table class="table table-bordered table-hover mt-4">
+        <thead class="thead-dark">
+        <tr>
+          <th>Mã Hóa Đơn</th>
+          <th>Nguoi Mua</th>
+          <th>Ngày Tạo</th>
+          <th>Tổng Tiền</th>
+          <th>Trạng Thái</th>
+          <th>Chi Tiết</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="hoaDon : ${hoaDon}">
+          <td th:text="${hoaDon.ma}"></td>
+          <td th:text="${hoaDon.khachHang.hoTen}"></td>
+          <td th:text="${hoaDon.ngayTao}"></td>
+          <td th:text="${hoaDon.tongTien} + ' VNĐ'"></td>
+          <td th:switch="${hoaDon.trangThai}">
+            <span th:case="3">Chờ xác nhận</span>
+            <span th:case="2">Đã hủy</span>
+            <span th:case="1">Cho thanh toán</span>
+          </td>
+          <td>
+            <a th:href="@{/hoa-don-chi-tiet/hien-thi(id=${hoaDon.id})}" class="btn btn-info btn-sm">Xem chi tiết</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- Nút quay lại trang chính -->
+    <div class="text-center mt-4">
+      <a href="/view" class="btn btn-secondary">Quay lại giỏ hàng</a>
+    </div>
   </div>
 </section>
 
