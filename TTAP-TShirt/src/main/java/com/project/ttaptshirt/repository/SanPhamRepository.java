@@ -10,10 +10,13 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
-    List<SanPham> findByTenContaining(String ten);
-    boolean existsByMa(String ma);
 
-    @Query("SELECT sp FROM SanPham sp " +
+    boolean existsByMa(String ma);
+    Page<SanPham> findByTenContaining(String ten, Pageable pageable);
+
+    Page<SanPham> findAllByOrderByNgayTaoDesc(Pageable pageable);
+
+            @Query("SELECT sp FROM SanPham sp " +
             "JOIN sp.chiTietSanPhamList ct " +  // Kết nối với bảng ChiTietSanPham
             "WHERE (:ten IS NULL OR LOWER(sp.ten) LIKE LOWER(CONCAT('%', :ten, '%'))) " +
             "AND (:nhaSanXuat IS NULL OR sp.nsx.id = :nhaSanXuat) " +  // Không dùng LOWER cho Long
