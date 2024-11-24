@@ -175,7 +175,7 @@ public class GioHangController {
             try {
                 HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds,fullName,phoneNumber,address);
                 redirectAttributes.addFlashAttribute("message", "Hóa đơn đã được tạo thành công!");
-                return "redirect/hoa-don"; // Chuyển đến trang chi tiết hóa đơn
+                return "redirect/view"; // Chuyển đến trang chi tiết hóa đơn
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Lỗi khi tạo hóa đơn: " + e.getMessage());
                 return "redirect:/view"; // Quay lại trang giỏ hàng

@@ -60,6 +60,8 @@
                         <th>Chọn</th>
                         <th>#</th>
                         <th>Tên sản phẩm</th>
+                        <th>Kich Co</th>
+                        <th>Mau Sac</th>
                         <th>Giá</th>
                         <th>Số lượng</th>
                         <th>Thành tiền</th>
@@ -73,6 +75,8 @@
                         </td>
                         <td th:text="${iterStat.index + 1}"></td>
                         <td th:text="${item.chiTietSanPham.sanPham.ten}"></td>
+                        <td th:text="${item.chiTietSanPham.mauSac.ten}"></td>
+                        <td th:text="${item.chiTietSanPham.kichCo.ten}"></td>
                         <td th:text="${item.gia}"></td>
                         <td th:text="${item.soLuong}"></td>
                         <td th:text="${item.gia * item.soLuong}"></td>
