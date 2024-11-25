@@ -3,6 +3,7 @@ package com.project.ttaptshirt.controller.adminController;
 import com.project.ttaptshirt.config.Config;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
+import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.repository.VoucherRepo;
@@ -60,6 +61,9 @@ public class BanHangController {
     HoaDonChiTietService hoaDonChiTietService;
 
     @Autowired
+    ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    @Autowired
     VoucherRepo voucherRepo;
 
     @Autowired
@@ -92,14 +96,18 @@ public class BanHangController {
 
 
     @GetMapping("/hoa-don/chi-tiet")
-    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication) {
+    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication, @RequestParam(value="tenSP",required = false) String tenSP) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
 
-        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findByTenSanPham(tenSP);
+        if (tenSP!=null){
+            model.addAttribute("showModal",true);
+            model.addAttribute("tenSP",tenSP);
+        }
         List<MaGiamGia> listKM = voucherRepo.findAll();
         List<KhachHang> listkh = khachHangService.findAll();
         model.addAttribute("listKh", listkh);
@@ -107,6 +115,7 @@ public class BanHangController {
         model.addAttribute("listCTSP", listCTSP);
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idHoaDon);
         model.addAttribute("listHDCT", listHDCT);
+//        model.addAttribute("idHD", idHoaDon);
 
 //
 
