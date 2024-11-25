@@ -1,6 +1,7 @@
 package com.project.ttaptshirt.controller.adminController;
 
 import com.project.ttaptshirt.config.Config;
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
@@ -96,7 +97,7 @@ public class BanHangController {
             User user = customUserDetail.getUser();
             model.addAttribute("userLogged", user); // Thêm thông tin người dùng vào model
         }
-
+        model.addAttribute("numberUtils", new NumberUtils());
         // Lấy danh sách tất cả các chi tiết sản phẩm
         List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findByTenSanPham(tenSP);
         if (tenSP!=null){
@@ -533,6 +534,26 @@ public class BanHangController {
                     }
                     hoaDonService.updateTongTien(idhd, tongTien);
 
+                    HoaDon hoaDon = hoaDonService.findById(idhd);
+                    //Xử lí nếu hóa đơn đã có mã giảm giá
+                    if (hoaDon.getMaGiamGia()!=null){
+                        if (hoaDon.getMaGiamGia().getGiaTriToiThieu()>tongTien) {
+                            hoaDon.setSoTienGiamGia(0.0);
+                            hoaDon.setTienThu(tongTien);
+                            hoaDon.setMaGiamGia(null);
+                            hoaDonService.save(hoaDon);
+                            System.out.println(234);
+                        } else {
+                            hoaDon.setTienThu(tongTien-hoaDon.getSoTienGiamGia());
+                            hoaDonService.save(hoaDon);
+                            System.out.println(345);
+                        }
+                    } else {
+                        hoaDon.setTienThu(tongTien);
+                        System.out.println(123);
+                        hoaDonService.save(hoaDon);
+                    }
+
                     // Thông báo thêm thành công
                     redirectAttributes.addFlashAttribute("addSuccess", true);
                     return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
@@ -584,6 +605,23 @@ public class BanHangController {
             }
             hoaDonService.updateTongTien(idhd, tongTien);
 
+            HoaDon hoaDon1 = hoaDonService.findById(idhd);
+            //Xử lí nếu hóa đơn đã có mã giảm giá
+            if (hoaDon1.getMaGiamGia()!=null){
+                if (hoaDon1.getMaGiamGia().getGiaTriToiThieu()>tongTien) {
+                    hoaDon1.setSoTienGiamGia(0.0);
+                    hoaDon1.setTienThu(tongTien);
+                    hoaDon1.setMaGiamGia(null);
+                    hoaDonService.save(hoaDon1);
+                } else {
+                    hoaDon1.setTienThu(tongTien-hoaDon1.getSoTienGiamGia());
+                    hoaDonService.save(hoaDon1);
+                }
+            } else {
+                hoaDon1.setTienThu(tongTien);
+                hoaDonService.save(hoaDon1);
+            }
+
             // Thông báo thêm thành công
             redirectAttributes.addFlashAttribute("addSuccess", true);
         }
@@ -616,8 +654,6 @@ public class BanHangController {
     public String chonKhuyenMai(@RequestParam("idhd") Long idhd,
                                 @RequestParam("idkm") Long idkm,
                                 RedirectAttributes redirectAttributes) {
-        System.out.println("idHd: "+idhd);
-        System.out.println("idkm: "+idkm);
 
         try {
             HoaDon existingHoaDon = hoaDonRepository.findById(idhd)
@@ -677,26 +713,62 @@ public class BanHangController {
 
     @GetMapping("/hoa-don/xoa-sp")
     public String deleteSpctInHoaDon(@RequestParam("idHdct") Long idHdct, RedirectAttributes redirectAttributes) {
+        // Lấy thông tin Chi Tiết Hóa Đơn từ idHdct
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietService.findById(idHdct);
+
+        // Lấy ID của hóa đơn (để sau này cập nhật lại thông tin)
         Long idhd = hoaDonChiTiet.getHoaDon().getId();
+        HoaDon hoaDon = hoaDonService.findById(idhd);
+
+        // Lấy số lượng của sản phẩm chi tiết trong hóa đơn
         Integer soLuong = hoaDonChiTiet.getSoLuong();
+
+        // Lấy thông tin chi tiết sản phẩm
         ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
+
+        // Tính toán số lượng cập nhật sau khi xóa sản phẩm khỏi hóa đơn
+        // (tăng số lượng sản phẩm trong kho lên số lượng đã xóa khỏi hóa đơn)
         Integer soLuongUpdate = chiTietSanPhamService.findById(chiTietSanPham.getId()).getSoLuong() + soLuong;
 
-        // Delete the item and update quantity
+        // Xóa sản phẩm chi tiết khỏi hóa đơn
         hoaDonChiTietService.deleteById(idHdct);
+
+        // Cập nhật lại số lượng sản phẩm trong kho
         chiTietSanPhamService.updateSoLuongCtsp(soLuongUpdate, chiTietSanPham.getId());
 
-        // Add a flash attribute indicating success
+        // Thêm một thuộc tính flash vào model để thông báo việc xóa thành công
         redirectAttributes.addFlashAttribute("deleteSuccess", true);
+
+        // Lấy lại danh sách các sản phẩm chi tiết trong hóa đơn (sau khi xóa)
         List<HoaDonChiTiet> listHdct = hoaDonChiTietService.getListHdctByIdHd(idhd);
+
+        // Tính toán tổng tiền của hóa đơn sau khi xóa sản phẩm
         Double tongTien = 0.0;
         for (HoaDonChiTiet hdct : listHdct) {
             tongTien += hdct.getChiTietSanPham().getGiaBan() * hdct.getSoLuong();
         }
+        //Xử lí nếu hóa đơn đã có mã giảm giá
+        if (hoaDon.getMaGiamGia()!=null){
+            if (hoaDon.getMaGiamGia().getGiaTriToiThieu()>tongTien) {
+                hoaDon.setSoTienGiamGia(0.0);
+                hoaDon.setTienThu(tongTien);
+                hoaDon.setMaGiamGia(null);
+                hoaDonService.save(hoaDon);
+            } else {
+                hoaDon.setTienThu(tongTien-hoaDon.getSoTienGiamGia());
+                hoaDonService.save(hoaDon);
+            }
+        } else {
+            hoaDon.setTienThu(tongTien);
+            hoaDonService.save(hoaDon);
+        }
+
+        // Cập nhật lại tổng tiền của hóa đơn
         hoaDonService.updateTongTien(idhd, tongTien);
+
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
+
 
     @PostMapping("/hoa-don/xoa-het-ctsp/{idHD}")
     public String xoaHetCtspKhoiHD(@PathVariable("idHD") Long idHD,
@@ -708,7 +780,12 @@ public class BanHangController {
             chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong() + soLuongHoi), chiTietSanPham.getId());
             hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
         }
-        hoaDonService.updateTongTien(idHD, 0.0);
+        HoaDon hoaDon = hoaDonService.findById(idHD);
+        hoaDon.setTongTien(0.0);
+        hoaDon.setMaGiamGia(null);
+        hoaDon.setSoTienGiamGia(0.0);
+        hoaDon.setTienThu(0.0);
+        hoaDonService.save(hoaDon);
         redirectAttributes.addFlashAttribute("deleteAllSuccess", true);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
     }
@@ -717,15 +794,12 @@ public class BanHangController {
     public String updateSoLuongSua(@RequestParam("soLuongSua") Integer soLuongSua,
                                    @RequestParam("idHdctSua") Long idHdct,
                                    RedirectAttributes redirectAttributes) {
-        System.out.println(soLuongSua);
-        System.out.println(idHdct);
-
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietService.findById(idHdct);
         Long idhd = hoaDonChiTiet.getHoaDon().getId();
         Integer soLuongHienTai = hoaDonChiTiet.getSoLuong();
 
         ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
-        Integer soLuongKhaDung = chiTietSanPham.getSoLuong();
+        Integer soLuongKhaDung = chiTietSanPham.getSoLuong()+soLuongHienTai;
         if (soLuongSua > soLuongKhaDung) {
             redirectAttributes.addFlashAttribute("QuantityUpdateError", true);
             return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
@@ -744,8 +818,23 @@ public class BanHangController {
             tongTien += hdct.getChiTietSanPham().getGiaBan() * hdct.getSoLuong();
         }
         hoaDonService.updateTongTien(idhd, tongTien);
+        HoaDon hoaDon = hoaDonService.findById(idhd);
 
-        System.out.println("dung controller roi");
+        if (hoaDon.getMaGiamGia()!=null){
+            if (hoaDon.getMaGiamGia().getGiaTriToiThieu()>tongTien) {
+                hoaDon.setSoTienGiamGia(0.0);
+                hoaDon.setTienThu(tongTien);
+                hoaDon.setMaGiamGia(null);
+                hoaDonService.save(hoaDon);
+            } else {
+                hoaDon.setTienThu(tongTien-hoaDon.getSoTienGiamGia());
+                hoaDonService.save(hoaDon);
+            }
+        } else {
+            hoaDon.setTienThu(tongTien);
+            hoaDonService.save(hoaDon);
+        }
+
         // Add flash attribute to indicate success
         redirectAttributes.addFlashAttribute("updateSuccess", true);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
