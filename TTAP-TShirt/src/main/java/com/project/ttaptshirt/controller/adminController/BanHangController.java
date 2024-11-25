@@ -98,7 +98,6 @@ public class BanHangController {
         }
 
         // Lấy danh sách tất cả các chi tiết sản phẩm
-        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findByTenSanPham(tenSP);
         if (tenSP!=null){
             model.addAttribute("showModal",true);
