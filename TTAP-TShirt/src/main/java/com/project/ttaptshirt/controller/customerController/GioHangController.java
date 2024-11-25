@@ -1,7 +1,9 @@
 package com.project.ttaptshirt.controller.customerController;
 
+import com.project.ttaptshirt.dto.AddToCartRequest;
 import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.entity.GioHang;
+import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.UserRepo;
@@ -9,11 +11,13 @@ import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.GioHangService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -54,16 +58,11 @@ public class GioHangController {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
             GioHang cart = gioHangService.getOrCreateCart(user); // Lấy giỏ hàng của người dùng
-            if (cart.getItems() != null && !cart.getItems().isEmpty()) {
-                model.addAttribute("cart", cart);
-            } else {
-                model.addAttribute("message", "Giỏ hàng của bạn trống.");
-            }
+            model.addAttribute("cart", cart); // Đảm bảo luôn truyền giỏ hàng vào model
             model.addAttribute("userLogged", user);
-        }else {
-            return "redirect:/login";
+            return "/user/home/cart2";
         }
-        return "/user/home/cart2"; // Trả về trang giỏ hàng
+        return "redirect:/login";
     }
 
     // Xóa sản phẩm khỏi giỏ hàng
@@ -75,7 +74,6 @@ public class GioHangController {
             User user = customUserDetail.getUser();
             gioHangService.removeProductFromCart(user, productId); // Xóa sản phẩm khỏi giỏ
         }
-        System.out.println("sasaasa");
         redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được xóa khỏi giỏ hàng.");
         return "redirect:/view"; // Điều hướng đến trang giỏ hàng
     }
@@ -132,5 +130,135 @@ public class GioHangController {
                 .map(item -> new CartItemDTO(item.getChiTietSanPham().getId(),item.getChiTietSanPham().getSanPham().getTen(),
                          item.getGia(), item.getSoLuong()))
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/tao-don")
+    public String taoDonHang(
+            @ModelAttribute List<CartItemDTO> selectedItems,
+            RedirectAttributes redirectAttributes,
+            Authentication authentication) {
+        try {
+            if (authentication != null) {
+                // Lấy thông tin người dùng từ Authentication
+                CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+                User user = customUserDetail.getUser();
+
+                // Gọi service để tạo đơn hàng
+                GioHang order = gioHangService.createOrderFromCart(user, selectedItems);
+
+                // Thông báo thành công và chuyển hướng tới trang chi tiết đơn hàng
+                redirectAttributes.addFlashAttribute("message", "Đơn hàng đã được tạo thành công!");
+                return "redirect:/don-hang/chi-tiet/" + order.getId();
+            } else {
+                // Nếu không có thông tin đăng nhập
+                redirectAttributes.addFlashAttribute("error", "Bạn cần đăng nhập để thực hiện thao tác này.");
+                return "redirect:/login";
+            }
+        } catch (Exception e) {
+            // Xử lý lỗi và trả về thông báo
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi tạo đơn hàng: " + e.getMessage());
+            return "redirect:/gio-hang";
+        }
+    }
+
+    @PostMapping("/checkout")
+    public String checkoutCart(@RequestParam List<Long> selectedProductIds,
+                               @RequestParam String fullName,
+                               @RequestParam String phoneNumber,
+                               @RequestParam String address,
+                               RedirectAttributes redirectAttributes,
+                               Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+
+            try {
+                HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds,fullName,phoneNumber,address);
+                redirectAttributes.addFlashAttribute("message", "Hóa đơn đã được tạo thành công!");
+                return "redirect/view"; // Chuyển đến trang chi tiết hóa đơn
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("error", "Lỗi khi tạo hóa đơn: " + e.getMessage());
+                return "redirect:/view"; // Quay lại trang giỏ hàng
+            }
+        }
+        return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
+    }
+
+    @PostMapping("/add-to-cart")
+    public String addItemToCart(@RequestParam Long productId,
+                                @RequestParam int quantity,
+                                @RequestParam Long sizeId,
+                                @RequestParam Long colorId,
+                                RedirectAttributes redirectAttributes,
+                                Authentication authentication
+                                ) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+
+            // Tạo request với thông tin sản phẩm, kích cỡ và màu sắc
+            AddToCartRequest request = new AddToCartRequest();
+            request.setProductId(productId);
+            request.setQuantity(quantity);
+            request.setSize(sizeId);
+            request.setColor(colorId);
+
+            try {
+                // Gọi service để thêm sản phẩm vào giỏ hàng
+                gioHangService.addToCart(user, request);
+                redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng.");
+            } catch (ProductNotFoundException | InsufficientStockException e) {
+                // Xử lý lỗi nếu sản phẩm không tìm thấy hoặc kho không đủ
+                redirectAttributes.addFlashAttribute("error", e.getMessage());
+            }
+        }
+
+        return "redirect:/view"; // Điều hướng đến trang giỏ hàng
+    }
+
+    @GetMapping("/hoa-don")
+    public String listHoaDon(Model model, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+
+            List<HoaDon> hoaDonList = hoaDonService.getListDonHang(user.getKhachHang());
+            if (hoaDonList != null) {
+                model.addAttribute("hoaDon", hoaDonList);
+                return "/user/home/checkout"; // Đường dẫn đến view danh sách hóa đơn
+            } else {
+                // Nếu không có hóa đơn, hiển thị thông báo lỗi
+                model.addAttribute("message", "Không tìm thấy hóa đơn.");
+                return "redirect:/view"; // Quay lại trang giỏ hàng
+            }
+        }
+        return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
+    }
+
+    @GetMapping("/hoa-don-chi-tiet/hien-thi")
+    public String hienThi(@RequestParam Long id, Model model, Authentication authentication){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+
+                HoaDon hoaDon = hoaDonService.getDonHang(id);
+                model.addAttribute("hoaDon", hoaDon);
+                model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
+                return "/user/home/cart"; // Đường dẫn đến view danh sách hóa đơn
+
+        }
+        return "redirect:/login";
+    }
+
+    public class ProductNotFoundException extends RuntimeException {
+        public ProductNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public class InsufficientStockException extends RuntimeException {
+        public InsufficientStockException(String message) {
+            super(message);
+        }
     }
 }

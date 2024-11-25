@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,Long> {
@@ -50,6 +51,11 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
 
     @Query("select Min(c.giaBan) FROM ChiTietSanPham c WHERE c.sanPham.id = :sanPhamId")
     Double findMinGiaBan(@Param("sanPhamId") Long sanPhamId);
+
+    @Query("SELECT c FROM ChiTietSanPham c WHERE c.sanPham.id = :sanPhamId AND c.kichCo.id = :kichCo AND c.mauSac.id = :mauSac")
+    Optional<ChiTietSanPham> findChiTietSanPham(@Param("sanPhamId") Long sanPhamId,
+                                                @Param("kichCo") Long kichCo,
+                                                @Param("mauSac") Long mauSac);
 
 //    @Query("select ctsp from ChiTietSanPham ctsp where (:ten is null or ctsp.sanPham.ten like %:ten%) and (ctsp.giaBan between :giaMin and :giaMax) and (ctsp.sanPham.nsx.id=:nsx) and (ctsp.sanPham.kieuDang.id=:kieuDang) and (ctsp.sanPham.thuongHieu.id=:thuongHieu) and (ctsp.sanPham.chatLieu.id=:chatLieu)")
 //    List<ChiTietSanPham> searchCTSP(String ten,Double giaMax, Double giaMin,Long nsx,Long thuongHieu,Long kieuDang,Long chatLieu,Pageable pageable);

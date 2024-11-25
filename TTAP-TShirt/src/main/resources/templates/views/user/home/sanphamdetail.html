@@ -20,6 +20,20 @@
     <link th:href="@{/customercss/style.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/customercss/style-customer.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/customercss/cart-hover.css}" rel="stylesheet" type="text/css" />
+    <style>
+        .product-name {
+            font-size: 24px; /* Cỡ chữ tùy chỉnh */
+            font-weight: bold; /* Đậm chữ */
+            color: #333; /* Màu chữ */
+            white-space: normal; /* Cho phép xuống dòng */
+            word-wrap: break-word; /* Tự động xuống dòng nếu quá dài */
+            overflow: hidden; /* Ẩn phần tràn */
+            text-overflow: ellipsis; /* Hiển thị dấu "..." nếu tràn */
+            max-width: 100%; /* Giới hạn chiều rộng tối đa */
+            display: block; /* Đảm bảo áp dụng xuống dòng */
+        }
+
+    </style>
 </head>
 
 <body>
@@ -27,64 +41,84 @@
 <header th:replace="~{/fragment/header-customer :: header-customer}"></header>
 
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-md-5">
-            <div class="product-images mb-3">
-                <img th:src="${mainImage}" alt="Main Product Image" id="mainImage" class="img-fluid">
+    <form th:action="@{/add-to-cart}" method="post">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="product-images mb-3">
+                    <img th:src="${mainImage}" alt="Main Product Image" id="mainImage" class="img-fluid">
+                </div>
+                <!--            <div class="small-images d-flex">-->
+                <!--                <img th:each="image : ${images}"-->
+                <!--                     th:src="${image.path}"-->
+                <!--                     alt="Product Image"-->
+                <!--                     onclick="changeImage(this)"-->
+                <!--                     class="img-thumbnail">-->
+                <!--            </div>-->
             </div>
-<!--            <div class="small-images d-flex">-->
-<!--                <img th:each="image : ${images}"-->
-<!--                     th:src="${image.path}"-->
-<!--                     alt="Product Image"-->
-<!--                     onclick="changeImage(this)"-->
-<!--                     class="img-thumbnail">-->
-<!--            </div>-->
-        </div>
+
+
+            <div class="col-md-7">
+                <h3 th:text="${sanPham.ten}"></h3>
+                <div>
 
         <div class="col-md-7">
-            <h3 th:text="${sanPham.ten}"></h3>
+            <h3 class="product-name" th:text="${sanPham.ten}"></h3>
             <div>
+
                 <span class="price" th:text="${giaBan} + ' VNĐ'"
                       style="font-size: 30px; font-weight: bold; color: red;"></span>
-            </div>
-
-            <!-- Màu sắc -->
-            <div class="mt-3">
-                <label><strong>Màu sắc:</strong></label>
-                <div>
-                    <div th:if="${noDetails}">
-                        <p>Không có màu sắc cho sản phẩm này.</p>
-                    </div>
-
-                    <button th:each="color : ${colors}"
-                            th:text="${color.ten}"
-                            th:data-id="${color.id}"
-                            class="btn btn-outline-secondary btn-sm me-1"></button>
                 </div>
-            </div>
 
-            <div class="mt-3">
-                <label><strong>Kích cỡ:</strong></label>
-                <div>
-                    <div th:if="${noDetails}">
-                        <p>Không có kích cỡ cho sản phẩm này.</p>
+                <!-- Màu sắc -->
+                <div class="mt-3">
+                    <label><strong>Màu sắc:</strong></label>
+                    <div>
+                        <div th:if="${noDetails}">
+                            <p>Không có màu sắc cho sản phẩm này.</p>
+                        </div>
+
+                        <button th:each="color : ${colors}"
+                                th:text="${color.ten}"
+                                th:data-id="${color.id}"
+                                class="btn btn-outline-primary btn-sm me-1"
+                                onclick="selectColor(this)"
+                                type="button"
+                        ></button>
                     </div>
-
-                    <button th:each="size : ${sizes}"
-                            th:text="${size.ten}"
-                            th:data-id="${size.id}"
-                            class="btn btn-outline-secondary btn-sm me-1"></button>
                 </div>
-            </div>
 
+                <div class="mt-3">
+                    <label><strong>Kích cỡ:</strong></label>
+                    <div>
+                        <div th:if="${noDetails}">
+                            <p>Không có kích cỡ cho sản phẩm này.</p>
+                        </div>
 
-            <div class="mt-4">
-                <button class="btn btn-danger btn-buy">Mua ngay</button>
-                <button class="btn btn-outline-primary btn-add-cart">Thêm vào giỏ hàng</button>
+                        <button th:each="size : ${sizes}"
+                                th:text="${size.ten}"
+                                th:data-id="${size.id}"
+                                class="btn btn-outline-secondary btn-sm me-1"
+                                onclick="selectSize(this)"
+                                type="button"
+                        ></button>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <label><strong>Số lượng:</strong></label>
+                    <input type="number" name="quantity" class="form-control" value="1" min="1" required>
+                </div>
+
+                <input type="hidden" name="productId" th:value="${sanPham.id}">
+                <input type="hidden" id="selectedSize" name="sizeId">
+                <input type="hidden" id="selectedColor" name="colorId">
+
+                <div class="mt-4">
+                    <!--                <button class="btn btn-danger btn-buy">Mua ngay</button>-->
+                    <button class="btn btn-outline-primary btn-add-cart" type="submit">Thêm vào giỏ hàng</button>
+                </div>
             </div>
         </div>
-    </div>
-
+    </form>
     <div class="mt-5">
         <h4>Chi tiết sản phẩm</h4>
         <table class="table">
@@ -113,14 +147,23 @@
 </div>
 
 <script>
-    document.querySelectorAll('button[data-id]').forEach(button => {
-        button.addEventListener('click', function () {
-            const id = this.dataset.id; // Lấy ID của màu sắc hoặc kích cỡ
-            document.querySelectorAll('button[data-id]').forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            console.log("Bạn đã chọn ID: " + id);
-        });
-    });
+    function selectSize(button) {
+        // Xóa trạng thái chọn trước đó
+        document.querySelectorAll(".btn-outline-secondary").forEach(btn => btn.classList.remove("active"));
+        // Đánh dấu nút đang chọn
+        button.classList.add("active");
+        // Gán giá trị kích cỡ vào input ẩn
+        document.getElementById("selectedSize").value = button.getAttribute("data-id");
+    }
+
+    function selectColor(button) {
+        // Xóa trạng thái chọn trước đó
+        document.querySelectorAll(".btn-outline-primary").forEach(btn => btn.classList.remove("active"));
+        // Đánh dấu nút đang chọn
+        button.classList.add("active");
+        // Gán giá trị màu sắc vào input ẩn
+        document.getElementById("selectedColor").value = button.getAttribute("data-id");
+    }
 </script>
 
 </body>
