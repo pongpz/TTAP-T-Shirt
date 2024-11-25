@@ -78,66 +78,90 @@ public class BanHangController {
             model.addAttribute("userLogged", user);
         }
         List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
-        List<HoaDon> listHd = hoaDonService.getListHDDaThanhToan();
-        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
-        List<MaGiamGia> listKM = voucherRepo.findAll();
-        model.addAttribute("listKM", listKM);
         model.addAttribute("listHoaDon", listHoaDon);
-        model.addAttribute("listLs", listHd);
-        model.addAttribute("listHD", listHoaDon);
-        model.addAttribute("listCTSP", listCTSP);
-
         return "admin/banhangtaiquay/banhang";
     }
 
 
     @GetMapping("/hoa-don/chi-tiet")
     public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication) {
+        // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (authentication != null) {
+            // Lấy thông tin người dùng đã đăng nhập
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
-            model.addAttribute("userLogged", user);
+            model.addAttribute("userLogged", user); // Thêm thông tin người dùng vào model
         }
 
+        // Lấy danh sách tất cả các chi tiết sản phẩm
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
+        // Lấy danh sách tất cả mã giảm giá
         List<MaGiamGia> listKM = voucherRepo.findAll();
-        List<KhachHang> listkh = khachHangService.findAll();
-        model.addAttribute("listKh", listkh);
-        model.addAttribute("listKM", listKM);
-        model.addAttribute("listCTSP", listCTSP);
+        // Lấy danh sách khách hàng sắp xếp theo ngày tạo
+        List<KhachHang> listkh = khachHangService.findAllOrderByNgayTao();
+        model.addAttribute("listKh", listkh); // Thêm danh sách khách hàng vào model
+        model.addAttribute("listCTSP", listCTSP); // Thêm danh sách chi tiết sản phẩm vào model
+
+        // Lấy danh sách chi tiết hóa đơn dựa trên ID hóa đơn
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idHoaDon);
-        model.addAttribute("listHDCT", listHDCT);
+        model.addAttribute("listHDCT", listHDCT); // Thêm danh sách chi tiết hóa đơn vào model
 
-//
+        // Tìm hóa đơn dựa trên ID, nếu không có thì ném ra ngoại lệ
+        HoaDon hoadon = hoaDonRepository.findById(idHoaDon)
+                .orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idHoaDon));
+        model.addAttribute("hoadon", hoadon); // Thêm hóa đơn vào model
 
-        HoaDon hoadon = hoaDonRepository.findById(idHoaDon).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idHoaDon));
-        model.addAttribute("hoadon", hoadon);
+        // Lấy hóa đơn từ dịch vụ
         HoaDon hoaDon = hoaDonService.findById(idHoaDon);
+
+        // Tính tổng tiền trước khi áp dụng giảm giá
         double totalMoneyBefore = listHDCT.stream()
                 .mapToDouble(hdct -> {
-                    int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
-                    double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null) ? hdct.getChiTietSanPham().getGiaBan() : 0.0;
-                    return soLuong * giaBan;
+                    int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0; // Lấy số lượng, nếu null thì gán 0
+                    double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null)
+                            ? hdct.getChiTietSanPham().getGiaBan() : 0.0; // Lấy giá bán, nếu null thì gán 0
+                    return soLuong * giaBan; // Tính tiền từng sản phẩm
                 })
-                .sum();
+                .sum(); // Tổng tiền
+
+        // Xử lý mã giảm giá
         MaGiamGia voucher = hoaDon.getMaGiamGia();
+//        Double giaTriToiThieu = voucher.getGiaTriToiThieu();
+        List<MaGiamGia> listMaGiamGiaValid = new ArrayList<>();
+        for (MaGiamGia maGiamGia:listKM) {
+            if (maGiamGia.getGiaTriToiThieu()<=totalMoneyBefore){
+                listMaGiamGiaValid.add(maGiamGia);
+            }
+        }
+        model.addAttribute("listVoucherValid", listMaGiamGiaValid); // Thêm danh sách mã giảm giá hợp lệ vào model
+
+        // Xử lý lấy giá trị giảm
         double discount = 0.0;
 
         if (voucher != null) {
+            // Nếu hình thức giảm giá là % (false)
             if (voucher.getHinhThuc().equals(false)) {
-                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore; // Tính giảm giá theo %
                 if (discount > voucher.getGiaTriToiDa()) {
-                    discount = voucher.getGiaTriToiDa();
+                    discount = voucher.getGiaTriToiDa(); // Giới hạn mức giảm giá tối đa
                 }
+                // Nếu hình thức giảm giá là số tiền cụ thể (true)
             } else if (voucher.getHinhThuc().equals(true)) {
                 discount = voucher.getGiaTriGiam();
             }
         }
 
+        // Tính tổng tiền sau khi áp dụng giảm giá
         double totalMoneyAfter = totalMoneyBefore - discount;
-        totalMoneyAfter = Math.max(totalMoneyAfter, 0);
-        model.addAttribute("linkqr", "https://api.vietqr.io/image/970407-1938170304-oJ6IfGN.jpg?accountName=DUONGTRUNGANH&amount=" + (int) totalMoneyAfter + "&addInfo=" + hoaDon.getMa());
+        totalMoneyAfter = Math.max(totalMoneyAfter, 0); // Đảm bảo tổng tiền không âm
 
+
+        // Tạo link QR code thanh toán với thông tin từ hóa đơn
+        model.addAttribute("linkqr",
+                "https://api.vietqr.io/image/970407-1938170304-oJ6IfGN.jpg?accountName=DUONGTRUNGANH&amount="
+                        + (int) totalMoneyAfter + "&addInfo=" + hoaDon.getMa());
+
+        // Trả về trang chi tiết hóa đơn
         return "admin/banhangtaiquay/chiTietHoaDon";
     }
 
@@ -199,10 +223,15 @@ public class BanHangController {
         totalMoneyAfter = Math.max(totalMoneyAfter, 0);
 
         // Cập nhật thông tin giảm giá, tổng tiền và trạng thái cho hóa đơn
-        hoaDon.setSoTienGiamGia((float) discount);
-        hoaDon.setTongTien((float) totalMoneyAfter);
+        hoaDon.setSoTienGiamGia((Double) discount);
+        hoaDon.setTongTien((Double) totalMoneyAfter);
         hoaDon.setTrangThai(1); // Đặt trạng thái hóa đơn đã thanh toán
         hoaDonService.save(hoaDon);
+        System.out.println("da save hoa don");
+        System.out.println("so tien giam: " + discount);
+        System.out.println("so tien sau giam: " + totalMoneyAfter);
+        System.out.println("so tien truoc giam: " + totalMoneyBefore);
+
 
         // Thêm thông báo thành công trước khi chuyển hướng
         redirectAttributes.addFlashAttribute("checkoutSuccess", true);
@@ -366,8 +395,8 @@ public class BanHangController {
             double totalMoneyAfter = totalMoneyBefore - discount;
             totalMoneyAfter = Math.max(totalMoneyAfter, 0);
 
-            hoaDon.setSoTienGiamGia((float) discount);
-            hoaDon.setTongTien((float) totalMoneyAfter);
+            hoaDon.setSoTienGiamGia((Double) discount);
+            hoaDon.setTongTien((Double) totalMoneyAfter);
             hoaDon.setTrangThai(1);
             hoaDonService.save(hoaDon);
 
@@ -570,18 +599,69 @@ public class BanHangController {
         HoaDon hoaDon = hoaDonRepository.getReferenceById(idhd);
         hoaDon.setKhachHang(null);
         hoaDonRepository.save(hoaDon);
-        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idhd;
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
 
     @PostMapping("/chon-khuyen-mai")
     public String chonKhuyenMai(@RequestParam("idhd") Long idhd,
-                                @RequestParam("idkm") Long idkm) {
-        HoaDon existingHoaDon = hoaDonRepository.findById(idhd).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idhd));
-        MaGiamGia voucher = new MaGiamGia();
-        voucher.setId(idkm);
-        existingHoaDon.setMaGiamGia(voucher);
-        hoaDonService.save(existingHoaDon);
-        return "redirect:/admin/ban-hang";
+                                @RequestParam("idkm") Long idkm,
+                                RedirectAttributes redirectAttributes) {
+        System.out.println("idHd: "+idhd);
+        System.out.println("idkm: "+idkm);
+
+        try {
+            HoaDon existingHoaDon = hoaDonRepository.findById(idhd)
+                    .orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idhd));
+            MaGiamGia voucher = new MaGiamGia();
+            voucher.setId(idkm);
+            existingHoaDon.setMaGiamGia(voucher);
+            HoaDon hoaDon1 = hoaDonRepository.save(existingHoaDon);
+
+            // Calculate discounts and update the invoice
+            List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getListHdctByIdHd(idhd);
+            double totalMoneyBefore = listHDCT.stream()
+                    .mapToDouble(hdct -> {
+                        int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
+                        double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null)
+                                ? hdct.getChiTietSanPham().getGiaBan() : 0.0;
+                        return soLuong * giaBan;
+                    })
+                    .sum();
+
+            MaGiamGia voucher1 = hoaDon1.getMaGiamGia();
+            double discount = 0.0;
+
+            if (voucher1 != null) {
+                if (Boolean.FALSE.equals(voucher1.getHinhThuc())) {
+                    discount = (voucher1.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+                    if (discount > voucher1.getGiaTriToiDa()) {
+                        discount = voucher1.getGiaTriToiDa();
+                    }
+                } else {
+                    discount = voucher1.getGiaTriGiam();
+                }
+            }
+
+            double totalMoneyAfter = Math.max(totalMoneyBefore - discount, 0);
+            hoaDon1.setTongTien(totalMoneyBefore);
+            hoaDon1.setSoTienGiamGia(discount);
+            hoaDon1.setTienThu(totalMoneyAfter);
+
+            hoaDonService.save(hoaDon1);
+
+            // Add success message
+            redirectAttributes.addFlashAttribute("addVoucherSuccess", true);
+            redirectAttributes.addFlashAttribute("messageAddVoucher", "Áp dụng mã giảm giá thành công!");
+
+        } catch (Exception e) {
+            // Add error message
+            redirectAttributes.addFlashAttribute("addVoucherFailed", true);
+            redirectAttributes.addFlashAttribute("messageAddVoucher", "Lỗi khi áp dụng mã giảm giá: " + e.getMessage());
+            System.out.println(e.getMessage());
+        }
+
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+
     }
 
 

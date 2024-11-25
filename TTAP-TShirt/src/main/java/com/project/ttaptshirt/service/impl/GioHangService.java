@@ -217,7 +217,7 @@ public class GioHangService {
         double totalAmount = hoaDonChiTietList.stream()
                 .mapToDouble(item -> item.getDonGia() * item.getSoLuong())
                 .sum();
-        hoaDon.setTongTien((float) totalAmount);
+        hoaDon.setTongTien(totalAmount);
         hoaDonRepository.save(hoaDon);
 
         // Xóa các sản phẩm đã chọn khỏi giỏ hàng

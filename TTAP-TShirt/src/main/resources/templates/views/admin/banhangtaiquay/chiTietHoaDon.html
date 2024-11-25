@@ -442,19 +442,78 @@
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher(nếu
                         có):</label>
-                    <label class="col-4" style="font-size: 18px; font-weight: bold">0 VND</label>
+                    <label class="col-4" style="font-size: 18px; font-weight: bold" th:text="${hoadon.soTienGiamGia!=null?hoadon.soTienGiamGia+' đ' :'chưa có '}"></label>
                     <button class="col-3 btn btn-primary"
-                            onclick="toastWarning('Thông Báo','Chức năng đang được phát triển !')">
-                        Chọn
-                        Voucher
+                            data-bs-toggle="modal" data-bs-target="#modalAddVoucher"
+                    >
+                        Chọn Voucher
                     </button>
+                    <!-- Modal voucher -->
+                    <div class="modal fade" id="modalAddVoucher" tabindex="-1" aria-labelledby="modalAddVoucherLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalAddVoucherLabel">Danh Sách Voucher Hợp Lệ</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Voucher Table -->
+                                    <table class="table table-bordered table-striped">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Tên</th>
+                                            <th>Hình Thức</th>
+                                            <th>Giá Trị Giảm</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!-- Loop Through listVoucherValid -->
+                                        <tr th:each="voucher, stat : ${listVoucherValid}">
+                                            <td th:text="${stat.index + 1}"></td>
+                                            <td th:text="${voucher.ten}"></td>
+                                            <td th:text="${voucher.hinhThuc ? 'VND' : 'Phần trăm'}"></td>
+                                            <td th:text="${voucher.giaTriGiam}"></td>
+                                            <td>
+                                                <!-- Add Voucher Form -->
+                                                <form th:action="@{/admin/ban-hang/chon-khuyen-mai}" method="post" onsubmit="return confirmVoucherSelection();">
+                                                    <!-- Hidden fields for invoice ID and voucher ID -->
+                                                    <input type="hidden" name="idhd" th:value="${hoadon.id}" />
+                                                    <input type="hidden" name="idkm" th:value="${voucher.id}" />
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        Chọn
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <script>
+                                    // JavaScript function for confirmation
+                                    function confirmVoucherSelection() {
+                                        return confirm("Bạn có chắc chắn muốn chọn voucher này?");
+                                    }
+                                </script>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                 </div>
 
                 <hr/>
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Số Tiền Thanh toán:</label>
                     <label class="col-4" style="font-size: 18px; font-weight: bold"
-                           th:text="${hoadon != null && hoadon.tongTien != null ? hoadon.tongTien + ' đ' : 'Chưa có dữ liệu'}"
+                           th:text="${hoadon != null && hoadon.tienThu != null ? hoadon.tienThu + ' đ' : 'Chưa có dữ liệu'}"
                            id="tongTienLabel"></label>
                 </div>
                 <br/>
@@ -602,7 +661,7 @@
                     $.ajax({
                         url: '/admin/khach-hang/searchByPhoneNumber',
                         type: 'GET',
-                        data: { phoneNumber: phoneNumber },
+                        data: {phoneNumber: phoneNumber},
                         success: function (response) {
                             // Clear the existing table body within the modal
                             const tbody = $('#modalAddCustomer table tbody');
@@ -699,6 +758,21 @@
             /*]]>*/
         </script>
 
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var addVoucherSuccess = [[${addVoucherSuccess}]];
+            var addVoucherFailed = [[${addVoucherFailed}]];
+            var messageAddVoucher = '[[${messageAddVoucher}]]'; // Retrieve the message
+
+            if (addVoucherSuccess) {
+                toastSuccess('Thành Công!', messageAddVoucher); // Display success toast
+            }
+
+            if (addVoucherFailed) {
+                toastError('Thất Bại!', messageAddVoucher); // Display error toast
+            }
+            /*]]>*/
+        </script>
 
         <script th:inline="javascript">
             /*<![CDATA[*/
