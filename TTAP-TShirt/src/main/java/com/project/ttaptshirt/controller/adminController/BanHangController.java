@@ -3,6 +3,7 @@ package com.project.ttaptshirt.controller.adminController;
 import com.project.ttaptshirt.config.Config;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
+import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.repository.VoucherRepo;
@@ -60,6 +61,9 @@ public class BanHangController {
     HoaDonChiTietService hoaDonChiTietService;
 
     @Autowired
+    ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    @Autowired
     VoucherRepo voucherRepo;
 
     @Autowired
@@ -84,8 +88,8 @@ public class BanHangController {
 
 
     @GetMapping("/hoa-don/chi-tiet")
-    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication) {
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+
+    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication, @RequestParam(value="tenSP",required = false) String tenSP) {
         if (authentication != null) {
             // Lấy thông tin người dùng đã đăng nhập
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
@@ -95,6 +99,11 @@ public class BanHangController {
 
         // Lấy danh sách tất cả các chi tiết sản phẩm
         List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findByTenSanPham(tenSP);
+        if (tenSP!=null){
+            model.addAttribute("showModal",true);
+            model.addAttribute("tenSP",tenSP);
+        }
         // Lấy danh sách tất cả mã giảm giá
         List<MaGiamGia> listKM = voucherRepo.findAll();
         // Lấy danh sách khách hàng sắp xếp theo ngày tạo
@@ -104,7 +113,9 @@ public class BanHangController {
 
         // Lấy danh sách chi tiết hóa đơn dựa trên ID hóa đơn
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idHoaDon);
-        model.addAttribute("listHDCT", listHDCT); // Thêm danh sách chi tiết hóa đơn vào model
+
+        model.addAttribute("listHDCT", listHDCT);
+//        model.addAttribute("idHD", idHoaDon);
 
         // Tìm hóa đơn dựa trên ID, nếu không có thì ném ra ngoại lệ
         HoaDon hoadon = hoaDonRepository.findById(idHoaDon)
