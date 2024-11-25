@@ -38,7 +38,7 @@ public class HoaDon {
     private String ghiChu;
 
     @Column(name = "tong_tien")
-    private Float tongTien;
+    private Double tongTien;
 
     @ManyToOne
     @JoinColumn(name = "id_ma_giam_gia")
@@ -62,19 +62,19 @@ public class HoaDon {
     private LocalDate ngayShip;
 
     @Column(name = "tien_ship")
-    private float tienShip;
+    private Double tienShip;
 
     @Column(name = "tien_coc")
-    private float tienCoc;
+    private Double tienCoc;
 
     @Column(name = "ngay_nhan")
     private LocalDate ngayNhan;
 
     @Column(name = "tien_thu")
-    private float tienThu;
+    private Double tienThu;
 
     @Column(name = "so_tien_giam_gia")
-    private float soTienGiamGia;
+    private Double soTienGiamGia;
 
     @Column(name = "trang_thai")
     private Integer trangThai;

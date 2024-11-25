@@ -48,15 +48,15 @@ public class MaGiamGia {
 
         @NotNull
         @Column(name = "gia_tri_giam")
-        private Long giaTriGiam;
+        private Double giaTriGiam;
 
         @NotNull
         @Column(name = "gia_tri_toi_thieu")
-        private Long giaTriToiThieu;
+        private Double giaTriToiThieu;
 
         @NotNull
         @Column(name = "gia_tri_toi_da")
-        private Long giaTriToiDa;
+        private Double giaTriToiDa;
 
         @NotNull
         @Column(name = "trang_thai")
