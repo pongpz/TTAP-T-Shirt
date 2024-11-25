@@ -3,6 +3,7 @@ package com.project.ttaptshirt.controller.adminController;
 import com.project.ttaptshirt.config.Config;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
+import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.repository.VoucherRepo;
@@ -60,6 +61,9 @@ public class BanHangController {
     HoaDonChiTietService hoaDonChiTietService;
 
     @Autowired
+    ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    @Autowired
     VoucherRepo voucherRepo;
 
     @Autowired
@@ -92,14 +96,18 @@ public class BanHangController {
 
 
     @GetMapping("/hoa-don/chi-tiet")
-    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication) {
+    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication, @RequestParam(value="tenSP",required = false) String tenSP) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
 
-        List<ChiTietSanPham> listCTSP = chiTietSanPhamService.findAll();
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findByTenSanPham(tenSP);
+        if (tenSP!=null){
+            model.addAttribute("showModal",true);
+            model.addAttribute("tenSP",tenSP);
+        }
         List<MaGiamGia> listKM = voucherRepo.findAll();
         List<KhachHang> listkh = khachHangService.findAll();
         model.addAttribute("listKh", listkh);
@@ -107,6 +115,7 @@ public class BanHangController {
         model.addAttribute("listCTSP", listCTSP);
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idHoaDon);
         model.addAttribute("listHDCT", listHDCT);
+//        model.addAttribute("idHD", idHoaDon);
 
 //
 
@@ -443,6 +452,13 @@ public class BanHangController {
                                   @RequestParam("soLuong") Integer soLuongMua,
                                   RedirectAttributes redirectAttributes) {
 
+        // Check if 'soLuong' is null or invalid
+        if (soLuongMua == null || soLuongMua < 1) {
+            redirectAttributes.addFlashAttribute("error", "Số lượng không hợp lệ.");
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+        }
+
+
         // Lấy danh sách chi tiết hóa đơn (HDCT) dựa trên ID hóa đơn (idhd)
         List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietService.getListHdctByIdHd(idhd);
         Boolean isHdctExist = false;
@@ -494,6 +510,16 @@ public class BanHangController {
             }
         } else {
             // Nếu sản phẩm chưa tồn tại trong HDCT, tạo mới một HDCT
+
+            // Lấy thông tin sản phẩm chi tiết (CTSP)
+            ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
+
+            // Kiểm tra số lượng tồn kho có đủ không
+            if (soLuongMua > chiTietSanPham1.getSoLuong()) {
+                redirectAttributes.addFlashAttribute("isQuantityNotEnough", true);
+                redirectAttributes.addFlashAttribute("messageQuantityNotEnough", "Số lượng không đủ, chỉ còn " + chiTietSanPham1.getSoLuong() + " sản phẩm");
+                return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+            }
             HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
             HoaDon hoaDon = new HoaDon();
             hoaDon.setId(idhd);
@@ -507,7 +533,6 @@ public class BanHangController {
             hoaDonChiTietService.save(hoaDonChiTiet);
 
             // Lấy thông tin sản phẩm chi tiết (CTSP)
-            ChiTietSanPham chiTietSanPham1 = chiTietSanPhamService.findById(idctsp);
             int soLuongSauUpdate;
 
             // Kiểm tra số lượng tồn kho có đủ không
