@@ -44,7 +44,8 @@
                  style="height: 800px; background-color: var(--bs-info-bg-subtle); margin-right: 30px; overflow-y: auto; padding: 20px">
                 <div class="row">
                     <h3 class="col-6">Sản Phẩm</h3>
-                    <button class="col-2 btn btn-primary" id="btn-select-products" data-bs-toggle="modal" data-bs-target="#modalAddSP">Thêm Sản
+                    <button class="col-2 btn btn-primary" id="btn-select-products" data-bs-toggle="modal"
+                            data-bs-target="#modalAddSP">Thêm Sản
                         Phẩm
                     </button>
 
@@ -54,7 +55,7 @@
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered"
                              id="modal-dialog"
-                             style="max-width: 90%;"> <!-- Modal wider -->
+                             style="max-width: 90%;">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn mua vào hóa
@@ -98,7 +99,9 @@
                                             <td th:text="${ctsp.kichCo.ten}"></td>
                                             <td th:text="${ctsp.mauSac.ten}"></td>
                                             <td th:text="${ctsp.soLuong}"></td>
-                                            <td th:text="${ctsp.giaBan} + 'vnd'"></td>
+                                            <td th:text="${ctsp.giaBan != null ?
+                     numberUtils.formatCurrency(ctsp.giaBan) :
+                     'N/A'}"></td>
                                             <td>
                                                 <form class="row"
                                                       th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
@@ -206,20 +209,28 @@
                     </div>
                     <div class="col-2">
                         <h6>Đơn giá</h6>
-                        <span th:text="${hdct.chiTietSanPham.giaBan + ' VND'}">100,000 VND</span><br/><br/><br/>
+                        <span style="font-size: 14px; font-weight: bold;"
+                              th:text="${hdct.chiTietSanPham.giaBan != null ?
+                     numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan) :
+                     'N/A'}"></span>
+
+                        <br/><br/><br/>
                         <h6>Số lượng</h6>
-                        <span th:text="${hdct.soLuong}">1</span>
+                        <span style="font-size: 14px;font-weight: bold" th:text="${hdct.soLuong}">1</span>
                     </div>
                     <div class="col-2">
                         <h6>Tổng tiền</h6>
-                        <span th:text="${hdct.chiTietSanPham.giaBan * hdct.soLuong + ' VND'}">100,000 VND</span>
+                        <span style="font-size: 14px; font-weight: bold;"
+                              th:text="${hdct.chiTietSanPham.giaBan != null ?
+                     numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan * hdct.soLuong) :
+                     'N/A'}"></span>
                     </div>
                     <div class="col-2">
                         <br/>
                         <button class="btn btn-warning"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalUpdateQuantity"
-                                th:onclick="'openModal(' + ${hdct.id} + ',' + ${hdct.soLuong} + ',' + ${hdct.chiTietSanPham.soLuong} + ');'">
+                                th:onclick="'openModal(' + ${hdct.id} + ',' + ${hdct.soLuong} + ',' + ${hdct.chiTietSanPham.soLuong+hdct.soLuong} + ');'">
                             Sửa Số Lượng
                         </button>
                         <script>
@@ -432,28 +443,102 @@
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Tổng Tiền:</label>
                     <label class="col-4" style="font-size: 18px; font-weight: bold"
-                           th:text="${hoadon != null && hoadon.tongTien != null ? hoadon.tongTien + ' đ' : 'Chưa có dữ liệu'}">
+                           th:text="${hoadon != null && hoadon.tongTien != null ? numberUtils.formatCurrency(hoadon.tongTien): 'Chưa có dữ liệu'}">
                     </label>
                 </div>
 
 
                 <br/>
                 <div class="row">
-                    <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher(nếu
-                        có):</label>
-                    <label class="col-4" style="font-size: 18px; font-weight: bold">0 VND</label>
+                    <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher(nếu có):</label>
+                    <label class="col-4" style="font-size: 18px; font-weight: bold"
+                           th:text="${hoadon.soTienGiamGia!=null?numberUtils.formatCurrency(hoadon.soTienGiamGia) :'chưa có '}"></label>
                     <button class="col-3 btn btn-primary"
-                            onclick="toastWarning('Thông Báo','Chức năng đang được phát triển !')">
-                        Chọn
-                        Voucher
+                            data-bs-toggle="modal" data-bs-target="#modalAddVoucher"
+                    >
+                        Chọn Voucher
                     </button>
+                    <!-- Modal voucher -->
+                    <div class="modal fade" id="modalAddVoucher" tabindex="-1" aria-labelledby="modalAddVoucherLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalAddVoucherLabel">Danh Sách Voucher Hợp Lệ</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div>
+                                    <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get" id="form-search-voucher">
+                                        <input class="col-7" type="text" name="mgg" th:value="${mgg}">
+                                        <input class="col-7" type="hidden" name="hoadonId" th:value="${hoadon.id}">
+                                        <button class="col-1 btn btn-primary" type="submit">Tìm kiếm</button>
+                                        <a  class="col-1 btn btn-primary"
+                                            th:href="@{/admin/ban-hang/huy-ma-giam-gia?hoadonId={idHd}(idHd=${hoadon.id})}">Bỏ chọn</a>
+                                    </form>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Voucher Table -->
+                                    <table class="table table-bordered table-striped">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Mã</th>
+                                            <th>Tên</th>
+                                            <th>Hình Thức</th>
+                                            <th>Giá Trị Giảm</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!-- Loop Through listVoucherValid -->
+                                        <tr th:each="voucher, stat : ${listVoucherValid}">
+                                            <td th:text="${stat.index + 1}"></td>
+                                            <td th:text="${voucher.ma}"></td>
+                                            <td th:text="${voucher.ten}"></td>
+                                            <td th:text="${voucher.hinhThuc ? 'VND' : 'Phần trăm'}"></td>
+                                            <td th:text="${numberUtils.formatCurrency(voucher.giaTriGiam)}"></td>
+                                            <td>
+                                                <!-- Add Voucher Form -->
+                                                <form th:action="@{/admin/ban-hang/chon-khuyen-mai}" method="post"
+                                                      onsubmit="return confirmVoucherSelection();">
+                                                    <!-- Hidden fields for invoice ID and voucher ID -->
+                                                    <input type="hidden" name="idhd" th:value="${hoadon.id}"/>
+                                                    <input type="hidden" name="idkm" th:value="${voucher.id}"/>
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        Chọn
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <script>
+                                    // JavaScript function for confirmation
+                                    function confirmVoucherSelection() {
+                                        return confirm("Bạn có chắc chắn muốn chọn voucher này?");
+                                    }
+                                </script>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
 
                 <hr/>
                 <div class="row">
                     <label class="col-5" style="font-size: 18px; font-weight: bold">Số Tiền Thanh toán:</label>
                     <label class="col-4" style="font-size: 18px; font-weight: bold"
-                           th:text="${hoadon != null && hoadon.tongTien != null ? hoadon.tongTien + ' đ' : 'Chưa có dữ liệu'}"
+
+                           th:text="${hoadon != null && hoadon.tienThu != null ? numberUtils.formatCurrency(hoadon.tienThu) : 'Chưa có dữ liệu'}"
                            id="tongTienLabel"></label>
                 </div>
                 <br/>
@@ -601,7 +686,7 @@
                     $.ajax({
                         url: '/admin/khach-hang/searchByPhoneNumber',
                         type: 'GET',
-                        data: { phoneNumber: phoneNumber },
+                        data: {phoneNumber: phoneNumber},
                         success: function (response) {
                             // Clear the existing table body within the modal
                             const tbody = $('#modalAddCustomer table tbody');
@@ -698,6 +783,21 @@
             /*]]>*/
         </script>
 
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var addVoucherSuccess = [[${addVoucherSuccess}]];
+            var addVoucherFailed = [[${addVoucherFailed}]];
+            var messageAddVoucher = '[[${messageAddVoucher}]]'; // Retrieve the message
+
+            if (addVoucherSuccess) {
+                toastSuccess('Thành Công!', messageAddVoucher); // Display success toast
+            }
+
+            if (addVoucherFailed) {
+                toastError('Thất Bại!', messageAddVoucher); // Display error toast
+            }
+            /*]]>*/
+        </script>
 
         <script th:inline="javascript">
             /*<![CDATA[*/
@@ -754,9 +854,19 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const showModal = [[${showModal}]]; // Thymeleaf expression
+                const showModal = [[${showModalsp}]]; // Thymeleaf expression
                 if (showModal) {
                     const modal = new bootstrap.Modal(document.getElementById('modalAddSP'));
+                    modal.show();
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const showModal = [[${showModalvc}]]; // Thymeleaf expression
+                if (showModal) {
+                    const modal = new bootstrap.Modal(document.getElementById('modalAddVoucher'));
                     modal.show();
                 }
             });

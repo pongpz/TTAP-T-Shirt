@@ -174,13 +174,13 @@ public class SanPhamCustomerController {
             model.addAttribute("noDetails", true);
         }
 
-        Set<MauSac> colors = chiTietSanPhamList.stream()
-                .map(ChiTietSanPham::getMauSac)
-                .collect(Collectors.toSet());
-
-        Set<KichCo> sizes = chiTietSanPhamList.stream()
-                .map(ChiTietSanPham::getKichCo)
-                .collect(Collectors.toSet());
+//        Set<MauSac> colors = chiTietSanPhamList.stream()
+//                .map(ChiTietSanPham::getMauSac)
+//                .collect(Collectors.toSet());
+//
+//        Set<KichCo> sizes = chiTietSanPhamList.stream()
+//                .map(ChiTietSanPham::getKichCo)
+//                .collect(Collectors.toSet());
 
         ChiTietSanPham chiTietSanPham = !chiTietSanPhamList.isEmpty() ? chiTietSanPhamList.get(0) : null;
         double giaBan = chiTietSanPham != null ? chiTietSanPham.getGiaBan() : 0;
@@ -192,8 +192,8 @@ public class SanPhamCustomerController {
         model.addAttribute("sanPham", sanPham);
         model.addAttribute("mainImage", images.isEmpty() ? "/images/no-image.png" : images.get(0));
         model.addAttribute("images", images);
-        model.addAttribute("colors", colors);
-        model.addAttribute("sizes", sizes);
+        model.addAttribute("colors", mauSacRepository.findAll());
+        model.addAttribute("sizes", kichCoRepository.findAll());
 
         return "user/home/sanphamdetail";
     }

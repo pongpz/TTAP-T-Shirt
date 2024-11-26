@@ -39,4 +39,9 @@ public class KhachHangServiceImpl implements KhachHangService {
         }
         return khachHangRepository.searchKhachHangBySoDienThoai(phoneNumber);
     }
+
+    @Override
+    public List<KhachHang> findAllOrderByNgayTao() {
+        return khachHangRepository.findAllOrderByNgayTao();
+    }
 }

@@ -217,7 +217,7 @@ public class GioHangService {
         double totalAmount = hoaDonChiTietList.stream()
                 .mapToDouble(item -> item.getDonGia() * item.getSoLuong())
                 .sum();
-        hoaDon.setTongTien((float) totalAmount);
+        hoaDon.setTongTien(totalAmount);
         hoaDonRepository.save(hoaDon);
 
         // Xóa các sản phẩm đã chọn khỏi giỏ hàng
@@ -228,43 +228,58 @@ public class GioHangService {
         return hoaDon;
     }
 
+    @Transactional
     public void addToCart(User user, AddToCartRequest request) {
-        // Tìm sản phẩm chi tiết dựa trên size và màu sắc
+        // Tìm sản phẩm chi tiết
         ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository
                 .findChiTietSanPham(request.getProductId(), request.getSize(), request.getColor())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm chi tiết phù hợp!"));
+                .orElseThrow(() -> new ProductNotFoundException("Không tìm thấy sản phẩm chi tiết phù hợp!"));
 
-        // Kiểm tra số lượng tồn kho
-        if (chiTietSanPham.getSoLuong() < request.getQuantity()) {
-            throw new RuntimeException("Số lượng sản phẩm không đủ!");
+        // Kiểm tra tồn kho
+        synchronized (this) {
+            if (chiTietSanPham.getSoLuong() < request.getQuantity()) {
+                throw new InsufficientStockException("Số lượng sản phẩm không đủ!");
+            }
+            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - request.getQuantity());
+            chiTietSanPhamRepository.save(chiTietSanPham);
         }
 
-        // Lấy hoặc tạo mới giỏ hàng cho user
+        // Lấy giỏ hàng
         GioHang gioHang = getOrCreateCart(user);
 
         Optional<GioHangChiTiet> existingItem = gioHang.getItems().stream()
-                .filter(item -> item.getChiTietSanPham().getId().equals(request.getProductId()))
+                .filter(item -> item.getChiTietSanPham().getSanPham().getId().equals(request.getProductId()) &&
+                        item.getChiTietSanPham().getKichCo().getId().equals(request.getSize()) &&
+                        item.getChiTietSanPham().getMauSac().getId().equals(request.getColor()))
                 .findFirst();
 
         if (existingItem.isPresent()) {
             GioHangChiTiet item = existingItem.get();
             item.setSoLuong(item.getSoLuong() + request.getQuantity());
             gioHangChiTietRepository.save(item);
-        }else {
-            // Thêm chi tiết sản phẩm vào giỏ hàng
+        } else {
             GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
             gioHangChiTiet.setGioHang(gioHang);
             gioHangChiTiet.setChiTietSanPham(chiTietSanPham);
             gioHangChiTiet.setSoLuong(request.getQuantity());
             gioHangChiTiet.setGia(chiTietSanPham.getGiaBan());
-
             gioHangChiTietRepository.save(gioHangChiTiet);
-
-            // Cập nhật số lượng tồn kho
-            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - request.getQuantity());
-            chiTietSanPhamRepository.save(chiTietSanPham);
         }
+
+        // Cập nhật tổng giá trị giỏ hàng
         updateTotalPrice(gioHang);
+    }
+
+    public class ProductNotFoundException extends RuntimeException {
+        public ProductNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public class InsufficientStockException extends RuntimeException {
+        public InsufficientStockException(String message) {
+            super(message);
+        }
     }
 
 
