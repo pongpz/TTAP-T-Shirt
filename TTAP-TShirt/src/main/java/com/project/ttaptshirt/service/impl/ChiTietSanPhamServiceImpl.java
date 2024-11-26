@@ -1,6 +1,9 @@
 package com.project.ttaptshirt.service.impl;
 
 import com.project.ttaptshirt.entity.ChiTietSanPham;
+import com.project.ttaptshirt.entity.KichCo;
+import com.project.ttaptshirt.entity.MauSac;
+import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.service.ChiTietSanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,10 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
     @Override
     public void updateSoLuongCtsp(Integer soLuong, Long id) {
         chiTietSanPhamRepository.updateSoLuongCTSP(soLuong,id);
+    }
+
+    public boolean existsBySanPhamAndMauSacAndKichCo(SanPham sanPham, MauSac mauSac, KichCo kichCo) {
+        return chiTietSanPhamRepository.existsBySanPhamAndMauSacAndKichCo(sanPham, mauSac, kichCo);
     }
 
 }

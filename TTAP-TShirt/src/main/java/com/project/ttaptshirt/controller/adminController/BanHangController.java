@@ -660,7 +660,7 @@ public class BanHangController {
             }
 
             // Thông báo thêm thành công
-            redirectAttributes.addFlashAttribute("addSuccess", true);
+            redirectAttributes.addFlashAttribute("addSuccess",true);
         }
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
