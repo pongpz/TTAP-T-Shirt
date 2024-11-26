@@ -240,7 +240,7 @@ public class GioHangService {
             if (chiTietSanPham.getSoLuong() < request.getQuantity()) {
                 throw new InsufficientStockException("Số lượng sản phẩm không đủ!");
             }
-            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - request.getQuantity());
+//            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - request.getQuantity());
             chiTietSanPhamRepository.save(chiTietSanPham);
         }
 

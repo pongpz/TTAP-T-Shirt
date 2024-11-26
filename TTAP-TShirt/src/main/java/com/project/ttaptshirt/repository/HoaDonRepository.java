@@ -61,6 +61,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
 
     List<HoaDon> findByTrangThaiAndNgayTaoBefore(int trangThai, LocalDateTime ngayTao);
 
+    @Query("select hd from HoaDon hd where hd.khachHang =:khachHang order by hd.id desc ")
     List<HoaDon> findByKhachHang(KhachHang khachHang);
 
 }
