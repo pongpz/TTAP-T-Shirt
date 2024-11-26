@@ -65,8 +65,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div>
-                                        <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get"
-                                              id="form-search-product">
+                                        <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get" id="form-search-product">
                                             <input class="col-7" type="text" name="tenSP" th:value="${tenSP}">
                                             <input class="col-7" type="hidden" name="hoadonId" th:value="${hoadon.id}">
                                             <button class="col-1 btn btn-primary" type="submit">Tìm kiếm
@@ -319,9 +318,6 @@
 
 
                     <!--                    Modal khach hang-->
-                    <a class="col-4 btn btn-primary"
-                       th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}">Bỏ chọn khách
-                        hàng</a>
                     <div class="modal fade" th:id="'modalAddCustomer'" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog1">
@@ -338,8 +334,8 @@
                                         <input placeholder="Tìm kiếm theo số điện thoại khách hàng"
                                                style="width: 620px;height: 60px" class="col-7" type="number"
                                                name="soDienThoaiKH">
-                                        <a href="#" class="btn btn-primary"
-                                           style="width: 120px;height: 60px;margin-right: 30px">Khách vãng lai</a>
+                                        <a class="col-4 btn btn-primary" style="width: 120px;height: 60px;margin-right: 30px"
+                                           th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}">Khách vãng lai</a>
                                         <button class="btn btn-primary"
                                                 style="width: 120px;height: 60px;margin-right: 30px;"
                                                 data-bs-toggle="modal" data-bs-target="#modalAddNewCustomer">
@@ -454,8 +450,7 @@
 
                 <br/>
                 <div class="row">
-                    <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher(nếu
-                        có):</label>
+                    <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher(nếu có):</label>
                     <label class="col-4" style="font-size: 18px; font-weight: bold"
                            th:text="${hoadon.soTienGiamGia!=null?numberUtils.formatCurrency(hoadon.soTienGiamGia) :'chưa có '}"></label>
                     <button class="col-3 btn btn-primary"
@@ -473,12 +468,22 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
+                                <div>
+                                    <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get" id="form-search-voucher">
+                                        <input class="col-7" type="text" name="mgg" th:value="${mgg}">
+                                        <input class="col-7" type="hidden" name="hoadonId" th:value="${hoadon.id}">
+                                        <button class="col-1 btn btn-primary" type="submit">Tìm kiếm</button>
+                                        <a  class="col-1 btn btn-primary"
+                                            th:href="@{/admin/ban-hang/huy-ma-giam-gia?hoadonId={idHd}(idHd=${hoadon.id})}">Bỏ chọn</a>
+                                    </form>
+                                </div>
                                 <div class="modal-body">
                                     <!-- Voucher Table -->
                                     <table class="table table-bordered table-striped">
                                         <thead class="table-light">
                                         <tr>
                                             <th>#</th>
+                                            <th>Mã</th>
                                             <th>Tên</th>
                                             <th>Hình Thức</th>
                                             <th>Giá Trị Giảm</th>
@@ -489,6 +494,7 @@
                                         <!-- Loop Through listVoucherValid -->
                                         <tr th:each="voucher, stat : ${listVoucherValid}">
                                             <td th:text="${stat.index + 1}"></td>
+                                            <td th:text="${voucher.ma}"></td>
                                             <td th:text="${voucher.ten}"></td>
                                             <td th:text="${voucher.hinhThuc ? 'VND' : 'Phần trăm'}"></td>
                                             <td th:text="${numberUtils.formatCurrency(voucher.giaTriGiam)}"></td>
@@ -848,9 +854,19 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const showModal = [[${showModal}]]; // Thymeleaf expression
+                const showModal = [[${showModalsp}]]; // Thymeleaf expression
                 if (showModal) {
                     const modal = new bootstrap.Modal(document.getElementById('modalAddSP'));
+                    modal.show();
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const showModal = [[${showModalvc}]]; // Thymeleaf expression
+                if (showModal) {
+                    const modal = new bootstrap.Modal(document.getElementById('modalAddVoucher'));
                     modal.show();
                 }
             });

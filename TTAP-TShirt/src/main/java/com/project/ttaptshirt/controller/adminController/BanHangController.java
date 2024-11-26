@@ -6,6 +6,7 @@ import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
+import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.repository.VoucherRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
@@ -65,7 +66,7 @@ public class BanHangController {
     ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @Autowired
-    VoucherRepo voucherRepo;
+    MaGiamGiaRepo maGiamGiaRepo;
 
     @Autowired
     KhachHangService khachHangService;
@@ -90,7 +91,7 @@ public class BanHangController {
 
     @GetMapping("/hoa-don/chi-tiet")
 
-    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication, @RequestParam(value="tenSP",required = false) String tenSP) {
+    public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication, @RequestParam(value="tenSP",required = false) String tenSP, @RequestParam(value="mgg",required = false) String mgg) {
         if (authentication != null) {
             // Lấy thông tin người dùng đã đăng nhập
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
@@ -101,11 +102,15 @@ public class BanHangController {
         // Lấy danh sách tất cả các chi tiết sản phẩm
         List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findByTenSanPham(tenSP);
         if (tenSP!=null){
-            model.addAttribute("showModal",true);
+            model.addAttribute("showModalsp",true);
             model.addAttribute("tenSP",tenSP);
         }
+        if (mgg!=null){
+            model.addAttribute("showModalvc",true);
+            model.addAttribute("mgg",mgg);
+        }
         // Lấy danh sách tất cả mã giảm giá
-        List<MaGiamGia> listKM = voucherRepo.findAll();
+        List<MaGiamGia> listKM = maGiamGiaRepo.getMaGiamGiaByTrangThaiKeyword(true,mgg);
         // Lấy danh sách khách hàng sắp xếp theo ngày tạo
         List<KhachHang> listkh = khachHangService.findAllOrderByNgayTao();
         model.addAttribute("listKh", listkh); // Thêm danh sách khách hàng vào model
@@ -272,13 +277,17 @@ public class BanHangController {
         MaGiamGia voucher = hoaDon.getMaGiamGia();
         double discount = 0.0;
 
+        // Nếu có mã giảm giá, tính tiền giảm
         if (voucher != null) {
+            // Trường hợp giảm giá theo %
             if (voucher.getHinhThuc().equals(false)) {
-                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore;
+                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore; // Tính tiền giảm
                 if (discount > voucher.getGiaTriToiDa()) {
-                    discount = voucher.getGiaTriToiDa();
+                    discount = voucher.getGiaTriToiDa(); // Áp dụng giới hạn tối đa nếu có
                 }
-            } else if (voucher.getHinhThuc().equals(true)) {
+            }
+            // Trường hợp giảm giá cố định
+            else {
                 discount = voucher.getGiaTriGiam();
             }
         }
@@ -648,6 +657,39 @@ public class BanHangController {
         hoaDon.setKhachHang(null);
         hoaDonRepository.save(hoaDon);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+    }
+
+    @Transactional
+    @GetMapping("/huy-ma-giam-gia")
+    public String huyMgg(@RequestParam("hoadonId") Long idhd) {
+        HoaDon hoaDon = hoaDonRepository.getReferenceById(idhd);
+        if (hoaDon.getMaGiamGia()==null){
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+        }else {
+            try {
+                List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idhd);
+                double totalMoneyBefore = listHDCT.stream()
+                        .mapToDouble(hdct -> {
+                            int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0; // Kiểm tra số lượng
+                            double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null)
+                                    ? hdct.getChiTietSanPham().getGiaBan() : 0.0; // Kiểm tra giá bán
+                            return soLuong * giaBan;
+                        })
+                        .sum();
+                Long idMgg = hoaDon.getMaGiamGia().getId();
+                MaGiamGia mgg = maGiamGiaRepo.getReferenceById(idMgg);
+                int soLuong = mgg.getSoLuong() +1;
+                mgg.setSoLuong(soLuong);
+                maGiamGiaRepo.save(mgg);
+                hoaDon.setMaGiamGia(null);
+                hoaDon.setSoTienGiamGia(0.0);
+                hoaDon.setTienThu(totalMoneyBefore);
+                hoaDonRepository.save(hoaDon);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+        }
     }
 
     @PostMapping("/chon-khuyen-mai")

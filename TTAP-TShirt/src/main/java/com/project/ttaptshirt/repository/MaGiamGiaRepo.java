@@ -26,4 +26,7 @@ public interface MaGiamGiaRepo extends JpaRepository<MaGiamGia, Long> {
 
     @Query("select mgg from MaGiamGia mgg where mgg.ngayKetThuc <:ngayKetThuc or mgg.soLuong <= 0 and mgg.trangThai = true")
     List<MaGiamGia> getMGGHetHan(LocalDateTime ngayKetThuc);
+
+    @Query("select mgg from MaGiamGia mgg where mgg.trangThai =:trangThai and (:keyword is null or mgg.ma like %:keyword% or mgg.ten like %:keyword%) order by mgg.id desc")
+    List<MaGiamGia> getMaGiamGiaByTrangThaiKeyword (Boolean trangThai,String keyword);
 }
