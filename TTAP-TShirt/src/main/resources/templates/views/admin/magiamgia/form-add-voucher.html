@@ -89,19 +89,19 @@
     </div>
     <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${mgg.giaTriToiDa ?: ''}">
 
-    <label class="form-label">Trạng thái</label>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" id="flexRadioDefault1" value="true" th:field="*{mgg.trangThai}" >
-        <label class="form-check-label" for="flexRadioDefault1">
-            Hoạt động
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" id="flexRadioDefault2"  th:field="*{mgg.trangThai}" value="false">
-        <label class="form-check-label" for="flexRadioDefault2">
-            Ngưng hoạt động
-        </label>
-    </div>
+<!--    <label class="form-label">Trạng thái</label>-->
+<!--    <div class="form-check">-->
+<!--        <input class="form-check-input" type="radio" id="flexRadioDefault1" value="true" th:field="*{mgg.trangThai}" >-->
+<!--        <label class="form-check-label" for="flexRadioDefault1">-->
+<!--            Hoạt động-->
+<!--        </label>-->
+<!--    </div>-->
+<!--    <div class="form-check">-->
+<!--        <input class="form-check-input" type="radio" id="flexRadioDefault2"  th:field="*{mgg.trangThai}" value="false">-->
+<!--        <label class="form-check-label" for="flexRadioDefault2">-->
+<!--            Ngưng hoạt động-->
+<!--        </label>-->
+<!--    </div>-->
     <button class="btn btn-primary">Thêm</button>
     <h4 class="text-danger mt-3">[[${errors}]]</h4>
 </form>

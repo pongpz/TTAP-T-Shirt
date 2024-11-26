@@ -58,7 +58,7 @@ public class MaGiamGia {
         @Column(name = "gia_tri_toi_da")
         private Double giaTriToiDa;
 
-        @NotNull
+//        @NotNull
         @Column(name = "trang_thai")
         private Boolean trangThai;
 
@@ -76,5 +76,19 @@ public class MaGiamGia {
         @Column(name = "so_luong")
         private Integer soLuong;
 
+        // Method to check if the voucher is started
+        public boolean isStart() {
+                return LocalDateTime.now().isAfter(ngayBatDau);
+        }
+
+        // Method to check if the voucher is expired
+        public boolean isExpired() {
+                return LocalDateTime.now().isAfter(ngayKetThuc);
+        }
+
+        // Optional: Method to check if the voucher is valid (active and within the valid date range)
+        public boolean isValid() {
+                return isStart() && !isExpired() && trangThai != null && trangThai;
+        }
 }
 

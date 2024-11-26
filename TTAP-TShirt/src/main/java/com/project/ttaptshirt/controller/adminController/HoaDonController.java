@@ -61,13 +61,14 @@ public class HoaDonController {
         return "redirect:/admin/hoa-don/hien-thi";
     }
 
+
     @GetMapping("/tim-kiem")
     public String timKiem(
                           @RequestParam(required = false, value = "ma") String ma,
                           @RequestParam(required = false, value = "keyword") String keyword,
 //                          @RequestParam(required = false, value = "tennv") String tennv,
 //                          @RequestParam(required = false, value = "tenkh") String tenkh,
-//                          @RequestParam(required = false, value = "sdt") String sdt,
+                          @RequestParam(required = false, value = "loaiDon") Integer loaiDon,
                           @RequestParam(required = false, value = "trangThai") Integer trangThai,
                           @RequestParam(value = "ngayThanhToan", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ngayThanhToan,
                           @RequestParam(defaultValue = "0") Integer page,
@@ -76,9 +77,9 @@ public class HoaDonController {
 //        List<HoaDon> lsSearch = hr.search("", "", "", "", null, null, pageab);
         List<HoaDon> lsSearch = new ArrayList<>();
         if(keyword.trim().isEmpty()){
-            lsSearch = hr.search2(ma.trim(),trangThai,ngayThanhToan,pageab);
+            lsSearch = hr.search2(ma.trim(),trangThai,ngayThanhToan,loaiDon,pageab);
         }else {
-            lsSearch = hr.search(ma.trim(),keyword.trim(),trangThai,ngayThanhToan,pageab);
+            lsSearch = hr.search(ma.trim(),keyword.trim(),trangThai,ngayThanhToan,loaiDon,pageab);
         }
         NumberUtils numberUtils = new NumberUtils();
         model.addAttribute("numberUtils",numberUtils);
@@ -90,6 +91,7 @@ public class HoaDonController {
 //        model.addAttribute("sdt", sdt);
         model.addAttribute("keyword", keyword.trim());
         model.addAttribute("ngayThanhToan", ngayThanhToan);
+        model.addAttribute("loaiDon", loaiDon);
         model.addAttribute("trangThai", trangThai);
         model.addAttribute("page", page);
         if (lsSearch.size() == 0) {
