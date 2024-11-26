@@ -641,34 +641,57 @@
                 document.getElementById('quantityAvaliable').innerText = 'Số Lượng khả dụng: ' + quantityAvaliable;
             }
 
+            <script src="/js/sweetalert2.min.js"></script>
+
+        <script>
             function checkout() {
                 // Get the ID of the invoice (HoaDon) you want to process
-                var hoaDonId = document.getElementById("hoaDonIdCheckOut").value; // Assuming you have an input field with this ID, or use a variable if it's passed from the server
+                var hoaDonId = document.getElementById("hoaDonIdCheckOut").value;
 
                 // Trigger the payment confirmation by sending the ID to your backend
                 fetch(`/admin/ban-hang/hoa-don/xac-nhan-thanh-toan?idhd=${hoaDonId}`, {
-                    method: 'POST', // Use POST to trigger the backend method
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: null // You can pass other data here if needed
+                    body: null
                 })
                     .then(response => {
                         if (response.ok) {
-                            // If payment confirmation was successful, redirect to the success page or show a success message
-                            window.location.href = '/admin/ban-hang'; // Or any other page you want to redirect to
+                            // If payment confirmation was successful, display a success SweetAlert
+                            Swal.fire({
+                                title: 'Thanh toán thành công!',
+                                text: 'Hóa đơn đã được thanh toán.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                // Redirect after the user clicks "OK"
+                                window.location.href = '/admin/ban-hang'; // Or any other page you want to redirect to
+                            });
                         } else {
-                            // Handle any errors, show a message
-                            alert("Thanh toán thất bại. Vui lòng thử lại!");
+                            // Handle any errors, show a failure SweetAlert
+                            Swal.fire({
+                                title: 'Thanh toán thất bại!',
+                                text: 'Vui lòng thử lại sau.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
                         }
                     })
                     .catch(error => {
                         console.error("Error during checkout:", error);
-                        alert("Có lỗi xảy ra. Vui lòng thử lại!");
+                        // Handle network or other errors
+                        Swal.fire({
+                            title: 'Có lỗi xảy ra!',
+                            text: 'Vui lòng thử lại.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     });
             }
 
-            //đóng modal danh sách khách hàng khi modal thêm nhanh hiển thị
+
+        //đóng modal danh sách khách hàng khi modal thêm nhanh hiển thị
             document.querySelector('#modalAddNewCustomer').addEventListener('show.bs.modal', function () {
                 var modal1 = bootstrap.Modal.getInstance(document.getElementById('modalAddCustomer'));
                 modal1.hide();
@@ -740,6 +763,8 @@
                 crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="/js/toastMessage.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="/js/sweetalert.min.js"></script>
         <script th:inline="javascript">
             /*<![CDATA[*/
             /* Check if the deleteSuccess attribute is present in the model */

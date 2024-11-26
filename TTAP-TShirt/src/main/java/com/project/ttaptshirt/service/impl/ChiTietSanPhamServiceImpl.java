@@ -50,4 +50,8 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
         return chiTietSanPhamRepository.existsBySanPhamAndMauSacAndKichCo(sanPham, mauSac, kichCo);
     }
 
+    public boolean existsByMauSacAndKichCoAndSanPhamId(Long idMauSac, Long idKichCo, Long sanPhamId) {
+        return chiTietSanPhamRepository.existsByMauSacIdAndKichCoIdAndSanPhamId(idMauSac, idKichCo, sanPhamId);
+    }
+
 }
