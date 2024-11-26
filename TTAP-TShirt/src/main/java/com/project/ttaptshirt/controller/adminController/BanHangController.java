@@ -5,6 +5,7 @@ import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
+import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import com.project.ttaptshirt.repository.UserRepo;
@@ -61,6 +62,9 @@ public class BanHangController {
 
     @Autowired
     HoaDonChiTietService hoaDonChiTietService;
+
+    @Autowired
+    HoaDonChiTietRepository hoaDonChiTietRepository;
 
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
@@ -181,7 +185,7 @@ public class BanHangController {
         return "admin/banhangtaiquay/chiTietHoaDon";
     }
 
-
+    @Transactional
     @PostMapping("/hoa-don/xac-nhan-thanh-toan")
     public String xacNhanThanhToan(
             @RequestParam("idhd") Long idHD, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
@@ -196,13 +200,21 @@ public class BanHangController {
         // Tìm hóa đơn theo ID
         HoaDon hoaDon = hoaDonService.findById(idHD);
         // Lấy danh sách chi tiết hóa đơn theo ID hóa đơn
-        List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idHD);
+        List<HoaDonChiTiet> listHDCT = hoaDonChiTietRepository.getHoaDonChiTietByIdHd(idHD);
 
         // Nếu hóa đơn không có chi tiết, chuyển hướng về trang chi tiết hóa đơn với thông báo lỗi
-        if (listHDCT.isEmpty()) {
+        if (listHDCT== null) {
             System.out.println("Hóa đơn trống");
             redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
             return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+        }
+
+        for (int i = 0 ; i< listHDCT.size() ; i ++){
+            ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository.getReferenceById(listHDCT.get(i).getChiTietSanPham().getId());
+            HoaDonChiTiet hdct = new HoaDonChiTiet();
+            hdct = listHDCT.get(i);
+            hdct.setDonGia(chiTietSanPham.getGiaBan().floatValue());
+            hoaDonChiTietRepository.save(hdct);
         }
 
         // Tính tổng tiền trước giảm giá
@@ -368,6 +380,7 @@ public class BanHangController {
         return "redirect:" + paymentUrl;
     }
 
+    @Transactional
     @GetMapping("/hoa-don/xac-nhan-thanh-toan_vnp")
     public String xacNhanThanhToanVNP(Model model,
                                       Authentication authentication,
@@ -388,6 +401,21 @@ public class BanHangController {
 
             HoaDon hoaDon = hoaDonService.findById(idhd);
             List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(idhd);
+
+
+            if (listHDCT== null) {
+                System.out.println("Hóa đơn trống");
+                redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
+                return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+            }
+
+            for (int i = 0 ; i< listHDCT.size() ; i ++){
+                ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository.getReferenceById(listHDCT.get(i).getChiTietSanPham().getId());
+                HoaDonChiTiet hdct = new HoaDonChiTiet();
+                hdct = listHDCT.get(i);
+                hdct.setDonGia(chiTietSanPham.getGiaBan().floatValue());
+                hoaDonChiTietRepository.save(hdct);
+            }
 
             // Calculating the total money before discount and applying the discount
             double totalMoneyBefore = listHDCT.stream()
