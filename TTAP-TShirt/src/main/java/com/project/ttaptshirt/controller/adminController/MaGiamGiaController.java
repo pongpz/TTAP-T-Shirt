@@ -176,6 +176,7 @@ public class MaGiamGiaController {
 
     @PostMapping("/add")
     public String add(@Valid MaGiamGia mgg , Errors errors, Model model, RedirectAttributes redirectAttributes){
+        mgg.setTrangThai(true);
         if (errors.hasFieldErrors()){
             model.addAttribute("errors","Vui lòng điền đủ trường!");
             model.addAttribute("mgg",mgg);
