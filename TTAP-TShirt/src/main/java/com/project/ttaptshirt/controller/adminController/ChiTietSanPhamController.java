@@ -16,18 +16,17 @@ import com.project.ttaptshirt.service.ChiTietSanPhamService;
 import com.project.ttaptshirt.service.KichCoService;
 import com.project.ttaptshirt.service.MauSacService;
 import com.project.ttaptshirt.service.SanPhamService;
+import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/admin/chi-tiet-san-pham")
@@ -50,6 +49,9 @@ public class ChiTietSanPhamController {
     ThuongHieuRepository thuongHieuRepository;
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    @Autowired
+    ChiTietSanPhamServiceImpl chiTietSanPhamServiceImpl;
 //    @Autowired
 //    HinhAnhService hinhAnhService;
 
@@ -106,15 +108,21 @@ public class ChiTietSanPhamController {
     @PostMapping("/add")
     public String createNewCTSP(
             @RequestParam("idSanPham") Long idSanPham,
-            @RequestParam("mauSacIds") List<Long> mauSacIds, // Nhận nhiều màu sắc
-            @RequestParam("kichCoIds") List<Long> kichCoIds, // Nhận nhiều kích cỡ
-            ChiTietSanPham chiTietSanPham,
+            @RequestParam(value = "mauSacIds", required = false) List<Long> mauSacIds,
+            @RequestParam(value = "kichCoIds", required = false) List<Long> kichCoIds,
+            @RequestParam Map<String, String> allParams, // Nhận toàn bộ request params
             RedirectAttributes redirectAttributes) {
+
+        // Kiểm tra xem có màu sắc và kích cỡ nào được chọn không
+        if (mauSacIds == null || mauSacIds.isEmpty() || kichCoIds == null || kichCoIds.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng chọn màu sắc và kích cỡ!");
+            return "redirect:/admin/chi-tiet-san-pham/" + idSanPham;
+        }
 
         SanPham sanPham = new SanPham();
         sanPham.setId(idSanPham);
 
-        // Lưu từng biến thể cho sản phẩm
+        // Duyệt từng kết hợp màu sắc và kích cỡ
         for (Long mauSacId : mauSacIds) {
             MauSac mauSac = new MauSac();
             mauSac.setId(mauSacId);
@@ -123,22 +131,59 @@ public class ChiTietSanPhamController {
                 KichCo kichCo = new KichCo();
                 kichCo.setId(kichCoId);
 
+                // Lấy giá bán và số lượng từ request params
+                String priceKey = "price_" + mauSacId + "_" + kichCoId;
+                String quantityKey = "quantity_" + mauSacId + "_" + kichCoId;
+
+                Double giaBan = Double.valueOf(allParams.getOrDefault(priceKey, "0"));
+                Integer soLuong = Integer.valueOf(allParams.getOrDefault(quantityKey, "0"));
+
+                // Kiểm tra trùng lặp biến thể
+                boolean exists = chiTietSanPhamServiceImpl.existsBySanPhamAndMauSacAndKichCo(sanPham, mauSac, kichCo);
+                if (exists) {
+                    redirectAttributes.addFlashAttribute("error",
+                            "Biến thể với màu sắc và kích cỡ đã tồn tại: " + mauSacId + "-" + kichCoId);
+                    continue;
+                }
+
+                // Tạo ChiTietSanPham mới
                 ChiTietSanPham newChiTietSanPham = new ChiTietSanPham();
                 newChiTietSanPham.setSanPham(sanPham);
+                newChiTietSanPham.setMa(generateUniqueCode()); // Mã tự động
                 newChiTietSanPham.setMauSac(mauSac);
                 newChiTietSanPham.setKichCo(kichCo);
-                newChiTietSanPham.setGiaBan(chiTietSanPham.getGiaBan());
-                newChiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong());
+                newChiTietSanPham.setGiaBan(giaBan);
+                newChiTietSanPham.setSoLuong(soLuong);
 
+                // Lưu vào DB
                 chiTietSanPhamService.save(newChiTietSanPham);
             }
         }
-
-        // Dùng biến path variable để xây dựng URL chuyển hướng
+        redirectAttributes.addFlashAttribute("createSuccess", true);
         redirectAttributes.addAttribute("id", idSanPham);
-
         return "redirect:/admin/chi-tiet-san-pham/{id}";
     }
+
+
+
+    private String generateUniqueCode() {
+        String generatedMa;
+        do {
+            generatedMa = "SPCT" + generateRandomCode(4);
+        } while (chiTietSanPhamRepository.existsByMa(generatedMa));
+        return generatedMa;
+    }
+
+    private String generateRandomCode(int length) {
+        String characters = "0123456789";
+        StringBuilder code = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            code.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return code.toString();
+    }
+
 
 
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -119,7 +120,8 @@ public class SanPhamController {
                       @RequestParam("idNSX") Long idNsx,
                       @RequestParam("idChatLieu") Long idChatLieu,
                       @RequestParam("idThuongHieu") Long idThuongHieu,
-                      @RequestParam("idKieuDang") Long idKieuDang) throws IOException, GeneralSecurityException {
+                      @RequestParam("idKieuDang") Long idKieuDang,
+                      RedirectAttributes redirectAttributes) throws IOException, GeneralSecurityException {
 
         // Thiết lập các thuộc tính cho sản phẩm
         sanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
@@ -143,6 +145,7 @@ public class SanPhamController {
 
         hinhAnhRepository.save(hinhAnh);
 
+        redirectAttributes.addFlashAttribute("createSuccess", true);
         return "redirect:/admin/san-pham";
     }
 

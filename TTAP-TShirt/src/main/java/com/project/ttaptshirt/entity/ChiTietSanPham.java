@@ -26,6 +26,9 @@ public class ChiTietSanPham extends CreatedUpdatedAt{
     @Column(name = "gia_ban")
     private Double giaBan;
 
+    @Column(name = "ma")
+    private String ma;
+
     @ManyToOne
     @JoinColumn(name = "id_san_pham")
     private SanPham sanPham;

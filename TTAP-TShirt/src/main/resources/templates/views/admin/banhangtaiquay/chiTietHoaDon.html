@@ -99,32 +99,28 @@
                                             <td th:text="${ctsp.soLuong}"></td>
                                             <td th:text="${ctsp.giaBan} + 'vnd'"></td>
                                             <td>
-                                                <form class="row"
+                                                <form class="d-flex align-items-center"
                                                       th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
-                                                      method="post" onsubmit="setQuantity(${ctsp.id})">
+                                                      method="post">
                                                     <input type="hidden" name="idctsp"
                                                            th:value="${ctsp.id}"/>
-
                                                     <input
-                                                            class="col-3"
+                                                            class="form-control me-2"
                                                             type="number"
                                                             name="soLuong"
-                                                            value="0" min="1" max="${ctsp.soLuong}"/>
+                                                            value="0"
+                                                            min="1"
+                                                            max="${ctsp.soLuong}"
+                                                            style="width: 80px;"/>
                                                     <input type="hidden" th:value="${hoadon.id}" name="idhd">
                                                     <button
                                                             type="submit"
-                                                            class="btn btn-primary col-4"
-                                                    >Thêm vào hóa đơn
+                                                            class="btn btn-primary"
+                                                    >Thêm
                                                     </button>
                                                 </form>
-                                                <!--                                                <script th:inline="javascript">-->
-                                                <!--                                                    function setQuantity(ctspId) {-->
-                                                <!--                                                        var quantityInput = document.getElementById('quantity-' + ctspId);-->
-                                                <!--                                                        var hiddenQuantityInput = document.getElementById('hidden-quantity-' + ctspId);-->
-                                                <!--                                                        hiddenQuantityInput.value = parseInt(quantityInput.value, 10);-->
-                                                <!--                                                    }-->
-                                                <!--                                                </script>-->
                                             </td>
+
                                         </tr>
                                         </tbody>
                                     </table>

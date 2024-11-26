@@ -1,6 +1,9 @@
 package com.project.ttaptshirt.repository;
 
 import com.project.ttaptshirt.entity.ChiTietSanPham;
+import com.project.ttaptshirt.entity.KichCo;
+import com.project.ttaptshirt.entity.MauSac;
+import com.project.ttaptshirt.entity.SanPham;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -61,4 +64,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
 //    Page<ChiTietSanPham> searchCTSP(String ten, Double giaMax, Double giaMin, Long nsx, Long thuongHieu, Long kieuDang, Long chatLieu, Pageable pageable);
 
 
+    boolean existsByMa(String ma);
+
+    boolean existsBySanPhamAndMauSacAndKichCo(SanPham sanPham, MauSac mauSac, KichCo kichCo);
 }

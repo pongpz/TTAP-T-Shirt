@@ -8,12 +8,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/customcss/toastMessage.css ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="d-flex">
 
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
+    <div id="toast-root"></div>
 
     <div class="main-content content flex-grow-1 p-4">
         <h2 class="text-center">Thêm Chi Tiết Sản Phẩm</h2>
@@ -27,70 +35,278 @@
         </div>
         <div class="box box-default">
             <div class="box-body">
-                <div class="row">
-                    <div class="d-flex">
-                    <h4>Sản Phẩm:&nbsp;&nbsp; </h4>
-                    <h4 style="color: red" th:text="${listSP.ten}"></h4>
+                <div class="d-flex">
+                    <h4> Mã Sản Phẩm: </h4>
+                    <h4 style="margin-left: 10px; color: red" th:text="${listSP.ma}"></h4>
+                    <h4>&nbsp &nbsp  &nbsp Tên Sản Phẩm: </h4>
+                    <h4 style="margin-left: 10px; color: red" th:text="${listSP.ten}"></h4>
+                </div>
+
+                <form th:action="@{/admin/chi-tiet-san-pham/add}" method="post">
+                    <input type="hidden" name="idSanPham" th:value="${listSP.id}"/>
+
+                    <!-- Chọn màu sắc -->
+                    <div class="accordion" id="accordionColorSelection">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingColors">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseColors" aria-expanded="false" aria-controls="collapseColors">
+                                    Chọn Màu Sắc
+                                </button>
+                            </h2>
+                            <div id="collapseColors" class="accordion-collapse collapse" aria-labelledby="headingColors">
+                                <div class="accordion-body">
+                                    <div class="form-check" th:each="mauSac : ${listMauSac}">
+                                        <input class="form-check-input" type="checkbox" name="mauSacIds"
+                                               th:value="${mauSac.id}" th:id="'mauSac_' + ${mauSac.id}" onchange="generateVariants()">
+                                        <label class="form-check-label" th:for="'mauSac_' + ${mauSac.id}"
+                                               th:text="${mauSac.ten}">Tên màu</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <br>
-                    <form th:action="@{/admin/chi-tiet-san-pham/add}" method="post">
-                        <input type="hidden" name="idSanPham" th:value="${listSP.id}"/>
-                        <div class="accordion" id="accordionColorSelection">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingColors">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseColors" aria-expanded="false" aria-controls="collapseColors">
-                                        Chọn Màu Sắc
-                                    </button>
-                                </h2>
-                                <div id="collapseColors" class="accordion-collapse collapse" aria-labelledby="headingColors" data-bs-parent="#accordionColorSelection">
-                                    <div class="accordion-body">
-                                        <div class="form-check" th:each="mauSac : ${listMauSac}">
-                                            <input class="form-check-input" type="checkbox" name="mauSacIds" th:value="${mauSac.id}" th:id="'mauSac_' + ${mauSac.id}">
-                                            <label class="form-check-label" th:for="'mauSac_' + ${mauSac.id}" th:text="${mauSac.ten}">Tên màu</label>
-                                        </div>
+                    <!-- Chọn kích cỡ -->
+                    <div class="accordion" id="accordionSizeSelection">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingSizes">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseSizes" aria-expanded="false" aria-controls="collapseSizes">
+                                    Chọn Kích Cỡ
+                                </button>
+                            </h2>
+                            <div id="collapseSizes" class="accordion-collapse collapse" aria-labelledby="headingSizes">
+                                <div class="accordion-body">
+                                    <div class="form-check" th:each="kichCo : ${listKichCo}">
+                                        <input class="form-check-input" type="checkbox" name="kichCoIds"
+                                               th:value="${kichCo.id}" th:id="'kichCo_' + ${kichCo.id}" onchange="generateVariants()">
+                                        <label class="form-check-label" th:for="'kichCo_' + ${kichCo.id}"
+                                               th:text="${kichCo.ten}">Tên kích cỡ</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-<br>
-                        <div class="accordion" id="accordionSizeSelection">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingSizes">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSizes" aria-expanded="false" aria-controls="collapseSizes">
-                                        Chọn Kích Cỡ
-                                    </button>
-                                </h2>
-                                <div id="collapseSizes" class="accordion-collapse collapse" aria-labelledby="headingSizes" data-bs-parent="#accordionSizeSelection">
-                                    <div class="accordion-body">
-                                        <div class="form-check" th:each="kichCo : ${listKichCo}">
-                                            <input class="form-check-input" type="checkbox" name="kichCoIds" th:value="${kichCo.id}" th:id="'kichCo_' + ${kichCo.id}">
-                                            <label class="form-check-label" th:for="'kichCo_' + ${kichCo.id}" th:text="${kichCo.ten}">Tên kích cỡ</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="selectAllVariants">
+                            <label class="form-check-label" for="selectAllVariants">
+                                Chọn tất cả
+                            </label>
                         </div>
-
-
-<br>
-
-                            <div>
-                                <label class="form-label">Giá Bán</label>
-                                <input type="number" class="form-control" name="giaBan">
-                            </div>
-
-                            <div>
-                                <label class="form-label">Số Lượng</label>
-                                <input type="number" class="form-control" name="soLuong">
-                            </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">thêm</button>
+                        <br>
+                        <div class="form-group">
+                            <label for="syncPrice">Giá Bán Đồng Bộ:</label>
+                                <input type="number" class="form-control" id="syncPrice" placeholder="Nhập giá đồng bộ">
                         </div>
-                    </form>
-                </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="syncQuantity">Số Lượng Đồng Bộ:</label>
+                            <input type="number" class="form-control" id="syncQuantity" placeholder="Nhập số lượng đồng bộ">
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-secondary" id="syncButton">Đồng Bộ</button> <br><br>
+                        <h5>Danh sách sản phẩm chi tiết</h5>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Chọn</th>
+                                <th>Màu Sắc</th>
+                                <th>Kích Cỡ</th>
+                                <th>Giá Bán</th>
+                                <th>Số Lượng</th>
+                            </tr>
+                            </thead>
+                            <tbody id="variantTableBody">
+                            <!-- Nội dung bảng sẽ được tạo động -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button id="syncButton1" type="submit" class="btn btn-primary" onclick="return checkAndConfirm()">Thêm</button>
+                    </div>
+                </form>
             </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+                crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script th:src="@{/js/banhang.js}"></script>
+        <script src="/js/toastMessage.js"></script>
+        <script>
+            function generateVariants() {
+                const selectedColors = Array.from(document.querySelectorAll("input[name='mauSacIds']:checked"))
+                    .map(input => ({
+                        id: input.value,
+                        name: input.nextElementSibling.textContent.trim()
+                    }));
+
+                const selectedSizes = Array.from(document.querySelectorAll("input[name='kichCoIds']:checked"))
+                    .map(input => ({
+                        id: input.value,
+                        name: input.nextElementSibling.textContent.trim()
+                    }));
+
+                const tbody = document.getElementById("variantTableBody");
+                tbody.innerHTML = ""; // Xóa nội dung cũ
+
+                selectedColors.forEach(color => {
+                    selectedSizes.forEach(size => {
+                        const row = document.createElement("tr");
+
+                        // Cột chọn
+                        const selectCell = document.createElement("td");
+                        const checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        checkbox.name = "selectedVariants";
+                        checkbox.value = `${color.id}-${size.id}`;
+                        checkbox.addEventListener('change', function () {
+                            priceInput.disabled = !this.checked;
+                            quantityInput.disabled = !this.checked;
+                        });
+                        selectCell.appendChild(checkbox);
+
+                        // Cột Màu Sắc
+                        const colorCell = document.createElement("td");
+                        colorCell.textContent = color.name;
+
+                        // Cột Kích Cỡ
+                        const sizeCell = document.createElement("td");
+                        sizeCell.textContent = size.name;
+
+
+                        const priceCell = document.createElement("td");
+                        const priceInput = document.createElement("input");
+                        priceInput.type = "number";
+                        priceInput.name = `price_${color.id}_${size.id}`;
+                        priceInput.className = "form-control price-input";
+                        priceInput.disabled = false;
+                        priceCell.appendChild(priceInput);
+
+
+                        const quantityCell = document.createElement("td");
+                        const quantityInput = document.createElement("input");
+                        quantityInput.type = "number";
+                        quantityInput.name = `quantity_${color.id}_${size.id}`;
+                        quantityInput.className = "form-control quantity-input";
+                        quantityInput.disabled = false;
+                        quantityCell.appendChild(quantityInput);
+
+                        // Thêm các cột vào dòng
+                        row.appendChild(selectCell);
+                        row.appendChild(colorCell);
+                        row.appendChild(sizeCell);
+                        row.appendChild(priceCell);
+                        row.appendChild(quantityCell);
+
+                        // Thêm dòng vào bảng
+                        tbody.appendChild(row);
+                    });
+                });
+            }
+
+
+            // Chức năng đồng bộ giá và số lượng
+            document.getElementById('syncButton').addEventListener('click', function() {
+                const price = document.getElementById('syncPrice').value;
+                const quantity = document.getElementById('syncQuantity').value;
+
+                if (price === '' || quantity === '') {
+                    toastWarning('warning','Vui lòng nhập giá và số lượng để đồng bộ');
+                    return;
+                }
+
+                // Lấy tất cả các hàng trong bảng
+                const rows = document.querySelectorAll('#variantTableBody tr');
+                rows.forEach(row => {
+                    const priceInput = row.querySelector('.price-input');
+                    const quantityInput = row.querySelector('.quantity-input');
+                    if (priceInput && quantityInput) {
+                        priceInput.value = price;
+                        quantityInput.value = quantity;
+                    }
+                });
+            });
+
+            // Chức năng chọn tất cả
+            document.getElementById('selectAllVariants').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('input[name="selectedVariants"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+
+            document.getElementById('syncButton').addEventListener('click', function() {
+                const priceInput = document.getElementById('syncPrice');
+                const quantityInput = document.getElementById('syncQuantity');
+
+                // Kiểm tra giá trị của syncPrice
+                if (priceInput.value < 0) {
+                    toastWarning('warning','Giá bán không được âm!');
+                    priceInput.value = ''; // Xóa giá trị nếu âm
+                    priceInput.focus(); // Đặt con trỏ vào ô nhập liệu
+                    return; // Dừng lại không thực hiện đồng bộ
+                }
+
+                // Kiểm tra giá trị của syncQuantity
+                if (quantityInput.value < 0) {
+                    toastWarning('warning','Số lượng không được âm!');
+                    quantityInput.value = ''; // Xóa giá trị nếu âm
+                    quantityInput.focus(); // Đặt con trỏ vào ô nhập liệu
+                    return; // Dừng lại không thực hiện đồng bộ
+                }
+
+                // Tiến hành đồng bộ nếu không có giá trị âm
+                // Thêm logic đồng bộ ở đây
+            });
+
+            function checkAndConfirm() {
+                const selectedCheckboxes = document.querySelectorAll('input[name="selectedVariants"]:checked'); // Kiểm tra các checkbox được chọn
+
+                // Kiểm tra xem có biến thể nào được chọn không
+                if (selectedCheckboxes.length === 0) {
+                    toastWarning('warning', 'Vui lòng chọn ít nhất một biến thể!');
+                    return false; // Ngừng thực hiện nếu không có biến thể được chọn
+                }
+
+                // Kiểm tra tất cả các giá trị priceInput và quantityInput của những dòng đã chọn
+                let valid = true;
+
+                selectedCheckboxes.forEach(function(checkbox) {
+                    const row = checkbox.closest('tr'); // Lấy dòng chứa checkbox
+                    const priceInput = row.querySelector('.price-input');
+                    const quantityInput = row.querySelector('.quantity-input');
+
+                    // Kiểm tra xem giá trị có âm không hoặc trống không
+                    if (priceInput && (priceInput.value === '' || priceInput.value < 0)) {
+                        toastWarning('warning', 'Giá bán không được âm và không được để trống!');
+                        priceInput.focus();
+                        valid = false;
+                        return false; // Dừng tiếp tục kiểm tra
+                    }
+
+                    if (quantityInput && (quantityInput.value === '' || quantityInput.value < 0)) {
+                        toastWarning('warning', 'Số lượng không được âm và không được để trống!');
+                        quantityInput.focus();
+                        valid = false;
+                        return false; // Dừng tiếp tục kiểm tra
+                    }
+                });
+
+                // Nếu tất cả điều kiện hợp lệ, hiển thị hộp thoại xác nhận
+                if (valid) {
+                    return confirm('Bạn có chắc chắn muốn thêm?');
+                }
+
+                return false; // Ngừng hành động submit nếu không hợp lệ
+            }
+
+        </script>
 
     </div>
 </div>
