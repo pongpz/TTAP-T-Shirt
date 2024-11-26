@@ -145,7 +145,7 @@ public class BanHangController {
 //        Double giaTriToiThieu = voucher.getGiaTriToiThieu();
         List<MaGiamGia> listMaGiamGiaValid = new ArrayList<>();
         for (MaGiamGia maGiamGia:listKM) {
-            if (maGiamGia.getGiaTriToiThieu()<=totalMoneyBefore){
+            if (maGiamGia.getGiaTriToiThieu()<=totalMoneyBefore && maGiamGia.isValid()){
                 listMaGiamGiaValid.add(maGiamGia);
             }
         }
@@ -243,10 +243,12 @@ public class BanHangController {
         hoaDon.setTongTien((Double) totalMoneyAfter);
         hoaDon.setTrangThai(1); // Đặt trạng thái hóa đơn đã thanh toán
         hoaDonService.save(hoaDon);
-        System.out.println("da save hoa don");
-        System.out.println("so tien giam: " + discount);
-        System.out.println("so tien sau giam: " + totalMoneyAfter);
-        System.out.println("so tien truoc giam: " + totalMoneyBefore);
+
+        if (voucher!=null) {
+            Integer soLuongVoucherCu = voucher.getSoLuong();
+            voucher.setSoLuong(soLuongVoucherCu-1);
+            maGiamGiaRepo.save(voucher);
+        }
 
 
         // Thêm thông báo thành công trước khi chuyển hướng

@@ -487,6 +487,9 @@
                                             <th>Tên</th>
                                             <th>Hình Thức</th>
                                             <th>Giá Trị Giảm</th>
+                                            <th>Ngày bắt đầu</th>
+                                            <th>Ngày kết thúc</th>
+                                            <th>Số lượng</th>
                                             <th>Thao Tác</th>
                                         </tr>
                                         </thead>
@@ -498,6 +501,10 @@
                                             <td th:text="${voucher.ten}"></td>
                                             <td th:text="${voucher.hinhThuc ? 'VND' : 'Phần trăm'}"></td>
                                             <td th:text="${numberUtils.formatCurrency(voucher.giaTriGiam)}"></td>
+                                            <td th:text="${voucher.ngayBatDau}"></td>
+                                            <td th:text="${voucher.ngayKetThuc}"></td>
+                                            <td th:text="${voucher.soLuong}"></td>
+
                                             <td>
                                                 <!-- Add Voucher Form -->
                                                 <form th:action="@{/admin/ban-hang/chon-khuyen-mai}" method="post"
