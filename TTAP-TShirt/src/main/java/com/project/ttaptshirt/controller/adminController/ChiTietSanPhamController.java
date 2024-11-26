@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -82,10 +83,6 @@ public class ChiTietSanPhamController {
     @GetMapping("/detail/{idCTSP}")
     public String openViewCTSPdetail(@PathVariable("idCTSP") Long idCTSP,Model model) {
         System.out.println(idCTSP);
-        model.addAttribute("listChatLieu", chatLieuRepository.findAll());
-        model.addAttribute("listKieuDang", kieuDangRepository.findAll());
-        model.addAttribute("listNSX", nsxRepository.findAll());
-        model.addAttribute("listThuongHieu", thuongHieuRepository.findAll());
         model.addAttribute("listSP", sanPhamService.findAll());
         model.addAttribute("listMauSac", mauSacService.findAll());
         model.addAttribute("listKichCo", kichCoService.findAll());
@@ -115,13 +112,12 @@ public class ChiTietSanPhamController {
 
         // Kiểm tra xem có màu sắc và kích cỡ nào được chọn không
         if (mauSacIds == null || mauSacIds.isEmpty() || kichCoIds == null || kichCoIds.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Vui lòng chọn màu sắc và kích cỡ!");
             return "redirect:/admin/chi-tiet-san-pham/" + idSanPham;
         }
 
         SanPham sanPham = new SanPham();
         sanPham.setId(idSanPham);
-
+        List<String> duplicateWarnings = new ArrayList<>();
         // Duyệt từng kết hợp màu sắc và kích cỡ
         for (Long mauSacId : mauSacIds) {
             MauSac mauSac = new MauSac();
@@ -141,8 +137,7 @@ public class ChiTietSanPhamController {
                 // Kiểm tra trùng lặp biến thể
                 boolean exists = chiTietSanPhamServiceImpl.existsBySanPhamAndMauSacAndKichCo(sanPham, mauSac, kichCo);
                 if (exists) {
-                    redirectAttributes.addFlashAttribute("error",
-                            "Biến thể với màu sắc và kích cỡ đã tồn tại: " + mauSacId + "-" + kichCoId);
+                    duplicateWarnings.add("Màu sắc: " + mauSac.getTen() + " và Kích cỡ: " + kichCo.getTen() + " đã tồn tại.");
                     continue;
                 }
 
@@ -159,7 +154,11 @@ public class ChiTietSanPhamController {
                 chiTietSanPhamService.save(newChiTietSanPham);
             }
         }
-        redirectAttributes.addFlashAttribute("createSuccess", true);
+        if (!duplicateWarnings.isEmpty()) {
+            redirectAttributes.addFlashAttribute("duplicateWarnings", duplicateWarnings);
+        } else {
+            redirectAttributes.addFlashAttribute("createSuccess", true);
+        }
         redirectAttributes.addAttribute("id", idSanPham);
         return "redirect:/admin/chi-tiet-san-pham/{id}";
     }
@@ -200,11 +199,35 @@ public class ChiTietSanPhamController {
         ChiTietSanPham existingCTSP = chiTietSanPhamService.findById(idCTSP);
 
         if (existingCTSP == null) {
-            // Xử lý lỗi nếu không tìm thấy đối tượng
+            redirectAttributes.addFlashAttribute("error", "Không tìm thấy Chi Tiết Sản Phẩm!");
             return "redirect:/admin/error";
         }
 
-        // Cập nhật thuộc tính nếu có giá trị mới từ form
+        // Lấy ID sản phẩm của ChiTietSanPham
+        Long idSanPham = existingCTSP.getSanPham().getId();
+
+        // Lấy các giá trị hiện tại
+        Long currentIdMauSac = existingCTSP.getMauSac() != null ? existingCTSP.getMauSac().getId() : null;
+        Long currentIdKichCo = existingCTSP.getKichCo() != null ? existingCTSP.getKichCo().getId() : null;
+
+        // Kiểm tra nếu màu sắc hoặc kích cỡ thay đổi
+        if ((idMauSac != null && !idMauSac.equals(currentIdMauSac)) ||
+                (idKichCo != null && !idKichCo.equals(currentIdKichCo))) {
+
+            // Kiểm tra trùng lặp trong cơ sở dữ liệu
+            boolean isDuplicate = chiTietSanPhamServiceImpl.existsByMauSacAndKichCoAndSanPhamId(
+                    idMauSac, idKichCo, idSanPham);
+
+            if (isDuplicate) {
+                // Thêm thông báo lỗi vào RedirectAttributes
+                redirectAttributes.addFlashAttribute("error", "Màu sắc và kích cỡ này đã tồn tại cho sản phẩm hiện tại!");
+                redirectAttributes.addAttribute("idCTSP", idCTSP);
+                redirectAttributes.addFlashAttribute("createWarning", true);
+                return "redirect:/admin/chi-tiet-san-pham/detail/{idCTSP}";
+            }
+        }
+
+        // Cập nhật các giá trị mới nếu không trùng lặp
         if (idMauSac != null) {
             MauSac mauSac = new MauSac();
             mauSac.setId(idMauSac);
@@ -217,7 +240,6 @@ public class ChiTietSanPhamController {
             existingCTSP.setKichCo(kichCo);
         }
 
-        // Cập nhật các thuộc tính khác nếu có trong form
         if (soLuong != null) {
             existingCTSP.setSoLuong(soLuong);
         }
@@ -229,8 +251,9 @@ public class ChiTietSanPhamController {
         chiTietSanPhamService.save(existingCTSP);
 
         // Thêm ID sản phẩm vào RedirectAttributes
-        redirectAttributes.addAttribute("id", existingCTSP.getSanPham().getId());
+        redirectAttributes.addAttribute("id", idSanPham);
 
+        redirectAttributes.addFlashAttribute("updateSuccess", true);
         // Redirect đến trang chi tiết sản phẩm
         return "redirect:/admin/chi-tiet-san-pham/{id}";
     }

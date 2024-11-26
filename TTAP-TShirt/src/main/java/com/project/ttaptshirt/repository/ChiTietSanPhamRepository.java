@@ -18,6 +18,9 @@ import java.util.Optional;
 
 @Repository
 public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,Long> {
+    boolean existsByMauSacIdAndKichCoIdAndSanPhamId(Long idMauSac, Long idKichCo, Long sanPhamId);
+
+
     @Transactional
     @Modifying
     @Query(value = "update chi_tiet_san_pham set so_luong = ?1 where id = ?2",nativeQuery = true)
