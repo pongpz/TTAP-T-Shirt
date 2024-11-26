@@ -105,31 +105,16 @@
                                             <td>
                                                 <form class="d-flex align-items-center"
                                                       th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
-<<<<<<< HEAD
-                                                      method="post">
-                                                    <input type="hidden" name="idctsp"
-                                                           th:value="${ctsp.id}"/>
-=======
                                                       method="post"
                                                       onsubmit="setQuantity(${ctsp.id})">
                                                     <input type="hidden" name="idctsp" th:value="${ctsp.id}"/>
                                                     <input type="hidden" th:value="${hoadon.id}" name="idhd">
->>>>>>> 7c039511965a0b492eb4209ff4d0acfce63a3246
                                                     <input
                                                             class="form-control me-2"
                                                             type="number"
                                                             name="soLuong"
                                                             value="0"
                                                             min="1"
-<<<<<<< HEAD
-                                                            max="${ctsp.soLuong}"
-                                                            style="width: 80px;"/>
-                                                    <input type="hidden" th:value="${hoadon.id}" name="idhd">
-                                                    <button
-                                                            type="submit"
-                                                            class="btn btn-primary"
-                                                    >Thêm
-=======
                                                             th:max="${ctsp.soLuong}"
                                                             style="font-size: 1.2rem; padding: 0.5rem; width: 100px;"
                                                             oninvalid="customValidationMessage(this)"
@@ -143,7 +128,6 @@
                                                             style="font-size: 1.2rem; padding: 0.5rem 1rem; border-radius: 0.5rem;">
                                                         <!-- Button styled -->
                                                         Thêm
->>>>>>> 7c039511965a0b492eb4209ff4d0acfce63a3246
                                                     </button>
                                                 </form>
                                             </td>

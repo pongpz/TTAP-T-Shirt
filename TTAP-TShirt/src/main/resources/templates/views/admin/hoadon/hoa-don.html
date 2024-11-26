@@ -88,7 +88,7 @@
             <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
             <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
             <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
-            <td th:text="${numberUtils.formatCurrency(hd.tongTien)?: 'Không có'}"></td>
+            <td th:text="${hd.tongTien != null?numberUtils.formatCurrency(hd.tongTien): 'Không có'}"></td>
 
             <td>
                 <span th:if="${hd.trangThai == 0}" class="text-warning">Chưa thanh toán</span>
@@ -142,6 +142,7 @@
             <th scope="col">Kích cỡ</th>
             <th scope="col">Đơn giá</th>
             <th scope="col">Số lượng</th>
+            <th scope="col">Tổng</th>
 <!--            <th scope="col">Tên khuyến mãi</th>-->
         </tr>
         </thead>
@@ -154,8 +155,9 @@
 <!--            <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.gia : 'Không có'}"></td>-->
             <td th:text="${hdct.chiTietSanPham.mauSac != null  ? hdct.chiTietSanPham.mauSac.ten : 'Không có'}"></td>
             <td th:text="${hdct.chiTietSanPham.kichCo != null  ? hdct.chiTietSanPham.kichCo.ten : 'Không có'}"></td>
-            <td th:text="${hdct.donGia != null ? hdct.donGia : 'Không có'}"></td>
+            <td th:text="${hdct.donGia != null ? numberUtils.formatCurrency(hdct.donGia) : 'Không có'}"></td>
             <td th:text="${hdct.soLuong != null ? hdct.soLuong : 'Không có'}"></td>
+            <td th:text="${hdct.soLuong != null && hdct.donGia != null ? numberUtils.formatCurrency(hdct.soLuong*hdct.donGia) : 'Không có'}"></td>
 <!--            <td th:text="${hdct.hoaDon.maGiamGia != null ? hdct.hoaDon.maGiamGia.ten : 'Không có'}"></td>-->
         </tr>
         </tbody>
