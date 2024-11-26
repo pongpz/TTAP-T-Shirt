@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.adminController;
 
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.service.HoaDonService;
@@ -37,6 +38,8 @@ public class HoaDonController {
         if (hr.getAllHD(pageab).size() == 0) {
             model.addAttribute("nullhd", "Không có hóa đơn nào");
         }
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
         return "admin/hoadon/hoa-don";
     }
     @GetMapping("/xac-nhan-hoa-don/{idHD}")
@@ -77,6 +80,8 @@ public class HoaDonController {
         }else {
             lsSearch = hr.search(ma.trim(),keyword.trim(),trangThai,ngayThanhToan,pageab);
         }
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
 //        System.out.println(lsSearch);
         model.addAttribute("listHD", lsSearch);
         model.addAttribute("ma", ma);
