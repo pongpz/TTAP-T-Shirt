@@ -31,7 +31,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
     @Query("select spct from ChiTietSanPham spct where spct.sanPham.id =:idSP and (:kichCo is null or spct.kichCo.id =:kichCo) and (:mauSac is null or spct.mauSac.id =:mauSac)")
     List<ChiTietSanPham> findByIDSanPham(Long idSP, String kichCo, String mauSac);
 
-    @Query("select spct from ChiTietSanPham spct where :ten is null or spct.sanPham.ten like %:ten%")
+    @Query("select spct from ChiTietSanPham spct where :ten is null or spct.sanPham.ten like %:ten% order by spct.id DESC")
     List<ChiTietSanPham> findByTenSanPham(String ten);
 
 
