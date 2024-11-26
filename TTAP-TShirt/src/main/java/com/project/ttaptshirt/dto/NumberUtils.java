@@ -14,4 +14,8 @@ public class NumberUtils {
         DecimalFormat df = new DecimalFormat("#,###", symbols);
         return df.format(value) + " đ";
     }
+
+    public static void main(String[] args) {
+        System.out.println(formatCurrency(1000000));
+    }
 }
