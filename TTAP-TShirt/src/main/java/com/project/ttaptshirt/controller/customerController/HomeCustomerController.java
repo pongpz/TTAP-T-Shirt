@@ -1,6 +1,7 @@
 package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.entity.ChiTietSanPham;
+import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.GioHangRepository;
@@ -10,21 +11,31 @@ import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.KichCoService;
 import com.project.ttaptshirt.service.MauSacService;
 import com.project.ttaptshirt.service.impl.CartService;
+import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/TTAP")
 public class HomeCustomerController {
+
+    @Autowired
+    ChiTietSanPhamServiceImpl chiTietSanPhamServiceIplm;
 
     @Autowired
     SanPhamRepository spr;
@@ -47,27 +58,74 @@ public class HomeCustomerController {
     @Autowired
     GioHangRepository repoDathang;
 
+//    @GetMapping("/trang-chu")
+//    public String home(HttpServletRequest request, Model model, Authentication authentication) {
+//        if (authentication != null) {
+//            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+//            User user = customUserDetail.getUser();
+//            model.addAttribute("userLogged", user);
+//        }
+//        model.addAttribute("requestURI", request.getRequestURI());
+//        // Lấy danh sách tất cả chi tiết sản phẩm
+//        List<ChiTietSanPham> lsCTSP = ctspr.findAll();
+//        for(ChiTietSanPham sp : lsCTSP){
+//            if (sp == null || sp.getGiaBan() == null) {
+//                System.out.println("KO cos gia");
+//            }else {
+//                System.out.println(sp.getGiaBan());
+//            }
+//        }
+//        model.addAttribute("lsSPCT", lsCTSP);
+//
+//        return "user/home/trangchu"; // Trả về trang chủ
+//    }
+
     @GetMapping("/trang-chu")
-    public String home(HttpServletRequest request, Model model, Authentication authentication) {
+    public String sanPhamCustomer(HttpServletRequest request, Model model,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
         model.addAttribute("requestURI", request.getRequestURI());
-        // Lấy danh sách tất cả chi tiết sản phẩm
-        List<ChiTietSanPham> lsCTSP = ctspr.findAll();
-        for(ChiTietSanPham sp : lsCTSP){
-            if (sp == null || sp.getGiaBan() == null) {
-                System.out.println("KO cos gia");
-            }else {
-                System.out.println(sp.getGiaBan());
+
+        Pageable pageable = PageRequest.of(page, 6);
+
+        Page<SanPham> sanPhamPage = spr.findAll(pageable);
+
+
+//        Pageable pageable = PageRequest.of(page, 6);
+//        Page<SanPham> sanPhamPage = sanPhamRepository.findAll(pageable);
+
+        // Lấy giá sp
+        Map<Long, Double> giaSanPham = new HashMap<>();
+        for (SanPham sanPham : sanPhamPage) {
+            Double giaMin = chiTietSanPhamServiceIplm.getMinGiaBan(sanPham.getId());
+            giaSanPham.put(sanPham.getId(), giaMin != null ? giaMin : 0);
+        }
+
+        // Lấy hình ảnh
+        Map<Long, String> hinhAnhSanPham = new HashMap<>();
+        for (SanPham sanPham : sanPhamPage) {
+            if (sanPham.getHinhAnhList() != null && !sanPham.getHinhAnhList().isEmpty()) {
+                String imageUrl = sanPham.getHinhAnhList().get(0).getPath();
+                hinhAnhSanPham.put(sanPham.getId(), imageUrl);
             }
         }
-        model.addAttribute("lsSPCT", lsCTSP);
 
-        return "user/home/trangchu"; // Trả về trang chủ
+        model.addAttribute("listsp", sanPhamPage);
+        model.addAttribute("giasanpham", giaSanPham);
+        model.addAttribute("hinhAnhSanPham", hinhAnhSanPham);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", sanPhamPage.getTotalPages());
+        model.addAttribute("totalItems", sanPhamPage.getTotalElements());
+        model.addAttribute("requestURI", request.getRequestURI());
+
+        return "user/home/trangchu";
     }
+
     @GetMapping("/san-pham/{id}")
     public String detailSP(HttpServletRequest request, Model model, Authentication authentication, @PathVariable Long id){
         if (authentication != null) {
