@@ -51,6 +51,14 @@
                 <label for="ngayThanhToan" class="form-label">Ngày thanh toán</label>
                 <input type="date" class="form-control" id="ngayThanhToan" name="ngayThanhToan" th:value="${ngayThanhToan}">
             </div>
+            <div class="col-4">
+                <label class="form-label">Loại đơn</label>
+                <select class="form-select" aria-label="Default select example" name="loaiDon">
+                    <option selected value="">Tất cả</option>
+                    <option value="1" th:selected="${loaiDon==1}">Tại quầy</option>
+                    <option value="0" th:selected="${loaiDon==0}">Online</option>
+                </select>
+            </div>
             <div class="col-12 justify-content-center">
                 <button type="submit" class="btn btn-primary col-3">Tìm kiếm</button>
             </div>
@@ -88,7 +96,7 @@
                     <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
                     <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
                     <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
-                    <td th:text="${numberUtils.formatCurrency(hd.tongTien)?: 'Không có'}"></td>
+                    <td th:text="${hd.tongTien != null ?numberUtils.formatCurrency(hd.tongTien): 'Không có'}"></td>
 
                     <td>
                         <span th:if="${hd.trangThai == 0}" class="text-warning">Chưa thanh toán</span>
@@ -126,34 +134,40 @@
             </table>
             <h5 class="text-center">[[${nullhd}]]</h5>
             <div class="justify-content-center d-flex mb-5">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword})}" class="btn btn-outline-primary">Trang trước</a>
+                <a th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon})}" class="btn btn-outline-primary">Trang trước</a>
                 <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword})}" class="btn btn-outline-primary">Trang sau</a>
+                <a th:href="@{/admin/hoa-don/tim-kiem?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon})}" class="btn btn-outline-primary">Trang sau</a>
             </div>
             <h1 class="text-center">Hóa đơn chi tiết</h1>
-            <table class="table-sm">
+            <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">STT</th>
                     <th scope="col">Mã hóa đơn</th>
+                    <th scope="col">Mã sản phẩm</th>
                     <th scope="col">Tên sản phẩm</th>
+                    <!--            <th scope="col">Giá sản phẩm</th>-->
                     <th scope="col">Màu sắc</th>
                     <th scope="col">Kích cỡ</th>
                     <th scope="col">Đơn giá</th>
                     <th scope="col">Số lượng</th>
-                    <th scope="col">Tên khuyến mãi</th>
+                    <th scope="col">Tổng</th>
+                    <!--            <th scope="col">Tên khuyến mãi</th>-->
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="hdct, stat: ${listHDCT}">
                     <td th:text="${stat.index+1}"></td>
                     <td th:text="${hdct.hoaDon.ma?: 'Không có'}"></td>
-                    <td th:text="${hdct.chiTietSanPham.sanPham.ten?: 'Không có'}"></td>
-                    <td th:text="${hdct.chiTietSanPham.mauSac.ten ?: 'Không có'}"></td>
-                    <td th:text="${hdct.chiTietSanPham.kichCo.ten ?: 'Không có'}"></td>
-                    <td th:text="${hdct.donGia ?: 'Không có'}"></td>
-                    <td th:text="${hdct.soLuong ?: 'Không có'}"></td>
-<!--                    <td th:text="${hdct.hoaDon.maGiamGia.ten ?: 'Không có'}"></td>-->
+                    <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.ma : 'Không có'}"></td>
+                    <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.ten : 'Không có'}"></td>
+                    <!--            <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.gia : 'Không có'}"></td>-->
+                    <td th:text="${hdct.chiTietSanPham.mauSac != null  ? hdct.chiTietSanPham.mauSac.ten : 'Không có'}"></td>
+                    <td th:text="${hdct.chiTietSanPham.kichCo != null  ? hdct.chiTietSanPham.kichCo.ten : 'Không có'}"></td>
+                    <td th:text="${hdct.donGia != null ? numberUtils.formatCurrency(hdct.donGia) : 'Không có'}"></td>
+                    <td th:text="${hdct.soLuong != null ? hdct.soLuong : 'Không có'}"></td>
+                    <td th:text="${hdct.soLuong != null && hdct.donGia != null ? numberUtils.formatCurrency(hdct.soLuong*hdct.donGia) : 'Không có'}"></td>
+                    <!--            <td th:text="${hdct.hoaDon.maGiamGia != null ? hdct.hoaDon.maGiamGia.ten : 'Không có'}"></td>-->
                 </tr>
                 </tbody>
             </table>

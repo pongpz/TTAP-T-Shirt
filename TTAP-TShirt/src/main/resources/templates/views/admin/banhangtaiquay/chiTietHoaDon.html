@@ -99,9 +99,7 @@
                                             <td th:text="${ctsp.kichCo.ten}"></td>
                                             <td th:text="${ctsp.mauSac.ten}"></td>
                                             <td th:text="${ctsp.soLuong}"></td>
-                                            <td th:text="${ctsp.giaBan != null ?
-                     numberUtils.formatCurrency(ctsp.giaBan) :
-                     'N/A'}"></td>
+                                            <td th:text="${ctsp.giaBan != null ? numberUtils.formatCurrency(ctsp.giaBan) : 'N/A'}"></td>
                                             <td>
                                                 <form class="d-flex align-items-center"
                                                       th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
