@@ -5,30 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8676785-309e-46b5-8c91-c21db6f8148d" name="Changes" comment="">
-
-      <change afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/dto/AddToCartRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/2024-11-09T233857.500.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" afterDir="false" />
-
-
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/BanHangController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/KhachHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/KhachHangController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/repository/KhachHangRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/repository/KhachHangRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/KhachHangService.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/KhachHangService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/impl/KhachHangServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/impl/KhachHangServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/banhangtaiquay/chiTietHoaDon.html" afterDir="false" />
-
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/CartController.java" afterDir="false" />
-
       <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/GioHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/customerController/GioHangController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/impl/GioHangService.java" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/service/impl/GioHangService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/hoadon/hoa-don-tim-kiem.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/hoadon/hoa-don-tim-kiem.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/hoadon/hoa-don.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/admin/hoadon/hoa-don.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/cart2.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/cart2.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/TTAP-TShirt/src/main/resources/templates/views/user/home/checkout.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -185,7 +163,6 @@
       <workItem from="1732126817062" duration="120000" />
       <workItem from="1732207467799" duration="6590000" />
       <workItem from="1732278712050" duration="151000" />
-
       <workItem from="1732287030012" duration="3302000" />
       <workItem from="1731772076399" duration="24929000" />
       <workItem from="1731931107334" duration="8166000" />
@@ -194,12 +171,8 @@
       <workItem from="1732194233957" duration="5335000" />
       <workItem from="1732281173212" duration="4277000" />
       <workItem from="1732286572792" duration="9452000" />
-      <workItem from="1732412556759" duration="2273000" />
-
-      <workItem from="1732287030012" duration="7839000" />
-      <workItem from="1732366804320" duration="4350000" />
-      <workItem from="1732406017672" duration="4075000" />
-
+      <workItem from="1732412556759" duration="4182000" />
+      <workItem from="1732462746967" duration="1964000" />
     </task>
     <servers />
   </component>

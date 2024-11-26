@@ -21,7 +21,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "khach_hang")
 public class KhachHang {
@@ -42,5 +41,15 @@ public class KhachHang {
     @JoinColumn(name = "id_user")
     @JsonIgnore
     private User user;
+
+    @Override
+    public String toString() {
+        // Avoid recursive call by not including `user`
+        return "KhachHang{" +
+                "id=" + id +
+                ", hoTen='" + hoTen + '\'' +
+                ", soDienThoai='" + soDienThoai + '\'' +
+                '}';
+    }
 
 }

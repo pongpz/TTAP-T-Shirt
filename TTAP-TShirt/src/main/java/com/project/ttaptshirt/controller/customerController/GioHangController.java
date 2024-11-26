@@ -167,7 +167,8 @@ public class GioHangController {
                                @RequestParam String phoneNumber,
                                @RequestParam String address,
                                RedirectAttributes redirectAttributes,
-                               Authentication authentication) {
+                               Authentication authentication,
+                               Model model) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
@@ -175,7 +176,8 @@ public class GioHangController {
             try {
                 HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds,fullName,phoneNumber,address);
                 redirectAttributes.addFlashAttribute("message", "Hóa đơn đã được tạo thành công!");
-                return "redirect/view"; // Chuyển đến trang chi tiết hóa đơn
+                model.addAttribute("hoaDon",hoaDon);
+                return "redirect/hoa-don"; // Chuyển đến trang chi tiết hóa đơn
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Lỗi khi tạo hóa đơn: " + e.getMessage());
                 return "redirect:/view"; // Quay lại trang giỏ hàng
@@ -207,9 +209,14 @@ public class GioHangController {
                 // Gọi service để thêm sản phẩm vào giỏ hàng
                 gioHangService.addToCart(user, request);
                 redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng.");
-            } catch (ProductNotFoundException | InsufficientStockException e) {
-                // Xử lý lỗi nếu sản phẩm không tìm thấy hoặc kho không đủ
-                redirectAttributes.addFlashAttribute("error", e.getMessage());
+            } catch (GioHangService.ProductNotFoundException e) {
+                // Thông báo lỗi khi không tìm thấy sản phẩm
+                redirectAttributes.addFlashAttribute("error", "sản phẩm chi tiết chưa có: " + e.getMessage());
+                return "redirect:/TTAP/san-pham-detail/" + request.getProductId();
+            } catch (GioHangService.InsufficientStockException e) {
+                // Thông báo lỗi khi không đủ sản phẩm trong kho
+                redirectAttributes.addFlashAttribute("error", "sản phẩm không còn: " + e.getMessage());
+                return "redirect:/TTAP/san-pham-detail/" + request.getProductId();
             }
         }
 
@@ -250,15 +257,4 @@ public class GioHangController {
         return "redirect:/login";
     }
 
-    public class ProductNotFoundException extends RuntimeException {
-        public ProductNotFoundException(String message) {
-            super(message);
-        }
-    }
-
-    public class InsufficientStockException extends RuntimeException {
-        public InsufficientStockException(String message) {
-            super(message);
-        }
-    }
 }

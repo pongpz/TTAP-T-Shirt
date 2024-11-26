@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.adminController;
 
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.MaGiamGia;
 import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,6 +48,8 @@ public class MaGiamGiaController {
         if (p.getContent().size() == 0){
             model.addAttribute("nullmgg","Không có mã giảm giá nào");
         }
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
         model.addAttribute("ListMGG",p);
         model.addAttribute("page",page);
         return "admin/magiamgia/voucher";
@@ -103,6 +106,8 @@ public class MaGiamGiaController {
         if (ls.size() == 0){
             model.addAttribute("nullmgg","Không có mã giảm giá nào");
         }
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
         model.addAttribute("mgg",mgg);
         model.addAttribute("ListMGG",ls);
         model.addAttribute("page",page);
@@ -140,13 +145,13 @@ public class MaGiamGiaController {
         }else if(!mgg.getSoLuong().toString().trim().matches("\\d+") || mgg.getSoLuong() <= 0){
             model.addAttribute("errors","Số lượng phải là số và lớn hơn 0!");
             return "admin/magiamgia/voucher-detail";
-        }else if(!mgg.getGiaTriGiam().toString().trim().matches("\\d+") || mgg.getGiaTriGiam() <= 0){
+        }else if(!mgg.getGiaTriGiam().toString().trim().matches("^-?\\d+([.,]\\d+)?$") || mgg.getGiaTriGiam() <= 0){
             model.addAttribute("errors","Giá trị giảm phải là số và lớn hơn 0!");
             return "admin/magiamgia/voucher-detail";
-        }else if(!mgg.getGiaTriToiDa().toString().trim().matches("\\d+") || mgg.getGiaTriToiDa() <= 0){
+        }else if(!mgg.getGiaTriToiDa().toString().trim().matches("^-?\\d+([.,]\\d+)?$") || mgg.getGiaTriToiDa() <= 0){
             model.addAttribute("errors","Giá trị tối đa phải là số và lớn hơn 0!");
             return "admin/magiamgia/voucher-detail";
-        }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("\\d+") || mgg.getGiaTriToiThieu() < 0){
+        }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("^-?\\d+([.,]\\d+)?$") || mgg.getGiaTriToiThieu() < 0){
             model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số và lớn hơn 0!");
             return "admin/magiamgia/voucher-detail";
         }else if (mgg.getNgayBatDau().isBefore(LocalDateTime.now())){
@@ -189,13 +194,13 @@ public class MaGiamGiaController {
         }else if(!mgg.getSoLuong().toString().trim().matches("\\d+") || mgg.getSoLuong() <= 0){
             model.addAttribute("errors","Số lượng phải là số và lớn hơn 0!");
             return "admin/magiamgia/form-add-voucher";
-        }else if(!mgg.getGiaTriGiam().toString().trim().matches("\\d+") || mgg.getGiaTriGiam() <= 0){
+        }else if(!mgg.getGiaTriGiam().toString().trim().matches("^-?\\d+([.,]\\d+)?$") || mgg.getGiaTriGiam() <= 0){
             model.addAttribute("errors","Giá trị giảm phải là số và lớn hơn 0!");
             return "admin/magiamgia/form-add-voucher";
-        }else if(!mgg.getGiaTriToiDa().toString().trim().matches("\\d+") || mgg.getGiaTriToiDa() <= 0){
+        }else if(!mgg.getGiaTriToiDa().toString().trim().matches("^-?\\d+([.,]\\d+)?$") || mgg.getGiaTriToiDa() <= 0){
             model.addAttribute("errors","Giá trị tối đa phải là số và lớn hơn 0!");
             return "admin/magiamgia/form-add-voucher";
-        }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("\\d+") || mgg.getGiaTriToiThieu() < 0){
+        }else if(!mgg.getGiaTriToiThieu().toString().trim().matches("^-?\\d+([.,]\\d+)?$") || mgg.getGiaTriToiThieu() < 0){
             model.addAttribute("errors","Gíá trị đơn hàng tối thiểu phải là số và lớn hơn 0!");
             return "admin/magiamgia/form-add-voucher";
         }else if (mgg.getNgayBatDau().isBefore(LocalDateTime.now())){

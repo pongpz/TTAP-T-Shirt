@@ -56,6 +56,9 @@
                 <!--            </div>-->
             </div>
 
+            <div th:if="${message}" class="alert alert-success">
+                <strong>Thông báo:</strong> <span th:text="${message}"></span>
+            </div>
 
             <div class="col-md-7">
                 <h3 th:text="${sanPham.ten}"></h3>
@@ -116,9 +119,13 @@
                     <!--                <button class="btn btn-danger btn-buy">Mua ngay</button>-->
                     <button class="btn btn-outline-primary btn-add-cart" type="submit">Thêm vào giỏ hàng</button>
                 </div>
+            <div th:if="${error}" class="alert alert-danger">
+                <strong>Lỗi:</strong> <span th:text="${error}"></span>
+            </div>
             </div>
         </div>
     </form>
+
     <div class="mt-5">
         <h4>Chi tiết sản phẩm</h4>
         <table class="table">

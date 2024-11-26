@@ -113,7 +113,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(3);
         hoaDon.setLoaiDon(0);
-        hoaDon.setTongTien(cart.getTotalAmount().floatValue());
+        hoaDon.setTongTien(cart.getTotalAmount().doubleValue());
 
         HoaDon saveHd = hoaDonRepository.save(hoaDon);
 
@@ -169,7 +169,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(3);
         hoaDon.setLoaiDon(2);
-        hoaDon.setTongTien((float) tongTien);
+        hoaDon.setTongTien(tongTien);
 
         HoaDon saveHd = hoaDonRepository.save(hoaDon);
 

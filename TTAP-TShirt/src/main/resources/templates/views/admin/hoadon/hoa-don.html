@@ -88,7 +88,7 @@
             <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
             <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
             <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
-            <td th:text="${hd.tongTien ?: 'Không có'}"></td>
+            <td th:text="${numberUtils.formatCurrency(hd.tongTien)?: 'Không có'}"></td>
 
             <td>
                 <span th:if="${hd.trangThai == 0}" class="text-warning">Chưa thanh toán</span>
@@ -130,7 +130,7 @@
         <a th:href="@{/admin/hoa-don/hien-thi?(page = ${page+1})}" class="btn btn-outline-primary">Trang sau</a>
     </div>
     <h1 class="text-center">Hóa đơn chi tiết</h1>
-    <table class="table-sm">
+    <table class="table">
         <thead>
         <tr>
             <th scope="col">STT</th>
