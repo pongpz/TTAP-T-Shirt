@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.adminController;
 
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.MaGiamGia;
 import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,6 +48,8 @@ public class MaGiamGiaController {
         if (p.getContent().size() == 0){
             model.addAttribute("nullmgg","Không có mã giảm giá nào");
         }
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
         model.addAttribute("ListMGG",p);
         model.addAttribute("page",page);
         return "admin/magiamgia/voucher";
@@ -103,6 +106,8 @@ public class MaGiamGiaController {
         if (ls.size() == 0){
             model.addAttribute("nullmgg","Không có mã giảm giá nào");
         }
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
         model.addAttribute("mgg",mgg);
         model.addAttribute("ListMGG",ls);
         model.addAttribute("page",page);

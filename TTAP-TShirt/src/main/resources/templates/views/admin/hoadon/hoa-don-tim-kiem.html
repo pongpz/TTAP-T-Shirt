@@ -88,7 +88,7 @@
                     <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
                     <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
                     <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
-                    <td th:text="${hd.tongTien ?: 'Không có'}"></td>
+                    <td th:text="${numberUtils.formatCurrency(hd.tongTien)?: 'Không có'}"></td>
 
                     <td>
                         <span th:if="${hd.trangThai == 0}" class="text-warning">Chưa thanh toán</span>

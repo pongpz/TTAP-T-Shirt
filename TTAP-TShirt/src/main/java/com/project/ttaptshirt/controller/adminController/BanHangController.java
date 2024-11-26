@@ -676,11 +676,6 @@ public class BanHangController {
                             return soLuong * giaBan;
                         })
                         .sum();
-                Long idMgg = hoaDon.getMaGiamGia().getId();
-                MaGiamGia mgg = maGiamGiaRepo.getReferenceById(idMgg);
-                int soLuong = mgg.getSoLuong() +1;
-                mgg.setSoLuong(soLuong);
-                maGiamGiaRepo.save(mgg);
                 hoaDon.setMaGiamGia(null);
                 hoaDon.setSoTienGiamGia(0.0);
                 hoaDon.setTienThu(totalMoneyBefore);
