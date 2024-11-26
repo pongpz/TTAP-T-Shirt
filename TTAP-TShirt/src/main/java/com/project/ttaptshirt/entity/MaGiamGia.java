@@ -58,7 +58,7 @@ public class MaGiamGia {
         @Column(name = "gia_tri_toi_da")
         private Double giaTriToiDa;
 
-        @NotNull
+//        @NotNull
         @Column(name = "trang_thai")
         private Boolean trangThai;
 
