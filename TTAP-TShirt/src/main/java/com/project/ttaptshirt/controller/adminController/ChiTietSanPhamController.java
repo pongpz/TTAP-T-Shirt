@@ -105,63 +105,63 @@ public class ChiTietSanPhamController {
     @PostMapping("/add")
     public String createNewCTSP(
             @RequestParam("idSanPham") Long idSanPham,
-            @RequestParam(value = "mauSacIds", required = false) List<Long> mauSacIds,
-            @RequestParam(value = "kichCoIds", required = false) List<Long> kichCoIds,
-            @RequestParam Map<String, String> allParams, // Nhận toàn bộ request params
+            @RequestParam(value = "selectedVariants", required = false) List<String> selectedVariants,
+            @RequestParam Map<String, String> allParams,
             RedirectAttributes redirectAttributes) {
 
-        // Kiểm tra xem có màu sắc và kích cỡ nào được chọn không
-        if (mauSacIds == null || mauSacIds.isEmpty() || kichCoIds == null || kichCoIds.isEmpty()) {
+        if (selectedVariants == null || selectedVariants.isEmpty()) {
             return "redirect:/admin/chi-tiet-san-pham/" + idSanPham;
         }
 
         SanPham sanPham = new SanPham();
         sanPham.setId(idSanPham);
         List<String> duplicateWarnings = new ArrayList<>();
-        // Duyệt từng kết hợp màu sắc và kích cỡ
-        for (Long mauSacId : mauSacIds) {
-            MauSac mauSac = new MauSac();
-            mauSac.setId(mauSacId);
 
-            for (Long kichCoId : kichCoIds) {
-                KichCo kichCo = new KichCo();
-                kichCo.setId(kichCoId);
+        for (String variant : selectedVariants) {
+            String[] variantIds = variant.split("-");
+            Long mauSacId = Long.valueOf(variantIds[0]);
+            Long kichCoId = Long.valueOf(variantIds[1]);
 
-                // Lấy giá bán và số lượng từ request params
-                String priceKey = "price_" + mauSacId + "_" + kichCoId;
-                String quantityKey = "quantity_" + mauSacId + "_" + kichCoId;
 
-                Double giaBan = Double.valueOf(allParams.getOrDefault(priceKey, "0"));
-                Integer soLuong = Integer.valueOf(allParams.getOrDefault(quantityKey, "0"));
+            MauSac mauSac = mauSacService.findById(mauSacId);
+            KichCo kichCo = kichCoService.findById(kichCoId);
 
-                // Kiểm tra trùng lặp biến thể
-                boolean exists = chiTietSanPhamServiceImpl.existsBySanPhamAndMauSacAndKichCo(sanPham, mauSac, kichCo);
-                if (exists) {
-                    duplicateWarnings.add("Màu sắc: " + mauSac.getTen() + " và Kích cỡ: " + kichCo.getTen() + " đã tồn tại.");
-                    continue;
-                }
 
-                // Tạo ChiTietSanPham mới
-                ChiTietSanPham newChiTietSanPham = new ChiTietSanPham();
-                newChiTietSanPham.setSanPham(sanPham);
-                newChiTietSanPham.setMa(generateUniqueCode()); // Mã tự động
-                newChiTietSanPham.setMauSac(mauSac);
-                newChiTietSanPham.setKichCo(kichCo);
-                newChiTietSanPham.setGiaBan(giaBan);
-                newChiTietSanPham.setSoLuong(soLuong);
+            String priceKey = "price_" + mauSacId + "_" + kichCoId;
+            String quantityKey = "quantity_" + mauSacId + "_" + kichCoId;
 
-                // Lưu vào DB
-                chiTietSanPhamService.save(newChiTietSanPham);
+            Double giaBan = Double.valueOf(allParams.getOrDefault(priceKey, "0"));
+            Integer soLuong = Integer.valueOf(allParams.getOrDefault(quantityKey, "0"));
+
+
+            boolean exists = chiTietSanPhamServiceImpl.existsBySanPhamAndMauSacAndKichCo(sanPham, mauSac, kichCo);
+            if (exists) {
+                duplicateWarnings.add(" Sản Phẩm Chi Tiết Có Màu sắc: " + mauSac.getTen() + " và Kích cỡ: " + kichCo.getTen() + " Đã Tồn Tại!");
+                continue;
             }
+
+
+            ChiTietSanPham newChiTietSanPham = new ChiTietSanPham();
+            newChiTietSanPham.setSanPham(sanPham);
+            newChiTietSanPham.setMa(generateUniqueCode());
+            newChiTietSanPham.setMauSac(mauSac);
+            newChiTietSanPham.setKichCo(kichCo);
+            newChiTietSanPham.setGiaBan(giaBan);
+            newChiTietSanPham.setSoLuong(soLuong);
+
+            chiTietSanPhamService.save(newChiTietSanPham);
         }
+
         if (!duplicateWarnings.isEmpty()) {
             redirectAttributes.addFlashAttribute("duplicateWarnings", duplicateWarnings);
         } else {
             redirectAttributes.addFlashAttribute("createSuccess", true);
         }
+
         redirectAttributes.addAttribute("id", idSanPham);
         return "redirect:/admin/chi-tiet-san-pham/{id}";
     }
+
 
 
 
