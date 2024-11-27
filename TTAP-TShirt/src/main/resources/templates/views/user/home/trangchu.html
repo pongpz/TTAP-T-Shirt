@@ -49,6 +49,61 @@
     <div class="row mt-3">
         <div class="col-lg-12">
             <div class="section-title">
+                <h2>Sản phẩm mới</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row featured__filter">
+        <div class="col-lg-4 col-md-6 col-sm-6 custom-margin" th:each="sp : ${listspm}"> <br>
+            <div class="card">
+                <div class="product-images">
+                    <div th:each="hinhAnh : ${hinhAnhSanPhamm[sp.id]}">
+                        <img th:src="${hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 400px; height: 400px;">
+                    </div>
+                </div>
+                <div class=" justify-content-between text-center">
+                    <b><span class="product-name" th:text="${sp.ten}"></span></b>
+                    <br>
+                    <b><span th:text="|${giasanphamm[sp.id]} vnđ|"></span></b>
+                    <div class="text-center">
+                        <div class="d-flex flex-column justify-content-center align-items-center mt-2">
+                            <a class="abc"
+                               th:href="@{'/TTAP/san-pham-detail/' + ${sp.id}}">
+                                <span>Xem sản phẩm</span>
+                            </a>
+<!--                            <br>-->
+<!--                            <a class="abc mt-3" th:href="@{/add(productId=${sp.id}, quantity=1)}">-->
+<!--                                <span>Thêm vào giỏ hàng</span>-->
+<!--                            </a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--        <div class="col-md-4" th:each="sp : ${listsp}">-->
+        <!--            <div class="card mb-3 d-flex align-items-center">-->
+
+        <!--                <div class="card-body d-flex flex-column justify-content-between text-center">-->
+
+        <!--                    <div class="text-center">-->
+        <!--                        <h5>-->
+        <!--                            <span th:text="${sp.sanPham.ten}"></span>-->
+        <!--                        </h5>-->
+        <!--                        <span th:text="${sp.giaBan != null ? #numbers.formatDecimal(sp.giaBan, 1, 0) : 'Chưa cập nhật'}"></span> VNĐ-->
+        <!--                        <a class="abc mt-3" th:href="@{/TTAP/san-pham-detail/{idSP}(idSP=${sp.id})}">-->
+        <!--                            <span>Xem sản phẩm</span>-->
+        <!--                        </a>-->
+        <!--                        <a class="abc mt-3" th:href="@{/add(productId=${sp.id}, quantity=1)}">-->
+        <!--                            <span>Thêm vào giỏ hàng</span>-->
+        <!--                        </a>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div class="section-title">
                 <h2>Sản phẩm</h2>
             </div>
         </div>
@@ -58,7 +113,7 @@
             <div class="card">
                 <div class="product-images">
                     <div th:each="hinhAnh : ${hinhAnhSanPham[sp.id]}">
-                        <img th:src="${hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 300px; height: 300px;">
+                        <img th:src="${hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 400px; height: 400px;">
                     </div>
                 </div>
                 <div class=" justify-content-between text-center">
@@ -71,10 +126,10 @@
                                th:href="@{'/TTAP/san-pham-detail/' + ${sp.id}}">
                                 <span>Xem sản phẩm</span>
                             </a>
-                            <br>
-                            <a class="abc mt-3" th:href="@{/add(productId=${sp.id}, quantity=1)}">
-                                                            <span>Thêm vào giỏ hàng</span>
-                                                        </a>
+<!--                            <br>-->
+<!--                            <a class="abc mt-3" th:href="@{/add(productId=${sp.id}, quantity=1)}">-->
+<!--                                                            <span>Thêm vào giỏ hàng</span>-->
+<!--                                                        </a>-->
                         </div>
                     </div>
                 </div>
