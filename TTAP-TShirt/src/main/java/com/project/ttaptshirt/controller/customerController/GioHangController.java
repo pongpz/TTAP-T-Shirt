@@ -2,6 +2,7 @@ package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.dto.AddToCartRequest;
 import com.project.ttaptshirt.dto.CartItemDTO;
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.GioHang;
 import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.User;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,6 +62,9 @@ public class GioHangController {
             GioHang cart = gioHangService.getOrCreateCart(user); // Lấy giỏ hàng của người dùng
             model.addAttribute("cart", cart); // Đảm bảo luôn truyền giỏ hàng vào model
             model.addAttribute("userLogged", user);
+            NumberUtils numberUtils = new NumberUtils();
+
+            model.addAttribute("numberUtils", numberUtils);
             return "/user/home/cart2";
         }
         return "redirect:/login";
@@ -162,7 +167,7 @@ public class GioHangController {
     }
 
     @PostMapping("/checkout")
-    public String checkoutCart(@RequestParam List<Long> selectedProductIds,
+    public String checkoutCart(@RequestParam("selectedProductIds") String selectedProductIdsStr,
                                @RequestParam String fullName,
                                @RequestParam String phoneNumber,
                                @RequestParam String address,
@@ -174,10 +179,18 @@ public class GioHangController {
             User user = customUserDetail.getUser();
 
             try {
+                // Nếu danh sách sản phẩm được chọn trống hoặc null
+                if (selectedProductIdsStr == null || selectedProductIdsStr.trim().isEmpty()) {
+                    redirectAttributes.addFlashAttribute("error", "Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+                    return "redirect:/view"; // Quay lại trang giỏ hàng
+                }
+                List<Long> selectedProductIds = Arrays.stream(selectedProductIdsStr.split(","))
+                        .map(Long::parseLong)
+                        .collect(Collectors.toList());
                 HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds,fullName,phoneNumber,address);
                 redirectAttributes.addFlashAttribute("message", "Hóa đơn đã được tạo thành công!");
-                model.addAttribute("hoaDon",hoaDon);
-                return "redirect/hoa-don"; // Chuyển đến trang chi tiết hóa đơn
+                model.addAttribute("userLogged", user);
+                return "redirect:/hoa-don"; // Chuyển đến trang chi tiết hóa đơn
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Lỗi khi tạo hóa đơn: " + e.getMessage());
                 return "redirect:/view"; // Quay lại trang giỏ hàng
@@ -231,7 +244,11 @@ public class GioHangController {
 
             List<HoaDon> hoaDonList = hoaDonService.getListDonHang(user.getKhachHang());
             if (hoaDonList != null) {
+                NumberUtils numberUtils = new NumberUtils();
+
+                model.addAttribute("numberUtils", numberUtils);
                 model.addAttribute("hoaDon", hoaDonList);
+                model.addAttribute("userLogged", user);
                 return "/user/home/checkout"; // Đường dẫn đến view danh sách hóa đơn
             } else {
                 // Nếu không có hóa đơn, hiển thị thông báo lỗi
@@ -251,6 +268,7 @@ public class GioHangController {
                 HoaDon hoaDon = hoaDonService.getDonHang(id);
                 model.addAttribute("hoaDon", hoaDon);
                 model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
+            model.addAttribute("userLogged", user);
                 return "/user/home/cart"; // Đường dẫn đến view danh sách hóa đơn
 
         }

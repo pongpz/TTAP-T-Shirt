@@ -77,6 +77,11 @@ public class AccountController {
             model.addAttribute("user",user);
             return "user/register";
         }
+        else if (!user.getSoDienthoai().matches("\\d+")){
+            model.addAttribute("ErrorPhoneNumber","Số điện thoại không hợp lệ");
+            model.addAttribute("user",user);
+            return "user/register";
+        }
         else {
             String password = new BCryptPasswordEncoder().encode(passwordString);
             user.setPassword(password);

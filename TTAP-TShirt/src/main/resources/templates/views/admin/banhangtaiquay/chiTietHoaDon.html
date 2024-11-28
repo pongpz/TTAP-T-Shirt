@@ -75,7 +75,7 @@
                                     <table class="table">
                                         <thead>
                                         <tr>
-                                            <th scope="col">Id</th>
+                                            <th scope="col">STT</th>
                                             <th scope="col">Ma San Pham</th>
                                             <th scope="col">Ten San Pham</th>
                                             <th scope="col">Thuong Hieu</th>
@@ -89,8 +89,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="ctsp : ${listCTSP}">
-                                            <td th:text="${ctsp.id}"></td>
+                                        <tr th:each="ctsp, stat : ${listCTSP}">
+                                            <td th:text="${stat.index+1}"></td>
                                             <th scope="row" th:text="${ctsp.sanPham.ma}"></th>
                                             <td th:text="${ctsp.sanPham.ten}"></td>
                                             <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>
@@ -496,8 +496,8 @@
                                             <td th:text="${stat.index + 1}"></td>
                                             <td th:text="${voucher.ma}"></td>
                                             <td th:text="${voucher.ten}"></td>
+                                            <td th:text="${numberUtils.formatCurrency2(voucher.giaTriGiam)}"></td>
                                             <td th:text="${voucher.hinhThuc ? 'VND' : 'Phần trăm'}"></td>
-                                            <td th:text="${numberUtils.formatCurrency(voucher.giaTriGiam)}"></td>
                                             <td th:text="${voucher.ngayBatDau}"></td>
                                             <td th:text="${voucher.ngayKetThuc}"></td>
                                             <td th:text="${voucher.soLuong}"></td>
@@ -638,7 +638,7 @@
                 document.getElementById('idHdctInput').value = idHdct;
                 document.getElementById('quantityAvaliable').innerText = 'Số Lượng khả dụng: ' + quantityAvaliable;
             }
-
+        </script>
             <script src="/js/sweetalert2.min.js"></script>
 
         <script>

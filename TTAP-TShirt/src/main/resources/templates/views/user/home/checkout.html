@@ -49,7 +49,7 @@
 
 <section>
   <div class="container">
-    <h2 class="text-center">Danh sách hóa đơn</h2>
+    <h2 class="text-center">Danh sách đơn hàng</h2>
 
     <!-- Thông báo nếu có -->
     <div th:if="${message}" class="alert alert-info" th:text="${message}"></div>
@@ -58,8 +58,8 @@
       <table class="table table-bordered table-hover mt-4">
         <thead class="thead-dark">
         <tr>
-          <th>Mã Hóa Đơn</th>
-          <th>Nguoi Mua</th>
+          <th>Mã Đơn hàng</th>
+          <th>Người Mua</th>
           <th>Ngày Tạo</th>
           <th>Tổng Tiền</th>
           <th>Trạng Thái</th>
@@ -71,11 +71,12 @@
           <td th:text="${hoaDon.ma}"></td>
           <td th:text="${hoaDon.khachHang!=null?hoaDon.khachHang.hoTen:'Chua co'}"></td>
           <td th:text="${hoaDon.ngayTao}"></td>
-          <td th:text="${hoaDon.tongTien} + ' VNĐ'"></td>
+          <td th:text="${numberUtils.formatCurrency(hoaDon.tongTien)}"></td>
           <td th:switch="${hoaDon.trangThai}">
             <span th:case="3">Chờ xác nhận</span>
             <span th:case="2">Đã hủy</span>
-            <span th:case="1">Cho thanh toán</span>
+            <span th:case="1">Đã thanh toán</span>
+            <span th:case="0">Chờ thanh toán</span>
           </td>
           <td>
             <a th:href="@{/hoa-don-chi-tiet/hien-thi(id=${hoaDon.id})}" class="btn btn-info btn-sm">Xem chi tiết</a>

@@ -8,6 +8,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+//package com.project.ttaptshirt.exception;
+//
+//import com.project.ttaptshirt.service.impl.GioHangService;
+//import org.springframework.web.bind.annotation.ControllerAdvice;
+//import org.springframework.web.bind.annotation.ExceptionHandler;
+//import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+//
+//@ControllerAdvice
+//public class GlobalExceptionHandler {
+//
 //    @ExceptionHandler(GioHangService.ProductNotFoundException.class)
 //    public String handleProductNotFound(GioHangService.ProductNotFoundException ex, RedirectAttributes redirectAttributes) {
 //        // Thêm thông báo lỗi vào RedirectAttributes
@@ -31,3 +41,4 @@ public class GlobalExceptionHandler {
 //    }
 
 }
+//}

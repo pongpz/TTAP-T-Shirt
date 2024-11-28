@@ -77,9 +77,9 @@
                         <td th:text="${item.chiTietSanPham.sanPham.ten}"></td>
                         <td th:text="${item.chiTietSanPham.mauSac.ten}"></td>
                         <td th:text="${item.chiTietSanPham.kichCo.ten}"></td>
-                        <td th:text="${item.gia}"></td>
+                        <td th:text="${numberUtils.formatCurrency(item.gia)}"></td>
                         <td th:text="${item.soLuong}"></td>
-                        <td th:text="${item.gia * item.soLuong}"></td>
+                        <td th:text="${numberUtils.formatCurrency(item.gia * item.soLuong)}"></td>
                         <td>
                             <a th:href="@{/remove(productId=${item.id})}" class="btn btn-danger btn-sm"
                                onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')">Xóa</a>
@@ -95,7 +95,7 @@
 
                 <!-- Form nhập thông tin thanh toán -->
                 <div class="mt-4">
-                    <h4>Thông tin thanh toán</h4>
+                    <h4>Thông tin đơn hàng</h4>
 
                     <div class="form-group">
                         <label for="fullName">Họ và tên</label>
@@ -113,7 +113,7 @@
                     </div>
 
                     <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Thanh toán</button>
+                        <button type="submit" class="btn btn-primary">Đặt hàng</button>
                     </div>
                 </div>
             </form>
@@ -128,6 +128,13 @@
 
 
 <script>
+    document.getElementById('cartForm').addEventListener('submit', function (event) {
+        let checkboxes = document.querySelectorAll('.product-checkbox:checked');
+        if (checkboxes.length === 0) {
+            event.preventDefault(); // Ngăn việc submit form
+            alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+        }
+    });
     function calculateTotal() {
         let checkboxes = document.querySelectorAll('.product-checkbox');
         let total = 0;
@@ -137,9 +144,15 @@
         checkboxes.forEach(checkbox => {
             if (checkbox.checked) {
                 selectedProductIds.push(checkbox.value);
+
+                // Xác định dòng chứa checkbox và lấy giá tiền
                 let row = checkbox.closest('tr');
-                let amount = parseFloat(row.querySelector('td:nth-child(6)').textContent.replace(/[^0-9.]/g, ''));
-                total += amount;
+                let amount = parseFloat(row.querySelector('td:nth-child(8)').textContent.replace(/[^0-9.]/g, ''));
+
+                // Kiểm tra giá trị hợp lệ trước khi cộng vào tổng
+                if (!isNaN(amount)) {
+                    total += amount;
+                }
             }
         });
 
@@ -155,8 +168,15 @@
             inputSelectedProductIds.name = 'selectedProductIds';
             cartForm.appendChild(inputSelectedProductIds);
         }
+
+        // Cập nhật giá trị của input hidden
         inputSelectedProductIds.value = selectedProductIds.join(',');
+        // Cảnh báo nếu không có sản phẩm nào được chọn
+        if (selectedProductIds.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+        }
     }
+
 </script>
 
 

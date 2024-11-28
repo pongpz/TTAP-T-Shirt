@@ -165,10 +165,6 @@
                         checkbox.type = "checkbox";
                         checkbox.name = "selectedVariants";
                         checkbox.value = `${color.id}-${size.id}`;
-                        checkbox.addEventListener('change', function () {
-                            priceInput.disabled = !this.checked;
-                            quantityInput.disabled = !this.checked;
-                        });
                         selectCell.appendChild(checkbox);
 
                         // Cột Màu Sắc
@@ -179,7 +175,7 @@
                         const sizeCell = document.createElement("td");
                         sizeCell.textContent = size.name;
 
-
+                        // Cột Giá Bán
                         const priceCell = document.createElement("td");
                         const priceInput = document.createElement("input");
                         priceInput.type = "number";
@@ -188,7 +184,7 @@
                         priceInput.disabled = false;
                         priceCell.appendChild(priceInput);
 
-
+                        // Cột Số Lượng
                         const quantityCell = document.createElement("td");
                         const quantityInput = document.createElement("input");
                         quantityInput.type = "number";
@@ -209,6 +205,7 @@
                     });
                 });
             }
+
 
 
             // Chức năng đồng bộ giá và số lượng
@@ -266,47 +263,46 @@
             });
 
             function checkAndConfirm() {
-                const selectedCheckboxes = document.querySelectorAll('input[name="selectedVariants"]:checked'); // Kiểm tra các checkbox được chọn
+                // Lấy tất cả checkbox được chọn trong bảng
+                const selectedCheckboxes = document.querySelectorAll('#variantTableBody input[name="selectedVariants"]:checked');
 
-                // Kiểm tra xem có biến thể nào được chọn không
                 if (selectedCheckboxes.length === 0) {
                     toastWarning('warning', 'Vui lòng chọn ít nhất một biến thể!');
-                    return false; // Ngừng thực hiện nếu không có biến thể được chọn
+                    return false; // Dừng thực hiện nếu không có biến thể được chọn
                 }
 
-                // Kiểm tra tất cả các giá trị priceInput và quantityInput của những dòng đã chọn
+                // Kiểm tra dữ liệu của từng biến thể được chọn
                 let valid = true;
-
-                selectedCheckboxes.forEach(function(checkbox) {
-                    const row = checkbox.closest('tr'); // Lấy dòng chứa checkbox
+                selectedCheckboxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr'); // Dòng chứa checkbox
                     const priceInput = row.querySelector('.price-input');
                     const quantityInput = row.querySelector('.quantity-input');
 
-                    // Kiểm tra xem giá trị có âm không hoặc trống không
-                    if (priceInput && (priceInput.value === '' || priceInput.value < 0)) {
-                        toastWarning('warning', 'Giá bán không được âm và không được để trống!');
+                    // Kiểm tra giá trị giá bán và số lượng
+                    if (!priceInput.value || priceInput.value < 0) {
+                        toastWarning('warning', 'Giá bán không được để trống hoặc âm!');
                         priceInput.focus();
                         valid = false;
-                        return false; // Dừng tiếp tục kiểm tra
+                        return false;
                     }
 
-                    if (quantityInput && (quantityInput.value === '' || quantityInput.value < 0)) {
-                        toastWarning('warning', 'Số lượng không được âm và không được để trống!');
+                    if (!quantityInput.value || quantityInput.value < 0) {
+                        toastWarning('warning', 'Số lượng không được để trống hoặc âm!');
                         quantityInput.focus();
                         valid = false;
-                        return false; // Dừng tiếp tục kiểm tra
+                        return false;
                     }
                 });
 
-                // Nếu tất cả điều kiện hợp lệ, hiển thị hộp thoại xác nhận
-                if (valid) {
-                    return confirm('Bạn có chắc chắn muốn thêm?');
-                }
+                if (!valid) return false; // Ngừng nếu dữ liệu không hợp lệ
 
-                return false; // Ngừng hành động submit nếu không hợp lệ
+                // Hiển thị xác nhận
+                return confirm('Bạn có chắc chắn muốn thêm?');
             }
 
         </script>
+
+
 
     </div>
 </div>

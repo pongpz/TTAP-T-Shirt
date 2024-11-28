@@ -88,5 +88,27 @@
     }
     /*]]>*/
 </script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var updateSuccess = [[${updateSuccess}]];
+    console.log(updateSuccess);  // Debugging line to ensure the attribute is set
+    if (updateSuccess) {
+        toastSuccess('Thành Công!', 'Sản phẩm chi tiết đã được sửa thành công!');
+    }
+    /*]]>*/
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var duplicateWarnings = [[${duplicateWarnings}]];
+    console.log(duplicateWarnings);  // Kiểm tra dữ liệu được truyền từ backend
+
+    if (duplicateWarnings && duplicateWarnings.length > 0) {
+        duplicateWarnings.forEach(function(warning) {
+            toastWarning('Warning', warning);  // Hiển thị mỗi cảnh báo bằng toast
+        });
+    }
+    /*]]>*/
+</script>
 </body>
 </html>

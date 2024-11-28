@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.customerController;
 
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.entity.User;
@@ -130,7 +131,9 @@ public class HomeCustomerController {
                 hinhAnhSanPhamMoi.put(sanPhamm.getId(), imageUrl);
             }
         }
+        NumberUtils numberUtils = new NumberUtils();
 
+        model.addAttribute("numberUtils", numberUtils);
         model.addAttribute("listsp", sanPhamPage);
         model.addAttribute("listspm", sanPhamMoiPage);
         model.addAttribute("giasanpham", giaSanPham);
