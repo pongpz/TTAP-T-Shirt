@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/TTAP/cart/")
 @SessionAttributes("cart")
 public class CartController {
     @Autowired

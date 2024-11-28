@@ -2,6 +2,7 @@ package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.dto.AddToCartRequest;
 import com.project.ttaptshirt.dto.CartItemDTO;
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.GioHang;
 import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.User;
@@ -16,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
@@ -27,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping("/TTAP/cart")
 public class GioHangController {
     @Autowired
     private HoaDonServiceImpl hoaDonService;
@@ -61,6 +60,9 @@ public class GioHangController {
             GioHang cart = gioHangService.getOrCreateCart(user); // Lấy giỏ hàng của người dùng
             model.addAttribute("cart", cart); // Đảm bảo luôn truyền giỏ hàng vào model
             model.addAttribute("userLogged", user);
+            NumberUtils numberUtils = new NumberUtils();
+
+            model.addAttribute("numberUtils", numberUtils);
             return "/user/home/cart2";
         }
         return "redirect:/login";
@@ -75,8 +77,9 @@ public class GioHangController {
             User user = customUserDetail.getUser();
             gioHangService.removeProductFromCart(user, productId); // Xóa sản phẩm khỏi giỏ
         }
-        redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được xóa khỏi giỏ hàng.");
-        return "redirect:/view"; // Điều hướng đến trang giỏ hàng
+        redirectAttributes.addFlashAttribute("removemessage", true);
+        redirectAttributes.addFlashAttribute("alertType", "success"); // Loại thông báo
+        return "redirect:/TTAP/cart/view"; // Điều hướng đến trang giỏ hàng
     }
 
     // Tạo đơn hàng từ giỏ hàng
@@ -95,33 +98,33 @@ public class GioHangController {
                 redirectAttributes.addFlashAttribute("error", e.getMessage()); // Hiển thị lỗi nếu giỏ hàng trống
             }
         }
-        return "redirect:/view"; // Quay lại trang giỏ hàng nếu có lỗi
+        return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng nếu có lỗi
     }
 
-    @PostMapping("/TTAP/checkout")
-    public String checkout(
-            @RequestParam("selectedProductIds") List<Long> selectedProductIds,
-            @RequestParam("fullName") String fullName,
-            @RequestParam("phoneNumber") String phoneNumber,
-            @RequestParam("address") String address,
-            HttpServletRequest request, Authentication authentication, Model model
-            ) {
-        if (authentication != null) {
-            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
-
-            // Tạo đơn hàng từ các sản phẩm được chọn
-            List<CartItemDTO> selectedItems = getSelectedItemsFromCart(user, selectedProductIds);
-
-            try {
-                GioHang order = gioHangService.createOrderFromCart(user, selectedItems);
-                return "redirect:/TTAP/order/view/" + order.getId(); // Điều hướng đến trang xem đơn hàng
-            } catch (Exception e) {
-                return "redirect:/view?error=" + e.getMessage(); // Nếu có lỗi, quay lại giỏ hàng
-            }
-        }
-        return "redirect:/view";
-    }
+//    @PostMapping("/checkout")
+//    public String checkout(
+//            @RequestParam("selectedProductIds") List<Long> selectedProductIds,
+//            @RequestParam("fullName") String fullName,
+//            @RequestParam("phoneNumber") String phoneNumber,
+//            @RequestParam("address") String address,
+//            HttpServletRequest request, Authentication authentication, Model model
+//            ) {
+//        if (authentication != null) {
+//            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+//            User user = customUserDetail.getUser();
+//
+//            // Tạo đơn hàng từ các sản phẩm được chọn
+//            List<CartItemDTO> selectedItems = getSelectedItemsFromCart(user, selectedProductIds);
+//
+//            try {
+//                GioHang order = gioHangService.createOrderFromCart(user, selectedItems);
+//                return "redirect:/TTAP/order/view/" + order.getId(); // Điều hướng đến trang xem đơn hàng
+//            } catch (Exception e) {
+//                return "redirect:/view?error=" + e.getMessage(); // Nếu có lỗi, quay lại giỏ hàng
+//            }
+//        }
+//        return "redirect:/view";
+//    }
 
     private List<CartItemDTO> getSelectedItemsFromCart(User user, List<Long> selectedProductIds) {
         // Lấy giỏ hàng của user và lọc các sản phẩm được chọn
@@ -186,10 +189,10 @@ public class GioHangController {
                 HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds,fullName,phoneNumber,address);
                 redirectAttributes.addFlashAttribute("message", "Hóa đơn đã được tạo thành công!");
                 model.addAttribute("userLogged", user);
-                return "redirect:/hoa-don"; // Chuyển đến trang chi tiết hóa đơn
+                return "redirect:/TTAP/cart/hoa-don"; // Chuyển đến trang chi tiết hóa đơn
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Lỗi khi tạo hóa đơn: " + e.getMessage());
-                return "redirect:/view"; // Quay lại trang giỏ hàng
+                return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
             }
         }
         return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
@@ -217,7 +220,7 @@ public class GioHangController {
             try {
                 // Gọi service để thêm sản phẩm vào giỏ hàng
                 gioHangService.addToCart(user, request);
-                redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng.");
+                redirectAttributes.addFlashAttribute("message", true);
             } catch (GioHangService.ProductNotFoundException e) {
                 // Thông báo lỗi khi không tìm thấy sản phẩm
                 redirectAttributes.addFlashAttribute("error", "sản phẩm chi tiết chưa có: " + e.getMessage());
@@ -227,9 +230,10 @@ public class GioHangController {
                 redirectAttributes.addFlashAttribute("error", "sản phẩm không còn: " + e.getMessage());
                 return "redirect:/TTAP/san-pham-detail/" + request.getProductId();
             }
+        }else {
+            return "redirect:/login?redirect=" + "/TTAP/san-pham-detail/" + productId;
         }
-
-        return "redirect:/view"; // Điều hướng đến trang giỏ hàng
+        return "redirect:/TTAP/san-pham-detail/" + productId; // Điều hướng đến trang giỏ hàng
     }
 
     @GetMapping("/hoa-don")
@@ -240,13 +244,16 @@ public class GioHangController {
 
             List<HoaDon> hoaDonList = hoaDonService.getListDonHang(user.getKhachHang());
             if (hoaDonList != null) {
+                NumberUtils numberUtils = new NumberUtils();
+
+                model.addAttribute("numberUtils", numberUtils);
                 model.addAttribute("hoaDon", hoaDonList);
                 model.addAttribute("userLogged", user);
                 return "/user/home/checkout"; // Đường dẫn đến view danh sách hóa đơn
             } else {
                 // Nếu không có hóa đơn, hiển thị thông báo lỗi
                 model.addAttribute("message", "Không tìm thấy hóa đơn.");
-                return "redirect:/view"; // Quay lại trang giỏ hàng
+                return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
             }
         }
         return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login

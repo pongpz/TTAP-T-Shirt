@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.customerController;
 
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.*;
 //import com.project.ttaptshirt.service.HinhAnhService;
@@ -140,6 +141,9 @@ public class SanPhamCustomerController {
             }
         }
 
+        NumberUtils numberUtils = new NumberUtils();
+
+        model.addAttribute("numberUtils", numberUtils);
         model.addAttribute("listsp", sanPhamPage);
         model.addAttribute("giasanpham", giaSanPham);
         model.addAttribute("hinhAnhSanPham", hinhAnhSanPham);
@@ -162,7 +166,14 @@ public class SanPhamCustomerController {
 
 
     @GetMapping("/san-pham-detail/{idSP}")
-    public String sanPhamDetail(@PathVariable Long idSP, Model model) {
+    public String sanPhamDetail(@PathVariable Long idSP, Model model, Authentication authentication,
+                                HttpServletRequest request) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
+        model.addAttribute("requestURI", request.getRequestURI());
         SanPham sanPham = sanPhamRepository.findById(idSP)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm!"));
 
@@ -185,10 +196,10 @@ public class SanPhamCustomerController {
         ChiTietSanPham chiTietSanPham = !chiTietSanPhamList.isEmpty() ? chiTietSanPhamList.get(0) : null;
         double giaBan = chiTietSanPham != null ? chiTietSanPham.getGiaBan() : 0;
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        String giaBan1 = decimalFormat.format(giaBan);
+        NumberUtils numberUtils = new NumberUtils();
 
-        model.addAttribute("giaBan", giaBan1);
+        model.addAttribute("numberUtils", numberUtils);
+        model.addAttribute("giaBan", giaBan);
         model.addAttribute("sanPham", sanPham);
         model.addAttribute("mainImage", images.isEmpty() ? "/images/no-image.png" : images.get(0));
         model.addAttribute("images", images);
