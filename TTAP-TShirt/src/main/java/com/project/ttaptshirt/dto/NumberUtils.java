@@ -26,6 +26,17 @@ public class NumberUtils {
         return df.format(value);
     }
 
+    public static String formatCurrency3(double value) {
+        // Create custom DecimalFormatSymbols for consistent grouping symbol
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.'); // Use ',' as the grouping separator
+        symbols.setDecimalSeparator('.'); // Use '.' as the decimal separator (if needed)
+
+        // Apply the custom symbols to the DecimalFormat instance
+        DecimalFormat df = new DecimalFormat("###.#", symbols);
+        return df.format(value);
+    }
+
     public static void main(String[] args) {
         System.out.println(formatCurrency2(1000000));
     }

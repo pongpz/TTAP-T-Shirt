@@ -249,10 +249,10 @@ public class BanHangController {
         // Tính tổng tiền sau khi giảm giá, đảm bảo không âm
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0);
-        hoaDon.setTienBanDau(totalMoneyBefore);
+        hoaDon.setTienThu(totalMoneyAfter);
         // Cập nhật thông tin giảm giá, tổng tiền và trạng thái cho hóa đơn
         hoaDon.setSoTienGiamGia((Double) discount);
-        hoaDon.setTongTien((Double) totalMoneyAfter);
+        hoaDon.setTongTien((Double) totalMoneyBefore);
         hoaDon.setTrangThai(1); // Đặt trạng thái hóa đơn đã thanh toán
         hoaDonService.save(hoaDon);
 
@@ -449,9 +449,10 @@ public class BanHangController {
 
             double totalMoneyAfter = totalMoneyBefore - discount;
             totalMoneyAfter = Math.max(totalMoneyAfter, 0);
-            hoaDon.setTienBanDau(totalMoneyBefore);
+            hoaDon.setTienThu(totalMoneyAfter);
+            // Cập nhật thông tin giảm giá, tổng tiền và trạng thái cho hóa đơn
             hoaDon.setSoTienGiamGia((Double) discount);
-            hoaDon.setTongTien((Double) totalMoneyAfter);
+            hoaDon.setTongTien((Double) totalMoneyBefore);
             hoaDon.setTrangThai(1);
             hoaDonService.save(hoaDon);
 
