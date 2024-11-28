@@ -162,7 +162,14 @@ public class SanPhamCustomerController {
 
 
     @GetMapping("/san-pham-detail/{idSP}")
-    public String sanPhamDetail(@PathVariable Long idSP, Model model) {
+    public String sanPhamDetail(@PathVariable Long idSP, Model model, Authentication authentication,
+                                HttpServletRequest request) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
+        model.addAttribute("requestURI", request.getRequestURI());
         SanPham sanPham = sanPhamRepository.findById(idSP)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm!"));
 
