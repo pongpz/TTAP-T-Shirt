@@ -86,18 +86,39 @@
                     <h4>Thông tin chi tiet</h4>
                     <div class="form-group">
                         <label for="fullName">Họ và tên</label>
-                        <input type="text" id="fullName" th:text="${hoaDon.tenNguoiNhan}" class="form-control" required />
+                        <input type="text" id="fullName" name="tenNguoiNhan"
+                               th:value="${hoaDon.tenNguoiNhan}"
+                               class="form-control" required />
                     </div>
 
                     <div class="form-group">
                         <label for="phoneNumber">Số điện thoại</label>
-                        <input type="text" id="phoneNumber" th:text="${hoaDon.sdtNguoiNhan}" class="form-control" required />
+                        <input type="text" id="phoneNumber" name="sdtNguoiNhan"
+                               th:value="${hoaDon.sdtNguoiNhan}"
+                               class="form-control" required />
                     </div>
 
                     <div class="form-group">
                         <label for="address">Địa chỉ</label>
-                        <input type="text" id="address" th:text="${hoaDon.diaChiGiaoHang}" class="form-control" required />
+                        <input type="text" id="address" name="diaChiGiaoHang"
+                               th:value="${hoaDon.diaChiGiaoHang}"
+                               class="form-control" required />
                     </div>
+
+<!--                    <div class="form-group">-->
+<!--                        <label for="fullName">Họ và tên</label>-->
+<!--                        <input type="text" id="fullName" th:text="${hoaDon.tenNguoiNhan}" class="form-control" required />-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label for="phoneNumber">Số điện thoại</label>-->
+<!--                        <input type="text" id="phoneNumber" th:text="${hoaDon.sdtNguoiNhan}" class="form-control" required />-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label for="address">Địa chỉ</label>-->
+<!--                        <input type="text" id="address" th:text="${hoaDon.diaChiGiaoHang}" class="form-control" required />-->
+<!--                    </div>-->
                 </div>
 
         </div>

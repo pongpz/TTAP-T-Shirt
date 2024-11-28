@@ -79,7 +79,8 @@ public class GioHangController {
             User user = customUserDetail.getUser();
             gioHangService.removeProductFromCart(user, productId); // Xóa sản phẩm khỏi giỏ
         }
-        redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được xóa khỏi giỏ hàng.");
+        redirectAttributes.addFlashAttribute("removemessage", true);
+        redirectAttributes.addFlashAttribute("alertType", "success"); // Loại thông báo
         return "redirect:/view"; // Điều hướng đến trang giỏ hàng
     }
 
@@ -221,7 +222,7 @@ public class GioHangController {
             try {
                 // Gọi service để thêm sản phẩm vào giỏ hàng
                 gioHangService.addToCart(user, request);
-                redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng.");
+                redirectAttributes.addFlashAttribute("message", true);
             } catch (GioHangService.ProductNotFoundException e) {
                 // Thông báo lỗi khi không tìm thấy sản phẩm
                 redirectAttributes.addFlashAttribute("error", "sản phẩm chi tiết chưa có: " + e.getMessage());
@@ -231,9 +232,10 @@ public class GioHangController {
                 redirectAttributes.addFlashAttribute("error", "sản phẩm không còn: " + e.getMessage());
                 return "redirect:/TTAP/san-pham-detail/" + request.getProductId();
             }
+        }else {
+            return "redirect:/login?redirect=" + "/TTAP/san-pham-detail/" + productId;
         }
-
-        return "redirect:/view"; // Điều hướng đến trang giỏ hàng
+        return "redirect:/TTAP/san-pham-detail/" + productId; // Điều hướng đến trang giỏ hàng
     }
 
     @GetMapping("/hoa-don")

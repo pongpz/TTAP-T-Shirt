@@ -72,6 +72,25 @@ public class GioHangService {
                 });
     }
 
+    // Cập nhật số lượng của sản phẩm trong giỏ hàng
+    public void updateProductQuantity(GioHang cart, Long productId, int newQuantity) {
+        // Tìm sản phẩm trong giỏ hàng
+        Optional<GioHangChiTiet> cartItemOpt = cart.getItems().stream()
+                .filter(item -> item.getChiTietSanPham().getSanPham().getId().equals(productId))
+                .findFirst();
+
+        if (cartItemOpt.isPresent()) {
+            GioHangChiTiet cartItem = cartItemOpt.get();
+            cartItem.setSoLuong(newQuantity);
+            gioHangRepository.save(cart); // Lưu lại giỏ hàng sau khi cập nhật số lượng
+        } else {
+            // Nếu sản phẩm không có trong giỏ hàng, có thể tạo mới hoặc thông báo lỗi
+            throw new IllegalArgumentException("Sản phẩm không có trong giỏ hàng.");
+        }
+    }
+
+
+
     // Thêm sản phẩm vào giỏ
     public void addItemToCart(User user, Long productId, int quantity) {
         GioHang cart = getOrCreateCart(user);
