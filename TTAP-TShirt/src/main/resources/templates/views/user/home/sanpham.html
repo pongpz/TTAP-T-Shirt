@@ -191,7 +191,7 @@
               </div>
               <div class=" justify-content-between text-center">
                 <b><span class="product-name" th:text="${sp.ten}"></span></b>
-                <b><span th:text="|${giasanpham[sp.id]} vnđ|"></span></b>
+                <b><span th:text="|${numberUtils.formatCurrency(giasanpham[sp.id])}|"></span></b>
                 <div class="text-center">
                   <div class="d-flex flex-column justify-content-center align-items-center mt-2">
                     <a class="abc"

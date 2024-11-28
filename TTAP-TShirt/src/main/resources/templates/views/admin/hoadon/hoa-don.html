@@ -63,7 +63,7 @@
                         <button type="submit" class="btn btn-primary col-3">Tìm kiếm</button>
                         </div>
                     </form>
-<div class="container">
+<div class="">
     <h1 class="text-center">Hóa đơn</h1>
     <table class="table-sm table-hover">
         <thead>
@@ -104,7 +104,7 @@
                 <span th:if="${hd.trangThai == 2}" class="text-danger">Đã hủy</span>
                 <span th:if="${hd.trangThai == 3}" class="text-primary">Chờ xác nhận</span>
             </td>
-            <td th:text="${hd.maGiamGia != null ?hd.maGiamGia.giaTriGiam + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
+            <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
             <td>
                 <a th:href="@{/admin/hoa-don-chi-tiet/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
 

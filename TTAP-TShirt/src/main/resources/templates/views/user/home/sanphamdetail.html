@@ -69,7 +69,7 @@
             <h3 class="product-name" th:text="${sanPham.ten}"></h3>
             <div>
 
-                <span class="price" th:text="${giaBan} + ' VNĐ'"
+                <span class="price" th:text="${numberUtils.formatCurrency(giaBan)}"
                       style="font-size: 30px; font-weight: bold; color: red;"></span>
                 </div>
 

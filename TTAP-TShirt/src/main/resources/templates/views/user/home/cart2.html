@@ -91,17 +91,17 @@
                         <td th:text="${item.chiTietSanPham.sanPham.ten}"></td>
                         <td th:text="${item.chiTietSanPham.mauSac.ten}"></td>
                         <td th:text="${item.chiTietSanPham.kichCo.ten}"></td>
-                        <td th:text="${item.gia}"></td>
+                        <td th:text="${numberUtils.formatCurrency(item.gia)}"></td>
                         <td>
                             <span>
-                                <a href="javascript:;" onclick="updateTotal(this.nextElementSibling, [[${item.gia}]])">-</a>
+                                <a href="javascript:;" onclick="updateTotal(this.nextElementSibling, [[${numberUtils.formatCurrency(item.gia)}]])">-</a>
                                 <input type="number" th:value="${item.soLuong}" min="1"
-                                    onchange="updateTotal(this, [[${item.gia}]])"
+                                    onchange="updateTotal(this, [[${numberUtils.formatCurrency(item.gia)}]])"
                                     style="width: 60px; text-align: center;">
-                            <a href="javascript:;" onclick="updateTotal(this.previousElementSibling, [[${item.gia}]])">+</a>
+                            <a href="javascript:;" onclick="updateTotal(this.previousElementSibling, [[${numberUtils.formatCurrency(item.gia)}]])">+</a>
     </span>
                         </td>
-                        <td th:text="${item.gia * item.soLuong}"></td>
+                        <td th:text="${numberUtils.formatCurrency(item.gia * item.soLuong)}"></td>
                         <td>
                             <a th:href="@{/remove(productId=${item.id})}" class="btn btn-danger btn-sm"
                                onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')">Xóa</a>

@@ -322,9 +322,7 @@
                         <div class="modal-dialog modal-xl modal-dialog-centered" id="modal-dialog1">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel1">Chọn sản phẩm muốn
-                                        mua
-                                        vào hóa đơn</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel1">Chọn khách hàng</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -498,8 +496,8 @@
                                             <td th:text="${stat.index + 1}"></td>
                                             <td th:text="${voucher.ma}"></td>
                                             <td th:text="${voucher.ten}"></td>
+                                            <td th:text="${numberUtils.formatCurrency2(voucher.giaTriGiam)}"></td>
                                             <td th:text="${voucher.hinhThuc ? 'VND' : 'Phần trăm'}"></td>
-                                            <td th:text="${numberUtils.formatCurrency(voucher.giaTriGiam)}"></td>
                                             <td th:text="${voucher.ngayBatDau}"></td>
                                             <td th:text="${voucher.ngayKetThuc}"></td>
                                             <td th:text="${voucher.soLuong}"></td>

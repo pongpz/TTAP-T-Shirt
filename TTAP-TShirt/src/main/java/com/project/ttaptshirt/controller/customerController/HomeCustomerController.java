@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.customerController;
 
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.entity.User;
@@ -94,6 +95,7 @@ public class HomeCustomerController {
         Pageable pageable = PageRequest.of(page, 6);
 
         Page<SanPham> sanPhamPage = spr.findAll(pageable);
+        Page<SanPham> sanPhamMoiPage = spr.pageSPMoi(pageable);
 
 
 //        Pageable pageable = PageRequest.of(page, 6);
@@ -115,9 +117,29 @@ public class HomeCustomerController {
             }
         }
 
+        Map<Long, Double> giaSanPhamMoi = new HashMap<>();
+        for (SanPham sanPhamm : sanPhamMoiPage) {
+            Double giaMin = chiTietSanPhamServiceIplm.getMinGiaBan(sanPhamm.getId());
+            giaSanPhamMoi.put(sanPhamm.getId(), giaMin != null ? giaMin : 0);
+        }
+
+        // Lấy hình ảnh
+        Map<Long, String> hinhAnhSanPhamMoi = new HashMap<>();
+        for (SanPham sanPhamm : sanPhamMoiPage) {
+            if (sanPhamm.getHinhAnhList() != null && !sanPhamm.getHinhAnhList().isEmpty()) {
+                String imageUrl = sanPhamm.getHinhAnhList().get(0).getPath();
+                hinhAnhSanPhamMoi.put(sanPhamm.getId(), imageUrl);
+            }
+        }
+        NumberUtils numberUtils = new NumberUtils();
+
+        model.addAttribute("numberUtils", numberUtils);
         model.addAttribute("listsp", sanPhamPage);
+        model.addAttribute("listspm", sanPhamMoiPage);
         model.addAttribute("giasanpham", giaSanPham);
+        model.addAttribute("giasanphamm", giaSanPhamMoi);
         model.addAttribute("hinhAnhSanPham", hinhAnhSanPham);
+        model.addAttribute("hinhAnhSanPhamm", hinhAnhSanPhamMoi);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", sanPhamPage.getTotalPages());
         model.addAttribute("totalItems", sanPhamPage.getTotalElements());

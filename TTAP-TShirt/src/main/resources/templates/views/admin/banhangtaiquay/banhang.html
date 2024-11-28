@@ -62,7 +62,7 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">STT</th>
                                 <th scope="col">Mã hóa đơn</th>
                                 <th scope="col">Ngày tạo</th>
                                 <th scope="col">Khách hàng</th>
@@ -71,8 +71,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="hoaDon : ${listHoaDon}">
-                                <td th:text="${hoaDon.id}"></td>
+                            <tr th:each="hoaDon,stat : ${listHoaDon}">
+                                <td th:text="${stat.index+1}"></td>
                                 <td th:text="${hoaDon.ma}"></td>
                                 <td th:text="${hoaDon.ngayTao}"></td>
                                 <td th:text="${hoaDon.khachHang != null ? hoaDon.khachHang.hoTen : 'chưa có'}"></td>
