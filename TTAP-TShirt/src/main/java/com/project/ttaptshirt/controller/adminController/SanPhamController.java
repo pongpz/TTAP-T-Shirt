@@ -210,5 +210,29 @@ public class SanPhamController {
     }
 
 
+    @PostMapping("/add/nsx")
+    public String addChatLieu(NSX nsx) {
+        nsxRepository.save(nsx);
+        return "redirect:/admin/san-pham";
+    }
+
+    @PostMapping("/add/chat-lieu")
+    public String addChatLieu(ChatLieu cl){
+        chatLieuRepository.save(cl);
+        return "redirect:/admin/san-pham";
+    }
+
+    @PostMapping("/add/thuong-hieu")
+    public String addThuongHieu(ThuongHieu th){
+        thuongHieuRepository.save(th);
+        return "redirect:/admin/san-pham";
+    }
+
+    @PostMapping("/add/kieu-dang")
+    public String addKieuDang(KieuDang kieuDang){
+        kieuDangRepository.save(kieuDang);
+        return "redirect:/admin/san-pham";
+    }
+
 
 }
