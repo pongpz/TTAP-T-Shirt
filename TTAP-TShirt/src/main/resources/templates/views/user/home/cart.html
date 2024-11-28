@@ -51,6 +51,13 @@
     <div class="container">
         <h3 class="text-center">Don hàng của bạn</h3>
         <h5 class="card-title">Hóa Đơn #<span th:text="${hoaDon.id}"></span></h5>
+        <h4>Trạng thái:  <span th:switch="${hoaDon.trangThai}">
+        <span th:case="3" class="text-warning">Chờ xác nhận</span>
+        <span th:case="2" class="text-danger">Đã hủy</span>
+        <span th:case="1" class="text-success">Đã thanh toán</span>
+        <span th:case="0" class="text-primary">Chờ thanh toán</span>
+        <span th:case="*" class="text-secondary">Không xác định</span>
+    </span></h4>
         <!-- Hiển thị giỏ hàng -->
         <div class="table-responsive">
                 <table class="table table-bordered table-hover">
@@ -123,7 +130,7 @@
 
         </div>
         <div class="text-center mt-4">
-            <a href="/hoa-don" class="btn btn-secondary">Quay lại giỏ hàng</a>
+            <a href="/TTAP/cart/hoa-don" class="btn btn-secondary">Quay lại giỏ hàng</a>
         </div>
     </div>
 </section>

@@ -58,7 +58,7 @@
 
         <!-- Hiển thị giỏ hàng -->
         <div class="table-responsive" th:if="${cart.items != null and !cart.items.isEmpty()}">
-            <form th:action="@{/checkout}" method="POST" id="cartForm">
+            <form th:action="@{/TTAP/cart/checkout}" method="POST" id="cartForm">
                 <table class="table table-bordered table-hover">
                     <thead class="table-primary">
                     <tr>
@@ -103,7 +103,7 @@
                         </td>
                         <td th:text="${numberUtils.formatCurrency(item.gia * item.soLuong)}"></td>
                         <td>
-                            <a th:href="@{/remove(productId=${item.id})}" class="btn btn-danger btn-sm"
+                            <a th:href="@{/TTAP/cart/remove(productId=${item.id})}" class="btn btn-danger btn-sm"
                                onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')">Xóa</a>
                         </td>
                     </tr>
@@ -201,24 +201,20 @@
     }
 
     function updateTotal(input, price) {
-        // Lấy dòng hiện tại
-        const row = input.closest('tr');
-        // Lấy số lượng mới từ ô input
-        const newQuantity = parseInt(input.value, 10);
+        const quantity = parseInt(input.value, 10); // Lấy số lượng hiện tại
+        const row = input.closest('tr'); // Lấy hàng hiện tại
+        const totalCell = row.querySelector('td:nth-child(9)'); // Ô chứa thành tiền
 
-        // Kiểm tra số lượng hợp lệ
-        if (!isNaN(newQuantity) && newQuantity > 0) {
-            // Tính toán tổng tiền cho sản phẩm này
-            const newTotal = newQuantity * price;
-            // Cập nhật giá trị "Thành tiền" trong dòng hiện tại
-            row.querySelector('.item-total').textContent = newTotal.toLocaleString('vi-VN');
-            // Cập nhật tổng tiền của giỏ hàng
+        if (quantity > 0) {
+            // Cập nhật thành tiền
+            const total = quantity * price;
+            totalCell.textContent = total.toLocaleString('vi-VN') + ' VND';
+
+            // Tính lại tổng tiền toàn bộ giỏ hàng
             calculateTotal();
         } else {
-            // Cảnh báo và đặt lại giá trị nếu số lượng không hợp lệ
-            alert("Số lượng phải là số nguyên lớn hơn 0.");
-            input.value = 1; // Reset về giá trị mặc định là 1
-            updateTotal(input, price); // Gọi lại để cập nhật với giá trị mặc định
+            alert('Số lượng phải lớn hơn 0!');
+            input.value = 1; // Reset lại số lượng nếu không hợp lệ
         }
     }
 
