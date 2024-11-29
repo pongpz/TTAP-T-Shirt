@@ -58,7 +58,7 @@
 
                                 <div class="mb-3 col-8">
                                     <label class="form-label">Giá trị giảm</label>
-                                    <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam" th:value="${mgg.giaTriGiam}" onchange="checkGiaTriToiDa()">
+                                    <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam" th:value="${numberUtils.formatCurrency3(mgg.giaTriGiam)}" onchange="checkGiaTriToiDa()">
                                 </div>
                                 <div class="col-1">
 
@@ -77,7 +77,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Giá trị đơn hàng tối thiểu</label>
                                 <div class="input-group mb-3">
-                                    <input type="number" class="form-control" name="giaTriToiThieu" id="giaTriToiThieu" th:value="${mgg.giaTriToiThieu}">
+                                    <input type="number" class="form-control" name="giaTriToiThieu" id="giaTriToiThieu" th:value="${numberUtils.formatCurrency3(mgg.giaTriToiThieu)}">
                                     <span class="input-group-text" id="basic-addon2">đ</span>
                                 </div>
                             </div>
@@ -85,11 +85,11 @@
                             <div class="mb-3">
                                 <label class="form-label">Giá trị giảm tối đa</label>
                                 <div class="input-group mb-3">
-                                    <input type="number" class="form-control" name="giaTriToiDa" id="giaTriToiDa" th:value="${mgg.giaTriToiDa}" onchange="checkGiaTriToiDa()">
+                                    <input type="number" class="form-control" name="giaTriToiDa" id="giaTriToiDa" th:value="${numberUtils.formatCurrency3(mgg.giaTriToiDa)}" onchange="checkGiaTriToiDa()">
                                     <span class="input-group-text" id="basic-addon">đ</span>
                                 </div>
                             </div>
-                            <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${mgg.giaTriToiDa ?: ''}">
+                            <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${numberUtils.formatCurrency3(mgg.giaTriToiDa) ?: ''}">
 
                             <label class="form-label">Trạng thái</label>
                             <div class="form-check">

@@ -71,7 +71,7 @@
           <td th:text="${hoaDon.ma}"></td>
           <td th:text="${hoaDon.khachHang!=null?hoaDon.khachHang.hoTen:'Chua co'}"></td>
           <td th:text="${hoaDon.ngayTao}"></td>
-          <td th:text="${hoaDon.tongTien} + ' VNĐ'"></td>
+          <td th:text="${numberUtils.formatCurrency(hoaDon.tongTien)}"></td>
           <td th:switch="${hoaDon.trangThai}">
             <span th:case="3">Chờ xác nhận</span>
             <span th:case="2">Đã hủy</span>
@@ -89,7 +89,7 @@
 
     <!-- Nút quay lại trang chính -->
     <div class="text-center mt-4">
-      <a href="/view" class="btn btn-secondary">Quay lại giỏ hàng</a>
+      <a href="/TTAP/cart/view" class="btn btn-secondary">Quay lại giỏ hàng</a>
     </div>
   </div>
 </section>

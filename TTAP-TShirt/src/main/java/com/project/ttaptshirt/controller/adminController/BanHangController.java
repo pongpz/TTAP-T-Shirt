@@ -249,10 +249,10 @@ public class BanHangController {
         // Tính tổng tiền sau khi giảm giá, đảm bảo không âm
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0);
-
+        hoaDon.setTienThu(totalMoneyAfter);
         // Cập nhật thông tin giảm giá, tổng tiền và trạng thái cho hóa đơn
         hoaDon.setSoTienGiamGia((Double) discount);
-        hoaDon.setTongTien((Double) totalMoneyAfter);
+        hoaDon.setTongTien((Double) totalMoneyBefore);
         hoaDon.setTrangThai(1); // Đặt trạng thái hóa đơn đã thanh toán
         hoaDonService.save(hoaDon);
 
@@ -281,13 +281,17 @@ public class BanHangController {
 
         HoaDon hoaDon = hoaDonService.findById(id);
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietService.getHDCTByIdHD(id);
+        // Tính tổng tiền trước giảm giá
         double totalMoneyBefore = listHDCT.stream()
                 .mapToDouble(hdct -> {
-                    int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0;
-                    double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null) ? hdct.getChiTietSanPham().getGiaBan() : 0.0;
+                    int soLuong = (hdct.getSoLuong() != null) ? hdct.getSoLuong() : 0; // Kiểm tra số lượng
+                    double giaBan = (hdct.getChiTietSanPham() != null && hdct.getChiTietSanPham().getGiaBan() != null)
+                            ? hdct.getChiTietSanPham().getGiaBan() : 0.0; // Kiểm tra giá bán
                     return soLuong * giaBan;
                 })
                 .sum();
+
+        // Lấy thông tin mã giảm giá từ hóa đơn
         MaGiamGia voucher = hoaDon.getMaGiamGia();
         double discount = 0.0;
 
@@ -301,17 +305,18 @@ public class BanHangController {
                 }
             }
             // Trường hợp giảm giá cố định
-            else {
+            else if (voucher.getHinhThuc().equals(true)) {
                 discount = voucher.getGiaTriGiam();
             }
         }
 
+        // Tính tổng tiền sau khi giảm giá, đảm bảo không âm
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0);
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        long amount = (int) totalMoneyAfter * 100;
+        long amount = (long) totalMoneyAfter * 100;
         String vnp_IpAddr = Config.getIpAddress(req);
 
         String vnp_TmnCode = Config.vnp_TmnCode;
@@ -444,9 +449,10 @@ public class BanHangController {
 
             double totalMoneyAfter = totalMoneyBefore - discount;
             totalMoneyAfter = Math.max(totalMoneyAfter, 0);
-
+            hoaDon.setTienThu(totalMoneyAfter);
+            // Cập nhật thông tin giảm giá, tổng tiền và trạng thái cho hóa đơn
             hoaDon.setSoTienGiamGia((Double) discount);
-            hoaDon.setTongTien((Double) totalMoneyAfter);
+            hoaDon.setTongTien((Double) totalMoneyBefore);
             hoaDon.setTrangThai(1);
             hoaDonService.save(hoaDon);
 

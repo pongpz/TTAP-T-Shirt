@@ -2,6 +2,7 @@ package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.dto.AddToCartRequest;
 import com.project.ttaptshirt.dto.CartItemDTO;
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.GioHang;
 import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.User;
@@ -59,6 +60,9 @@ public class GioHangController {
             GioHang cart = gioHangService.getOrCreateCart(user); // Lấy giỏ hàng của người dùng
             model.addAttribute("cart", cart); // Đảm bảo luôn truyền giỏ hàng vào model
             model.addAttribute("userLogged", user);
+            NumberUtils numberUtils = new NumberUtils();
+
+            model.addAttribute("numberUtils", numberUtils);
             return "/user/home/cart2";
         }
         return "redirect:/login";
@@ -240,6 +244,9 @@ public class GioHangController {
 
             List<HoaDon> hoaDonList = hoaDonService.getListDonHang(user.getKhachHang());
             if (hoaDonList != null) {
+                NumberUtils numberUtils = new NumberUtils();
+
+                model.addAttribute("numberUtils", numberUtils);
                 model.addAttribute("hoaDon", hoaDonList);
                 model.addAttribute("userLogged", user);
                 return "/user/home/checkout"; // Đường dẫn đến view danh sách hóa đơn

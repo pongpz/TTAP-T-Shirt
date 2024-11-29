@@ -95,8 +95,8 @@
 <!--                                </span>-->
 <!--                                    </td>-->
                                     <td>
-                                        <a th:href="@{'chi-tiet-san-pham/' + ${sanPham.id}}" class="btn btn-secondary">Chi tiết</a>
-                                        <a th:href="@{'san-pham/sua-san-pham/' + ${sanPham.id} }" class="btn btn-secondary">Sửa</a>
+                                        <a th:href="@{'/admin/chi-tiet-san-pham/' + ${sanPham.id}}" class="btn btn-secondary">Chi tiết</a>
+                                        <a th:href="@{'/admin/san-pham/sua-san-pham/' + ${sanPham.id} }" class="btn btn-secondary">Sửa</a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -161,30 +161,42 @@
 
                     <div class="mb-3">
                         <label class="form-label">Nhà Sản Xuất</label>
-                        <select class="form-select" name="idNSX" required>
-                            <option th:each="nsx : ${listNsx}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
-                        </select>
+                        <div class="d-flex">
+                            <select class="form-select" name="idNSX" required>
+                                <option th:each="nsx : ${listNsx}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
+                            </select>
+                            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalAddNSX">Thêm</button>
+                        </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Chất Liệu</label>
-                        <select class="form-select" name="idChatLieu">
-                            <option th:each="chatLieu : ${listChatLieu}" th:value="${chatLieu.id}" th:text="${chatLieu.ten}"></option>
-                        </select>
+                        <div class="d-flex">
+                            <select class="form-select" name="idChatLieu">
+                                <option th:each="chatLieu : ${listChatLieu}" th:value="${chatLieu.id}" th:text="${chatLieu.ten}"></option>
+                            </select>
+                            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalAddChatLieu">Thêm</button>
+                        </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Thương Hiệu</label>
-                        <select class="form-select" name="idThuongHieu">
-                            <option th:each="thuongHieu : ${listThuongHieu}" th:value="${thuongHieu.id}" th:text="${thuongHieu.ten}"></option>
-                        </select>
+                        <div class="d-flex">
+                            <select class="form-select" name="idThuongHieu">
+                                <option th:each="thuongHieu : ${listThuongHieu}" th:value="${thuongHieu.id}" th:text="${thuongHieu.ten}"></option>
+                            </select>
+                            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalAddThuongHieu">Thêm</button>
+                        </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Kiểu Dáng</label>
-                        <select class="form-select" name="idKieuDang">
-                            <option th:each="kieuDang : ${listKieuDang}" th:value="${kieuDang.id}" th:text="${kieuDang.ten}"></option>
-                        </select>
+                        <div class="d-flex">
+                            <select class="form-select" name="idKieuDang">
+                                <option th:each="kieuDang : ${listKieuDang}" th:value="${kieuDang.id}" th:text="${kieuDang.ten}"></option>
+                            </select>
+                            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalAddKieuDang">Thêm</button>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -209,6 +221,92 @@
     </div>
 </div>
 
+<div class="modal fade" th:id="modalAddNSX" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModqalLabel">Thêm nhà sản xuất</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/admin/san-pham/add/nsx}" th:object="${nhaSanXuat}" method="post">
+                    <div class="mb-3">
+                        <label for="ten" class="form-label">Tên nhà sản xuất</label>
+                        <input type="text" class="form-control" id="ten" name="ten" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" th:id="modalAddChatLieu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModqalLabel1">Thêm chất liệu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/admin/san-pham/add/chat-lieu}" th:object="${chatLieu}" method="post">
+                    <div class="mb-3">
+                        <label for="ten" class="form-label">Tên chất liệu</label>
+                        <input type="text" class="form-control" id="ten" name="ten" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" th:id="modalAddThuongHieu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModqalLabel2">Thêm thương hiệu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/admin/san-pham/add/thuong-hieu}" th:object="${thuongHieu}" method="post">
+                    <div class="mb-3">
+                        <label for="ten" class="form-label">Tên thương hiệu</label>
+                        <input type="text" class="form-control" id="ten" name="ten" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" th:id="modalAddKieuDang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModqalLabel3">Thêm kiểu dáng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/admin/san-pham/add/kieu-dang}" th:object="${kieuDang}" method="post">
+                    <div class="mb-3">
+                        <label for="ten" class="form-label">Tên kiểu dáng</label>
+                        <input type="text" class="form-control" id="ten" name="ten" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
@@ -223,6 +321,23 @@
         toastSuccess('Thành Công!', 'Sản phẩm đã được tạo thành công!');
     }
     /*]]>*/
+</script>
+<script>
+    $('#modalAddNSX').on('show.bs.modal', function () {
+        $('#modal-themsp-').modal('hide');
+    });
+
+    $('#modalAddKieuDang').on('show.bs.modal', function () {
+        $('#modal-themsp-').modal('hide');
+    });
+
+    $('#modalAddThuongHieu').on('show.bs.modal', function () {
+        $('#modal-themsp-').modal('hide');
+    });
+
+    $('#modalAddChatLieu').on('show.bs.modal', function () {
+        $('#modal-themsp-').modal('hide');
+    });
 </script>
 
 
