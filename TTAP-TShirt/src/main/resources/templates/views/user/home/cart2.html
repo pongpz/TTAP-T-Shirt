@@ -93,15 +93,28 @@
                         <td th:text="${item.chiTietSanPham.kichCo.ten}"></td>
                         <td th:text="${numberUtils.formatCurrency(item.gia)}"></td>
                         <td>
+
+                            <div style="display: flex; align-items: center;">
+                                <button type="button" class="btn btn-light btn-sm" onclick="updateQuantity(this, -1, [[${item.gia}]])">-</button>
+                                <input type="number" name="quantity" th:value="${item.soLuong}" min="1"
+                                       style="width: 60px; text-align: center;" readonly>
+                                <button type="button" class="btn btn-light btn-sm" onclick="updateQuantity(this, 1, [[${item.gia}]])">+</button>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="item-total" th:text="${item.gia * item.soLuong}"></span>
+                        </td>
+
                             <span>
                                 <a href="javascript:;" onclick="updateTotal(this.nextElementSibling, [[${numberUtils.formatCurrency(item.gia)}]])">-</a>
                                 <input type="number" th:value="${item.soLuong}" min="1"
                                     onchange="updateTotal(this, [[${numberUtils.formatCurrency(item.gia)}]])"
                                     style="width: 60px; text-align: center;">
-                            <a href="javascript:;" onclick="updateTotal(this.previousElementSibling, [[${numberUtils.formatCurrency(item.gia)}]])">+</a>
-    </span>
+                                <a href="javascript:;" onclick="updateTotal(this.previousElementSibling, [[${numberUtils.formatCurrency(item.gia)}]])">+</a>
+                            </span>
                         </td>
                         <td th:text="${numberUtils.formatCurrency(item.gia * item.soLuong)}"></td>
+
                         <td>
                             <a th:href="@{/TTAP/cart/remove(productId=${item.id})}" class="btn btn-danger btn-sm"
                                onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')">Xóa</a>
@@ -200,22 +213,25 @@
         inputSelectedProductIds.value = selectedProductIds.join(',');
     }
 
-    function updateTotal(input, price) {
-        const quantity = parseInt(input.value, 10); // Lấy số lượng hiện tại
-        const row = input.closest('tr'); // Lấy hàng hiện tại
-        const totalCell = row.querySelector('td:nth-child(9)'); // Ô chứa thành tiền
+    function updateQuantity(button, change, price) {
+        const quantityInput = change === -1 ? button.nextElementSibling : button.previousElementSibling;
+        const currentQuantity = parseInt(quantityInput.value);
+        const newQuantity = currentQuantity + change;
 
-        if (quantity > 0) {
-            // Cập nhật thành tiền
-            const total = quantity * price;
-            totalCell.textContent = total.toLocaleString('vi-VN') + ' VND';
-
-            // Tính lại tổng tiền toàn bộ giỏ hàng
-            calculateTotal();
-        } else {
-            alert('Số lượng phải lớn hơn 0!');
-            input.value = 1; // Reset lại số lượng nếu không hợp lệ
+        if (newQuantity < 1) {
+            alert("Số lượng phải lớn hơn hoặc bằng 1!");
+            return;
         }
+
+        // Cập nhật số lượng
+        quantityInput.value = newQuantity;
+
+        // Cập nhật thành tiền
+        const itemTotalElement = button.closest('tr').querySelector('.item-total');
+        itemTotalElement.textContent = (newQuantity * price).toLocaleString('vi-VN');
+
+        // Cập nhật tổng tiền
+        calculateTotal();
     }
 
 
