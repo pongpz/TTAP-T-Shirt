@@ -51,14 +51,14 @@
                             <label for="ngayThanhToan" class="form-label">Ngày thanh toán</label>
                             <input type="date" class="form-control" id="ngayThanhToan" name="ngayThanhToan" th:value="${ngayThanhToan}">
                         </div>
-                        <div class="col-4">
-                            <label class="form-label">Loại đơn</label>
-                            <select class="form-select" aria-label="Default select example" name="loaiDon">
-                                <option selected value="">Tất cả</option>
-                                <option value="1" th:selected="${loaiDon==1}">Tại quầy</option>
-                                <option value="0" th:selected="${loaiDon==0}">Online</option>
-                            </select>
-                        </div>
+<!--                        <div class="col-4">-->
+<!--                            <label class="form-label">Loại đơn</label>-->
+<!--                            <select class="form-select" aria-label="Default select example" name="loaiDon">-->
+<!--                                <option selected value="">Tất cả</option>-->
+<!--                                <option value="1" th:selected="${loaiDon==1}">Tại quầy</option>-->
+<!--                                <option value="0" th:selected="${loaiDon==0}">Online</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
                         <div class="col-12 justify-content-center">
                         <button type="submit" class="btn btn-primary col-3">Tìm kiếm</button>
                         </div>
