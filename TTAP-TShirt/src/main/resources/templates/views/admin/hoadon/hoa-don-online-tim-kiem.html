@@ -15,28 +15,28 @@
 
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
     <div class="main-content content flex-grow-1 p-4">
-        <form th:action="@{/admin/hoa-don/tim-kiem}" method="get" class="d-flex row">
+        <form th:action="@{/admin/hoa-don/tim-kiem/online}" method="get" class="d-flex row">
             <h5 class="text-center">Tìm kiếm/lọc</h5>
             <div class="mb-3 col-4">
                 <label for="ma" class="form-label">Mã hóa đơn</label>
                 <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}">
             </div>
-<!--            <div class="mb-3 col-4">-->
-<!--                <label for="keyword" class="form-label">Tìm kiếm</label>-->
-<!--                <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}">-->
-<!--            </div>-->
+            <!--            <div class="mb-3 col-4">-->
+            <!--                <label for="keyword" class="form-label">Tìm kiếm</label>-->
+            <!--                <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}">-->
+            <!--            </div>-->
             <div class="mb-3 col-4">
                 <label for="keyword" class="form-label">Khách hàng</label>
                 <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}" placeholder="Tên, SDT, Email">
             </div>
-<!--            <div class="mb-3 col-4">-->
-<!--                <label for="tennv" class="form-label">Tên nhân viên</label>-->
-<!--                <input type="text" class="form-control" id="tennv" name="tennv" th:value="${tennv}">-->
-<!--            </div>-->
-<!--            <div class="mb-3 col-4">-->
-<!--                <label for="sdt" class="form-label">Số điện thoại khách hàng</label>-->
-<!--                <input type="text" class="form-control" id="sdt" name="sdt" th:value="${sdt}">-->
-<!--            </div>-->
+            <!--            <div class="mb-3 col-4">-->
+            <!--                <label for="tennv" class="form-label">Tên nhân viên</label>-->
+            <!--                <input type="text" class="form-control" id="tennv" name="tennv" th:value="${tennv}">-->
+            <!--            </div>-->
+            <!--            <div class="mb-3 col-4">-->
+            <!--                <label for="sdt" class="form-label">Số điện thoại khách hàng</label>-->
+            <!--                <input type="text" class="form-control" id="sdt" name="sdt" th:value="${sdt}">-->
+            <!--            </div>-->
             <div class="col-4">
                 <label class="form-label">Trạng thái</label>
                 <select class="form-select" aria-label="Default select example" name="trangThai">
@@ -116,19 +116,19 @@
                         <a th:href="@{/admin/hoa-don/huy-hoa-don-online/{idHD}(idHD=${hd.id})}"
                            th:if="${hd.trangThai == 3 && hd.loaiDon == 0}"
                            class="btn btn-danger"
-                           th:onclick="'return confirm(\'Are you sure you want to cancel this invoice?\')'">Hủy hóa đơn</a>
+                           th:onclick="'return confirm(\'Bạn có muốn hủy hóa đơn này không??\')'">Hủy hóa đơn</a>
 
                         <!-- Confirm Invoice button -->
                         <a th:href="@{/admin/hoa-don/xac-nhan-hoa-don/{idHD}(idHD=${hd.id})}"
                            th:if="${hd.trangThai == 3 && hd.loaiDon == 0}"
                            class="btn btn-primary"
-                           th:onclick="'return confirm(\'Are you sure you want to confirm this invoice?\')'">Xác nhận hóa đơn</a>
+                           th:onclick="'return confirm(\'Bạn có muốn xác nhận hóa đơn này không??\')'">Xác nhận hóa đơn</a>
 
                         <!-- Complete Invoice button -->
                         <a th:href="@{/admin/hoa-don/hoan-thanh-hoa-don/{idHD}(idHD=${hd.id})}"
                            th:if="${hd.trangThai == 0 && hd.loaiDon == 0}"
                            class="btn btn-success"
-                           th:onclick="'return confirm(\'Are you sure you want to mark this invoice as complete?\')'">Hoàn thành</a>
+                           th:onclick="'return confirm(\'Bạn có muốn hoàn thành hóa đơn này không??\')'">Hoàn thành</a>
                     </td>
 
 
@@ -138,9 +138,9 @@
             </table>
             <h5 class="text-center">[[${nullhd}]]</h5>
             <div class="justify-content-center d-flex mb-5">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon})}" class="btn btn-outline-primary">Trang trước</a>
+                <a th:href="@{/admin/hoa-don/tim-kiem/online?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon})}" class="btn btn-outline-primary">Trang trước</a>
                 <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon})}" class="btn btn-outline-primary">Trang sau</a>
+                <a th:href="@{/admin/hoa-don/tim-kiem/online?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon})}" class="btn btn-outline-primary">Trang sau</a>
             </div>
             <h1 class="text-center">Hóa đơn chi tiết</h1>
             <table class="table">
@@ -192,8 +192,9 @@
         }
 
         // Cập nhật lại URL với các tham số đã sửa
-        window.location.href = window.location.origin + '/admin/hoa-don/tim-kiem?' + linkSearch.toString();
+        window.location.href = window.location.origin + '/admin/hoa-don/tim-kiem/online?' + linkSearch.toString();
     }
 
 </script>
 </html>
+`

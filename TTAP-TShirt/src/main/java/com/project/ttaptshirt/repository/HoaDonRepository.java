@@ -31,8 +31,11 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Query(value = "update hoa_don set  trang_thai = ?1 where id = ?2",nativeQuery = true)
     void updateHoaDonStatus(int status,Long id);
 
-    @Query("select hd from HoaDon hd order by hd.id desc")
-    List<HoaDon> getAllHD(Pageable pageable);
+    @Query("select hd from HoaDon hd where hd.loaiDon = 1 order by hd.id desc")
+    List<HoaDon> getAllHDTaiQuay(Pageable pageable);
+
+    @Query("select hd from HoaDon hd where hd.loaiDon = 0 order by hd.id desc")
+    List<HoaDon> getAllHDOnline(Pageable pageable);
 
     @Query("select hd from HoaDon hd where hd.ma =:ma")
     List<HoaDon> getHDByMa(String ma);
