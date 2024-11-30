@@ -177,6 +177,17 @@ public class MaGiamGiaController {
         }
     }
 
+    @Transactional
+    @GetMapping("/thay-doi-trang-thai/{idMGG}")
+    public String tatMGG(@PathVariable("idMGG") Long idMGG,RedirectAttributes redirectAttributes){
+            MaGiamGia mgg = mggr.getReferenceById(idMGG);
+            mgg.setId(mgg.getId());
+            mgg.setTrangThai(false);
+            mggr.save(mgg);
+            redirectAttributes.addFlashAttribute("updateSuccess", true);
+            return "redirect:/admin/ma-giam-gia/hien-thi";
+        }
+
     @PostMapping("/add")
     public String add(@Valid MaGiamGia mgg , Errors errors, Model model, RedirectAttributes redirectAttributes){
         mgg.setTrangThai(true);

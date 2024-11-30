@@ -59,20 +59,20 @@ public class HoaDonController {
     @GetMapping("/xac-nhan-hoa-don/{idHD}")
     public String xacNhanHD(@PathVariable("idHD") Long idHD){
         hoaDonService.xacNhanHoaDon(idHD);
-        return "redirect:/admin/hoa-don/hien-thi";
+        return "redirect:/admin/hoa-don/hien-thi/online";
     }
 
 
     @GetMapping("/hoan-thanh-hoa-don/{idHD}")
     public String hoanThanhHD(@PathVariable("idHD") Long idHD){
         hoaDonService.hoanThanhHoaDon(idHD);
-        return "redirect:/admin/hoa-don/hien-thi";
+        return "redirect:/admin/hoa-don/hien-thi/online";
     }
 
     @GetMapping("/huy-hoa-don-online/{idHD}")
     public String huyHDOnline(@PathVariable("idHD") Long idHD){
         hoaDonService.huyHoaDonOnline(idHD);
-        return "redirect:/admin/hoa-don/hien-thi";
+        return "redirect:/admin/hoa-don/hien-thi/online";
     }
 
 

@@ -42,7 +42,7 @@ public class ChiTietSanPham extends CreatedUpdatedAt{
     private KichCo kichCo;
 
     @Column(name = "trang_thai")
-    private String trangThai;
+    private Integer trangThai;
 
 
     @Column(name = "so_luong")

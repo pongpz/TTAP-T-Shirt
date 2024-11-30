@@ -73,4 +73,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
     boolean existsByMa(String ma);
 
     boolean existsBySanPhamAndMauSacAndKichCo(SanPham sanPham, MauSac mauSac, KichCo kichCo);
+
+    @Query("select ctsp from ChiTietSanPham ctsp where ctsp.sanPham.id =:idSP")
+    List<ChiTietSanPham> getCTSPByIdSP(Long idSP);
 }

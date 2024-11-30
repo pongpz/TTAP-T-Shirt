@@ -5,6 +5,7 @@ import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.*;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.HinhAnhService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,6 +53,9 @@ public class SanPhamController {
 
     @Autowired
     HinhAnhRepository hinhAnhRepository;
+
+    @Autowired
+    ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @GetMapping
     public String index(Model model, Authentication authentication, @RequestParam(defaultValue = "0") int page) {
@@ -131,6 +135,7 @@ public class SanPhamController {
 
         // Sinh mã duy nhất cho sản phẩm
         sanPham.setMa(generateUniqueCode());
+        sanPham.setTrangThai(0);
 
         SanPham sanPham1 = sanPhamRepository.save(sanPham);
 
@@ -180,7 +185,7 @@ public class SanPhamController {
         return "/admin/sanpham/sua-san-pham";
     }
 
-
+    @Transactional
     @PostMapping("sua-san-pham/{id}")
     public String updatesp(SanPham sanPham, @PathVariable("id") Long id,
                            @RequestParam("idNSX") Long idNsx,
@@ -198,7 +203,17 @@ public class SanPhamController {
         existingSanPham.setTen(sanPham.getTen());
         existingSanPham.setMoTa(sanPham.getMoTa());
         existingSanPham.setTrangThai(sanPham.getTrangThai());
-
+        if(existingSanPham.getTrangThai()==1){
+            List<ChiTietSanPham> ls = chiTietSanPhamRepository.getCTSPByIdSP(sanPham.getId());
+            if (ls != null){
+                for (int i = 0 ; i < ls.size() ; i ++){
+                    ChiTietSanPham ctsp = ls.get(i);
+                    ctsp.setTrangThai(1);
+                    chiTietSanPhamRepository.save(ctsp);
+                }
+            }
+//            System.out.println(ls);
+        }
         existingSanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
         existingSanPham.setChatLieu(chatLieuRepository.findById(idChatLieu).orElse(null));
         existingSanPham.setThuongHieu(thuongHieuRepository.findById(idThuongHieu).orElse(null));
