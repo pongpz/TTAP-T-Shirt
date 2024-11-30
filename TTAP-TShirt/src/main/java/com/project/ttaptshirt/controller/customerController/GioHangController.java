@@ -14,14 +14,15 @@ import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -218,9 +219,15 @@ public class GioHangController {
             request.setColor(colorId);
 
             try {
-                // Gọi service để thêm sản phẩm vào giỏ hàng
-                gioHangService.addToCart(user, request);
-                redirectAttributes.addFlashAttribute("message", true);
+                if (sizeId == null ) {
+                    redirectAttributes.addFlashAttribute("errorSize", true);
+                }else if(colorId == null){
+                    redirectAttributes.addFlashAttribute("erroColor", true);
+                }else {
+                        // Gọi service để thêm sản phẩm vào giỏ hàng
+                        gioHangService.addToCart(user, request);
+                        redirectAttributes.addFlashAttribute("message", true);
+                }
             } catch (GioHangService.ProductNotFoundException e) {
                 // Thông báo lỗi khi không tìm thấy sản phẩm
                 redirectAttributes.addFlashAttribute("error", "sản phẩm chi tiết chưa có: " + e.getMessage());
@@ -274,5 +281,45 @@ public class GioHangController {
         }
         return "redirect:/login";
     }
+
+    @PostMapping("/updateProductQuantity")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateProductQuantity(@RequestParam Long productId,
+                                                                     @RequestParam int newQuantity,
+                                                                     Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+
+            try {
+                // Lấy hoặc tạo giỏ hàng cho người dùng
+                GioHang cart = gioHangService.getOrCreateCart(user);
+
+                // Cập nhật số lượng sản phẩm trong giỏ
+                gioHangService.updateProductQuantity(cart, productId, newQuantity);
+
+                // Chuẩn bị dữ liệu trả về
+                Map<String, Object> response = new HashMap<>();
+                response.put("newQuantity", newQuantity);
+
+                return ResponseEntity.ok(response);
+
+            } catch (IllegalArgumentException e) {
+                // Xử lý lỗi nếu sản phẩm không tồn tại trong giỏ hàng
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", e.getMessage());
+                return ResponseEntity.badRequest().body(errorResponse);
+            } catch (Exception e) {
+                // Xử lý các lỗi không mong muốn khác
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "An unexpected error occurred: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "User not authenticated"));
+    }
+
+
+
 
 }

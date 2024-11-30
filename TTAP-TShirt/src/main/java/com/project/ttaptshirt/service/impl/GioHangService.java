@@ -76,7 +76,7 @@ public class GioHangService {
     public void updateProductQuantity(GioHang cart, Long productId, int newQuantity) {
         // Tìm sản phẩm trong giỏ hàng
         Optional<GioHangChiTiet> cartItemOpt = cart.getItems().stream()
-                .filter(item -> item.getChiTietSanPham().getSanPham().getId().equals(productId))
+                .filter(item -> item.getId().equals(productId))
                 .findFirst();
 
         if (cartItemOpt.isPresent()) {
@@ -288,6 +288,8 @@ public class GioHangService {
         // Cập nhật tổng giá trị giỏ hàng
         updateTotalPrice(gioHang);
     }
+
+ 
 
     public class ProductNotFoundException extends RuntimeException {
         public ProductNotFoundException(String message) {

@@ -143,6 +143,7 @@ public class ChiTietSanPhamController {
 
             ChiTietSanPham newChiTietSanPham = new ChiTietSanPham();
             newChiTietSanPham.setSanPham(sanPham);
+            newChiTietSanPham.setTrangThai(sanPham.getTrangThai());
             newChiTietSanPham.setMa(generateUniqueCode());
             newChiTietSanPham.setMauSac(mauSac);
             newChiTietSanPham.setKichCo(kichCo);
@@ -193,7 +194,8 @@ public class ChiTietSanPhamController {
             @RequestParam(required = false, value = "idKichCo") Long idKichCo,
             @RequestParam(required = false, value = "soLuong") Integer soLuong,
             @RequestParam(required = false, value = "giaBan") Double giaBan,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam(required = false, value = "trangThai") Integer trangThai,
+            RedirectAttributes redirectAttributes,Model model) {
 
         // Tìm đối tượng ChiTietSanPham hiện tại từ cơ sở dữ liệu
         ChiTietSanPham existingCTSP = chiTietSanPhamService.findById(idCTSP);
@@ -247,17 +249,26 @@ public class ChiTietSanPhamController {
             existingCTSP.setGiaBan(giaBan);
         }
 
-        // Lưu đối tượng cập nhật
-        chiTietSanPhamService.save(existingCTSP);
+        if (existingCTSP.getSanPham().getTrangThai() == 1 && trangThai == 0){
+            model.addAttribute("errorStatus","Sản phẩm đang ở trạng thái ngừng bán");
+            System.out.println(1);
+            model.addAttribute("listSP", sanPhamService.findAll());
+            model.addAttribute("listMauSac", mauSacService.findAll());
+            model.addAttribute("listKichCo", kichCoService.findAll());
+            ChiTietSanPham chiTietSanPham = chiTietSanPhamService.findById(idCTSP);
+            model.addAttribute("ctsp",chiTietSanPham);
+            return "admin/sanpham/ctsp-view-update";
+        }
+            // Lưu đối tượng cập nhật
+            existingCTSP.setTrangThai(trangThai);
+            chiTietSanPhamService.save(existingCTSP);
+            // Thêm ID sản phẩm vào RedirectAttributes
+            redirectAttributes.addAttribute("id", idSanPham);
 
-        // Thêm ID sản phẩm vào RedirectAttributes
-        redirectAttributes.addAttribute("id", idSanPham);
+            redirectAttributes.addFlashAttribute("updateSuccess", true);
+            // Redirect đến trang chi tiết sản phẩm
+            return "redirect:/admin/chi-tiet-san-pham/{id}";
 
-        redirectAttributes.addFlashAttribute("updateSuccess", true);
-        // Redirect đến trang chi tiết sản phẩm
-        return "redirect:/admin/chi-tiet-san-pham/{id}";
     }
-
-
 
 }

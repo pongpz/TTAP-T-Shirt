@@ -41,7 +41,7 @@
                 <label class="form-label">Trạng thái</label>
                 <select class="form-select" aria-label="Default select example" name="trangThai">
                     <option selected value="">Tất cả</option>
-                    <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>
+<!--                    <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>-->
                     <option value="1" th:selected="${trangThai==1}">Đã thanh toán</option>
                     <option value="2" th:selected="${trangThai==2}">Đã hủy</option>
                     <option value="3" th:selected="${trangThai==3}">Chờ xác nhận</option>
@@ -64,7 +64,7 @@
             </div>
         </form>
         <div class="">
-            <h1 class="text-center">Hóa đơn</h1>
+            <h1 class="text-center">Hóa đơn online</h1>
             <table class="table-sm table-hover">
                 <thead>
                 <tr>
@@ -73,7 +73,7 @@
                     <!--            <th scope="col">Nhân viên</th>-->
                     <th scope="col">Khách hàng</th>
                     <th scope="col">SDT khách hàng</th>
-                    <th scope="col">Loại đơn</th>
+<!--                    <th scope="col">Loại đơn</th>-->
                     <th scope="col">Ngày thanh toán</th>
                     <th scope="col">SĐT người nhận</th>
                     <th scope="col">Tên người nhận</th>
@@ -92,9 +92,9 @@
                     <!--            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>-->
                     <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Không có'}"></td>
                     <td th:text="${hd.khachHang != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
-                    <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
-                        th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
-                    </td>
+<!--                    <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"-->
+<!--                        th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">-->
+<!--                    </td>-->
                     <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
                     <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
                     <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
@@ -110,7 +110,8 @@
                     </td>
                     <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
                     <td>
-                        <a th:href="@{/admin/hoa-don-chi-tiet/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
+                        <a th:href="@{/admin/hoa-don/chi-tiet-hoa-don-online/{idHD}(idHD=${hd.id})}" class="btn btn-info">Chi tiết</a>
+
 
                         <!-- Cancel Invoice button -->
                         <a th:href="@{/admin/hoa-don/huy-hoa-don-online/{idHD}(idHD=${hd.id})}"

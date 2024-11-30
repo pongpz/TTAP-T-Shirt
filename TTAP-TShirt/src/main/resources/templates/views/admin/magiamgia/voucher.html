@@ -16,7 +16,7 @@
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
 
     <div class="main-content content flex-grow-1 p-4">
-<div class="container">
+<div class="">
     <h1 class="text-center mt-5">Mã giảm giá</h1>
     <hr>
     <div class="d-flex">
@@ -87,6 +87,9 @@
                 <td>[[${vc.trangThai?'Còn hạn':'Hết hạn'}]]</td>
                 <td>
                     <a th:href="@{/admin/ma-giam-gia/detail/{id}(id=${vc.id})}" class="btn btn-primary mb-3">Xem chi tiết</a>
+                </td>
+                <td>
+                    <a th:href="@{/admin/ma-giam-gia/thay-doi-trang-thai/{id}(id=${vc.id})}" class="btn btn-warning mb-3">Tắt hoạt động</a>
                 </td>
             </tr>
             </tbody>

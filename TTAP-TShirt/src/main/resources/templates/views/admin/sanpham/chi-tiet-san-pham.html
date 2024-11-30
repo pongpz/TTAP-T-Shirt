@@ -51,6 +51,7 @@
                                 <th scope="col">Kích Cỡ</th>
                                 <th scope="col">Số Lượng</th>
                                 <th scope="col">Giá Bán</th>
+                                <th scope="col">Trạng thái</th>
                                 <th scope="col">Action</th>
                             </tr>
                             </thead>
@@ -62,6 +63,7 @@
                                 <td th:text="${ctsp.kichCo.ten}"></td>
                                 <td th:text="${ctsp.soLuong}"></td>
                                 <td th:text="${@chiTietSanPhamController.formatCurrency(ctsp.giaBan)+' vnđ'}"></td>
+                                <td th:text="${ctsp.trangThai} == 0 ? 'Đang bán' : 'Ngừng bán'"> "></td>
                                 <td>
                                     <a class="btn btn-secondary" th:href="@{/admin/chi-tiet-san-pham/detail/{id}(id=${ctsp.id})}">Sửa</a>
                                     <a class="btn btn-danger" th:href="@{/admin/chi-tiet-san-pham/delete/{id}(id=${ctsp.id})}">Xóa</a>
