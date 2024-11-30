@@ -21,7 +21,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Query("select hd from HoaDon hd where (:keyword is null or hd.ma like %:keyword% ) and (:trangThai is null or hd.trangThai =:trangThai) and (:ngayThanhToan is null or hd.ngayThanhToan =:ngayThanhToan) and (:loaiDon is null or hd.loaiDon =:loaiDon) order by hd.id desc")
     List<HoaDon> search2(String keyword, Integer trangThai, LocalDate ngayThanhToan,Integer loaiDon,Pageable pageable);
 
-    @Query(value = "select * from hoa_don where trang_thai = 0 and loai_don = 1",nativeQuery = true)
+    @Query(value = "select * from hoa_don where trang_thai = 0 and loai_don = 1 order by ngay_tao DESC",nativeQuery = true)
     List<HoaDon> getListHDChuaThanhToan();
 
     @Query(value = "select * from hoa_don where trang_thai = 1",nativeQuery = true)

@@ -131,6 +131,8 @@ public class MaGiamGiaController {
                 check_ma = true;
             }
         }
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
         model.addAttribute("mgg",mgg);
         if (errors.hasErrors()){
             model.addAttribute("errors","Vui lòng điền đủ trường!");

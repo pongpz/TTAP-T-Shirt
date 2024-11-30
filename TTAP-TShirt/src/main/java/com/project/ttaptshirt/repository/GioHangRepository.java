@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface GioHangRepository extends JpaRepository<GioHang, Long> {
     @Query("select d from GioHang d where d.user = :user and d.user.enable = :status")
     Optional<GioHang> findByUserAndStatus(User user, boolean status);
+
+    GioHang findByUser(User user);
 }
