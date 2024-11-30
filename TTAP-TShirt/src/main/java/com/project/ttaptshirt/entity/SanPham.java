@@ -14,7 +14,7 @@ import java.util.Random;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+//@ToString
 @Entity
 @Table(name = "san_pham")
 public class SanPham extends CreatedUpdatedAt{
@@ -50,7 +50,7 @@ public class SanPham extends CreatedUpdatedAt{
 
 
     @Column(name = "trang_thai")
-    private int trangThai;
+    private Integer trangThai;
 
     @OneToMany(mappedBy = "sanPham",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ChiTietSanPham> chiTietSanPhamList;

@@ -65,8 +65,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div>
-                                        <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get"
-                                              id="form-search-product">
+                                        <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get" id="form-search-product">
                                             <input class="col-7" type="text" name="tenSP" th:value="${tenSP}">
                                             <input class="col-7" type="hidden" name="hoadonId" th:value="${hoadon.id}">
                                             <button class="col-1 btn btn-primary" type="submit">Tìm kiếm
@@ -332,10 +331,8 @@
                                         <input placeholder="Tìm kiếm theo số điện thoại khách hàng"
                                                style="width: 620px;height: 60px" class="col-7" type="number"
                                                name="soDienThoaiKH">
-                                        <a class="col-4 btn btn-primary"
-                                           style="width: 120px;height: 60px;margin-right: 30px"
-                                           th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}">Khách
-                                            vãng lai</a>
+                                        <a class="col-4 btn btn-primary" style="width: 120px;height: 60px;margin-right: 30px"
+                                           th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}">Khách vãng lai</a>
                                         <button class="btn btn-primary"
                                                 style="width: 120px;height: 60px;margin-right: 30px;"
                                                 data-bs-toggle="modal" data-bs-target="#modalAddNewCustomer">
@@ -469,14 +466,12 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div>
-                                    <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get"
-                                          id="form-search-voucher">
+                                    <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get" id="form-search-voucher">
                                         <input class="col-7" type="text" name="mgg" th:value="${mgg}">
                                         <input class="col-7" type="hidden" name="hoadonId" th:value="${hoadon.id}">
                                         <button class="col-1 btn btn-primary" type="submit">Tìm kiếm</button>
-                                        <a class="col-1 btn btn-primary"
-                                           th:href="@{/admin/ban-hang/huy-ma-giam-gia?hoadonId={idHd}(idHd=${hoadon.id})}">Bỏ
-                                            chọn</a>
+                                        <a  class="col-1 btn btn-primary"
+                                            th:href="@{/admin/ban-hang/huy-ma-giam-gia?hoadonId={idHd}(idHd=${hoadon.id})}">Bỏ chọn</a>
                                     </form>
                                 </div>
                                 <div class="modal-body">
@@ -590,39 +585,44 @@
                 <textarea id="note" style="width: 400px; height: 80px"></textarea>
                 <br/><br/>
 
-                <div class="paying row">
-                    <form class="col-4" action="/admin/ban-hang/hoa-don/xac-nhan-thanh-toan" method="POST">
-                        <input type="hidden" name="idhd" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
-                        <button type="submit"  class="btn btn-primary" style="height: 50px;min-width: 160px  "
-                                onclick="return validateCheckout()">
-                            Thanh Toán
-                        </button>
-                    </form>
-<!--                    <a class="col-4 btn btn-primary" style="height: 50px;min-width:160px"-->
-<!--                       th:href="@{/admin/ban-hang/hoa-don/thanh-toan-vnpay?idhd={idhd}(idhd=${hoadon.id})}">-->
-<!--                        Chuyển khoản-->
-<!--                    </a>-->
+                <div class="paying">
+                    <button class="col-4 btn btn-primary" style="height: 50px"
+                            onclick="confirmCheckout()">Thanh Toán
+                        <!-- Hidden input field to hold the HoaDon ID -->
+                        <input type="hidden" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
+                    </button>
+                    <a class="col-4 btn btn-primary" style="height: 50px"
+                       th:href="@{/admin/ban-hang/hoa-don/thanh-toan-vnpay?idhd={idhd}(idhd=${hoadon.id})}">Chuyển khoản
+                        <!-- Hidden input field to hold the HoaDon ID -->
+                        <!--                        <input type="hidden" id="hoaDonIdCheckOut2" th:value="${hoadon.id}">-->
+                    </a>
                 </div>
 
                 <script>
-                    function validateCheckout() {
-                        // Validate the list of HoaDonChiTiet (listHDCT) length before submitting the form
+                    function confirmCheckout() {
+                        // Get the length of the listHDCT from the hidden input
                         const lengthlistHDCT = parseInt(document.getElementById('lengthlistHDCT').value) || 0;
-
+                        console.log(lengthlistHDCT)
+                        // Check if the list is empty
                         if (lengthlistHDCT === 0) {
                             toastWarning('Cảnh báo!', 'Hóa đơn trống. Không thể thực hiện thanh toán!');
-                            return false;
+                            return false; // Prevent the checkout if the list is empty
                         }
+
                         // Call the function to calculate the change (tiền thừa)
                         const tienThua = calculateTienThua();
 
                         // Check if the total amount is sufficient
                         if (tienThua < 0) {
                             toastWarning('Cảnh báo!', 'Tiền khách trả không đủ. Vui lòng nhập số tiền lớn hơn hoặc bằng số tiền thanh toán!');
-                            return false;
+                            return false; // Prevent the checkout if the amount is insufficient
                         }
 
-                        return confirm('Bạn có chắc chắn muốn thanh toán hóa đơn này?');
+                        // Show confirmation if the total amount is sufficient
+                        if (confirm('Bạn có chắc chắn muốn thanh toán hóa đơn này?')) {
+                            // Call the actual checkout function if confirmed
+                            checkout();
+                        }
                     }
 
                 </script>
@@ -641,8 +641,52 @@
         </script>
         <script src="/js/sweetalert2.min.js"></script>
 
-
         <script>
+            function checkout() {
+                // Get the ID of the invoice (HoaDon) you want to process
+                var hoaDonId = document.getElementById("hoaDonIdCheckOut").value;
+
+                // Trigger the payment confirmation by sending the ID to your backend
+                fetch(`/admin/ban-hang/hoa-don/xac-nhan-thanh-toan?idhd=${hoaDonId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: null
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // If payment confirmation was successful, display a success SweetAlert
+                            Swal.fire({
+                                title: 'Thanh toán thành công!',
+                                text: 'Hóa đơn đã được thanh toán.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                // Redirect after the user clicks "OK"
+                                window.location.href = '/admin/ban-hang'; // Or any other page you want to redirect to
+                            });
+                        } else {
+                            // Handle any errors, show a failure SweetAlert
+                            Swal.fire({
+                                title: 'Thanh toán thất bại!',
+                                text: 'Vui lòng thử lại sau.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error during checkout:", error);
+                        // Handle network or other errors
+                        Swal.fire({
+                            title: 'Có lỗi xảy ra!',
+                            text: 'Vui lòng thử lại.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+            }
 
 
             //đóng modal danh sách khách hàng khi modal thêm nhanh hiển thị
@@ -768,7 +812,6 @@
             /*]]>*/
         </script>
 
-
         <script th:inline="javascript">
             /*<![CDATA[*/
             var addVoucherSuccess = [[${addVoucherSuccess}]];
@@ -791,38 +834,6 @@
             var updateSuccess = [[${updateSuccess}]];
             if (updateSuccess) {
                 toastSuccess('Thành Công !', 'Cập nhật Thành Công Số Lượng Sản Phẩm !');
-            }
-            /*]]>*/
-        </script>
-
-        <script th:if="${checkoutSuccess}">
-            Swal.fire({
-                title: 'Thanh toán thành công!',
-                text: 'Hóa đơn đã được thanh toán.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = '/admin/ban-hang';
-            });
-        </script>
-
-        <script th:if="${checkoutFailed}">
-            Swal.fire({
-                title: 'Thanh toán thất bại!',
-                text: 'Vui lòng thử lại sau.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-        </script>
-
-
-
-        <script th:inline="javascript">
-            /*<![CDATA[*/
-            /* Check if the deleteSuccess attribute is present in the model */
-            var isVoucherExpired = [[${isVoucherExpired}]];
-            if (isVoucherExpired) {
-                toastError('Thất bại !', 'Voucher đang chọn đã hết hạn. vui lòng chọn lại !');
             }
             /*]]>*/
         </script>

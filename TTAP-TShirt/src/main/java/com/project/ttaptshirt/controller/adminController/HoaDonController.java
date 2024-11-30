@@ -89,6 +89,7 @@ public class HoaDonController {
         redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã chuyển sang trạng thái chờ giao hàng!");
 
         return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
+
     }
 
     @GetMapping("/xac-nhan-dang-giao-hang/{idHD}")
@@ -107,10 +108,8 @@ public class HoaDonController {
     @GetMapping("/hoan-thanh-hoa-don/{idHD}")
     public String hoanThanhHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes){
         hoaDonService.hoanThanhHoaDon(idHD);
-
         // Add a flash attribute for success message
         redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã hoàn thành!");
-
         return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
     }
 
@@ -118,7 +117,7 @@ public class HoaDonController {
     @GetMapping("/huy-hoa-don-online/{idHD}")
     public String huyHDOnline(@PathVariable("idHD") Long idHD){
         hoaDonService.huyHoaDonOnline(idHD);
-        return "redirect:/admin/hoa-don/hien-thi";
+        return "redirect:/admin/hoa-don/hien-thi/online";
     }
 
 

@@ -245,14 +245,7 @@ public class BanHangController {
                 discount = voucher.getGiaTriGiam();
             }
         }
-        MaGiamGia voucher1 = maGiamGiaRepo.findById(voucher.getId()).orElse(null);
-        //check mã giảm giá còn thời hạn khi thanh toán không
-        if (voucher1!=null) {
-            if (!voucher1.isValid()) {
-                redirectAttributes.addFlashAttribute("isVoucherExpired", true);
-                return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
-            }
-        }
+
         // Tính tổng tiền sau khi giảm giá, đảm bảo không âm
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0);
@@ -274,7 +267,7 @@ public class BanHangController {
         redirectAttributes.addFlashAttribute("checkoutSuccess", true);
 
         // Chuyển hướng về trang /admin/ban-hang
-        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
+        return "redirect:/admin/ban-hang";
     }
 
     @GetMapping("/hoa-don/thanh-toan-vnpay")
