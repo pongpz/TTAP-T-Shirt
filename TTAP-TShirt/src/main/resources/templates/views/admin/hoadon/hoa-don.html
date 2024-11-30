@@ -93,15 +93,14 @@
             <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Không có'}"></td>
             <td th:text="${hd.khachHang != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
 <!--            <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"-->
-                th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
-            </td>
+<!--                th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">-->
+<!--            </td>-->
             <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
             <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
             <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
             <td th:text="${hd.tongTien != null?numberUtils.formatCurrency(hd.tongTien): 'Không có'}"></td>
             <td th:text="${hd.soTienGiamGia != null?numberUtils.formatCurrency(hd.soTienGiamGia): 'Không có'}"></td>
             <td th:text="${hd.tienThu != null?numberUtils.formatCurrency(hd.tienThu): 'Không có'}"></td>
-
             <td>
                 <span th:if="${hd.trangThai == 0}" class="text-warning">Chưa thanh toán</span>
                 <span th:if="${hd.trangThai == 1}" class="text-success">Đã thanh toán</span>

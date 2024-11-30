@@ -93,8 +93,8 @@
                     <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Không có'}"></td>
                     <td th:text="${hd.khachHang != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
 <!--                    <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"-->
-                        th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
-                    </td>
+<!--                        th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">-->
+<!--                    </td>-->
                     <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
                     <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
                     <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
@@ -110,7 +110,7 @@
                     </td>
                     <td th:text="${hd.maGiamGia != null ?numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%' ): 'Không có'}"></td>
                     <td>
-                        <a th:href="@{/admin/hoa-don-chi-tiet/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
+                        <a th:href="@{/admin/hoa-don-chi-tiet/hien-thi/online(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
 
                         <!-- Cancel Invoice button -->
                         <a th:href="@{/admin/hoa-don/huy-hoa-don-online/{idHD}(idHD=${hd.id})}"
