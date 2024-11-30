@@ -12,7 +12,6 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "hoa_don_chi_tiet")
 public class HoaDonChiTiet extends CreatedUpdatedAt{

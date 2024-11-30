@@ -182,14 +182,6 @@ public class SanPhamCustomerController {
             model.addAttribute("noDetails", true);
         }
 
-//        Set<MauSac> colors = chiTietSanPhamList.stream()
-//                .map(ChiTietSanPham::getMauSac)
-//                .collect(Collectors.toSet());
-//
-//        Set<KichCo> sizes = chiTietSanPhamList.stream()
-//                .map(ChiTietSanPham::getKichCo)
-//                .collect(Collectors.toSet());
-
         ChiTietSanPham chiTietSanPham = !chiTietSanPhamList.isEmpty() ? chiTietSanPhamList.get(0) : null;
         double giaBan = chiTietSanPham != null ? chiTietSanPham.getGiaBan() : 0;
 

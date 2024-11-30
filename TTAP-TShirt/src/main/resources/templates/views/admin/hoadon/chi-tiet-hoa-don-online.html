@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TTAP</title>
+    <link rel="stylesheet" href="/customcss/banhang.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+    <link rel="stylesheet" href="/customcss/toastMessage.css ">
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div>
+
+    <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
+    <div class="main-content content flex-grow-1 p-4">
+
+        <div id="toast-root"></div>
+        <div style="width: 80%; margin: auto; position: relative;">
+            <h2 style="font-size: 30px; text-align: center;" th:text="'Theo dõi đơn hàng: '+${hoaDon.ma}"></h2>
+            <label th:text="${hoaDon.trangThai}"></label>
+            <br>
+
+            <!-- Progress Bar -->
+            <div style="position: absolute; top: 140px; left: 8%; width: calc(100% - 16%); height: 4px; background-color: #ccc; z-index: -1;">
+                <!-- Active Progress -->
+                <div style="height: 4px; background-color: #00aaff;"
+                     th:style="'width:' + (hoaDon.trangThai == 1 ? '100%' : (hoaDon.trangThai == 8 ? '80%' : (hoaDon.trangThai == 7 ? '60%' : (hoaDon.trangThai == 6 ? '40%' : '20%'))))"></div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+                <!-- Step 1: Chờ xác nhận -->
+                <div style="text-align: center; width: 150px; position: relative;">
+                    <div style="width: 90px; height: 90px; color: white; border-radius: 50%;
+                display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 30px;"
+                         th:classappend="${hoaDon.trangThai == 1 || hoaDon.trangThai >= 3 ? 'bg-warning' : 'bg-secondary'}">
+                        <i class="fas fa-exclamation"></i>
+                    </div>
+                    <p>Chờ xác nhận</p>
+                    <span style="font-size: 12px; color: gray;">29-04-2024 19:58:26</span>
+                </div>
+
+                <!-- Step 2: Đã xác nhận -->
+                <div style="text-align: center; width: 150px; position: relative;">
+                    <div style="width: 90px; height: 90px; border-radius: 50%; color: white;
+                display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 30px;"
+                         th:classappend="${hoaDon.trangThai == 1 || hoaDon.trangThai >= 6 ? 'bg-primary' : 'bg-secondary'}">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <p>Đã xác nhận</p>
+                    <span style="font-size: 12px; color: gray;">29-04-2024 20:01:28</span>
+                </div>
+
+                <!-- Step 3: Chờ giao hàng -->
+                <div style="text-align: center; width: 150px; position: relative;">
+                    <div style="width: 90px; height: 90px; border-radius: 50%; color: white;
+                display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 30px;"
+                         th:classappend="${hoaDon.trangThai == 1 || hoaDon.trangThai >= 7 ? 'bg-primary' : 'bg-secondary'}">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <p>Chờ giao hàng</p>
+                    <span style="font-size: 12px; color: gray;">29-04-2024 20:01:51</span>
+                </div>
+
+                <!-- Step 4: Đang giao hàng -->
+                <div style="text-align: center; width: 150px; position: relative;">
+                    <div style="width: 90px; height: 90px; border-radius: 50%; color: white;
+                display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 30px;"
+                         th:classappend="${hoaDon.trangThai == 1 || hoaDon.trangThai == 8 ? 'bg-primary' : 'bg-secondary'}">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <p>Đang giao hàng</p>
+                    <span style="font-size: 12px; color: gray;">29-04-2024 20:02:09</span>
+                </div>
+
+                <!-- Step 5: Hoàn thành -->
+                <div style="text-align: center; width: 150px; position: relative;">
+                    <div style="width: 90px; height: 90px; border-radius: 50%; color: white;
+                display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 30px;"
+                         th:classappend="${hoaDon.trangThai == 1 ? 'bg-success' : 'bg-secondary'}">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <p>Hoàn thành</p>
+                    <span style="font-size: 12px; color: gray;">29-04-2024 20:02:27</span>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+    <br>
+    <br>
+    <div class="row" style="margin-left: 520px">
+        <!-- Button: Xác nhận đơn -->
+        <button
+                th:if="${hoaDon.trangThai == 3}"
+                style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; background-color: #007bff; color: white; border: none;"
+                th:onclick="|confirmAction('/admin/hoa-don/xac-nhan-hoa-don/' + ${hoaDon.id}, 'Xác nhận đơn hàng?')|">
+            Xác nhận đơn
+        </button>
+
+        <!-- Button: Chờ giao hàng -->
+        <button
+                th:if="${hoaDon.trangThai == 6}"
+                style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; background-color: #28a745; color: white; border: none;"
+                th:onclick="|confirmAction('/admin/hoa-don/hoa-don-cho-giao-hang/' + ${hoaDon.id}, 'Chờ giao hàng?')|">
+            Chờ giao hàng
+        </button>
+
+        <!-- Button: Đang giao hàng -->
+        <button
+                th:if="${hoaDon.trangThai == 7}"
+                style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; background-color: #17a2b8; color: white; border: none;"
+                th:onclick="|confirmAction('/admin/hoa-don/xac-nhan-dang-giao-hang/' + ${hoaDon.id}, 'Xác nhận đơn hàng đang vận chuyển?')|">
+            Đang giao hàng
+        </button>
+
+        <!-- Button: Hoàn thành -->
+        <button
+                th:if="${hoaDon.trangThai == 8}"
+                style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; background-color: #ffc107; color: black; border: none;"
+                th:onclick="|confirmAction('/admin/hoa-don/hoan-thanh-hoa-don/' + ${hoaDon.id}, 'Hoàn thành đơn hàng (chắc chắn rằng khách hàng đã thanh toán!)?')|">
+            Hoàn thành
+        </button>
+
+        <!-- Button: Hủy đơn hàng -->
+        <button
+                th:if="${hoaDon.trangThai == 3}"
+                style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; background-color: white; color: #dc3545; border: 1px solid #dc3545;"
+                th:onclick="|confirmAction('/admin/hoa-don/huy-hoa-don-online/' + ${hoaDon.id}, 'Hủy hóa đơn này?')|">
+            Hủy đơn hàng
+        </button>
+    </div>
+
+
+
+
+
+    <br>
+    <hr>
+    <br>
+
+    <div style="flex-wrap: wrap; gap: 20px; font-family: Arial, sans-serif; margin: 40px;margin-left: 320px">
+        <!-- Danh sách sản phẩm -->
+        <div style="flex: 1; min-width: 300px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
+            <h3 style="margin: 0 0 20px; font-size: 18px;">Danh sách sản phẩm</h3>
+            <hr>
+            <div th:each="hdct :${listSPOrder}" style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 20px;">
+                <img src="https://res.cloudinary.com/dld7uoqyh/image/upload/v1728726810/productImg/bbe9a9e0-9b71-45cc-b1c1-778fba4b2a25.jpg"
+                     alt="Product Image"
+                     style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 60px;"/>
+                <div style="flex: 1;">
+                    <p style="margin: 0; font-size: 14px; font-weight: bold;" th:text="'Tên sản phẩm: '+${hdct.chiTietSanPham.sanPham.ten}"></p>
+                    <p style="margin: 5px 0; font-size: 14px; color: red;" th:text="'Giá Bán: '+${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan)}"></p>
+                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Mã sản phẩm: '+${hdct.chiTietSanPham.sanPham.ma}">Mã sản phẩm: SP001</p>
+                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Kiểu dáng: '+${hdct.chiTietSanPham.sanPham.kieuDang.ten}">Kiểu dáng: Giày thể thao</p>
+                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Thương hiệu: '+${hdct.chiTietSanPham.sanPham.thuongHieu.ten}">Thương hiệu: Balen</p>
+                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Size: '+${hdct.chiTietSanPham.kichCo.ten}">Size: 41</p>
+                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Số lượng mua: '+${hdct.soLuong}"></p>
+                </div>
+                <div style="text-align: right;">
+                    <span style="margin: 0 10px;font-size: 16px" th:text="'Số lượng mua: '+${hdct.soLuong}">3</span>
+                    <p style="margin: 10px 0 0; font-size: 24px; color: red;"
+                       th:text="'Thành tiền: '+${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan*hdct.soLuong)}"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <br>
+    <!-- Thông tin hóa đơn -->
+    <div style="flex: 1; min-width: 300px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 20px;margin-left: 320px">
+        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+            <p style="margin: 0; font-size: 14px;">Phiếu giảm giá:</p>
+            <span style="font-size: 14px;">Không áp dụng</span>
+        </div>
+        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+            <p style="margin: 0; font-size: 14px;">Giảm giá từ cửa hàng:</p>
+            <span style="font-size: 14px;">0%</span>
+        </div>
+        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+            <p style="margin: 0; font-size: 14px;">Tổng tiền hàng:</p>
+            <span style="font-size: 14px;"  th:text="'Tổng tiền sản phẩm: '+${numberUtils.formatCurrency(hoaDon.tongTien)}"></span>
+        </div>
+        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+            <p style="margin: 0; font-size: 14px;">Giảm giá:</p>
+            <span style="font-size: 14px;">Không áp dụng</span>
+        </div>
+        <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <p style="margin: 0; font-size: 14px;">Phí vận chuyển:</p>
+            <span type="text" value="50000"
+                   style="padding: 5px; font-size: 14px; width: 80px; text-align: right; border: 1px solid #ddd; border-radius: 4px;"></span>
+        </div>
+        <div style="margin-top: 20px; display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
+            <p style="margin: 0;">Tổng tiền:</p>
+            <span style="color: red;" th:text="'Tổng tiền thanh toán: '+${numberUtils.formatCurrency((hoaDon.tongTien)-50000)}"></span>
+        </div>
+    </div>
+</div>
+</div>
+<br>
+<br>
+
+<script src="/js/sweetalert.min.js"></script>
+<script src="/js/toastMessage.js"></script>
+<script>
+    // JavaScript function to show SweetAlert and handle confirmation
+    function confirmAction(url, actionName) {
+        swal({
+            title: "Xác nhận",
+            text: "Bạn có chắc chắn muốn " + actionName + " hóa đơn này không.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willProceed) => {
+                if (willProceed) {
+                    // Redirect if confirmed
+                    window.location.href = url;
+                }
+            });
+    }
+
+    function toastSuccess(title, message) {
+        // Assuming you're using a library like Toastify or another toast library
+        Toastify({
+            text: message,
+            duration: 3000, // duration in ms
+            close: true,
+            gravity: "top", // position: top or bottom
+            position: "right", // position: left, center, right
+            backgroundColor: "green", // customize color as needed
+            stopOnFocus: true // stops the toast from disappearing when hovered
+        }).showToast();
+    }
+
+</script>
+<!-- Display Toast on Success -->
+<script th:if="${successMessage}">
+    toastSuccess('Success', "thao tác đơn hàng thành công !");
+</script>
+
+</body>
+</html>

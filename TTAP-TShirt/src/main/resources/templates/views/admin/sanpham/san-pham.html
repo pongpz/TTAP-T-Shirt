@@ -45,9 +45,8 @@
                                 </div>
 
                                 <div class="form-group col-md-3 text-end">
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" th:attr="data-bs-target='#modal-themsp-'">
-                                        Thêm Sản Phẩm
-                                    </button>
+                                        <a class="btn btn-secondary" href="/admin/san-pham/them-san-pham">Thêm Sản Phẩm</a>
+
                                 </div>
                             </form>
                         </div>
@@ -76,8 +75,10 @@
                                     <td th:text="${sanPham.ma}"></td>
                                     <td th:text="${sanPham.ten}"></td>
                                     <td>
-                                        <div th:each="hinhAnh : ${sanPham.hinhAnhList}">
-                                            <img th:src="${hinhAnh.path}" alt="Ảnh sản phẩm" style="max-width: 100px; height: 120px;">
+                                        <div>
+                                            <img th:src="${sanPham.hinhAnhList.size() > 0 ? sanPham.hinhAnhList.get(0).path : '/path/to/default/image.jpg'}"
+                                                 alt="Ảnh sản phẩm"
+                                                 style="max-width: 100px; height: 120px;">
                                         </div>
                                     </td>
                                     <td th:text="${sanPham.tongSoLuong != null ? sanPham.tongSoLuong : 0}"></td>
@@ -139,86 +140,6 @@
                     </div>
                 </div>
 
-
-        <!-- Modal thêm sản phẩm -->
-<div class="modal fade" th:id="'modal-themsp-'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm Sản Phẩm</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form th:action="@{/admin/san-pham/add}" method="post" enctype="multipart/form-data">
-                    <div th:if="${successMessage}" class="alert alert-success" role="alert">
-                        <span th:text="${successMessage}"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="ten" class="form-label">Tên Sản Phẩm</label>
-                        <input type="text" class="form-control" id="ten" name="ten" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Nhà Sản Xuất</label>
-                        <div class="d-flex">
-                            <select class="form-select" name="idNSX" required>
-                                <option th:each="nsx : ${listNsx}" th:value="${nsx.id}" th:text="${nsx.ten}"></option>
-                            </select>
-                            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalAddNSX">Thêm</button>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Chất Liệu</label>
-                        <div class="d-flex">
-                            <select class="form-select" name="idChatLieu">
-                                <option th:each="chatLieu : ${listChatLieu}" th:value="${chatLieu.id}" th:text="${chatLieu.ten}"></option>
-                            </select>
-                            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalAddChatLieu">Thêm</button>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Thương Hiệu</label>
-                        <div class="d-flex">
-                            <select class="form-select" name="idThuongHieu">
-                                <option th:each="thuongHieu : ${listThuongHieu}" th:value="${thuongHieu.id}" th:text="${thuongHieu.ten}"></option>
-                            </select>
-                            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalAddThuongHieu">Thêm</button>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Kiểu Dáng</label>
-                        <div class="d-flex">
-                            <select class="form-select" name="idKieuDang">
-                                <option th:each="kieuDang : ${listKieuDang}" th:value="${kieuDang.id}" th:text="${kieuDang.ten}"></option>
-                            </select>
-                            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modalAddKieuDang">Thêm</button>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="moTa" class="form-label">Mô Tả</label>
-                        <textarea class="form-control" id="moTa" name="moTa" rows="2"></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="hinhAnh" class="form-label">Chọn Ảnh</label>
-                        <input type="file" class="form-control" id="hinhAnh" name="image" required>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary" onclick="return confirm('Bạn có chắc chắn muốn thêm?')">Thêm</button>
-
-                </form>
-                <p th:text="${createSuccess}" hidden></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" th:id="modalAddNSX" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
@@ -320,23 +241,6 @@
         toastSuccess('Thành Công!', 'Sản phẩm đã được tạo thành công!');
     }
     /*]]>*/
-</script>
-<script>
-    $('#modalAddNSX').on('show.bs.modal', function () {
-        $('#modal-themsp-').modal('hide');
-    });
-
-    $('#modalAddKieuDang').on('show.bs.modal', function () {
-        $('#modal-themsp-').modal('hide');
-    });
-
-    $('#modalAddThuongHieu').on('show.bs.modal', function () {
-        $('#modal-themsp-').modal('hide');
-    });
-
-    $('#modalAddChatLieu').on('show.bs.modal', function () {
-        $('#modal-themsp-').modal('hide');
-    });
 </script>
 
 

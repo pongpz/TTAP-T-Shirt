@@ -186,8 +186,11 @@
                     <div class="col-2">
                         <h6 th:text="'STT: '+${status.index+1}"></h6>
                         <br>
-                        <img src="https://res.cloudinary.com/dld7uoqyh/image/upload/v1728726810/productImg/bbe9a9e0-9b71-45cc-b1c1-778fba4b2a25.jpg"
+                        <img th:src="${hdct?.chiTietSanPham?.sanPham?.hinhAnhList?.size() > 0
+               ? hdct.chiTietSanPham.sanPham.hinhAnhList.get(0).path
+               : '/path/to/default/image.jpg'}"
                              style="width: 80px; height: 80px" alt="product image"/>
+
                     </div>
                     <div class="col-2">
                         <h5 th:text="${hdct.chiTietSanPham.sanPham.ten}">Product Name</h5>
