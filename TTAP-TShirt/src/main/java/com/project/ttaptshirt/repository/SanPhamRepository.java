@@ -24,7 +24,8 @@ public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
             "AND (:kieuDang IS NULL OR sp.kieuDang.id = :kieuDang) " +  // Không dùng LOWER cho Long
             "AND (:chatLieu IS NULL OR sp.chatLieu.id = :chatLieu) " +  // Không dùng LOWER cho Long
             "AND (:minPrice IS NULL OR ct.giaBan >= :minPrice) " +
-            "AND (:maxPrice IS NULL OR ct.giaBan <= :maxPrice) " )
+            "AND (:maxPrice IS NULL OR ct.giaBan <= :maxPrice) "+
+            "AND sp.trangThai = 0")
     Page<SanPham> filterSanPham(
             @Param("ten") String ten,
             @Param("nhaSanXuat") Long nhaSanXuat,
@@ -36,7 +37,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
             Pageable pageable
     );
 
-    @Query("select sp from SanPham sp order by sp.ngayTao desc")
+    @Query("select sp from SanPham sp where sp.trangThai = 0 order by sp.ngayTao desc ")
     Page<SanPham> pageSPMoi(Pageable pageable);
 
 
