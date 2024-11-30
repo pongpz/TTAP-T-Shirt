@@ -246,6 +246,7 @@ public class BanHangController {
             }
         }
         MaGiamGia voucher1 = maGiamGiaRepo.findById(voucher.getId()).orElse(null);
+        //check mã giảm giá còn thời hạn khi thanh toán không
         if (voucher1!=null) {
             if (!voucher1.isValid()) {
                 redirectAttributes.addFlashAttribute("isVoucherExpired", true);
