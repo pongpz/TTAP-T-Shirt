@@ -18,10 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -201,7 +198,20 @@ public class SanPhamCustomerController {
         return "user/home/sanphamdetail";
     }
 
+    @GetMapping("/product/{id}/sizes")
+    @ResponseBody
+    public List<Long> getAvailableSizes(@PathVariable Long id, @RequestParam long color) {
+        // Lấy danh sách ChiTietSanPham từ service
+        List<ChiTietSanPham> chiTietSanPhamList = chiTietSanPhamServiceImpl.getChiTietSanPhamBySanPhamAndMauSac(id, color);
 
+        // Lấy danh sách kích thước khả dụng từ ChiTietSanPham
+        List<Long> sizes = chiTietSanPhamList.stream()
+                .map(ChiTietSanPham::getKichCo)  // Lấy kích cỡ từ ChiTietSanPham
+                .map(KichCo::getId)  // Lấy tên kích cỡ
+                .collect(Collectors.toList());
+
+        return sizes;
+    }
 
 
 }

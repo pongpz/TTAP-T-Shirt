@@ -202,46 +202,47 @@ public class GioHangController {
     @PostMapping("/add-to-cart")
     public String addItemToCart(@RequestParam Long productId,
                                 @RequestParam int quantity,
-                                @RequestParam Long sizeId,
-                                @RequestParam Long colorId,
+                                @RequestParam(required = false) Long sizeId,
+                                @RequestParam(required = false) Long colorId,
                                 RedirectAttributes redirectAttributes,
-                                Authentication authentication
-                                ) {
-        if (authentication != null) {
-            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
-
-            // Tạo request với thông tin sản phẩm, kích cỡ và màu sắc
-            AddToCartRequest request = new AddToCartRequest();
-            request.setProductId(productId);
-            request.setQuantity(quantity);
-            request.setSize(sizeId);
-            request.setColor(colorId);
-
-            try {
-                if (sizeId == null ) {
-                    redirectAttributes.addFlashAttribute("errorSize", true);
-                }else if(colorId == null){
-                    redirectAttributes.addFlashAttribute("erroColor", true);
-                }else {
-                        // Gọi service để thêm sản phẩm vào giỏ hàng
-                        gioHangService.addToCart(user, request);
-                        redirectAttributes.addFlashAttribute("message", true);
-                }
-            } catch (GioHangService.ProductNotFoundException e) {
-                // Thông báo lỗi khi không tìm thấy sản phẩm
-                redirectAttributes.addFlashAttribute("error", "sản phẩm chi tiết chưa có: " + e.getMessage());
-                return "redirect:/TTAP/san-pham-detail/" + request.getProductId();
-            } catch (GioHangService.InsufficientStockException e) {
-                // Thông báo lỗi khi không đủ sản phẩm trong kho
-                redirectAttributes.addFlashAttribute("error", "sản phẩm không còn: " + e.getMessage());
-                return "redirect:/TTAP/san-pham-detail/" + request.getProductId();
-            }
-        }else {
+                                Authentication authentication) {
+        if (authentication == null) {
             return "redirect:/login?redirect=" + "/TTAP/san-pham-detail/" + productId;
         }
-        return "redirect:/TTAP/san-pham-detail/" + productId; // Điều hướng đến trang giỏ hàng
+
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        User user = customUserDetail.getUser();
+
+        if (sizeId == null) {
+            redirectAttributes.addFlashAttribute("errorSize", "Vui lòng chọn kích thước.");
+            return "redirect:/TTAP/san-pham-detail/" + productId;
+        }
+
+        if (colorId == null) {
+            redirectAttributes.addFlashAttribute("erroColor", "Vui lòng chọn màu sắc.");
+            return "redirect:/TTAP/san-pham-detail/" + productId;
+        }
+
+        AddToCartRequest request = new AddToCartRequest();
+        request.setProductId(productId);
+        request.setQuantity(quantity);
+        request.setSize(sizeId);
+        request.setColor(colorId);
+
+        try {
+            gioHangService.addToCart(user, request);
+            redirectAttributes.addFlashAttribute("message", true);
+        } catch (GioHangService.ProductNotFoundException e) {
+            redirectAttributes.addFlashAttribute("error", "Sản phẩm không tồn tại: " + e.getMessage());
+        } catch (GioHangService.InsufficientStockException e) {
+            redirectAttributes.addFlashAttribute("error", "Không đủ hàng: " + e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi không xác định.");
+        }
+
+        return "redirect:/TTAP/san-pham-detail/" + productId;
     }
+
 
     @GetMapping("/hoa-don")
     public String listHoaDon(Model model, Authentication authentication) {

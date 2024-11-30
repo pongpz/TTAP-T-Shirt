@@ -104,7 +104,7 @@
                         <button th:each="color : ${colors}"
                                 th:text="${color.ten}"
                                 th:data-id="${color.id}"
-                                class="btn btn-outline-primary btn-sm me-1"
+                                class=" btn btn-outline-primary btn-sm me-1"
                                 onclick="selectColor(this)"
                                 type="button"
                         ></button>
@@ -121,7 +121,7 @@
                         <button th:each="size : ${sizes}"
                                 th:text="${size.ten}"
                                 th:data-id="${size.id}"
-                                class="btn btn-outline-secondary btn-sm me-1"
+                                class="size-btn btn btn-outline-secondary btn-sm me-1"
                                 onclick="selectSize(this)"
                                 type="button"
                         ></button>
@@ -191,7 +191,33 @@
         button.classList.add("active");
         // Gán giá trị màu sắc vào input ẩn
         document.getElementById("selectedColor").value = button.getAttribute("data-id");
+
+        // Lấy id màu sắc đã chọn
+        const colorId = button.getAttribute("data-id");
+        const productId = document.querySelector("input[name='productId']").value;
+
+        // Gọi API để lấy kích thước có sẵn
+        fetch(`/TTAP/product/${productId}/sizes?color=${colorId}`)
+            .then(response => response.json())
+            .then(sizes => {
+                // Kiểm tra xem API có trả về dữ liệu kích cỡ hợp lệ không
+                document.querySelectorAll(".size-btn").forEach(sizeBtn => {
+                    sizeBtn.style.display = "none";  // Ẩn tất cả các nút kích thước
+                });
+
+                // Hiển thị các nút kích thước khả dụng
+                sizes.forEach(sizeId => {
+                    const sizeBtn = document.querySelector(`.size-btn[data-id="${sizeId}"]`);
+                    if (sizeBtn) {
+                        sizeBtn.style.display = "inline-block";  // Hiển thị các nút kích thước khả dụng
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy kích thước:', error);
+            });
     }
+
 
         function changeImage(thumbnail) {
         // Lấy URL từ ảnh nhỏ
@@ -201,6 +227,7 @@
         const mainImage = document.getElementById("mainImage");
         mainImage.src = newSrc;
     }
+
 
 
 </script>
@@ -221,19 +248,19 @@
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var errorSize = [[${errorSize}]];
-    console.log(errorSize);  // Debugging line to ensure the attribute is set
-    if (errorSize) {
-        toastWarning('Lỗi', 'Hãy chọn kích cỡ để được thêm vào giỏ hàng!');
+    var erroColor = [[${erroColor}]];
+    console.log(erroColor);  // Debugging line to ensure the attribute is set
+    if (erroColor) {
+        toastWarning('Lỗi', 'Hãy chọn màu sắc để thêm vào giỏ hàng!');
     }
     /*]]>*/x
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var erroColor = [[${erroColor}]];
-    console.log(erroColor);  // Debugging line to ensure the attribute is set
-    if (erroColor) {
-        toastWarning('Lỗi', 'Hãy chọn màu sắc để thêm vào giỏ hàng!');
+    var errorSize = [[${errorSize}]];
+    console.log(errorSize);  // Debugging line to ensure the attribute is set
+    if (errorSize) {
+        toastWarning('Lỗi', 'Hãy chọn kích cỡ để được thêm vào giỏ hàng!');
     }
     /*]]>*/x
 </script>
