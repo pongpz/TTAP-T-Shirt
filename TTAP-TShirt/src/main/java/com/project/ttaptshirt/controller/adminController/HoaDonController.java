@@ -2,7 +2,9 @@ package com.project.ttaptshirt.controller.adminController;
 
 import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.HoaDon;
+import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.repository.HoaDonRepository;
+import com.project.ttaptshirt.service.HoaDonChiTietService;
 import com.project.ttaptshirt.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,6 +32,8 @@ public class HoaDonController {
 
     @Autowired
     HoaDonService hoaDonService;
+    @Autowired
+    HoaDonChiTietService hoaDonChiTietService;
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page) {
@@ -56,18 +61,59 @@ public class HoaDonController {
         return "admin/hoadon/hoa-don-online";
     }
 
-    @GetMapping("/xac-nhan-hoa-don/{idHD}")
-    public String xacNhanHD(@PathVariable("idHD") Long idHD){
-        hoaDonService.xacNhanHoaDon(idHD);
-        return "redirect:/admin/hoa-don/hien-thi";
+    @GetMapping("/chi-tiet-hoa-don-online/{idhd}")
+    public String hienThiHDCTOnline(@PathVariable("idhd") Long idhd, Model model){
+        HoaDon hoaDon = hoaDonService.findById(idhd);
+        model.addAttribute("hoaDon",hoaDon);
+        List<HoaDonChiTiet> listSPOrder = hoaDonChiTietService.getListHdctByIdHd(idhd);
+        model.addAttribute("listSPOrder",listSPOrder);
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
+        return "admin/hoadon/chi-tiet-hoa-don-online";
     }
+    @GetMapping("/xac-nhan-hoa-don/{idHD}")
+    public String xacNhanHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes){
+        hoaDonService.xacNhanHoaDon(idHD);
+
+        // Add a flash attribute for success message
+        redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã được xác nhận!");
+
+        return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
+    }
+
+    @GetMapping("/hoa-don-cho-giao-hang/{idHD}")
+    public String hdChoGiaoHang(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes){
+        hoaDonService.hdChoGiaoHang(idHD);
+
+        // Add a flash attribute for success message
+        redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã chuyển sang trạng thái chờ giao hàng!");
+
+        return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
+    }
+
+    @GetMapping("/xac-nhan-dang-giao-hang/{idHD}")
+    public String xacNhanDangGiaoHang(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes){
+        hoaDonService.xacNhanDangGiaoHang(idHD);
+
+        // Add a flash attribute for success message
+        redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đang giao!");
+
+        return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
+    }
+
+
 
 
     @GetMapping("/hoan-thanh-hoa-don/{idHD}")
-    public String hoanThanhHD(@PathVariable("idHD") Long idHD){
+    public String hoanThanhHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes){
         hoaDonService.hoanThanhHoaDon(idHD);
-        return "redirect:/admin/hoa-don/hien-thi";
+
+        // Add a flash attribute for success message
+        redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã hoàn thành!");
+
+        return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
     }
+
 
     @GetMapping("/huy-hoa-don-online/{idHD}")
     public String huyHDOnline(@PathVariable("idHD") Long idHD){
