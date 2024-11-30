@@ -30,6 +30,11 @@ public interface HoaDonService extends CommonService<HoaDon> {
 
     void xacNhanHoaDon(Long idHoaDon);
 
+    void hdChoGiaoHang(Long idHoaDon);
+
+    void xacNhanDangGiaoHang(Long idHoaDon);
+
+
     void hoanThanhHoaDon(Long idHoaDon);
 
     void huyHoaDonOnline(Long idHoaDon);
