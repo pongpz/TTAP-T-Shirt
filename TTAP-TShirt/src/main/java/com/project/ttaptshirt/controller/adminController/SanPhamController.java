@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,6 +68,12 @@ public class SanPhamController {
         Page<SanPham> listSP = sanPhamRepository.findAllByOrderByNgayTaoDesc(pageable);
         model.addAttribute("listSP", listSP);
 
+        return "/admin/sanpham/san-pham";
+    }
+
+
+    @GetMapping("/them-san-pham")
+    public String themSanPham(Model model){
         List<NSX> listNsx = nsxRepository.findAll();
         model.addAttribute("listNsx", listNsx);
 
@@ -79,7 +86,10 @@ public class SanPhamController {
         List<KieuDang> kieuDang = kieuDangRepository.findAll();
         model.addAttribute("listKieuDang", kieuDang);
 
-        return "/admin/sanpham/san-pham";
+        List<HinhAnh> images = hinhAnhRepository.findBySanPhamIsNull(Sort.by(Sort.Direction.DESC, "id"));
+        model.addAttribute("images", images);
+
+        return "/admin/sanpham/them-san-pham";
     }
 
     @GetMapping("/tim-kiem")
@@ -115,13 +125,13 @@ public class SanPhamController {
     }
 
     @PostMapping("/add")
-    public String add(SanPham sanPham,
-                      @RequestParam("image") MultipartFile file,
-                      @RequestParam("idNSX") Long idNsx,
-                      @RequestParam("idChatLieu") Long idChatLieu,
-                      @RequestParam("idThuongHieu") Long idThuongHieu,
-                      @RequestParam("idKieuDang") Long idKieuDang,
-                      RedirectAttributes redirectAttributes) throws IOException, GeneralSecurityException {
+    public String addSanPhamWithImages(SanPham sanPham,
+                                       @RequestParam("selectedImages") String selectedImages, // Danh sách ID ảnh
+                                       @RequestParam("idNSX") Long idNsx,
+                                       @RequestParam("idChatLieu") Long idChatLieu,
+                                       @RequestParam("idThuongHieu") Long idThuongHieu,
+                                       @RequestParam("idKieuDang") Long idKieuDang,
+                                       RedirectAttributes redirectAttributes) {
 
         // Thiết lập các thuộc tính cho sản phẩm
         sanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
@@ -132,22 +142,27 @@ public class SanPhamController {
         // Sinh mã duy nhất cho sản phẩm
         sanPham.setMa(generateUniqueCode());
 
-        SanPham sanPham1 = sanPhamRepository.save(sanPham);
+        // Lưu sản phẩm
+        SanPham savedSanPham = sanPhamRepository.save(sanPham);
 
-        // Tải ảnh lên Cloudinary
-        String imageUrl = hinhAnhService.uploadFile(file); // Gọi phương thức uploadFile để lấy URL ảnh
-
-        // Tạo và lưu thông tin hình ảnh vào cơ sở dữ liệu
-        HinhAnh hinhAnh = new HinhAnh();
-        hinhAnh.setSanPham(sanPham1);
-        hinhAnh.setPath(imageUrl); // Lưu đường dẫn URL ảnh từ Cloudinary
-        hinhAnh.setTrangThai(1);
-
-        hinhAnhRepository.save(hinhAnh);
+        // Xử lý danh sách ID ảnh
+        if (selectedImages != null && !selectedImages.isEmpty()) {
+            String[] imageIds = selectedImages.split(","); // Tách chuỗi ID ảnh
+            for (String id : imageIds) {
+                HinhAnh image = hinhAnhRepository.findById(Long.parseLong(id)).orElse(null);
+                if (image != null) {
+                    image.setSanPham(savedSanPham); // Gắn sản phẩm vào ảnh
+                    hinhAnhRepository.save(image);
+                }
+            }
+        }
 
         redirectAttributes.addFlashAttribute("createSuccess", true);
         return "redirect:/admin/san-pham";
     }
+
+
+
 
 
     private String generateUniqueCode() {

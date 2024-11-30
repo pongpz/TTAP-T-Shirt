@@ -5,6 +5,7 @@ import com.project.ttaptshirt.entity.KhachHang;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,5 +67,17 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
 
     @Query("select hd from HoaDon hd where hd.khachHang =:khachHang order by hd.id desc ")
     List<HoaDon> findByKhachHang(KhachHang khachHang);
+
+
+    @Query("SELECT h FROM HoaDon h WHERE h.ngayThanhToan = :today")
+    List<HoaDon> findHoaDonsByNgayThanhToan(@Param("today") LocalDate today);
+
+    @Query("SELECT h FROM HoaDon h WHERE YEAR(h.ngayThanhToan) = :year AND MONTH(h.ngayThanhToan) = :month")
+    List<HoaDon> findHoaDonsByMonthAndYear(@Param("month") int month, @Param("year") int year);
+
+
+    @Query("SELECT h FROM HoaDon h WHERE FUNCTION('YEAR', h.ngayThanhToan) = :year")
+    List<HoaDon> findHoaDonsByYear(@Param("year") int year);
+
 
 }

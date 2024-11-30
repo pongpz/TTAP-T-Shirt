@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="uploadImageForm" enctype="multipart/form-data">
+  <input type="file" id="imageFiles" name="files" accept="image/*" multiple>
+  <button type="button" id="uploadImageButton" class="btn btn-primary">Tải lên</button>
+</form>
+<div id="uploadStatus"></div>
+
+<script>
+  document.getElementById('uploadImageButton').addEventListener('click', function () {
+    const formData = new FormData();
+    const fileInput = document.getElementById('imageFiles');
+    if (fileInput.files.length === 0) {
+      alert("Vui lòng chọn ít nhất một ảnh!");
+      return;
+    }
+
+    for (const file of fileInput.files) {
+      formData.append('files', file); // Gửi từng file
+    }
+
+    fetch('/images/add', {
+      method: 'POST',
+      body: formData
+    })
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('uploadStatus').textContent = data;
+              loadImages(); // Gọi lại phương thức để tải danh sách ảnh mới
+            })
+            .catch(error => {
+              console.error('Lỗi:', error);
+              document.getElementById('uploadStatus').textContent = "Tải ảnh thất bại!";
+            });
+  });
+</script>
+</body>
+</html>

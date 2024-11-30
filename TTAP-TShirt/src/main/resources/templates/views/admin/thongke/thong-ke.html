@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TTAP</title>
+    <link rel="stylesheet" href="/customcss/banhang.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <meta name="vie wport" content="width=device-width, initial-scale=1">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="d-flex">
+
+    <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
+
+    <div class="main-content content flex-grow-1 p-4">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4"     >
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Thu nhập (Hôm nay)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(tongTienHomNay)}|">vnđ</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Thu nhập (Tháng này)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(tienTheoThang)}|">vnđ</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+<!--                        <div class="col-xl-4 col-md-6 mb-4">-->
+<!--                            <div class="card border-left-success shadow h-100 py-2">-->
+<!--                                <div class="card-body">-->
+<!--                                    <div class="row no-gutters align-items-center">-->
+<!--                                        &lt;!&ndash; Tiêu đề và form lọc nằm cùng một hàng &ndash;&gt;-->
+<!--                                        <div class="col-12 d-flex justify-content-between align-items-center">-->
+<!--                                            &lt;!&ndash; Tiêu đề &ndash;&gt;-->
+<!--                                            <div>-->
+<!--                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">-->
+<!--                                                    Thu nhập (Hàng tháng)-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+
+<!--                                            &lt;!&ndash; Form lọc &ndash;&gt;-->
+<!--                                            <form action="#" method="get" class="mb-0 d-flex">-->
+<!--                                                <div class="form-group mr-2">-->
+<!--                                                    <label for="month" class="sr-only">Tháng</label>-->
+<!--                                                    <select id="month" name="month" class="form-control form-control-sm">-->
+<!--                                                        <option value="1">Tháng 1</option>-->
+<!--                                                        <option value="2">Tháng 2</option>-->
+<!--                                                        <option value="3">Tháng 3</option>-->
+<!--                                                        <option value="4">Tháng 4</option>-->
+<!--                                                        <option value="5">Tháng 5</option>-->
+<!--                                                        <option value="6">Tháng 6</option>-->
+<!--                                                        <option value="7">Tháng 7</option>-->
+<!--                                                        <option value="8">Tháng 8</option>-->
+<!--                                                        <option value="9">Tháng 9</option>-->
+<!--                                                        <option value="10">Tháng 10</option>-->
+<!--                                                        <option value="11">Tháng 11</option>-->
+<!--                                                        <option value="12">Tháng 12</option>-->
+<!--                                                    </select>-->
+<!--                                                </div>-->
+
+<!--                                                <div class="form-group mr-2">-->
+<!--                                                    <label for="year" class="sr-only">Năm</label>-->
+<!--                                                    <input type="number" id="year" name="year" class="form-control form-control-sm" value="2024" min="2020" max="2100">-->
+<!--                                                </div>-->
+
+<!--                                                <div class="form-group  mr-2">-->
+<!--                                                    <label for="month" class="sr-only"></label>-->
+<!--                                                    <button type="submit" class="btn btn-primary btn-sm">Lọc</button>-->
+<!--                                                </div>-->
+<!--                                            </form>-->
+<!--                                        </div>-->
+
+<!--                                        &lt;!&ndash; Hiển thị thu nhập theo tháng &ndash;&gt;-->
+<!--                                        <div class="col-12">-->
+<!--                                            <div class="h5 mb-0 font-weight-bold text-gray-800">-->
+<!--                                                <span th:text="${tienTheoThang}">VNĐ</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+
+<!--                                        <div class="col-auto">-->
+<!--                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <!-- Pending Requests Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Thu nhập (Năm nay)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(tienTheoNam)}|"></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div>
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Thu nhập theo năm {{year}}</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                        <script>
+                            // Lấy dữ liệu từ model
+                            var thuNhap = /*[[${thuNhapThang1}]]*/ [];
+                            var months = /*[[${thang}]]*/ [];
+
+                            // Tạo biểu đồ
+                            var ctx = document.getElementById('myAreaChart').getContext('2d');
+                            var myAreaChart = new Chart(ctx, {
+                                type: 'line',  // Biểu đồ đường (line chart)
+                                data: {
+                                    labels: months,  // Các tháng trong năm
+                                    datasets: [{
+                                        label: 'Thu nhập theo tháng',  // Tiêu đề biểu đồ
+                                        data: thuNhap,  // Dữ liệu thu nhập theo tháng
+                                        backgroundColor: 'rgba(2, 117, 216, 0.2)',  // Màu nền
+                                        borderColor: 'rgba(2, 117, 216, 1)',  // Màu đường
+                                        borderWidth: 2,  // Độ dày của đường viền
+                                        fill: true  // Đổ màu vào dưới đường biểu đồ
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,  // Biểu đồ sẽ tự động thay đổi kích thước
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true  // Trục Y bắt đầu từ 0
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+
+
+
+                        <!-- Pie Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Nguồn thu nhập</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                             aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> Direct
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Social
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> Referral
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+
+
+
+
+
+
+</body>
+</html>

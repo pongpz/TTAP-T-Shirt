@@ -7,6 +7,8 @@ import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.security.CustomUserDetail;
+import com.project.ttaptshirt.service.ChiTietSanPhamService;
+import com.project.ttaptshirt.service.HoaDonChiTietService;
 import com.project.ttaptshirt.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,20 +32,44 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
-
-
+    @Autowired
+    HoaDonChiTietService hoaDonChiTietService;
+    @Autowired
+    ChiTietSanPhamService chiTietSanPhamService;
     //huy hoa don cho
     @Transactional
-    public void huyHoaDonCho(){
+    public void huyHoaDonCho() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime expiredTime = now.minusDays(1);
 
-        List<HoaDon> hoadons = hoaDonRepository.findByTrangThaiAndNgayTaoBefore(0,expiredTime);
+        // Lấy danh sách hóa đơn chờ quá hạn
+        List<HoaDon> hoaDons = hoaDonRepository.findByTrangThaiAndNgayTaoBefore(0, expiredTime);
 
-        hoadons.forEach(hoadon -> hoadon.setTrangThai(5));
-        hoaDonRepository.saveAll(hoadons);
+        for (HoaDon hoaDon : hoaDons) {
+            // Lấy danh sách chi tiết hóa đơn theo hóa đơn
+            List<HoaDonChiTiet> listHoaDonChiTiet = hoaDonChiTietService.getListHdctByIdHd(hoaDon.getId());
 
+            // Xử lý hoàn trả số lượng và xóa chi tiết hóa đơn
+            listHoaDonChiTiet.forEach(hoaDonChiTiet -> {
+                // Hoàn trả số lượng sản phẩm
+                ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
+                chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + hoaDonChiTiet.getSoLuong());
+                chiTietSanPhamRepository.save(chiTietSanPham);
+
+                // Xóa chi tiết hóa đơn
+                hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
+            });
+
+            // Cập nhật tổng tiền và trạng thái hóa đơn
+            hoaDon.setTongTien(0.0);
+            hoaDon.setTrangThai(2); // Trạng thái: Đã hủy
+        }
+
+        // Lưu những thay đổi
+        hoaDonRepository.saveAll(hoaDons);
     }
+
+
 
     public HoaDonServiceImpl(HoaDonRepository hoadonRepository, HoaDonChiTietRepository hoadonChiTietRepository) {
         this.hoadonRepository = hoadonRepository;
