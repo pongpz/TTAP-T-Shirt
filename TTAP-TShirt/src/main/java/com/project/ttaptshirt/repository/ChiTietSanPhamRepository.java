@@ -76,4 +76,8 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
 
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.sanPham.id =:idSP")
     List<ChiTietSanPham> getCTSPByIdSP(Long idSP);
+
+    @Query("SELECT c from ChiTietSanPham c where c.sanPham.id =:sanPhamId and c.mauSac.id =:mauSacId")
+    List<ChiTietSanPham> findBySanPhamAndAndMauSac( Long sanPhamId,
+                                                   Long mauSacId);
 }

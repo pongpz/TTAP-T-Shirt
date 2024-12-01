@@ -96,7 +96,7 @@
                             <div style="display: flex; align-items: center;">
                             <button type="button" class="btn btn-light btn-sm"
                                     th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')">-</button>
-                            <input type="number" name="quantity" th:id="'quantityInput_' + ${item.id}" th:value="${item.soLuong}" min="1"
+                            <input type="number" name="quantity" th:id="'quantityInput_' + ${item.id}" th:value="${item.soLuong}" min="1" max=""
                                    style="width: 60px; text-align: center;" readonly>
                             <button type="button" class="btn btn-light btn-sm"
                                     th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')">+</button>
@@ -150,6 +150,102 @@
     </div>
 </section>
 
+<!--<section class="h-100 gradient-custom">-->
+<!--    <form th:action="@{/TTAP/cart/checkout}" method="POST" id="cartForm">-->
+<!--        <div class="container py-5">-->
+<!--            <div class="row d-flex justify-content-center my-4">-->
+<!--                <div class="col-md-8">-->
+<!--                    <div class="card mb-4">-->
+<!--                        <div class="card-header py-2">-->
+<!--                            <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">Chọn tất cả-->
+<!--                        </div>-->
+<!--                        <div class="card-header py-3">-->
+<!--                            <h5 class="mb-0">Giỏ hàng của bạn</h5>-->
+<!--                        </div>-->
+<!--                        <div class="card-body">-->
+<!--                            &lt;!&ndash; Single item &ndash;&gt;-->
+<!--                            <div class="row" th:each="item, iterStat : ${cart.items}">-->
+<!--                                <div class="your-left-div">-->
+<!--                                    <input type="checkbox" name="selectedProductIds" th:value="${item.id}"-->
+<!--                                           class="product-checkbox" onchange="calculateTotal()">-->
+<!--                                </div>-->
+<!--                                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">-->
+<!--                                    &lt;!&ndash; Image &ndash;&gt;-->
+<!--                                    <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">-->
+<!--                                        <div th:each="hinhAnh : ${item.chiTietSanPham.sanPham.hinhAnhList}">-->
+<!--                                            <img th:src="${hinhAnh.path}" alt="Ảnh sản phẩm" style="max-width: 100px; height: 120px;">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; Image &ndash;&gt;-->
+<!--                                </div>-->
+
+<!--                                <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">-->
+<!--                                    &lt;!&ndash; Data &ndash;&gt;-->
+<!--                                    <p><strong th:text="${item.chiTietSanPham.sanPham.ten}"></strong></p>-->
+<!--                                    <p>Màu sắc: <span th:text="${item.chiTietSanPham.mauSac.ten}"></span></p>-->
+<!--                                    <p>Kích cỡ: <span th:text="${item.chiTietSanPham.kichCo.ten}"></span></p>-->
+<!--                                    <p>Giá: <span th:text="${numberUtils.formatCurrency(item.gia)}"></span></p>-->
+<!--                                    <a th:href="@{/TTAP/cart/remove(productId=${item.id})}" class="btn btn-primary btn-sm me-1 mb-2"-->
+<!--                                       onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')"><i class="fas fa-trash"></i></a>-->
+<!--                                    &lt;!&ndash; Data &ndash;&gt;-->
+<!--                                </div>-->
+
+<!--                                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">-->
+<!--                                    &lt;!&ndash; Quantity &ndash;&gt;-->
+<!--                                    <div class="d-flex mb-4" style="max-width: 300px">-->
+<!--                                        <button type="button" class="btn btn-light btn-sm"-->
+<!--                                                th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')">-</button>-->
+<!--                                        <input type="number" name="quantity" th:id="'quantityInput_' + ${item.id}" th:value="${item.soLuong}" min="1"-->
+<!--                                               style="width: 60px; text-align: center;" readonly>-->
+<!--                                        <button type="button" class="btn btn-light btn-sm"-->
+<!--                                                th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')">+</button>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; Quantity &ndash;&gt;-->
+
+<!--                                    &lt;!&ndash; Price &ndash;&gt;-->
+<!--                                    <p class="text-start text-md-center">-->
+<!--                                        <p><strong th:id="'totalPrice_' + ${item.id}" th:text="${numberUtils.formatCurrency(item.gia * item.soLuong)}"></strong></p>-->
+<!--                                    </p>-->
+<!--                                    &lt;!&ndash; Price &ndash;&gt;-->
+<!--                                </div>-->
+<!--                            </div>                        &lt;!&ndash; Single item &ndash;&gt;-->
+<!--                            <hr class="my-4" />-->
+
+<!--                            &lt;!&ndash; Single item &ndash;&gt;-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                    <div class="card mb-4">-->
+<!--                        <div class="card-header py-3">-->
+<!--                            <h5 class="mb-0"></h5>-->
+<!--                        </div>-->
+<!--                        <div class="card-body">-->
+<!--                            <ul class="list-group list-group-flush">-->
+<!--                                <li-->
+<!--                                        class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">-->
+<!--                                    <div>-->
+<!--                                        <strong>Tổng tiền</strong>-->
+
+<!--                                    </div>-->
+<!--                                    <span><strong id="totalAmount">0</strong></span>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+
+<!--                            <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block">-->
+<!--                                Go to checkout-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--    <div class="alert alert-danger text-center" role="alert" th:if="${cart.items == null or cart.items.isEmpty()}">-->
+<!--        <p>Giỏ hàng của bạn đang trống.</p>-->
+<!--    </div>-->
+<!--</section>-->
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

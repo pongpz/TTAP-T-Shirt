@@ -1,131 +1,362 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head th:replace="~{/fragment/head :: head}"></head>-->
-<!--<body class="hold-transition skin-blue sidebar-mini">-->
-<!--&lt;!&ndash; Site wrapper &ndash;&gt;-->
-<!--<div class="wrapper">-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>TTAP T-SHIRT</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="shortcut icon" type="image/png"
+          th:href="@{/images/logo2tap.jpg}" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link th:href="@{/customercss/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/elegant-icons.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/nice-select.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/jquery-ui.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/owl.carousel.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/slicknav.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/style.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/style-customer.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/customercss/cart-hover.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/customcss/toastMessage.css ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        h1, h3 {
+            margin-bottom: 20px;
+        }
+        table {
+            background-color: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        table th, table td {
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+        }
 
-<!--<<<<<<< HEAD-->
-<!--    <div th:replace="~{/fragment/header :: header}"></div>-->
+    </style>
+</head>
+<body>
+<header th:replace="~{/fragment/header-customer :: header-customer}"></header>
+<div id="toast-root"></div>
+<section class="h-100 gradient-custom">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center my-4">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0">Cart - 2 items</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Single item -->
+                        <div class="row" th>
+                            <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                                <!-- Image -->
+                                <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Vertical/12a.webp"
+                                         class="w-100" alt="Blue Jeans Jacket" />
+                                    <a href="#!">
+                                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                                    </a>
+                                </div>
+                                <!-- Image -->
+                            </div>
 
-<!--    &lt;!&ndash; =============================================== &ndash;&gt;-->
-<!--=======-->
-<!--<script>-->
-<!--<<<<<<< HEAD-->
-<!--=======-->
-<!--    function updateMainContent(url) {-->
-<!--        $.ajax({-->
-<!--            url: url,-->
-<!--            type: 'GET',-->
-<!--            success: function(response) {-->
-<!--                $('#main-content').html(response);-->
-<!--            },-->
-<!--            error: function(error) {-->
-<!--                console.log('Error:', error);-->
-<!--            }-->
-<!--        });-->
-<!--    }-->
+                            <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                                <!-- Data -->
+                                <p><strong>Blue denim shirt</strong></p>
+                                <p>Color: blue</p>
+                                <p>Size: M</p>
+                                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm me-1 mb-2" data-mdb-tooltip-init
+                                         title="Remove item">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-sm mb-2" data-mdb-tooltip-init
+                                         title="Move to the wish list">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <!-- Data -->
+                            </div>
 
-<!--    updateMainContent('/admin/ban-hang');-->
-<!--&gt;>>>>>> 6e5df077246d89f70c3beaa8b36784c23f916334-->
-<!--    document.addEventListener('DOMContentLoaded', function () {-->
-<!--        const links = document.querySelectorAll('a.nav-link');-->
-<!--&gt;>>>>>> 77c25a81ae2ef33ee1dac21b75644e968b38b1e1-->
+                            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                                <!-- Quantity -->
+                                <div class="d-flex mb-4" style="max-width: 300px">
+                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-3 me-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
 
-<!--    &lt;!&ndash; Left side column. contains the sidebar &ndash;&gt;-->
-<!--    <div th:replace="~{/fragment/aside :: aside}"></div>-->
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input id="form1" min="0" name="quantity" value="1" type="number" class="form-control" />
+                                        <label class="form-label" for="form1">Quantity</label>
+                                    </div>
 
-<!--    &lt;!&ndash; =============================================== &ndash;&gt;-->
+                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-3 ms-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- Quantity -->
 
-<!--    &lt;!&ndash; Content Wrapper. Contains page content &ndash;&gt;-->
-<!--    <div class="content-wrapper">-->
-<!--        &lt;!&ndash; Content Header (Page header) &ndash;&gt;-->
-<!--        <section class="content-header">-->
-<!--            <h1>-->
-<!--                Quản lý-->
-<!--                <small>it all starts here</small>-->
-<!--            </h1>-->
-<!--            <ol class="breadcrumb">-->
-<!--                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>-->
-<!--                <li><a href="#">Examples</a></li>-->
-<!--                <li class="active">Blank page</li>-->
-<!--            </ol>-->
-<!--        </section>-->
+                                <!-- Price -->
+                                <p class="text-start text-md-center">
+                                    <strong>$17.99</strong>
+                                </p>
+                                <!-- Price -->
+                            </div>
+                        </div>
+                        <!-- Single item -->
 
-<!--        &lt;!&ndash; Main content &ndash;&gt;-->
-<!--        <section class="content">-->
+                        <hr class="my-4" />
 
-<!--            &lt;!&ndash; Default box &ndash;&gt;-->
-<!--            <div class="col-xs-12">-->
-<!--                <div class="box">-->
-<!--                    <div class="box-header">-->
-<!--                        <h3 class="box-title">Responsive Hover Table</h3>-->
-<!--                        <div class="box-tools">-->
-<!--                            <div class="input-group input-group-sm hidden-xs" style="width: 150px;">-->
-<!--                                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">-->
-<!--                                <div class="input-group-btn">-->
-<!--                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                        <!-- Single item -->
 
-<!--                    <div class="box-body table-responsive no-padding">-->
-<!--                        <table class="table table-hover">-->
-<!--                            <tbody><tr>-->
-<!--                                <th>ID</th>-->
-<!--                                <th>User</th>-->
-<!--                                <th>Date</th>-->
-<!--                                <th>Status</th>-->
-<!--                                <th>Reason</th>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <td>183</td>-->
-<!--                                <td>John Doe</td>-->
-<!--                                <td>11-7-2014</td>-->
-<!--                                <td><span class="label label-success">Approved</span></td>-->
-<!--                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <td>219</td>-->
-<!--                                <td>Alexander Pierce</td>-->
-<!--                                <td>11-7-2014</td>-->
-<!--                                <td><span class="label label-warning">Pending</span></td>-->
-<!--                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <td>657</td>-->
-<!--                                <td>Bob Doe</td>-->
-<!--                                <td>11-7-2014</td>-->
-<!--                                <td><span class="label label-primary">Approved</span></td>-->
-<!--                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <td>175</td>-->
-<!--                                <td>Mike Doe</td>-->
-<!--                                <td>11-7-2014</td>-->
-<!--                                <td><span class="label label-danger">Denied</span></td>-->
-<!--                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>-->
-<!--                            </tr>-->
-<!--                            </tbody></table>-->
-<!--                    </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0">Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                Products
+                                <span>$53.98</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Shipping
+                                <span>Gratis</span>
+                            </li>
+                            <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                <div>
+                                    <strong>Total amount</strong>
+                                    <strong>
+                                        <p class="mb-0">(including VAT)</p>
+                                    </strong>
+                                </div>
+                                <span><strong>$53.98</strong></span>
+                            </li>
+                        </ul>
 
-<!--                </div>-->
+                        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block">
+                            Go to checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!--            </div>-->
-<!--            &lt;!&ndash; /.box &ndash;&gt;-->
 
-<!--        </section>-->
-<!--        &lt;!&ndash; /.content &ndash;&gt;-->
-<!--    </div>-->
-<!--    &lt;!&ndash; /.content-wrapper &ndash;&gt;-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Kiểm tra khi submit form giỏ hàng
+        document.getElementById('cartForm').addEventListener('submit', function (event) {
+            let checkboxes = document.querySelectorAll('.product-checkbox:checked');
+            if (checkboxes.length === 0) {
+                event.preventDefault(); // Ngăn việc submit form
+                alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+            }
+        });
+    });
 
-<!--    <div th:replace="~{/fragment/footer :: footer}"></div>-->
-<!--</div>-->
-<!--&lt;!&ndash; ./wrapper &ndash;&gt;-->
+    function calculateTotal1() {
+        let checkboxes = document.querySelectorAll('.product-checkbox');
+        let total = 0;
 
-<!--&lt;!&ndash; jQuery 3 &ndash;&gt;-->
+        // Lọc những sản phẩm được chọn
+        let selectedProductIds = [];
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedProductIds.push(checkbox.value);
 
-<!--<div th:replace="~{/fragment/script :: script}"></div>-->
-<!--</body>-->
-<!--</html>-->
+                // Xác định dòng chứa checkbox và lấy giá tiền
+                let row = checkbox.closest('tr');
+                let amountElement = row.querySelector('td:nth-child(9)');
+                if (amountElement) {
+                    let amountText = amountElement.textContent.replace(/[^\d,]/g, ''); // Loại bỏ ký tự không phải số hoặc dấu phẩy
+                    amountText = amountText.replace(/,/g, '.'); // Thay dấu phẩy (nếu có) thành dấu chấm (do parseFloat cần dấu chấm)
+                    let amount = parseFloat(amountText); // Chuyển chuỗi thành số
+                    if (!isNaN(amount)) {
+                        total += amount;
+                    }
+                }
+            }
+        });
+
+        // Cập nhật tổng tiền
+        document.getElementById('totalAmount').textContent = formatCurrency(total);
+
+        // Xử lý input hidden để lưu các sản phẩm đã chọn
+        let cartForm = document.getElementById('cartForm');
+        let inputSelectedProductIds = cartForm.querySelector('input[name="selectedProductIds"]');
+        if (!inputSelectedProductIds) {
+            inputSelectedProductIds = document.createElement('input');
+            inputSelectedProductIds.type = 'hidden';
+            inputSelectedProductIds.name = 'selectedProductIds';
+            cartForm.appendChild(inputSelectedProductIds);
+        }
+
+        // Cập nhật giá trị của input hidden
+        inputSelectedProductIds.value = selectedProductIds.join(',');
+    }
+
+    function calculateTotal() {
+        let checkboxes = document.querySelectorAll('.product-checkbox');
+        let total = 0;
+
+        // Lọc những sản phẩm được chọn
+        let selectedProductIds = [];
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedProductIds.push(checkbox.value);
+
+                // Xác định dòng chứa checkbox và lấy giá tiền
+                let row = checkbox.closest('tr');
+                let amountElement = row.querySelector('td:nth-child(9)');
+                if (amountElement) {
+                    let amountText = amountElement.textContent.replace(/[^0-9,]+/g, ""); // Loại bỏ ký tự không phải số hoặc dấu phẩy
+                    amountText = amountText.replace(/,/g, '.'); // Thay dấu phẩy (nếu có) thành dấu chấm (do parseFloat cần dấu chấm)
+                    let amount = parseFloat(amountText); // Chuyển chuỗi thành số
+                    if (!isNaN(amount)) {
+                        total += amount;
+                    }
+                }
+            }
+        });
+
+        // Cập nhật tổng tiền
+        document.getElementById('totalAmount').textContent = formatCurrency(total);
+
+        // Xử lý input hidden để lưu các sản phẩm đã chọn
+        let cartForm = document.getElementById('cartForm');
+        let inputSelectedProductIds = cartForm.querySelector('input[name="selectedProductIds"]');
+        if (!inputSelectedProductIds) {
+            inputSelectedProductIds = document.createElement('input');
+            inputSelectedProductIds.type = 'hidden';
+            inputSelectedProductIds.name = 'selectedProductIds';
+            cartForm.appendChild(inputSelectedProductIds);
+        }
+
+        // Cập nhật giá trị của input hidden
+        inputSelectedProductIds.value = selectedProductIds.join(',');
+    }
+
+    function toggleSelectAll(selectAllCheckbox) {
+        const checkboxes = document.querySelectorAll('.product-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+        calculateTotal();
+    }
+
+    function updateQuantity(button, action) {
+        // Lấy productId từ thuộc tính data-id
+        const productId = button.getAttribute('data-id');
+
+        // Lấy input số lượng
+        const quantityInput = document.getElementById('quantityInput_' + productId);
+        let currentQuantity = parseInt(quantityInput.value);
+
+        // Tăng/giảm số lượng
+        if (action === 'plus') {
+            currentQuantity++;
+        } else if (action === 'minus' && currentQuantity > 1) {
+            currentQuantity--;
+        } else {
+            alert("Số lượng không hợp lệ!");
+            return;
+        }
+
+        // Cập nhật UI trước khi gửi yêu cầu
+        quantityInput.value = currentQuantity;
+
+        const pricePerItem = parseFloat(button.closest('tr').querySelector('td:nth-child(7)').innerText.replace(/[^0-9.-]+/g, ""));
+        const totalPriceElement = document.getElementById('totalPrice_' + productId);
+
+        // Cập nhật giá tiền cho sản phẩm trong giỏ hàng
+        totalPriceElement.innerText = formatCurrency(pricePerItem * currentQuantity);
+
+        // Gửi yêu cầu đến server
+        fetch('/TTAP/cart/updateProductQuantity', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `productId=${productId}&newQuantity=${currentQuantity}`
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    // Reset số lượng nếu có lỗi
+                    quantityInput.value = parseInt(quantityInput.getAttribute('value'));
+                } else {
+                    // Cập nhật số lượng mới trong giao diện
+                    quantityInput.value = currentQuantity;
+                    quantityInput.setAttribute('value', currentQuantity);
+                    // if (data.totalPrice) {
+                    //     const totalPriceElement = document.getElementById('totalPrice_' + productId);
+                    //     totalPriceElement.innerText = numberUtils.formatCurrency(data.totalPrice);
+                    // }
+                }
+            })
+            .catch(error => {
+                alert("Có lỗi xảy ra: " + error.message);
+                // Reset số lượng nếu có lỗi không mong muốn
+                quantityInput.value = parseInt(quantityInput.getAttribute('value'));
+            });
+        calculateTotal();
+    }
+    function formatCurrency(value) {
+        // Sử dụng Intl.NumberFormat để định dạng theo kiểu Việt Nam
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+        return formatter.format(value) + " đ"; // Thêm "đ" vào cuối
+    }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/banhang.js}"></script>
+<script src="/js/toastMessage.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var removemessage = [[${removemessage}]];
+    console.log(removemessage);  // Debugging line to ensure the attribute is set
+    if (removemessage) {
+        toastSuccess('Thành Công!', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
+    }
+    /*]]>*/x
+</script>
+
+<footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
+    <p>&copy; 2024 TTAP T-SHIRT. All rights reserved.</p>
+</footer>
+</body>
+</html>

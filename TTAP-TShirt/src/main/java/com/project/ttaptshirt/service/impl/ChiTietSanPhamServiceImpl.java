@@ -54,4 +54,8 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
         return chiTietSanPhamRepository.existsByMauSacIdAndKichCoIdAndSanPhamId(idMauSac, idKichCo, sanPhamId);
     }
 
+    public List<ChiTietSanPham> getChiTietSanPhamBySanPhamAndMauSac(Long sanPhamId, Long mauSacId) {
+        return chiTietSanPhamRepository.findBySanPhamAndAndMauSac(sanPhamId, mauSacId);
+    }
+
 }
