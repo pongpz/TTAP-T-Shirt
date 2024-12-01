@@ -197,12 +197,12 @@
         </div>
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <p style="margin: 0; font-size: 14px;">Phí vận chuyển:</p>
-            <span type="text" value="50000"
-                   style="padding: 5px; font-size: 14px; width: 80px; text-align: right; border: 1px solid #ddd; border-radius: 4px;"></span>
+            <span type="text"
+                   style="padding: 5px; font-size: 14px; width: 80px; text-align: right; border: 1px solid #ddd; border-radius: 4px;">50000</span>
         </div>
         <div style="margin-top: 20px; display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
             <p style="margin: 0;">Tổng tiền:</p>
-            <span style="color: red;" th:text="'Tổng tiền thanh toán: '+${numberUtils.formatCurrency((hoaDon.tongTien)-50000)}"></span>
+            <label style="color: red;" th:text="'Tổng tiền thanh toán: '+${numberUtils.formatCurrency((hoaDon.tongTien)-50000)}"></label>
         </div>
     </div>
 </div>

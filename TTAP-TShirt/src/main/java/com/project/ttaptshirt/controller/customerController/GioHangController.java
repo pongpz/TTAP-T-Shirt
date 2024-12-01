@@ -59,6 +59,9 @@ public class GioHangController {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
             GioHang cart = gioHangService.getOrCreateCart(user); // Lấy giỏ hàng của người dùng
+//            if (gioHangService.getOrCreateCart(user).getItems() != null || gioHangService.getOrCreateCart(user).getItems().get(0).getChiTietSanPham().getSanPham().getHinhAnhList() != null){
+//                model.addAttribute("cart2", gioHangService.getOrCreateCart(user).getItems().get(0).getChiTietSanPham().getSanPham().getHinhAnhList().get(0).getPath()); // Đảm bảo luôn truyền giỏ hàng vào model
+//            }
             model.addAttribute("cart", cart); // Đảm bảo luôn truyền giỏ hàng vào model
             model.addAttribute("userLogged", user);
             NumberUtils numberUtils = new NumberUtils();
@@ -68,6 +71,8 @@ public class GioHangController {
         }
         return "redirect:/login";
     }
+
+
 
     // Xóa sản phẩm khỏi giỏ hàng
     @GetMapping("/remove")
@@ -182,7 +187,7 @@ public class GioHangController {
                 // Nếu danh sách sản phẩm được chọn trống hoặc null
                 if (selectedProductIdsStr == null || selectedProductIdsStr.trim().isEmpty()) {
                     redirectAttributes.addFlashAttribute("error", "Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
-                    return "redirect:/view"; // Quay lại trang giỏ hàng
+                    return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
                 }
                 List<Long> selectedProductIds = Arrays.stream(selectedProductIdsStr.split(","))
                         .map(Long::parseLong)

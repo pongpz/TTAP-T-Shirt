@@ -66,7 +66,7 @@
                             <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
                         </th>
                         <th>#</th>
-                        <th>Ảnh</th>
+<!--                        <th>Ảnh</th>-->
                         <th>Tên sản phẩm</th>
                         <th>Kich Co</th>
                         <th>Mau Sac</th>
@@ -83,11 +83,11 @@
                                    class="product-checkbox" onchange="calculateTotal()">
                         </td>
                         <td th:text="${iterStat.index + 1}"></td>
-                        <td>
-                            <div th:each="hinhAnh : ${item.chiTietSanPham.sanPham.hinhAnhList}">
-                                <img th:src="${hinhAnh.path}" alt="Ảnh sản phẩm" style="max-width: 100px; height: 120px;">
-                            </div>
-                        </td>
+<!--                        <td>-->
+<!--                            <div th:each="hinhAnh : ${item.chiTietSanPham.sanPham.hinhAnhList}">-->
+<!--                                <img th:src="${cart2 =! null?:'/path/to/default/image.jpg'}" alt="Ảnh sản phẩm" style="max-width: 100px; height: 120px;">-->
+<!--                            </div>-->
+<!--                        </td>-->
                         <td th:text="${item.chiTietSanPham.sanPham.ten}"></td>
                         <td th:text="${item.chiTietSanPham.mauSac.ten}"></td>
                         <td th:text="${item.chiTietSanPham.kichCo.ten}"></td>
@@ -271,7 +271,7 @@
 
                 // Xác định dòng chứa checkbox và lấy giá tiền
                 let row = checkbox.closest('tr');
-                let amountElement = row.querySelector('td:nth-child(9)');
+                let amountElement = row.querySelector('td:nth-child(8)');
                 if (amountElement) {
                     let amountText = amountElement.textContent.replace(/[^\d,]/g, ''); // Loại bỏ ký tự không phải số hoặc dấu phẩy
                     amountText = amountText.replace(/,/g, '.'); // Thay dấu phẩy (nếu có) thành dấu chấm (do parseFloat cần dấu chấm)
@@ -312,7 +312,7 @@
 
                 // Xác định dòng chứa checkbox và lấy giá tiền
                 let row = checkbox.closest('tr');
-                let amountElement = row.querySelector('td:nth-child(9)');
+                let amountElement = row.querySelector('td:nth-child(8)');
                 if (amountElement) {
                     let amountText = amountElement.textContent.replace(/[^0-9,]+/g, ""); // Loại bỏ ký tự không phải số hoặc dấu phẩy
                     amountText = amountText.replace(/,/g, '.'); // Thay dấu phẩy (nếu có) thành dấu chấm (do parseFloat cần dấu chấm)
@@ -370,7 +370,7 @@
         // Cập nhật UI trước khi gửi yêu cầu
         quantityInput.value = currentQuantity;
 
-        const pricePerItem = parseFloat(button.closest('tr').querySelector('td:nth-child(7)').innerText.replace(/[^0-9.-]+/g, ""));
+        const pricePerItem = parseFloat(button.closest('tr').querySelector('td:nth-child(6)').innerText.replace(/[^0-9.-]+/g, ""));
         const totalPriceElement = document.getElementById('totalPrice_' + productId);
 
         // Cập nhật giá tiền cho sản phẩm trong giỏ hàng
