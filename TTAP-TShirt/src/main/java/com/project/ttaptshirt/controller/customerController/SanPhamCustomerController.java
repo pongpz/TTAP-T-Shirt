@@ -115,7 +115,7 @@ public class SanPhamCustomerController {
                     minPrice, maxPrice,pageable
             );
         } else {
-            sanPhamPage = sanPhamRepository.findAll(pageable);
+            sanPhamPage = sanPhamRepository.pageSP(pageable);
         }
 
 

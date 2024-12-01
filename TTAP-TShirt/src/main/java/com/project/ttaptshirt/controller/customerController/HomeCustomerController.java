@@ -94,7 +94,7 @@ public class HomeCustomerController {
 
         Pageable pageable = PageRequest.of(page, 6);
 
-        Page<SanPham> sanPhamPage = spr.findAll(pageable);
+        Page<SanPham> sanPhamPage = spr.pageSP(pageable);
         Page<SanPham> sanPhamMoiPage = spr.pageSPMoi(pageable);
 
 

@@ -95,7 +95,7 @@ public class ThongKeService {
     public Double tinhThuNhapTheoNam(int year) {
         List<HoaDon> hoaDons = hoaDonRepository.findHoaDonsByYear(year);
 
-        double totalIncome = 0;
+        double totalIncome = 0.0;
         for (HoaDon hoaDon : hoaDons) {
             List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
             for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
