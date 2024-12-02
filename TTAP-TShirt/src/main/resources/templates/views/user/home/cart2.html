@@ -53,6 +53,7 @@
 <header th:replace="~{/fragment/header-customer :: header-customer}"></header>
 <div id="toast-root"></div>
 <section>
+
     <div class="cart-content-2021">
         <div class="cart-content-2021-left">
             <div class="container my-4">
@@ -80,6 +81,55 @@
                                     <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#selectAddressModal">Thay đổi</button>
                                 </div>
                             </div>
+=======
+    <div class="container">
+        <h3 class="text-center">Giỏ hàng của bạn</h3>
+
+        <!-- Hiển thị giỏ hàng -->
+        <div class="table-responsive" th:if="${cart.items != null and !cart.items.isEmpty()}">
+            <form th:action="@{/TTAP/cart/checkout}" method="POST" id="cartForm">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-primary">
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
+                        </th>
+                        <th>#</th>
+<!--                        <th>Ảnh</th>-->
+                        <th>Tên sản phẩm</th>
+                        <th>Kich Co</th>
+                        <th>Mau Sac</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item, iterStat : ${cart.items}">
+                        <td>
+                            <input type="checkbox" name="selectedProductIds" th:value="${item.id}"
+                                   class="product-checkbox" onchange="calculateTotal()">
+                        </td>
+                        <td th:text="${iterStat.index + 1}"></td>
+<!--                        <td>-->
+<!--                            <div th:each="hinhAnh : ${item.chiTietSanPham.sanPham.hinhAnhList}">-->
+<!--                                <img th:src="${cart2 =! null?:'/path/to/default/image.jpg'}" alt="Ảnh sản phẩm" style="max-width: 100px; height: 120px;">-->
+<!--                            </div>-->
+<!--                        </td>-->
+                        <td th:text="${item.chiTietSanPham.sanPham.ten}"></td>
+                        <td th:text="${item.chiTietSanPham.mauSac.ten}"></td>
+                        <td th:text="${item.chiTietSanPham.kichCo.ten}"></td>
+                        <td th:text="${numberUtils.formatCurrency(item.gia)}"></td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                            <button type="button" class="btn btn-light btn-sm"
+                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')">-</button>
+                            <input type="number" name="quantity" th:id="'quantityInput_' + ${item.id}" th:value="${item.soLuong}" min="1" max=""
+                                   style="width: 60px; text-align: center;" readonly>
+                            <button type="button" class="btn btn-light btn-sm"
+                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')">+</button>
+
                         </div>
                     </div>
 
@@ -277,8 +327,30 @@
         if (selectedAddress) {
             alert("Bạn đã chọn địa chỉ: " + selectedAddress.value);
 
+
             // Bạn có thể lưu hoặc sử dụng địa chỉ đã chọn ở đây
             // Ví dụ: Gửi đến backend để lưu địa chỉ đã chọn cho người dùng
+
+        // Lọc những sản phẩm được chọn
+        let selectedProductIds = [];
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedProductIds.push(checkbox.value);
+
+                // Xác định dòng chứa checkbox và lấy giá tiền
+                let row = checkbox.closest('tr');
+                let amountElement = row.querySelector('td:nth-child(8)');
+                if (amountElement) {
+                    let amountText = amountElement.textContent.replace(/[^\d,]/g, ''); // Loại bỏ ký tự không phải số hoặc dấu phẩy
+                    amountText = amountText.replace(/,/g, '.'); // Thay dấu phẩy (nếu có) thành dấu chấm (do parseFloat cần dấu chấm)
+                    let amount = parseFloat(amountText); // Chuyển chuỗi thành số
+                    if (!isNaN(amount)) {
+                        total += amount;
+                    }
+                }
+            }
+        });
+
 
             // Đóng modal sau khi chọn địa chỉ
             var myModal = new bootstrap.Modal(document.getElementById('selectAddressModal'));
@@ -303,6 +375,7 @@
         const selectedProductIds = [];
 
         checkboxes.forEach(checkbox => {
+
             const productRow = checkbox.closest('.js-item-row');
             const priceElement = productRow.querySelector('.product-amount');
 
@@ -311,6 +384,23 @@
 
             total += price;
             selectedProductIds.push(checkbox.value);
+
+            if (checkbox.checked) {
+                selectedProductIds.push(checkbox.value);
+
+                // Xác định dòng chứa checkbox và lấy giá tiền
+                let row = checkbox.closest('tr');
+                let amountElement = row.querySelector('td:nth-child(8)');
+                if (amountElement) {
+                    let amountText = amountElement.textContent.replace(/[^0-9,]+/g, ""); // Loại bỏ ký tự không phải số hoặc dấu phẩy
+                    amountText = amountText.replace(/,/g, '.'); // Thay dấu phẩy (nếu có) thành dấu chấm (do parseFloat cần dấu chấm)
+                    let amount = parseFloat(amountText); // Chuyển chuỗi thành số
+                    if (!isNaN(amount)) {
+                        total += amount;
+                    }
+                }
+            }
+
         });
 
         // Cập nhật tổng tiền
@@ -352,8 +442,13 @@
         // Lấy giá trị đơn giá từ data-price
         const unitPrice = parseFloat($('#originPrice_' + productId).data('price') || 0);
 
+
         // Tính thành tiền mới
         const newTotal = unitPrice * currentQuantity;
+
+        const pricePerItem = parseFloat(button.closest('tr').querySelector('td:nth-child(6)').innerText.replace(/[^0-9.-]+/g, ""));
+        const totalPriceElement = document.getElementById('totalPrice_' + productId);
+
 
         // Cập nhật lại giá trị thành tiền và data-total
         const totalPriceElement = $('#totalPrice_' + productId);

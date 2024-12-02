@@ -111,24 +111,6 @@
                     <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
                     <td>
                         <a th:href="@{/admin/hoa-don/chi-tiet-hoa-don-online/{idHD}(idHD=${hd.id})}" class="btn btn-info">Chi tiết</a>
-
-
-                        <!-- Cancel Invoice button -->
-                        <a th:href="@{/admin/hoa-don/huy-hoa-don-online/{idHD}(idHD=${hd.id})}"
-                           th:if="${hd.trangThai == 3 && hd.loaiDon == 0}"
-                           class="btn btn-danger"
-                           th:onclick="'return confirm(\'Bạn có muốn hủy hóa đơn này không?\')'">Hủy hóa đơn</a>
-                        <!-- Confirm Invoice button -->
-                        <a th:href="@{/admin/hoa-don/xac-nhan-hoa-don/{idHD}(idHD=${hd.id})}"
-                           th:if="${hd.trangThai == 3 && hd.loaiDon == 0}"
-                           class="btn btn-primary"
-                           th:onclick="'return confirm(\'Bán có muốn xác nhận hóa đơn này không?\')'">Xác nhận hóa đơn</a>
-
-                        <!-- Complete Invoice button -->
-                        <a th:href="@{/admin/hoa-don/hoan-thanh-hoa-don/{idHD}(idHD=${hd.id})}"
-                           th:if="${hd.trangThai == 0 && hd.loaiDon == 0}"
-                           class="btn btn-success"
-                           th:onclick="'return confirm(\'Bạn có muốn hoàn thành hóa đơn này không?\')'">Hoàn thành</a>
                     </td>
 
 

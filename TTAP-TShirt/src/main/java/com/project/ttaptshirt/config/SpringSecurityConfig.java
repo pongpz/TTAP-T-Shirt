@@ -40,14 +40,6 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.csrf().disable().authorizeHttpRequests()
-//                .anyRequest().permitAll(); // Cho phép truy cập tất cả các URL mà không cần đăng nhập
-//
-//        return http.build();
-//    }
-
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return (web -> web.ignoring().requestMatchers("/images/**", "/customcss/**", "/js/**", "/asset/**","customercss/**"));
