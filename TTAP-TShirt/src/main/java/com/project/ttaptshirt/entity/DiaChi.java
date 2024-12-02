@@ -1,11 +1,6 @@
 package com.project.ttaptshirt.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,5 +46,7 @@ public class DiaChi extends CreatedUpdatedAt{
     @Column(name = "trang_thai")
     private String trangThai;
 
-
+    @ManyToOne
+    @JoinColumn(name = "id_nguoi_dung", nullable = false)
+    private User user;
 }

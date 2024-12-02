@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MaGiamGiaRepo extends JpaRepository<MaGiamGia, Long> {
@@ -29,4 +30,7 @@ public interface MaGiamGiaRepo extends JpaRepository<MaGiamGia, Long> {
 
     @Query("select mgg from MaGiamGia mgg where mgg.trangThai =:trangThai and (:keyword is null or mgg.ma like %:keyword% or mgg.ten like %:keyword%) order by mgg.id desc")
     List<MaGiamGia> getMaGiamGiaByTrangThaiKeyword (Boolean trangThai,String keyword);
+
+    @Query("select km from MaGiamGia  km where km.ma =:code")
+    Optional<MaGiamGia> findByCode(String code);
 }

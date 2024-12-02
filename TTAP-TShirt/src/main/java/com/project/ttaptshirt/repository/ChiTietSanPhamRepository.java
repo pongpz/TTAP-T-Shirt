@@ -80,4 +80,8 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
     @Query("SELECT c from ChiTietSanPham c where c.sanPham.id =:sanPhamId and c.mauSac.id =:mauSacId")
     List<ChiTietSanPham> findBySanPhamAndAndMauSac( Long sanPhamId,
                                                    Long mauSacId);
+
+    @Query("SELECT c from ChiTietSanPham c where c.sanPham.id =:sanPhamId and c.mauSac.id =:mauSacId and c.kichCo.id =:kichCoId")
+    Optional<ChiTietSanPham> findsoluong( Long sanPhamId,
+                                                    Long mauSacId,Long kichCoId);
 }
