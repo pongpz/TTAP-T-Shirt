@@ -94,7 +94,6 @@ public class BanHangController {
 
 
     @GetMapping("/hoa-don/chi-tiet")
-
     public String viewHDCT(@RequestParam("hoadonId") Long idHoaDon, Model model, Authentication authentication, @RequestParam(value="tenSP",required = false) String tenSP, @RequestParam(value="mgg",required = false) String mgg) {
         if (authentication != null) {
             // Lấy thông tin người dùng đã đăng nhập

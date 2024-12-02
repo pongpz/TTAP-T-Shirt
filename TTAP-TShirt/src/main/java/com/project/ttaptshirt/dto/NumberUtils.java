@@ -7,8 +7,8 @@ public class NumberUtils {
     public static String formatCurrency(double value) {
         // Tạo DecimalFormatSymbols tùy chỉnh để định nghĩa ký tự phân cách
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setGroupingSeparator('.'); // Dấu ',' làm ký tự phân cách nhóm
-        symbols.setDecimalSeparator(','); // Dấu '.' làm ký tự phân cách thập phân (nếu cần)
+        symbols.setGroupingSeparator(','); // Dấu ',' làm ký tự phân cách nhóm
+        symbols.setDecimalSeparator('.'); // Dấu '.' làm ký tự phân cách thập phân (nếu cần)
 
         // Cấu hình DecimalFormat với mẫu định dạng và các ký hiệu
         DecimalFormat df = new DecimalFormat("#,###", symbols); // Hiển thị 2 chữ số thập phân
