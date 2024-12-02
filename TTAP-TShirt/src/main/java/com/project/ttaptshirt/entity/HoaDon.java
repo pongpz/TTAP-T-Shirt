@@ -34,7 +34,7 @@ public class HoaDon {
     @Column(name = "ngay_thanh_toan")
     private LocalDate ngayThanhToan;
 
-    @Column(name = "ghi_chu")
+    @Column(name = "ghi_chu", columnDefinition = "nvarchar(255)")
     private String ghiChu;
 
     @Column(name = "tong_tien")
@@ -79,7 +79,7 @@ public class HoaDon {
     @Column(name = "trang_thai")
     private Integer trangThai;
 
-    @Column(name = "ten_nguoi_nhan")
+    @Column(name = "ten_nguoi_nhan", columnDefinition = "nvarchar(255)")
     private String tenNguoiNhan;
 
     @Column(name = "loai_don")
