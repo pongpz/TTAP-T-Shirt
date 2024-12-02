@@ -66,14 +66,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateDiachi(Long userId, DiaChi diaChi){
-        Optional<User> userOptional =userRepo.findById(userId);
-        if (userOptional.isPresent()){
+    public User updateDiachi(Long userId, DiaChi diaChi) {
+        // Tìm người dùng theo ID
+        Optional<User> userOptional = userRepo.findById(userId);
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
+
+            // Thiết lập liên kết giữa DiaChi và User
+            diaChi.setUser(user);
             diaChiRepo.save(diaChi);
-            user.setDc(diaChi);
+
+            // Thêm địa chỉ mới vào danh sách DiaChi của User
+            user.getDiaChiList().add(diaChi);
+
+            // Lưu thông tin người dùng
             return userRepo.save(user);
-        }else {
+        } else {
             throw new RuntimeException("User not found with id " + userId);
         }
     }

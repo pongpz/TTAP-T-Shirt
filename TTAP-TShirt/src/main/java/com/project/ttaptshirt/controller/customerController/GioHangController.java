@@ -3,12 +3,13 @@ package com.project.ttaptshirt.controller.customerController;
 import com.project.ttaptshirt.dto.AddToCartRequest;
 import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.dto.NumberUtils;
-import com.project.ttaptshirt.entity.GioHang;
-import com.project.ttaptshirt.entity.HoaDon;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
+import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
+import com.project.ttaptshirt.service.DiaChiService;
+import com.project.ttaptshirt.service.impl.DiscountService;
 import com.project.ttaptshirt.service.impl.GioHangService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,6 +41,13 @@ public class GioHangController {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private DiscountService discountService;
+
+    @Autowired
+    private DiaChiService serDc;
+
+
     @GetMapping("/add")
     public String addItemToCart( @RequestParam Long productId, @RequestParam int quantity,
                                 RedirectAttributes redirectAttributes, Authentication authentication) {
@@ -54,7 +62,7 @@ public class GioHangController {
 
     // Xem giỏ hàng
     @GetMapping("/view")
-    public String viewCart(Model model, Authentication authentication) {
+    public String viewCart(Model model, Authentication authentication,@ModelAttribute DiaChi address) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
@@ -64,13 +72,55 @@ public class GioHangController {
 //            }
             model.addAttribute("cart", cart); // Đảm bảo luôn truyền giỏ hàng vào model
             model.addAttribute("userLogged", user);
+
+            List<DiaChi> addresses = serDc.findAddressesByUser(user.getId());
+            model.addAttribute("addresses", addresses);
             NumberUtils numberUtils = new NumberUtils();
+
+            // Khởi tạo address nếu chưa có
+            if (address == null) {
+                address = new DiaChi(); // Tạo đối tượng mới nếu không có
+            }
+
+            if (!addresses.isEmpty()) {
+                model.addAttribute("selectedAddress", addresses.get(0));  // Địa chỉ đã chọn
+            }
+            model.addAttribute("address", address);
 
             model.addAttribute("numberUtils", numberUtils);
             return "/user/home/cart2";
         }
         return "redirect:/login";
     }
+
+
+    @PostMapping("/cart/updateAddress")
+    public String updateAddress(@RequestParam("address") Long selectedAddressId,
+                                Authentication authentication, Model model) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+
+            // Lấy địa chỉ đã chọn từ ID
+            DiaChi selectedAddress = serDc.findById(selectedAddressId).orElse(null);
+
+            if (selectedAddress != null) {
+                // Cập nhật địa chỉ cho người dùng
+                user.setDiaChi(selectedAddress); // Địa chỉ mới
+                userService.save(user); // Lưu thông tin người dùng
+
+                // Lấy lại giỏ hàng của người dùng
+                GioHang cart = gioHangService.getOrCreateCart(user);
+
+                // Trả về trang giỏ hàng với địa chỉ đã chọn
+                model.addAttribute("cart", cart);
+                model.addAttribute("userLogged", user);
+                model.addAttribute("addresses", serDc.findAddressesByUser(user.getId()));
+                model.addAttribute("selectedAddress", selectedAddress);
+            }
+            return "/user/home/cart2"; // Trả về trang giỏ hàng
+        }
+        return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
 
 
 
@@ -173,9 +223,7 @@ public class GioHangController {
 
     @PostMapping("/checkout")
     public String checkoutCart(@RequestParam("selectedProductIds") String selectedProductIdsStr,
-                               @RequestParam String fullName,
-                               @RequestParam String phoneNumber,
-                               @RequestParam String address,
+                               @RequestParam String diaChi,
                                RedirectAttributes redirectAttributes,
                                Authentication authentication,
                                Model model) {
@@ -187,12 +235,16 @@ public class GioHangController {
                 // Nếu danh sách sản phẩm được chọn trống hoặc null
                 if (selectedProductIdsStr == null || selectedProductIdsStr.trim().isEmpty()) {
                     redirectAttributes.addFlashAttribute("error", "Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+
+                    return "redirect:/TTAP/cart /view"; // Quay lại trang giỏ hàng
+
                     return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
+
                 }
                 List<Long> selectedProductIds = Arrays.stream(selectedProductIdsStr.split(","))
                         .map(Long::parseLong)
                         .collect(Collectors.toList());
-                HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds,fullName,phoneNumber,address);
+                HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds,diaChi);
                 redirectAttributes.addFlashAttribute("message", "Hóa đơn đã được tạo thành công!");
                 model.addAttribute("userLogged", user);
                 return "redirect:/TTAP/cart/hoa-don"; // Chuyển đến trang chi tiết hóa đơn
@@ -325,7 +377,21 @@ public class GioHangController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "User not authenticated"));
     }
 
-
-
+    @PostMapping("/getdiscount")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> applyDiscount(@RequestParam String code){
+        // Lấy mã giảm giá từ service
+        MaGiamGia discount = discountService.getMaGiamGia(code);
+        Map<String,Object> response = new HashMap<>();
+        // Kiểm tra nếu mã giảm giá hợp lệ
+        if (discount != null) {
+            response.put("discount", Map.of("discountPercentage", discount.getGiaTriGiam()));
+            response.put("message", "Mã giảm giá hợp lệ");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "Mã giảm giá không hợp lệ hoặc đã hết hạn");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
 
 }

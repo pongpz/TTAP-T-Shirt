@@ -2,9 +2,12 @@ package com.project.ttaptshirt.controller.customerController;
 
 
 import com.project.ttaptshirt.entity.DiaChi;
+import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/TTAP/User/DiaChi/")
+@RequestMapping("/TTAP/user")
 
 public class DiaChiController {
 
@@ -47,32 +50,33 @@ public class DiaChiController {
         return "redirect:home";
     }
 
-    @GetMapping("delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id, Model mol){
-        DiaChi dc = serDc.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:" + id));
-        serDc.deleteById(id);
-        return "redirect:/TTAP/User/DiaChi/home";
-    }
 
-    @GetMapping("detail/{id}")
-    public String showDetail(@PathVariable("id") Long id,Model mol){
-        DiaChi dc = serDc.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID ko ton tai:"+ id));
-        mol.addAttribute("diachi",dc);
-        return "/user/diachi/update";
-    }
+    @GetMapping("/addresses")
+    public String getUserAddresses(Model model, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
 
-    @PostMapping("update")
-    public String updateUser(@Valid DiaChi dc,BindingResult result, Model mol){
-        if (result.hasErrors()){
-            dc.setId(dc.getId());
-            return "/user/diachi/update";
+            List<DiaChi> addresses = serDc.findAddressesByUser(user.getId());
+            model.addAttribute("addresses", addresses);
+
+            return "user/address-list"; // Trang hiển thị danh sách địa chỉ
         }
-        DiaChi existDc = serDc.findById(dc.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + dc.getId()));
-        serDc.save(dc);
-        return "redirect:/TTAP/User/DiaChi/home";
+        return "redirect:/login";
+    }
+
+    @PostMapping("/address")
+    public String createAddress(@ModelAttribute DiaChi address, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+
+            address.setUser(user); // Gắn địa chỉ với người dùng hiện tại
+            serDc.save(address); // Lưu địa chỉ vào cơ sở dữ liệu
+
+            return "redirect:/TTAP/cart/view"; // Sau khi lưu, chuyển hướng đến danh sách địa chỉ
+        }
+        return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
     }
 
 }
