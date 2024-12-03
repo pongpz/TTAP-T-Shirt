@@ -34,7 +34,8 @@ public class HoaDon {
     @Column(name = "ngay_thanh_toan")
     private LocalDate ngayThanhToan;
 
-    @Column(name = "ghi_chu", columnDefinition = "nvarchar(255)")
+    @Column(name = "ghi_chu", columnDefinition = "NVARCHAR(255)")
+
     private String ghiChu;
 
     @Column(name = "tong_tien")
@@ -52,7 +53,7 @@ public class HoaDon {
     @JoinColumn(name = "id_nhan_vien")
     private User nhanVien;
 
-    @Column(name = "dia_chi_giao_hang")
+    @Column(name = "dia_chi_giao_hang", columnDefinition = "NVARCHAR(255)")
     private String diaChiGiaoHang;
 
     @Column(name = "sdt_nguoi_nhan")
@@ -79,7 +80,8 @@ public class HoaDon {
     @Column(name = "trang_thai")
     private Integer trangThai;
 
-    @Column(name = "ten_nguoi_nhan", columnDefinition = "nvarchar(255)")
+    @Column(name = "ten_nguoi_nhan", columnDefinition = "NVARCHAR(255)")
+
     private String tenNguoiNhan;
 
     @Column(name = "loai_don")

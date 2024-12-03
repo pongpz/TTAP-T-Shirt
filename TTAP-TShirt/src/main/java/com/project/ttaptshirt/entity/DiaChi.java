@@ -27,19 +27,20 @@ public class DiaChi extends CreatedUpdatedAt{
     private Long id;
 
     @NotBlank(message = " không được phép trống")
-    @Column(name = "so_nha", columnDefinition = "nvarchar(255)")
+    @Column(name = "so_nha", columnDefinition = "NVARCHAR(255)")
     private String soNha;
 
     @NotBlank(message = " không được phép trống")
-    @Column(name = "ten_duong", columnDefinition = "nvarchar(255)")
+    @Column(name = "ten_duong", columnDefinition = "NVARCHAR(255)")
     private String tenDuong;
 
     @NotBlank(message = " không được phép trống")
-    @Column(name = "ten_quan_huyen", columnDefinition = "nvarchar(255)")
+    @Column(name = "ten_quan_huyen", columnDefinition = "NVARCHAR(255)")
     private String tenQuanhuyen;
 
     @NotBlank(message = " không được phép trống")
-    @Column(name = "ten_thanh_pho", columnDefinition = "nvarchar(255)")
+    @Column(name = "ten_thanh_pho", columnDefinition = "NVARCHAR(255)")
+
     private String tenThanhpho;
 
 

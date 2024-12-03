@@ -31,7 +31,8 @@ public class MaGiamGia {
         private Long id;
 
         @NotBlank
-        @Column(name = "ten", columnDefinition = "nvarchar(255)")
+        @Column(name = "ten", columnDefinition = "NVARCHAR(255)")
+
         private String ten;
 
         @NotNull
