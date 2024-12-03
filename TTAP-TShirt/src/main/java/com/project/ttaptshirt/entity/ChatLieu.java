@@ -25,7 +25,8 @@ public class ChatLieu{
     @Column(name = "ma")
     private String ma;
 
-    @Column(name = "ten")
+    @Column(name = "ten", columnDefinition = "NVARCHAR(255)")
+
     private String ten;
 
     @Column(name = "trang_thai")

@@ -31,7 +31,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
     @Query("select spct from ChiTietSanPham spct where spct.sanPham.id =:idSP and (:kichCo is null or spct.kichCo.id =:kichCo) and (:mauSac is null or spct.mauSac.id =:mauSac)")
     List<ChiTietSanPham> findByIDSanPham(Long idSP, String kichCo, String mauSac);
 
-    @Query("select spct from ChiTietSanPham spct where :ten is null or spct.sanPham.ten like %:ten% order by spct.id DESC")
+    @Query("select spct from ChiTietSanPham spct where (:ten is null or spct.sanPham.ten like %:ten%) and spct.trangThai = 0 order by spct.id DESC")
     List<ChiTietSanPham> findByTenSanPham(String ten);
 
 
@@ -52,8 +52,8 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
     @Query("select spct from ChiTietSanPham  spct order by spct.ngayTao desc")
     List<ChiTietSanPham> getListNewCTSP();
 
-    @Query("select spct from ChiTietSanPham spct where spct.sanPham.id =:id")
-    List<ChiTietSanPham> getThuocTinhSPCT(Long id);
+    @Query("select spct from ChiTietSanPham spct where spct.soLuong = 0")
+    List<ChiTietSanPham> getSPCTHetHan();
 
     @Query("select Min(c.giaBan) FROM ChiTietSanPham c WHERE c.sanPham.id = :sanPhamId")
     Double findMinGiaBan(@Param("sanPhamId") Long sanPhamId);
@@ -80,4 +80,8 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
     @Query("SELECT c from ChiTietSanPham c where c.sanPham.id =:sanPhamId and c.mauSac.id =:mauSacId")
     List<ChiTietSanPham> findBySanPhamAndAndMauSac( Long sanPhamId,
                                                    Long mauSacId);
+
+    @Query("SELECT c from ChiTietSanPham c where c.sanPham.id =:sanPhamId and c.mauSac.id =:mauSacId and c.kichCo.id =:kichCoId")
+    Optional<ChiTietSanPham> findsoluong( Long sanPhamId,
+                                                    Long mauSacId,Long kichCoId);
 }

@@ -1,11 +1,6 @@
 package com.project.ttaptshirt.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,24 +27,27 @@ public class DiaChi extends CreatedUpdatedAt{
     private Long id;
 
     @NotBlank(message = " không được phép trống")
-    @Column(name = "so_nha")
+    @Column(name = "so_nha", columnDefinition = "NVARCHAR(255)")
     private String soNha;
 
     @NotBlank(message = " không được phép trống")
-    @Column(name = "ten_duong")
+    @Column(name = "ten_duong", columnDefinition = "NVARCHAR(255)")
     private String tenDuong;
 
     @NotBlank(message = " không được phép trống")
-    @Column(name = "ten_quan_huyen")
+    @Column(name = "ten_quan_huyen", columnDefinition = "NVARCHAR(255)")
     private String tenQuanhuyen;
 
     @NotBlank(message = " không được phép trống")
-    @Column(name = "ten_thanh_pho")
+    @Column(name = "ten_thanh_pho", columnDefinition = "NVARCHAR(255)")
+
     private String tenThanhpho;
 
 
     @Column(name = "trang_thai")
     private String trangThai;
 
-
+    @ManyToOne
+    @JoinColumn(name = "id_nguoi_dung", nullable = false)
+    private User user;
 }

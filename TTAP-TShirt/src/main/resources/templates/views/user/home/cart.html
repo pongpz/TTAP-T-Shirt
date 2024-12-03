@@ -49,8 +49,8 @@
 
 <section>
     <div class="container">
-        <h3 class="text-center">Don hàng của bạn</h3>
-        <h5 class="card-title">Hóa Đơn #<span th:text="${hoaDon.id}"></span></h5>
+        <h3 class="text-center">Đơn hàng của bạn</h3>
+        <h5 class="card-title">Hóa Đơn #<span th:text="${hoaDon.ma}"></span></h5>
         <h4>Trạng thái:  <span th:switch="${hoaDon.trangThai}">
          <span th:case="3">Chờ xác nhận</span>
             <span th:case="2">Đã hủy</span>
@@ -60,7 +60,9 @@
             <span th:case="2">Đã hủy</span>
             <span th:case="1">Thành Công</span>
             <span th:case="0">Chờ thanh toán</span>
+
             <span th:case="*" class="text-secondary">Không xác định</span>
+
     </span></h4>
         <!-- Hiển thị giỏ hàng -->
         <div class="table-responsive">
@@ -69,10 +71,14 @@
                     <tr>
                         <th>#</th>
                         <th>Tên sản phẩm</th>
-                        <th>Mau sac</th>
-                        <th>Kich co</th>
-                        <th>Giá</th>
+
+                        <th>Màu sắc</th>
+                        <th>Kích cỡ</th>
+
+                        <th>Đơn Giá</th>
                         <th>Số lượng</th>
+
+                        <th>Thành tiền</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,24 +90,24 @@
                         <td th:text="${hdct.chiTietSanPham.kichCo != null  ? hdct.chiTietSanPham.kichCo.ten : 'Không có'}"></td>
                         <td th:text="${hdct.donGia != null ? hdct.donGia : 'Không có'}"></td>
                         <td th:text="${hdct.soLuong != null ? hdct.soLuong : 'Không có'}"></td>
+                        <td th:text="${hdct.donGia != null &&hdct.soLuong != null ? hdct.donGia*hdct.soLuong : 'Không có'}"></td>
                     </tr>
                     </tbody>
                 </table>
 
                 <!-- Hiển thị tổng tiền -->
                 <div class="text-end mt-3">
-                    <h4>Tam Tinh: <span th:text="${hoaDon.tongTien}"></span> VND</h4>
+                    <h4>Tạm tính: <span th:text="${numberUtils.formatCurrency(hoaDon.tongTien)}"></span> VND</h4>
                     <br>
-                    <h4>Phi van chuyen: <span >50000</span> VND</h4>
+                    <h4>Phí vận chuyển: <span >50,000</span> VND</h4>
                     <br>
-                    <h4>Tổng tiền: <span th:text="${(hoaDon.tongTien)-50000}"></span> VND</h4>
-
+                    <h4>Tổng tiền: <span th:text="${numberUtils.formatCurrency((hoaDon.tongTien)+50000)}"></span> VND</h4>
 
                 </div>
 
                 <!-- Form nhập thông tin thanh toán -->
                 <div class="mt-4">
-                    <h4>Thông tin chi tiet</h4>
+                    <h4>Thông tin chi tiết</h4>
                     <div class="form-group">
                         <label for="fullName">Họ và tên</label>
                         <input type="text" id="fullName" name="tenNguoiNhan"

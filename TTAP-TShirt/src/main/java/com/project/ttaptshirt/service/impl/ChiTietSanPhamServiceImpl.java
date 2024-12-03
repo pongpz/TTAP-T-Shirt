@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
@@ -57,5 +58,7 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
     public List<ChiTietSanPham> getChiTietSanPhamBySanPhamAndMauSac(Long sanPhamId, Long mauSacId) {
         return chiTietSanPhamRepository.findBySanPhamAndAndMauSac(sanPhamId, mauSacId);
     }
-
+    public Optional<ChiTietSanPham> getsolgandgia(Long sanPhamId, Long mauSacId, Long kichCoId) {
+        return chiTietSanPhamRepository.findsoluong(sanPhamId, mauSacId,kichCoId);
+    }
 }

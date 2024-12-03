@@ -42,9 +42,13 @@
                 <select class="form-select" aria-label="Default select example" name="trangThai">
                     <option selected value="">Tất cả</option>
 <!--                    <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>-->
+                    <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>
                     <option value="1" th:selected="${trangThai==1}">Đã thanh toán</option>
                     <option value="2" th:selected="${trangThai==2}">Đã hủy</option>
                     <option value="3" th:selected="${trangThai==3}">Chờ xác nhận</option>
+                    <option value="3" th:selected="${trangThai==6}">Đã xác nhận</option>
+                    <option value="3" th:selected="${trangThai==7}">Chờ lấy hàng</option>
+                    <option value="3" th:selected="${trangThai==8}">Đang giao hàng</option>
                 </select>
             </div>
             <div class="mb-3 col-4">
@@ -107,6 +111,9 @@
                         <span th:if="${hd.trangThai == 1}" class="text-success">Đã thanh toán</span>
                         <span th:if="${hd.trangThai == 2}" class="text-danger">Đã hủy</span>
                         <span th:if="${hd.trangThai == 3}" class="text-primary">Chờ xác nhận</span>
+                        <span th:if="${hd.trangThai == 6}" class="text-primary">Đã xác nhận</span>
+                        <span th:if="${hd.trangThai == 7}" class="text-primary">Chờ lấy hàng</span>
+                        <span th:if="${hd.trangThai == 8}" class="text-primary">Đang giao hàng</span>
                     </td>
                     <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
                     <td>

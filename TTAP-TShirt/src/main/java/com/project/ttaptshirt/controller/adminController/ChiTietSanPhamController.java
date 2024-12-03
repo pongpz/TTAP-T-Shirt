@@ -4,12 +4,14 @@ package com.project.ttaptshirt.controller.adminController;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.HinhAnh;
 import com.project.ttaptshirt.entity.KichCo;
+import com.project.ttaptshirt.entity.MaGiamGia;
 import com.project.ttaptshirt.entity.MauSac;
 import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.repository.ChatLieuRepository;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.KieuDangRepository;
 import com.project.ttaptshirt.repository.NSXRepository;
+import com.project.ttaptshirt.repository.SanPhamRepository;
 import com.project.ttaptshirt.repository.ThuongHieuRepository;
 import com.project.ttaptshirt.service.ChiTietSanPhamService;
 //import com.project.ttaptshirt.service.HinhAnhService;
@@ -17,13 +19,16 @@ import com.project.ttaptshirt.service.KichCoService;
 import com.project.ttaptshirt.service.MauSacService;
 import com.project.ttaptshirt.service.SanPhamService;
 import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +55,8 @@ public class ChiTietSanPhamController {
     ThuongHieuRepository thuongHieuRepository;
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
-
+    @Autowired
+    SanPhamRepository sanPhamRepository;
     @Autowired
     ChiTietSanPhamServiceImpl chiTietSanPhamServiceImpl;
 //    @Autowired
@@ -102,6 +108,7 @@ public class ChiTietSanPhamController {
         return "admin/sanpham/them-chi-tiet-san-pham";
     }
 
+    @Transactional
     @PostMapping("/add")
     public String createNewCTSP(
             @RequestParam("idSanPham") Long idSanPham,
@@ -113,8 +120,7 @@ public class ChiTietSanPhamController {
             return "redirect:/admin/chi-tiet-san-pham/" + idSanPham;
         }
 
-        SanPham sanPham = new SanPham();
-        sanPham.setId(idSanPham);
+        SanPham sanPham = sanPhamRepository.getReferenceById(idSanPham);
         List<String> duplicateWarnings = new ArrayList<>();
 
         for (String variant : selectedVariants) {
@@ -140,7 +146,7 @@ public class ChiTietSanPhamController {
                 continue;
             }
 
-
+//            System.out.println(sanPham.getTrangThai());
             ChiTietSanPham newChiTietSanPham = new ChiTietSanPham();
             newChiTietSanPham.setSanPham(sanPham);
             newChiTietSanPham.setTrangThai(sanPham.getTrangThai());
@@ -268,7 +274,20 @@ public class ChiTietSanPhamController {
             redirectAttributes.addFlashAttribute("updateSuccess", true);
             // Redirect đến trang chi tiết sản phẩm
             return "redirect:/admin/chi-tiet-san-pham/{id}";
+    }
 
+    @Scheduled(fixedRate = 1000)
+    public void ChangeStatus(){
+        List<ChiTietSanPham> ls = chiTietSanPhamRepository.getSPCTHetHan();
+        if (ls.size()>0){
+            for (int i = 0 ; i < ls.size() ; i ++){
+                ChiTietSanPham ctsp = new ChiTietSanPham();
+                ctsp = ls.get(i);
+                ctsp.setTrangThai(1);
+                ctsp.setId(ls.get(i).getId());
+                chiTietSanPhamRepository.save(ctsp);
+            }
+        }
     }
 
 }

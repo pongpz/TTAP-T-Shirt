@@ -189,8 +189,7 @@ public class GioHangService {
     }
 
     @Transactional
-    public HoaDon checkoutCart(User user, List<Long> selectedProductIds,
-                               String fullName, String phoneNumber, String address) {
+    public HoaDon checkoutCart(User user, List<Long> selectedProductIds,String diaChi) {
         // Lấy giỏ hàng của người dùng
         GioHang cart = getOrCreateCart(user);
 
@@ -204,9 +203,9 @@ public class GioHangService {
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
         hoaDon.setKhachHang(user.getKhachHang());
         hoaDon.setNgayTao(LocalDateTime.now());
-        hoaDon.setTenNguoiNhan(fullName);
-        hoaDon.setSdtNguoiNhan(phoneNumber);
-        hoaDon.setDiaChiGiaoHang(address);
+        hoaDon.setTenNguoiNhan(user.getHoTen());
+        hoaDon.setSdtNguoiNhan(user.getSoDienthoai());
+        hoaDon.setDiaChiGiaoHang(diaChi);
         hoaDon.setLoaiDon(0);
         hoaDon.setTrangThai(3); // Đặt trạng thái hóa đơn là chờ xử lý
         hoaDonRepository.save(hoaDon);
@@ -237,6 +236,8 @@ public class GioHangService {
                 .mapToDouble(item -> item.getDonGia() * item.getSoLuong())
                 .sum();
         hoaDon.setTongTien(totalAmount);
+        hoaDon.setTienThu(totalAmount);
+        // Tìm hiểu chức năng check nếu có khuyến mại => tiền thu = tổng tiền - tiền giảm(nhớ save cả tiền giảm vào db)
         hoaDonRepository.save(hoaDon);
 
         // Xóa các sản phẩm đã chọn khỏi giỏ hàng

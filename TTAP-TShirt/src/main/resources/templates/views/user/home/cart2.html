@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8" />
     <title>TTAP T-SHIRT</title>
@@ -53,360 +53,363 @@
 <header th:replace="~{/fragment/header-customer :: header-customer}"></header>
 <div id="toast-root"></div>
 <section>
-    <div class="container">
-        <h3 class="text-center">Giỏ hàng của bạn</h3>
+    <div class="cart-content-2021">
+        <div class="cart-content-2021-left">
+            <div class="container my-4">
+                <form th:action="@{/TTAP/cart/checkout}" method="post" onsubmit="return validateCartSelection()" >
 
-        <!-- Hiển thị giỏ hàng -->
-        <div class="table-responsive" th:if="${cart.items != null and !cart.items.isEmpty()}">
-            <form th:action="@{/TTAP/cart/checkout}" method="POST" id="cartForm">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-primary">
-                    <tr>
-                        <th>
-                            <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
-                        </th>
-                        <th>#</th>
-<!--                        <th>Ảnh</th>-->
-                        <th>Tên sản phẩm</th>
-                        <th>Kich Co</th>
-                        <th>Mau Sac</th>
-                        <th>Giá</th>
-                        <th>Số lượng</th>
-                        <th>Thành tiền</th>
-                        <th>Hành động</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="item, iterStat : ${cart.items}">
-                        <td>
-                            <input type="checkbox" name="selectedProductIds" th:value="${item.id}"
-                                   class="product-checkbox" onchange="calculateTotal()">
-                        </td>
-                        <td th:text="${iterStat.index + 1}"></td>
-<!--                        <td>-->
-<!--                            <div th:each="hinhAnh : ${item.chiTietSanPham.sanPham.hinhAnhList}">-->
-<!--                                <img th:src="${cart2 =! null?:'/path/to/default/image.jpg'}" alt="Ảnh sản phẩm" style="max-width: 100px; height: 120px;">-->
-<!--                            </div>-->
-<!--                        </td>-->
-                        <td th:text="${item.chiTietSanPham.sanPham.ten}"></td>
-                        <td th:text="${item.chiTietSanPham.mauSac.ten}"></td>
-                        <td th:text="${item.chiTietSanPham.kichCo.ten}"></td>
-                        <td th:text="${numberUtils.formatCurrency(item.gia)}"></td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                            <button type="button" class="btn btn-light btn-sm"
-                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')">-</button>
-                            <input type="number" name="quantity" th:id="'quantityInput_' + ${item.id}" th:value="${item.soLuong}" min="1" max=""
-                                   style="width: 60px; text-align: center;" readonly>
-                            <button type="button" class="btn btn-light btn-sm"
-                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')">+</button>
+                    <div class="card mb-4">
+                        <div class="card-header d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt me-2" viewBox="0 0 16 16">
+                                <path d="M12.166 8.94c0 1.126-2.614 4.385-3.675 5.69a.866.866 0 0 1-1.312 0C6.112 13.325 3.5 10.066 3.5 8.94 3.5 6.614 5.22 5 8 5s4.5 1.614 4.5 3.94zm-.966-.94c0-1.29-1.267-2.4-3.2-2.4s-3.2 1.11-3.2 2.4c0 .844.9 2.32 3.2 4.792 2.3-2.472 3.2-3.948 3.2-4.792z"/>
+                                <path d="M8 8.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                            </svg>
+                            <h5 class="mb-0">Địa chỉ nhận hàng</h5>
                         </div>
-                        </td>
-                        <td th:id="'totalPrice_' + ${item.id}" th:text="${numberUtils.formatCurrency(item.gia * item.soLuong)}"></td>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div th:if="${selectedAddress!=null}" class="col-md-10">
+                                    <p class="fw-bold mb-1" th:text="${userLogged.hoTen}"></p>
+                                    <p class="fw-bold mb-1" th:text="${userLogged.soDienthoai}"></p>
+                                    <div th:if="${selectedAddress == null }">
+                                        <p>Chưa có địa chỉ nào. Hãy thêm địa chỉ mới.</p>
+                                    </div>
+                                    <div th:if="${selectedAddress != null}">
+                                        <p class="mb-1" th:text="${selectedAddress.soNha} + ' ' + ${selectedAddress.tenDuong}
+                                + ', ' + ${selectedAddress.tenQuanhuyen} + ', ' + ${selectedAddress.tenThanhpho}"></p>
+                                        <input type="hidden" name="diaChi" th:value="${selectedAddress.soNha} + ' '
+                                + ${selectedAddress.tenDuong} + ', ' + ${selectedAddress.tenQuanhuyen} + ', ' + ${selectedAddress.tenThanhpho}">
+                                    </div>
 
-                        <td>
-                            <a th:href="@{/TTAP/cart/remove(productId=${item.id})}" class="btn btn-danger btn-sm"
-                               onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')">Xóa</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
 
-                <!-- Hiển thị tổng tiền -->
-                <div class="text-end mt-3">
-                    <h3>Tổng tiền: <span id="totalAmount">0</span></h3>
-                </div>
-
-                <!-- Form nhập thông tin thanh toán -->
-                <div class="mt-4">
-                    <h4>Thông tin đơn hàng</h4>
-
-                    <div class="form-group">
-                        <label for="fullName">Họ và tên</label>
-                        <input type="text" id="fullName" name="fullName" class="form-control" required />
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#selectAddressModal">Thay đổi</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="phoneNumber">Số điện thoại</label>
-                        <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" required />
+                    <div class="row">
+                        <!-- Cart Items Section -->
+                        <div class="col-md-9">
+                            <div class="d-flex border-bottom pb-4">
+                                <div class="col-md-4 d-flex align-items-center">
+                                    <input type="checkbox" class="form-check-input me-2" id="selectAll" onchange="toggleSelectAll(this)">
+                                    <span>Tất cả (sản phẩm)</span>
+                                </div>
+                                <div class="col-md-2 text-center fw-bold">Đơn giá</div>
+                                <div class="col-md-2 text-center fw-bold">Số lượng</div>
+                                <div class="col-md-2 text-center fw-bold">Thành tiền</div>
+
+                            </div>
+
+                            <div class="mt-3">
+                                <!-- Single Item Row -->
+                                <div class="row align-items-center border-bottom py-2 js-item-row"
+                                     th:each="item, iterStat : ${cart.items}">
+                                    <!-- Checkbox và Hình ảnh sản phẩm -->
+                                    <div class="col-6 col-md-4 d-flex align-items-center px-1">
+                                        <input type="checkbox"
+                                               name="selectedProductIds" th:value="${item.id}"
+                                               class="product-checkbox" onchange="calculateTotal()">
+                                        <img src="https://hanoicomputercdn.com/media/product/250_84332_pc_dell_inspiron_3030s_sffi33003w1_8g_512g_1a.jpg"
+                                             alt="Product Image"
+                                             class="img-thumbnail me-3"
+                                             style="width: 80px; height: 80px; object-fit: contain;">
+                                        <div>
+                                            <p class="text-dark fw-bold" th:text="${item.chiTietSanPham.sanPham.ten}"></p>
+                                            <p class="small text-muted mb-1">Mã SP: <b th:text="${item.chiTietSanPham.sanPham.ma}"></b></p>
+                                            <p class="small text-success" th:text="${item.chiTietSanPham.mauSac.ten}"></p>
+                                            <p class="small text-success" th:text="${item.chiTietSanPham.kichCo.ten}"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Giá sản phẩm -->
+                                    <div class="col-4 col-md-2 text-center px-1">
+                                      <span class="fw-normal product-price"
+                                            th:id="'originPrice_' + ${item.id}"
+                                            th:text="${numberUtils.formatCurrency(item.gia)}"
+                                            th:attr="data-price=${item.gia}"></span>
+                                    </div>
+
+                                    <!-- Số lượng sản phẩm -->
+                                    <div class="col-4 col-md-2 text-center px-1">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-quantity"
+                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')">-</button>
+                                            <input class="form-control form-control-sm text-center mx-2 quantity-input"
+                                                   style="width: 50px;"
+                                                   type="number" name="quantity"
+                                                   th:id="'quantityInput_' + ${item.id}"
+                                                   th:value="${item.soLuong}"
+                                                   th:attr="data-id=${item.id}" min="1" max="20">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-quantity"
+                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')">+</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Thành tiền -->
+                                    <div class="col-4 col-md-2 text-center px-1">
+                                 <span class="fw-bold text-danger product-amount"
+                                       th:id="'totalPrice_' + ${item.id}"
+                                       th:attr="data-total=${item.gia * item.soLuong}"
+                                       th:text="${numberUtils.formatCurrency(item.gia * item.soLuong)}"></span>
+                                    </div>
+
+                                    <!-- Nút xóa sản phẩm -->
+                                    <div class="col-4 col-md-2 text-center px-1">
+                                        <a th:href="@{/TTAP/cart/remove(productId=${item.id})}" class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash"></i> Xóa
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- End Single Item Row -->
+                            </div>
+                        </div>
+                        <!-- Cart Summary Section -->
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded">
+                                <div class="border-top pt-3">
+                                    <p class="d-flex justify-content-between mb-2">
+                                        <span>Tạm tính</span>
+                                        <span class="total-cart-price" id="totalAmount">0₫</span>
+                                    </p>
+                                    <p class="d-flex justify-content-between fw-bold mb-2">
+                                        <span>Thành tiền</span>
+                                        <span class="text-danger total-cart-payment"
+                                              id="total-cart-payment">0₫</span>
+                                    </p>
+                                    <small class="text-muted">(Đã bao gồm VAT nếu có)</small>
+                                </div>
+                                <button class="btn btn-success w-100 mt-3" type="submit">Tiến hành đặt hàng</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="address">Địa chỉ</label>
-                        <input type="text" id="address" name="address" class="form-control" required />
-                    </div>
-
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Đặt hàng</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Nếu giỏ hàng trống -->
-        <div class="alert alert-danger text-center" role="alert" th:if="${cart.items == null or cart.items.isEmpty()}">
-            <p>Giỏ hàng của bạn đang trống.</p>
+                </form>
+                <!-- Địa chỉ nhận hàng -->
         </div>
     </div>
+    </div>
+    <div class="alert alert-danger text-center" role="alert" th:if="${cart.items == null or cart.items.isEmpty()}">
+                    <p>Giỏ hàng của bạn đang trống.</p>
+    </div>
+    <div class="modal fade" id="selectAddressModal" tabindex="-1" aria-labelledby="selectAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="selectAddressModalLabel">Chọn Địa Chỉ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Kiểm tra danh sách địa chỉ -->
+                    <div th:if="${addresses != null && !addresses.isEmpty()}">
+                        <!-- Form chọn địa chỉ -->
+                        <form id="addressForm" th:action="@{/TTAP/cart/updateAddress}" method="post">
+                            <div th:each="address, iterStat : ${addresses}" class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="addressId"
+                                           th:id="'address' + ${iterStat.index}" th:value="${address.id}"
+                                           th:checked="${selectedAddress != null and selectedAddress.id == address.id}">
+                                    <label class="form-check-label" th:for="'address' + ${iterStat.index}"
+                                           th:text="${address.soNha} + ' , ' + ${address.tenDuong} + ' , ' + ${address.tenQuanhuyen} + ' , ' + ${address.tenThanhpho}"></label>
+                                </div>
+                            </div>
+                            <!-- Nút submit trong form -->
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">Chọn Địa Chỉ</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Thông báo nếu không có địa chỉ -->
+                    <div th:if="${addresses == null || addresses.isEmpty()}">
+                        <p>Chưa có địa chỉ nào. Hãy thêm địa chỉ mới.</p>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAddressModal">
+                        Thêm Địa Chỉ
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createAddressModal" tabindex="-1" aria-labelledby="createAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createAddressModalLabel">Tạo Địa Chỉ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form nhập địa chỉ -->
+                    <form th:action="@{/TTAP/user/address}" method="post" th:object="${address}">
+                        <div class="mb-3">
+                            <label for="soNha" class="form-label">Số nhà</label>
+                            <input type="text" class="form-control" id="soNha" th:field="*{soNha}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tenDuong" class="form-label">Tên đường</label>
+                            <input type="text" class="form-control" id="tenDuong" th:field="*{tenDuong}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tenQuanhuyen" class="form-label">Tên quận/huyện</label>
+                            <input type="text" class="form-control" id="tenQuanhuyen" th:field="*{tenQuanhuyen}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tenThanhpho" class="form-label">Tên thành phố</label>
+                            <input type="text" class="form-control" id="tenThanhpho" th:field="*{tenThanhpho}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="trangThai" class="form-label">Trạng thái</label>
+                            <input type="text" class="form-control" id="trangThai" th:field="*{trangThai}" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Tạo Địa Chỉ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>
-
-<!--<section class="h-100 gradient-custom">-->
-<!--    <form th:action="@{/TTAP/cart/checkout}" method="POST" id="cartForm">-->
-<!--        <div class="container py-5">-->
-<!--            <div class="row d-flex justify-content-center my-4">-->
-<!--                <div class="col-md-8">-->
-<!--                    <div class="card mb-4">-->
-<!--                        <div class="card-header py-2">-->
-<!--                            <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">Chọn tất cả-->
-<!--                        </div>-->
-<!--                        <div class="card-header py-3">-->
-<!--                            <h5 class="mb-0">Giỏ hàng của bạn</h5>-->
-<!--                        </div>-->
-<!--                        <div class="card-body">-->
-<!--                            &lt;!&ndash; Single item &ndash;&gt;-->
-<!--                            <div class="row" th:each="item, iterStat : ${cart.items}">-->
-<!--                                <div class="your-left-div">-->
-<!--                                    <input type="checkbox" name="selectedProductIds" th:value="${item.id}"-->
-<!--                                           class="product-checkbox" onchange="calculateTotal()">-->
-<!--                                </div>-->
-<!--                                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">-->
-<!--                                    &lt;!&ndash; Image &ndash;&gt;-->
-<!--                                    <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">-->
-<!--                                        <div th:each="hinhAnh : ${item.chiTietSanPham.sanPham.hinhAnhList}">-->
-<!--                                            <img th:src="${hinhAnh.path}" alt="Ảnh sản phẩm" style="max-width: 100px; height: 120px;">-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    &lt;!&ndash; Image &ndash;&gt;-->
-<!--                                </div>-->
-
-<!--                                <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">-->
-<!--                                    &lt;!&ndash; Data &ndash;&gt;-->
-<!--                                    <p><strong th:text="${item.chiTietSanPham.sanPham.ten}"></strong></p>-->
-<!--                                    <p>Màu sắc: <span th:text="${item.chiTietSanPham.mauSac.ten}"></span></p>-->
-<!--                                    <p>Kích cỡ: <span th:text="${item.chiTietSanPham.kichCo.ten}"></span></p>-->
-<!--                                    <p>Giá: <span th:text="${numberUtils.formatCurrency(item.gia)}"></span></p>-->
-<!--                                    <a th:href="@{/TTAP/cart/remove(productId=${item.id})}" class="btn btn-primary btn-sm me-1 mb-2"-->
-<!--                                       onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')"><i class="fas fa-trash"></i></a>-->
-<!--                                    &lt;!&ndash; Data &ndash;&gt;-->
-<!--                                </div>-->
-
-<!--                                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">-->
-<!--                                    &lt;!&ndash; Quantity &ndash;&gt;-->
-<!--                                    <div class="d-flex mb-4" style="max-width: 300px">-->
-<!--                                        <button type="button" class="btn btn-light btn-sm"-->
-<!--                                                th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')">-</button>-->
-<!--                                        <input type="number" name="quantity" th:id="'quantityInput_' + ${item.id}" th:value="${item.soLuong}" min="1"-->
-<!--                                               style="width: 60px; text-align: center;" readonly>-->
-<!--                                        <button type="button" class="btn btn-light btn-sm"-->
-<!--                                                th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')">+</button>-->
-<!--                                    </div>-->
-<!--                                    &lt;!&ndash; Quantity &ndash;&gt;-->
-
-<!--                                    &lt;!&ndash; Price &ndash;&gt;-->
-<!--                                    <p class="text-start text-md-center">-->
-<!--                                        <p><strong th:id="'totalPrice_' + ${item.id}" th:text="${numberUtils.formatCurrency(item.gia * item.soLuong)}"></strong></p>-->
-<!--                                    </p>-->
-<!--                                    &lt;!&ndash; Price &ndash;&gt;-->
-<!--                                </div>-->
-<!--                            </div>                        &lt;!&ndash; Single item &ndash;&gt;-->
-<!--                            <hr class="my-4" />-->
-
-<!--                            &lt;!&ndash; Single item &ndash;&gt;-->
-
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="col-md-4">-->
-<!--                    <div class="card mb-4">-->
-<!--                        <div class="card-header py-3">-->
-<!--                            <h5 class="mb-0"></h5>-->
-<!--                        </div>-->
-<!--                        <div class="card-body">-->
-<!--                            <ul class="list-group list-group-flush">-->
-<!--                                <li-->
-<!--                                        class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">-->
-<!--                                    <div>-->
-<!--                                        <strong>Tổng tiền</strong>-->
-
-<!--                                    </div>-->
-<!--                                    <span><strong id="totalAmount">0</strong></span>-->
-<!--                                </li>-->
-<!--                            </ul>-->
-
-<!--                            <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block">-->
-<!--                                Go to checkout-->
-<!--                            </button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </form>-->
-<!--    <div class="alert alert-danger text-center" role="alert" th:if="${cart.items == null or cart.items.isEmpty()}">-->
-<!--        <p>Giỏ hàng của bạn đang trống.</p>-->
-<!--    </div>-->
-<!--</section>-->
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Kiểm tra khi submit form giỏ hàng
-        document.getElementById('cartForm').addEventListener('submit', function (event) {
-            let checkboxes = document.querySelectorAll('.product-checkbox:checked');
-            if (checkboxes.length === 0) {
-                event.preventDefault(); // Ngăn việc submit form
-                alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
-            }
-        });
-    });
-
-    function calculateTotal1() {
-        let checkboxes = document.querySelectorAll('.product-checkbox');
-        let total = 0;
-
-        // Lọc những sản phẩm được chọn
-        let selectedProductIds = [];
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                selectedProductIds.push(checkbox.value);
-
-                // Xác định dòng chứa checkbox và lấy giá tiền
-                let row = checkbox.closest('tr');
-                let amountElement = row.querySelector('td:nth-child(8)');
-                if (amountElement) {
-                    let amountText = amountElement.textContent.replace(/[^\d,]/g, ''); // Loại bỏ ký tự không phải số hoặc dấu phẩy
-                    amountText = amountText.replace(/,/g, '.'); // Thay dấu phẩy (nếu có) thành dấu chấm (do parseFloat cần dấu chấm)
-                    let amount = parseFloat(amountText); // Chuyển chuỗi thành số
-                    if (!isNaN(amount)) {
-                        total += amount;
-                    }
-                }
-            }
-        });
-
-        // Cập nhật tổng tiền
-        document.getElementById('totalAmount').textContent = formatCurrency(total);
-
-        // Xử lý input hidden để lưu các sản phẩm đã chọn
-        let cartForm = document.getElementById('cartForm');
-        let inputSelectedProductIds = cartForm.querySelector('input[name="selectedProductIds"]');
-        if (!inputSelectedProductIds) {
-            inputSelectedProductIds = document.createElement('input');
-            inputSelectedProductIds.type = 'hidden';
-            inputSelectedProductIds.name = 'selectedProductIds';
-            cartForm.appendChild(inputSelectedProductIds);
-        }
-
-        // Cập nhật giá trị của input hidden
-        inputSelectedProductIds.value = selectedProductIds.join(',');
-    }
-
-    function calculateTotal() {
-        let checkboxes = document.querySelectorAll('.product-checkbox');
-        let total = 0;
-
-        // Lọc những sản phẩm được chọn
-        let selectedProductIds = [];
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                selectedProductIds.push(checkbox.value);
-
-                // Xác định dòng chứa checkbox và lấy giá tiền
-                let row = checkbox.closest('tr');
-                let amountElement = row.querySelector('td:nth-child(8)');
-                if (amountElement) {
-                    let amountText = amountElement.textContent.replace(/[^0-9,]+/g, ""); // Loại bỏ ký tự không phải số hoặc dấu phẩy
-                    amountText = amountText.replace(/,/g, '.'); // Thay dấu phẩy (nếu có) thành dấu chấm (do parseFloat cần dấu chấm)
-                    let amount = parseFloat(amountText); // Chuyển chuỗi thành số
-                    if (!isNaN(amount)) {
-                        total += amount;
-                    }
-                }
-            }
-        });
-
-        // Cập nhật tổng tiền
-        document.getElementById('totalAmount').textContent = formatCurrency(total);
-
-        // Xử lý input hidden để lưu các sản phẩm đã chọn
-        let cartForm = document.getElementById('cartForm');
-        let inputSelectedProductIds = cartForm.querySelector('input[name="selectedProductIds"]');
-        if (!inputSelectedProductIds) {
-            inputSelectedProductIds = document.createElement('input');
-            inputSelectedProductIds.type = 'hidden';
-            inputSelectedProductIds.name = 'selectedProductIds';
-            cartForm.appendChild(inputSelectedProductIds);
-        }
-
-        // Cập nhật giá trị của input hidden
-        inputSelectedProductIds.value = selectedProductIds.join(',');
-    }
-
-    function toggleSelectAll(selectAllCheckbox) {
+    function validateCartSelection() {
+        // Lấy danh sách các checkbox sản phẩm
         const checkboxes = document.querySelectorAll('.product-checkbox');
+        let isProductSelected = false;
+
+        // Kiểm tra xem có sản phẩm nào được chọn không
         checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                isProductSelected = true;
+            }
+        });
+
+        // Nếu không có sản phẩm nào được chọn, hiển thị thông báo lỗi
+        if (!isProductSelected) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để tiến hành đặt hàng.");
+            return false; // Ngăn chặn việc gửi form
+        }
+
+        const selectedAddress = document.querySelector('input[name="diaChi"]');
+        if (!selectedAddress || selectedAddress.value.trim() === "") {
+            alert("Vui lòng chọn hoặc nhập địa chỉ giao hàng.");
+            return false; // Ngăn chặn việc gửi form
+        }
+
+        return true; // Cho phép gửi form
+    }
+</script>
+<script>
+    // Khi modal "createAddressModal" đóng lại
+    const createAddressModal = document.getElementById('createAddressModal');
+    const selectAddressModal = new bootstrap.Modal(document.getElementById('selectAddressModal'));
+
+    createAddressModal.addEventListener('hidden.bs.modal', function () {
+        // Tự động mở lại modal "selectAddressModal"
+        selectAddressModal.show();
+    });
+</script>
+<script>
+    function toggleSelectAll(selectAllCheckbox) {
+        var checkboxes = document.querySelectorAll('.product-checkbox');
+        checkboxes.forEach(function(checkbox) {
             checkbox.checked = selectAllCheckbox.checked;
         });
-        calculateTotal();
+        calculateTotal(); // Cập nhật tổng tiền mỗi khi thay đổi trạng thái của "Select All"
     }
+    function calculateTotal() {
+        const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+        let total = 0;
+        let discount = 0;
+        const selectedProductIds = [];
+
+        checkboxes.forEach(checkbox => {
+            const productRow = checkbox.closest('.js-item-row');
+            const priceElement = productRow.querySelector('.product-amount');
+
+            // Lấy giá trị từ data-total
+            const price = parseFloat(priceElement.getAttribute('data-total') || 0);
+
+            total += price;
+            selectedProductIds.push(checkbox.value);
+        });
+
+        // Cập nhật tổng tiền
+        const totalAmountElement = document.getElementById('totalAmount');
+        totalAmountElement.textContent = formatCurrency(total);
+
+        // Tính thành tiền (có thể bao gồm giảm giá)
+        const finalAmount = total;
+
+        // Cập nhật thành tiền
+        const totalPaymentElement = document.getElementById('total-cart-payment');
+        totalPaymentElement.textContent = formatCurrency(finalAmount);
+
+        // Hiển thị danh sách ID sản phẩm đã chọn (nếu cần thiết)
+        console.log("Selected Product IDs:", selectedProductIds.join(','));
+    }
+
+    // Lắng nghe sự kiện thay đổi checkbox
+    document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', calculateTotal);
+    });
 
     function updateQuantity(button, action) {
-        // Lấy productId từ thuộc tính data-id
-        const productId = button.getAttribute('data-id');
+        // Lấy ID sản phẩm và giá trị hiện tại của số lượng
+        const productId = $(button).data('id');
+        const quantityInput = $('#quantityInput_' + productId);
+        let currentQuantity = parseInt(quantityInput.val());
 
-        // Lấy input số lượng
-        const quantityInput = document.getElementById('quantityInput_' + productId);
-        let currentQuantity = parseInt(quantityInput.value);
-
-        // Tăng/giảm số lượng
-        if (action === 'plus') {
-            currentQuantity++;
-        } else if (action === 'minus' && currentQuantity > 1) {
+        // Cập nhật số lượng sản phẩm
+        if (action === 'minus' && currentQuantity > 1) {
             currentQuantity--;
-        } else {
-            alert("Số lượng không hợp lệ!");
-            return;
+        } else if (action === 'plus') {
+            currentQuantity++;
         }
 
-        // Cập nhật UI trước khi gửi yêu cầu
-        quantityInput.value = currentQuantity;
+        // Cập nhật lại giá trị số lượng trong input
+        quantityInput.val(currentQuantity);
 
-        const pricePerItem = parseFloat(button.closest('tr').querySelector('td:nth-child(6)').innerText.replace(/[^0-9.-]+/g, ""));
-        const totalPriceElement = document.getElementById('totalPrice_' + productId);
+        // Lấy giá trị đơn giá từ data-price
+        const unitPrice = parseFloat($('#originPrice_' + productId).data('price') || 0);
 
-        // Cập nhật giá tiền cho sản phẩm trong giỏ hàng
-        totalPriceElement.innerText = formatCurrency(pricePerItem * currentQuantity);
+        // Tính thành tiền mới
+        const newTotal = unitPrice * currentQuantity;
 
-        // Gửi yêu cầu đến server
-        fetch('/TTAP/cart/updateProductQuantity', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+        // Cập nhật lại giá trị thành tiền và data-total
+        const totalPriceElement = $('#totalPrice_' + productId);
+        totalPriceElement.text(formatCurrency(newTotal));
+        totalPriceElement.attr('data-total', newTotal); // Đảm bảo cập nhật thuộc tính data-total
+
+        // Gửi yêu cầu AJAX để lưu thay đổi vào cơ sở dữ liệu
+        $.ajax({
+            url: '/TTAP/cart/updateProductQuantity',
+            type: 'POST',
+            data: {
+                productId: productId,
+                newQuantity: currentQuantity
             },
-            body: `productId=${productId}&newQuantity=${currentQuantity}`
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                    // Reset số lượng nếu có lỗi
-                    quantityInput.value = parseInt(quantityInput.getAttribute('value'));
-                } else {
-                    // Cập nhật số lượng mới trong giao diện
-                    quantityInput.value = currentQuantity;
-                    quantityInput.setAttribute('value', currentQuantity);
-                    // if (data.totalPrice) {
-                    //     const totalPriceElement = document.getElementById('totalPrice_' + productId);
-                    //     totalPriceElement.innerText = numberUtils.formatCurrency(data.totalPrice);
-                    // }
-                }
-            })
-            .catch(error => {
-                alert("Có lỗi xảy ra: " + error.message);
-                // Reset số lượng nếu có lỗi không mong muốn
-                quantityInput.value = parseInt(quantityInput.getAttribute('value'));
-            });
-        calculateTotal();
+            success: function(response) {
+                console.log('Cập nhật số lượng thành công:', response);
+                // Gọi lại hàm calculateTotal() để tính tổng sau khi cập nhật thành công
+                calculateTotal();
+            },
+            error: function(xhr, status, error) {
+                const errorMessage = xhr.responseJSON ? xhr.responseJSON.error : 'Có lỗi xảy ra';
+                alert(errorMessage);
+            }
+        });
     }
+
     function formatCurrency(value) {
         // Sử dụng Intl.NumberFormat để định dạng theo kiểu Việt Nam
         const formatter = new Intl.NumberFormat('vi-VN', {
@@ -432,7 +435,17 @@ crossorigin="anonymous"></script>
     if (removemessage) {
         toastSuccess('Thành Công!', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
     }
-    /*]]>*/x
+    /*]]>*/
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    /* Check if the deleteSuccess attribute is present in the model */
+    var addressNullError = [[${addressNullError}]];
+    if (addressNullError) {
+        toastError('Thành Công !', 'Địa chỉ của bạn không hợp lệ!');
+    }
+    /*]]>*/
 </script>
 
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">

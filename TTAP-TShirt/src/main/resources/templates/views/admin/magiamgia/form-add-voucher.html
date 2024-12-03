@@ -23,38 +23,46 @@
             <a>&nbsp / &nbsp</a>
             <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Thêm mã giảm giá</a>
         </div>
-<form th:action="@{/admin/ma-giam-gia/add}" method="post">
-    <div class="mb-3">
+<form th:action="@{/admin/ma-giam-gia/add}" method="post" class="row d-flex">
+    <div class="mb-3 col-3">
         <label class="form-label">Tên giảm giá</label>
         <input type="text" class="form-control" name="ten" id="ten" th:value="${mgg.ten ?: ''}">
     </div>
+    <div class="col-1">
 
-    <div class="mb-3">
+    </div>
+    <div class="mb-3 col-3">
         <label class="form-label">Mã giảm giá</label>
         <div class="d-flex">
         <input type="text" class="form-control" name="ma" id="inputMa" th:value="${mgg.ma ?: ''}">
         <button onclick="generateSecureCode(event)" class="btn btn-outline-primary"><i class="bi bi-shuffle"></i></button>
         </div>
     </div>
+    <div class="col-1">
 
-    <div class="mb-3">
+    </div>
+    <div class="mb-3 col-3">
         <label class="form-label">Số lượng</label>
         <input type="number" class="form-control" name="soLuong" id="soLuong" th:value="${mgg.soLuong ?: ''}">
     </div>
+    <div class="col-1">
 
-    <div class="mb-3">
+    </div>
+    <div class="mb-3 col-3">
         <label class="form-label">Ngày bắt đầu</label>
         <input type="datetime-local" class="form-control" name="ngayBatDau" id="ngayBatDau" th:value="${mgg.ngayBatDau ?: ''}">
     </div>
+    <div class="col-1">
 
-    <div class="mb-3">
+    </div>
+    <div class="mb-3 col-3">
         <label class="form-label">Ngày kết thúc</label>
         <input type="datetime-local" class="form-control" name="ngayKetThuc" id="ngayKetThuc" th:value="${mgg.ngayKetThuc ?: ''}">
     </div>
+    <div class="col-1">
 
-    <div class=" d-flex">
-
-        <div class="mb-3 col-8">
+    </div>
+        <div class="mb-3 col-3">
             <label class="form-label">Giá trị giảm</label>
             <input type="number" class="form-control" name="giaTriGiam" id="giaTriGiam" th:value="${mgg.giaTriGiam ?: ''}"  onchange="checkGiaTriToiDa()">
         </div>
@@ -70,21 +78,26 @@
             </select>
         </div>
 
-    </div>
+    <div class="col-1">
 
-    <div class="mb-3">
+    </div>
+    <div class="mb-3 col-3">
         <label class="form-label">Giá trị đơn hàng tối thiểu</label>
         <div class="input-group mb-3">
             <input type="number" class="form-control" name="giaTriToiThieu" id="giaTriToiThieu" th:value="${mgg.giaTriToiThieu ?: ''}">
             <span class="input-group-text" id="basic-addon2">đ</span>
         </div>
     </div>
+    <div class="col-1">
 
-    <div class="mb-3">
+    </div>
+    <div class="mb-3 col-3">
+        <div id="giaTriToiDa">
         <label class="form-label">Giá trị giảm tối đa</label>
         <div class="input-group mb-3">
-            <input type="number" class="form-control" name="giaTriToiDa" id="giaTriToiDa" th:value="${mgg.giaTriToiDa ?: ''}">
+            <input type="number" class="form-control" name="giaTriToiDa" th:value="${mgg.giaTriToiDa ?: ''}">
             <span class="input-group-text" id="basic-addon">đ</span>
+        </div>
         </div>
     </div>
     <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${mgg.giaTriToiDa ?: ''}">
@@ -102,7 +115,7 @@
 <!--            Ngưng hoạt động-->
 <!--        </label>-->
 <!--    </div>-->
-    <button class="btn btn-primary">Thêm</button>
+    <button class="btn btn-primary col-3">Thêm</button>
     <h4 class="text-danger mt-3">[[${errors}]]</h4>
 </form>
     </div>
@@ -133,11 +146,11 @@
     let gttoida = document.getElementById('gttoida')
     function checkGiaTriToiDa(){
         if (hinhThuc.value === "true"){
-            giaTriToiDa.disabled = true
+            giaTriToiDa.hidden = true
             giaTriToiDa.value = giaTriGiam.value
             gttoida.value = giaTriToiDa.value
         }else {
-            giaTriToiDa.disabled = false
+            giaTriToiDa.hidden = false
         }
     }
     checkGiaTriToiDa()

@@ -87,12 +87,19 @@
 
         <div class="col-md-7">
             <h3 class="product-name" th:text="${sanPham.ten}"></h3>
-            <div>
+<!--            <div>-->
 
-                <span class="price" th:text="${numberUtils.formatCurrency(giaBan)}"
-                      style="font-size: 30px; font-weight: bold; color: red;"></span>
-                </div>
-
+<!--                <span class="price" th:text="${numberUtils.formatCurrency(giaBan)}"-->
+<!--                      style="font-size: 30px; font-weight: bold; color: red;"></span>-->
+<!--            </div>-->
+            <div class="mt-3">
+                <label><strong>Giá tiền:</strong></label>
+                <span id="productPrice" style="font-size: 30px; font-weight: bold; color: red;">0 VNĐ</span>
+            </div>
+                <div class="mt-3">
+                <label><strong>Số lượng:</strong></label>
+                <span id="productStock" style="font-size: 20px; font-weight: bold;">0</span>
+            </div>
                 <!-- Màu sắc -->
                 <div class="mt-3">
                     <label><strong>Màu sắc:</strong></label>
@@ -174,6 +181,49 @@
     </div>
 </div>
 
+<script>
+    function updateProductDetails() {
+        const colorId = document.getElementById("selectedColor").value;
+        const sizeId = document.getElementById("selectedSize").value;
+        const productId = document.querySelector("input[name='productId']").value;
+
+        // Kiểm tra người dùng đã chọn đầy đủ màu sắc và kích thước
+        if (!colorId || !sizeId) {
+            document.getElementById("productPrice").innerText = "0 VNĐ";
+            document.getElementById("productStock").innerText = "0";
+            return;
+        }
+
+        // Gọi API để lấy thông tin chi tiết sản phẩm
+        fetch(`/TTAP/product/${productId}/details?colorId=${colorId}&sizeId=${sizeId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Cập nhật thông tin giá và số lượng vào giao diện
+                document.getElementById("productPrice").innerText = `${data.giaBan.toLocaleString()} VNĐ`;
+                document.getElementById("productStock").innerText = data.soLuong;
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy thông tin chi tiết sản phẩm:', error);
+                document.getElementById("productPrice").innerText = "Không khả dụng";
+                document.getElementById("productStock").innerText = "Không khả dụng";
+            });
+    }
+
+    // Gọi updateProductDetails khi chọn màu sắc hoặc kích thước
+    document.querySelectorAll(".btn-outline-primary").forEach(button => {
+        button.addEventListener("click", updateProductDetails);
+    });
+
+    document.querySelectorAll(".btn-outline-secondary").forEach(button => {
+        button.addEventListener("click", updateProductDetails);
+    });
+
+</script>
 <script>
     function selectSize(button) {
         // Xóa trạng thái chọn trước đó
