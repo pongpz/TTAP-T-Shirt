@@ -88,4 +88,11 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     List<HoaDon> findHoaDonsByYear(@Param("year") int year);
 
 
+    @Query("SELECT MONTH(h.ngayThanhToan) AS thang, YEAR(h.ngayThanhToan) AS nam, SUM(h.tongTien) AS tongDoanhThu " +
+            "FROM HoaDon h " +
+            "WHERE h.trangThai = 1 AND h.ngayThanhToan IS NOT NULL " +
+            "GROUP BY YEAR(h.ngayThanhToan), MONTH(h.ngayThanhToan) " +
+            "ORDER BY nam ASC, thang ASC")
+    List<Object[]> thongKeDoanhThuTheoThangVaNam();
+
 }
