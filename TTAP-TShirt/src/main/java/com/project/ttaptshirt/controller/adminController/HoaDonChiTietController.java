@@ -54,14 +54,14 @@ public class HoaDonChiTietController {
     }
 
 
-//    @GetMapping("/admin/hoa-don-chi-tiet/hien-thi/online")
-//    public String hienThiOnline(@RequestParam Long id, Model model, @RequestParam(defaultValue = "0") Integer page){
-//        Pageable pageab = PageRequest.of(page, 5);
-//        NumberUtils numberUtils = new NumberUtils();
-//        model.addAttribute("numberUtils",numberUtils);
-//        model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
-//        model.addAttribute("listHD", hdr.getAllHD(pageab));
-//        model.addAttribute("page",page);
-//        return "admin/hoadon/hoa-don-online";
-//    }
+    @GetMapping("/admin/hoa-don-chi-tiet/hien-thi/online")
+    public String hienThiOnline(@RequestParam Long id, Model model, @RequestParam(defaultValue = "0") Integer page){
+        Pageable pageab = PageRequest.of(page, 5);
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
+        model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
+        model.addAttribute("listHD", hdr.getAllHD(pageab));
+        model.addAttribute("page",page);
+        return "admin/hoadon/hoa-don-online";
+    }
 }
