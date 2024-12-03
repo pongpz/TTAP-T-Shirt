@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.adminController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
@@ -28,64 +29,80 @@ public class ThongKeController {
     private HoaDonChiTietRepository hoaDonChiTietRepository;
 
     @GetMapping
-    public String getThongKe(Model model,@RequestParam(name = "month", defaultValue = "#{T(java.time.LocalDate).now().monthValue}") int month,
+    public String getThongKe(Model model,
+                             @RequestParam(name = "month", defaultValue = "#{T(java.time.LocalDate).now().monthValue}") int month,
                              @RequestParam(name = "year", defaultValue = "#{T(java.time.LocalDate).now().year}") int year) {
 
-        double tongTienHomNay;
-        tongTienHomNay = thongKeService.tongTienHomNay();
+        // Tổng thu nhập hôm nay
+        double tongTienHomNay = thongKeService.tongTienHomNay();
         model.addAttribute("tongTienHomNay", tongTienHomNay);
 
+        // Thu nhập theo tháng
         double tienTheoThang = thongKeService.tinhThuNhapTheoThang(month, year);
         model.addAttribute("tienTheoThang", tienTheoThang);
 
-        Double tienTheoNam = thongKeService.tinhThuNhapTheoNam(year);
+        // Thu nhập theo năm
+        double tienTheoNam = thongKeService.tinhThuNhapTheoNam(year);
         model.addAttribute("tienTheoNam", tienTheoNam);
 
+        // Thêm NumberUtils vào model
         NumberUtils numberUtils = new NumberUtils();
-
         model.addAttribute("numberUtils", numberUtils);
 
-
-        return "/admin/thongke/thong-ke";
-    }
-
-    @GetMapping("/bao-cao-doanh-thu")
-    public String getDoanhThu(Model model) {
         // Lấy tất cả hóa đơn
         List<HoaDon> hoaDons = hoaDonRepository.findAll();
 
-        // Tạo Map để chứa doanh thu theo tháng
-        Map<String, Double> doanhThuTheoThang = new HashMap<>();
+        // Tạo Map để nhóm doanh thu theo tháng
+        Map<Integer, Double> doanhThuTheoThang = new HashMap<>();
 
-        // Lặp qua các hóa đơn để tính doanh thu và nhóm theo tháng
+        // Lặp qua từng hóa đơn
         for (HoaDon hoaDon : hoaDons) {
-            // Lấy tháng từ ngày thanh toán
-            String thang = hoaDon.getNgayThanhToan() != null
-                    ? hoaDon.getNgayThanhToan().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())
-                    : "Chưa thanh toán";
+            // Kiểm tra ngày thanh toán
+            if (hoaDon.getNgayThanhToan() != null) {
+                int monthValue = hoaDon.getNgayThanhToan().getMonthValue(); // Lấy tháng (1-12)
 
-            // Lấy chi tiết hóa đơn
-            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
+                // Lấy chi tiết hóa đơn
+                List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
 
-            // Tính doanh thu cho hóa đơn này
-            double doanhThu = hoaDonChiTiets.stream()
-                    .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong()) // Tính doanh thu từng chi tiết hóa đơn
-                    .sum();
+                // Tính tổng doanh thu của hóa đơn
+                double doanhThu = hoaDonChiTiets.stream()
+                        .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
+                        .sum();
 
-            // Cộng doanh thu vào map theo tháng
-            doanhThuTheoThang.put(thang, doanhThuTheoThang.getOrDefault(thang, 0.0) + doanhThu);
+                // Cộng doanh thu vào Map
+                doanhThuTheoThang.put(monthValue, doanhThuTheoThang.getOrDefault(monthValue, 0.0) + doanhThu);
+            }
         }
 
-        // Tách keys và values từ Map
-        List<String> months = new ArrayList<>(doanhThuTheoThang.keySet());
+        // Tách keys và values từ Map và sắp xếp theo tháng
+        List<Integer> months = new ArrayList<>(doanhThuTheoThang.keySet());
         List<Double> revenues = new ArrayList<>(doanhThuTheoThang.values());
 
-        // Truyền danh sách keys và values vào model
-        model.addAttribute("months", months);
-        model.addAttribute("revenues", revenues);
+        // Sắp xếp theo thứ tự tháng
+        months.sort(Comparator.naturalOrder());  // Sắp xếp tháng từ 1 đến 12
 
-        return "admin/thongke/thong-ke"; // Tên view của bạn
+        // Sắp xếp revenues theo thứ tự tháng
+        List<Double> sortedRevenues = new ArrayList<>();
+        for (int monthValue : months) {
+            sortedRevenues.add(doanhThuTheoThang.get(monthValue));
+        }
+
+        // Chuyển đổi sang JSON
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            model.addAttribute("months", mapper.writeValueAsString(months));
+            model.addAttribute("revenues", mapper.writeValueAsString(sortedRevenues));
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("months", "[]");
+            model.addAttribute("revenues", "[]");
+        }
+
+        // Trả về view
+        return "/admin/thongke/thong-ke";
     }
+
+
 
 
 }

@@ -22,10 +22,16 @@
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
+            <ul>
+                <li th:each="month : ${months}" th:text="${month}">Month</li>
+            </ul>
+            <ul>
+                <li th:each="revenue : ${revenues}" th:text="${revenue}">Revenue</li>
+            </ul>
+
+
             <!-- Main Content -->
             <div id="content">
-
-
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -108,45 +114,46 @@
                     <!-- Thêm thư viện Chart.js -->
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-                    <script>
-                        // Dữ liệu labels (tháng) và data (doanh thu) từ server
-                        const labels = [[${months}]]; // Các tháng
-                        const data = [[${revenues}]]; // Doanh thu theo tháng
+                    <script th:inline="javascript">
+                        // Lấy dữ liệu từ Thymeleaf
+                        const labels = JSON.parse(/*[[${months}]]*/ '[]'); // JSON parse từ chuỗi months
+                        const data = JSON.parse(/*[[${revenues}]]*/ '[]'); // JSON parse từ chuỗi revenues
 
                         // Hiển thị console kiểm tra dữ liệu
-                        console.log("Labels:", labels);
-                        console.log("Data:", data);
+                        console.log("Months:", labels);
+                        console.log("Revenues:", data);
 
-                        // Ví dụ sử dụng Chart.js để vẽ biểu đồ
-                        const ctx = document.getElementById('myChart').getContext('2d');
+                        // Vẽ biểu đồ đường (line chart)
+                        const ctx = document.getElementById('bieuDoDoanhThu').getContext('2d');
                         new Chart(ctx, {
-                            type: 'bar', // Hoặc 'line' tùy chọn
+                            type: 'line',
                             data: {
                                 labels: labels,
                                 datasets: [{
                                     label: 'Doanh thu theo tháng',
                                     data: data,
-                                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                                    borderColor: 'rgba(54, 162, 235, 1)',
-                                    borderWidth: 1
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    tension: 0.4, // Làm mượt đường biểu đồ
+                                    fill: true,
+                                    borderWidth: 2
                                 }]
                             },
                             options: {
                                 responsive: true,
                                 scales: {
                                     y: {
-                                        beginAtZero: true
+                                        beginAtZero: true,
+                                        ticks: {
+                                            callback: function(value) {
+                                                return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                            }
+                                        }
                                     }
                                 }
                             }
                         });
                     </script>
-
-
-
-
-
-
 
 
                 </div>

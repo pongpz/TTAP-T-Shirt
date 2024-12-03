@@ -106,30 +106,4 @@ public class ThongKeService {
         return totalIncome;
     }
 
-
-    public List<Double> tinhThuNhapTheoNam1(int year) {
-        List<Double> thuNhapThang = new ArrayList<>(Collections.nCopies(12, 0.0));  // Khởi tạo mảng thu nhập cho 12 tháng
-
-        List<HoaDon> hoaDons = hoaDonRepository.findHoaDonsByYear(year);  // Tìm các hóa đơn trong năm
-
-        for (HoaDon hoaDon : hoaDons) {
-            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
-
-            // Duyệt qua từng chi tiết hóa đơn
-            for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
-                int month = hoaDon.getNgayThanhToan().getMonthValue();  // Lấy tháng từ ngày thanh toán
-
-                // Cộng thu nhập vào đúng tháng
-                thuNhapThang.set(month - 1, thuNhapThang.get(month - 1) + chiTiet.getDonGia() * chiTiet.getSoLuong());
-            }
-        }
-
-        return thuNhapThang;  // Trả về danh sách thu nhập cho từng tháng
-    }
-
-    public List<Object[]> thongKeDoanhThuTheoThangVaNam() {
-        return hoaDonRepository.thongKeDoanhThuTheoThangVaNam();
-    }
-
-
 }
