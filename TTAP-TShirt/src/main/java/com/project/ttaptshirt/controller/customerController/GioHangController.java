@@ -80,16 +80,12 @@ public class GioHangController {
                 address = new DiaChi(); // Tạo đối tượng mới nếu không có
             }
             // Lấy địa chỉ đã chọn hoặc địa chỉ đầu tiên mặc định
-            DiaChi selectedAddress = null;
-            if (selectedAddressId != null) {
-                selectedAddress = addresses.stream()
-                        .filter(addr -> addr.getId().equals(selectedAddressId))
-                        .findFirst()
-                        .orElse(null);
-            }
-            if (selectedAddress == null && !addresses.isEmpty()) {
-                selectedAddress = addresses.get(0); // Mặc định là địa chỉ đầu tiên nếu chưa chọn
-            }
+            DiaChi selectedAddress = (selectedAddressId != null) ?
+                    addresses.stream()
+                            .filter(addr -> addr.getId().equals(selectedAddressId))
+                            .findFirst()
+                            .orElse(null)
+                    : (!addresses.isEmpty() ? addresses.get(0) : null);
             model.addAttribute("selectedAddress", selectedAddress);
             model.addAttribute("address", address);
 
