@@ -216,11 +216,12 @@ public class GioHangController {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
 
+
             try {
                 // Nếu danh sách sản phẩm được chọn trống hoặc null
                 if (selectedProductIdsStr == null || selectedProductIdsStr.trim().isEmpty()) {
                     redirectAttributes.addFlashAttribute("error", "Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
-                    return "redirect:/TTAP/cart /view"; // Quay lại trang giỏ hàng
+                    return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
                 }
                 List<Long> selectedProductIds = Arrays.stream(selectedProductIdsStr.split(","))
                         .map(Long::parseLong)

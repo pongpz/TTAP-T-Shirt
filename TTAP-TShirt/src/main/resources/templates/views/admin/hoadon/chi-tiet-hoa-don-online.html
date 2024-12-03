@@ -46,7 +46,7 @@
                         <i class="fas fa-exclamation"></i>
                     </div>
                     <p>Chờ xác nhận</p>
-                    <span style="font-size: 12px; color: gray;">29-04-2024 19:58:26</span>
+<!--                    <span style="font-size: 12px; color: gray;">29-04-2024 19:58:26</span>-->
                 </div>
 
                 <!-- Step 2: Đã xác nhận -->
@@ -57,7 +57,7 @@
                         <i class="fas fa-check"></i>
                     </div>
                     <p>Đã xác nhận</p>
-                    <span style="font-size: 12px; color: gray;">29-04-2024 20:01:28</span>
+<!--                    <span style="font-size: 12px; color: gray;">29-04-2024 20:01:28</span>-->
                 </div>
 
                 <!-- Step 3: Chờ giao hàng -->
@@ -68,7 +68,7 @@
                         <i class="fas fa-truck"></i>
                     </div>
                     <p>Chờ giao hàng</p>
-                    <span style="font-size: 12px; color: gray;">29-04-2024 20:01:51</span>
+<!--                    <span style="font-size: 12px; color: gray;">29-04-2024 20:01:51</span>-->
                 </div>
 
                 <!-- Step 4: Đang giao hàng -->
@@ -79,7 +79,7 @@
                         <i class="fas fa-shipping-fast"></i>
                     </div>
                     <p>Đang giao hàng</p>
-                    <span style="font-size: 12px; color: gray;">29-04-2024 20:02:09</span>
+<!--                    <span style="font-size: 12px; color: gray;">29-04-2024 20:02:09</span>-->
                 </div>
 
                 <!-- Step 5: Hoàn thành -->
@@ -90,7 +90,7 @@
                         <i class="fas fa-flag-checkered"></i>
                     </div>
                     <p>Hoàn thành</p>
-                    <span style="font-size: 12px; color: gray;">29-04-2024 20:02:27</span>
+<!--                    <span style="font-size: 12px; color: gray;">29-04-2024 20:02:27</span>-->
                 </div>
             </div>
         </div>
@@ -163,11 +163,12 @@
                 <tr style="background-color: #f1f1f1;">
                     <th style="padding: 10px; border: 1px solid #ddd;">Hình ảnh</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Tên sản phẩm</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Giá bán</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Mã sản phẩm</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Kiểu dáng</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Thương hiệu</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Màu Sắc</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Size</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Giá bán</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Số lượng mua</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Thành tiền</th>
                 </tr>
@@ -180,11 +181,12 @@
                              style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;"/>
                     </td>
                     <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.ten}">Áo thun fpt</td>
-                    <td style="padding: 10px; border: 1px solid #ddd; color: red;" th:text="${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan)}">300,000 đ</td>
                     <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.ma}">SP95226</td>
                     <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.kieuDang.ten}">Sành điệu</td>
                     <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.thuongHieu.ten}">Puma</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.mauSac.ten}">M</td>
                     <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.kichCo.ten}">M</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; color: red;" th:text="${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan)}">300,000 đ</td>
                     <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.soLuong}">4</td>
                     <td style="padding: 10px; border: 1px solid #ddd; color: red; text-align: right;"
                         th:text="${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan * hdct.soLuong)}">1,200,000 đ</td>

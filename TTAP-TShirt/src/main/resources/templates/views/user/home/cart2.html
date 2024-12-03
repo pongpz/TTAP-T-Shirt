@@ -271,6 +271,7 @@
             </div>
         </div>
     </div>
+
 </section>
 <script>
     function validateCartSelection() {
@@ -421,7 +422,17 @@ crossorigin="anonymous"></script>
     if (removemessage) {
         toastSuccess('Thành Công!', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
     }
-    /*]]>*/x
+    /*]]>*/
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    /* Check if the deleteSuccess attribute is present in the model */
+    var addressNullError = [[${addressNullError}]];
+    if (addressNullError) {
+        toastError('Thành Công !', 'Địa chỉ của bạn không hợp lệ!');
+    }
+    /*]]>*/
 </script>
 
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
