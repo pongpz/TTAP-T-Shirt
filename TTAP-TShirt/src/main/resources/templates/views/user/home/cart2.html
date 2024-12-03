@@ -56,7 +56,7 @@
     <div class="cart-content-2021">
         <div class="cart-content-2021-left">
             <div class="container my-4">
-                <form th:action="@{/TTAP/cart/checkout}" method="post" >
+                <form th:action="@{/TTAP/cart/checkout}" method="post" onsubmit="return validateCartSelection()" >
 
                     <div class="card mb-4">
                         <div class="card-header d-flex align-items-center">
@@ -272,6 +272,28 @@
         </div>
     </div>
 </section>
+<script>
+    function validateCartSelection() {
+        // Lấy danh sách các checkbox sản phẩm
+        const checkboxes = document.querySelectorAll('.product-checkbox');
+        let isProductSelected = false;
+
+        // Kiểm tra xem có sản phẩm nào được chọn không
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                isProductSelected = true;
+            }
+        });
+
+        // Nếu không có sản phẩm nào được chọn, hiển thị thông báo lỗi
+        if (!isProductSelected) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để tiến hành đặt hàng.");
+            return false; // Ngăn chặn việc gửi form
+        }
+
+        return true; // Cho phép gửi form
+    }
+</script>
 <script>
     // Khi modal "createAddressModal" đóng lại
     const createAddressModal = document.getElementById('createAddressModal');
