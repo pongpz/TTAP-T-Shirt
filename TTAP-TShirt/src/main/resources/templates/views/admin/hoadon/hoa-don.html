@@ -14,10 +14,10 @@
 <div class="d-flex">
 
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
-    <div class="d-flex">
-        <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Hoá đơn</a>
-    </div>
     <div class="main-content content flex-grow-1 p-4">
+        <div class="d-flex">
+            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Hoá đơn</a>
+        </div>
                     <form th:action="@{/admin/hoa-don/tim-kiem}" method="get" class="d-flex row">
                         <h5 class="text-center">Tìm kiếm/lọc</h5>
                         <div class="mb-3 col-4">
@@ -71,7 +71,7 @@
                         </div>
                     </form>
 <div class="">
-    <h1 class="text-center">Hóa đơn tại quầy</h1>
+    <h1 class="text-center">Hóa đơn</h1>
     <table class="table-sm table-hover">
         <thead>
         <tr>
@@ -81,6 +81,7 @@
             <th scope="col">Khách hàng</th>
             <th scope="col">SDT khách hàng</th>
             <th scope="col">Loại đơn</th>
+            <th scope="col">Phí vận chuyển</th>
             <th scope="col">Ngày thanh toán</th>
             <th scope="col">SĐT người nhận</th>
             <th scope="col">Tên người nhận</th>
@@ -102,6 +103,7 @@
             <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
                 th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
             </td>
+            <td th:text="${hd.tienShip != null ? numberUtils.formatCurrency(hd.tienShip) : 'Không có'}"></td>
             <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
             <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
             <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>

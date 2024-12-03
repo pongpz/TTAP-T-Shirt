@@ -94,11 +94,13 @@
 
                             </div>
                             <div class="mb-3 col-3">
+                                <div id="giaTriToiDa">
                                 <label class="form-label">Giá trị giảm tối đa</label>
                                 <div class="input-group mb-3">
-                                    <input type="number" class="form-control" name="giaTriToiDa" id="giaTriToiDa" th:value="${numberUtils.formatCurrency3(mgg.giaTriToiDa)}" onchange="checkGiaTriToiDa()">
+                                    <input type="number" class="form-control" name="giaTriToiDa" th:value="${numberUtils.formatCurrency3(mgg.giaTriToiDa)}" onchange="checkGiaTriToiDa()">
                                     <span class="input-group-text" id="basic-addon">đ</span>
                                 </div>
+                            </div>
                             </div>
                             <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${numberUtils.formatCurrency3(mgg.giaTriToiDa) ?: ''}">
                             <div class="col-1">
@@ -154,11 +156,11 @@
     let gttoida = document.getElementById('gttoida')
     function checkGiaTriToiDa(){
         if (hinhThuc.value === "true"){
-            giaTriToiDa.disabled = true
+            giaTriToiDa.hidden = true
             giaTriToiDa.value = giaTriGiam.value
             gttoida.value = giaTriToiDa.value
         }else {
-            giaTriToiDa.disabled = false
+            giaTriToiDa.hidden = false
         }
     }
     checkGiaTriToiDa()
