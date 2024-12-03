@@ -36,8 +36,7 @@ public class HoaDonChiTietController {
     @Autowired
     HoaDonChiTietService hoaDonChiTietService;
 
-    @Autowired
-    HoaDonLogService hoaDonLogService;
+
 
     @Transactional
     @GetMapping("/admin/hoa-don-chi-tiet/hien-thi")
@@ -54,8 +53,7 @@ public class HoaDonChiTietController {
         if (hdr.getReferenceById(id).getLoaiDon() == 1){
             return "admin/hoadon/hoa-don";
         }else {
-            List<HoaDonLog> listHoaDonLog = hoaDonLogService.getListHoaDonLogByIdHd(id);
-            model.addAttribute("listHoaDonLog",listHoaDonLog);
+
             return "admin/hoadon/chi-tiet-hoa-don-online";
         }
     }

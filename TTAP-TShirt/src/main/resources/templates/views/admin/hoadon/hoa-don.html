@@ -119,9 +119,10 @@
                 <span th:if="${hd.trangThai == 7}" class="text-primary">Chờ lấy hàng</span>
                 <span th:if="${hd.trangThai == 8}" class="text-primary">Đang giao hàng</span>
             </td>
-            <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
+            <td  th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
             <td>
-                <a th:href="@{/admin/hoa-don-chi-tiet/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
+                <a th:if="${hd.loaiDon==1}" th:href="@{/admin/hoa-don-chi-tiet/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
+                <a th:if="${hd.loaiDon==0}" th:href="@{/admin/hoa-don/chi-tiet-hoa-don-online/{id}(id=${hd.id})}" class="btn btn-info">Chi tiết</a>
             </td>
         </tr>
         </tbody>
