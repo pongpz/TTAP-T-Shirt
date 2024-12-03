@@ -66,16 +66,16 @@ public class HoaDonController {
 //        return "admin/hoadon/hoa-don-online";
 //    }
 
-//    @GetMapping("/chi-tiet-hoa-don-online/{idhd}")
-//    public String hienThiHDCTOnline(@PathVariable("idhd") Long idhd, Model model){
-//        HoaDon hoaDon = hoaDonService.findById(idhd);
-//        model.addAttribute("hoaDon",hoaDon);
-//        List<HoaDonChiTiet> listSPOrder = hoaDonChiTietService.getListHdctByIdHd(idhd);
-//        model.addAttribute("listSPOrder",listSPOrder);
-//        NumberUtils numberUtils = new NumberUtils();
-//        model.addAttribute("numberUtils",numberUtils);
-//        return "admin/hoadon/chi-tiet-hoa-don-online";
-//    }
+    @GetMapping("/chi-tiet-hoa-don-online/{idhd}")
+    public String hienThiHDCTOnline(@PathVariable("idhd") Long idhd, Model model){
+        HoaDon hoaDon = hoaDonService.findById(idhd);
+        model.addAttribute("hoaDon",hoaDon);
+        List<HoaDonChiTiet> listSPOrder = hoaDonChiTietService.getListHdctByIdHd(idhd);
+        model.addAttribute("listSPOrder",listSPOrder);
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils",numberUtils);
+        return "admin/hoadon/chi-tiet-hoa-don-online";
+    }
     @GetMapping("/xac-nhan-hoa-don/{idHD}")
     public String xacNhanHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes){
         hoaDonService.xacNhanHoaDon(idHD);
