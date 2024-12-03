@@ -9,6 +9,7 @@ import com.project.ttaptshirt.repository.GioHangRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.SanPhamRepository;
 import com.project.ttaptshirt.security.CustomUserDetail;
+import com.project.ttaptshirt.service.HoaDonService;
 import com.project.ttaptshirt.service.KichCoService;
 import com.project.ttaptshirt.service.MauSacService;
 import com.project.ttaptshirt.service.impl.CartService;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +60,9 @@ public class HomeCustomerController {
 
     @Autowired
     GioHangRepository repoDathang;
+
+    @Autowired
+    HoaDonService hoaDonService;
 
 //    @GetMapping("/trang-chu")
 //    public String home(HttpServletRequest request, Model model, Authentication authentication) {
@@ -172,6 +177,7 @@ public class HomeCustomerController {
         }
         return "user/home/sanphamdetail";
     }
+
 
 
     @GetMapping("/chinh-sach-van-chuyen")
