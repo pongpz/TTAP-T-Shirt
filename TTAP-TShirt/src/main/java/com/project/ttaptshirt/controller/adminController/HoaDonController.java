@@ -53,6 +53,7 @@ public class HoaDonController {
         return "admin/hoadon/hoa-don";
     }
 
+
 //    @GetMapping("/hien-thi/online")
 //    public String hienThiOnline(Model model, @RequestParam(defaultValue = "0") Integer page) {
 //        Pageable pageab = PageRequest.of(page, 5);
@@ -76,6 +77,7 @@ public class HoaDonController {
         model.addAttribute("numberUtils",numberUtils);
         return "admin/hoadon/chi-tiet-hoa-don-online";
     }
+
     @GetMapping("/xac-nhan-hoa-don/{idHD}")
     public String xacNhanHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes){
         hoaDonService.xacNhanHoaDon(idHD);
