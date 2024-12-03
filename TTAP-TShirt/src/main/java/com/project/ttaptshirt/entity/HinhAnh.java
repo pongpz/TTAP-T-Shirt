@@ -23,7 +23,7 @@ public class HinhAnh {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "ten")
+    @Column(name = "ten", columnDefinition = "NVARCHAR(255)")
     private String ma;
 
     @Column(name = "ten_url")
