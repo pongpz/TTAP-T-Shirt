@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.controller.customerController;
 
+import com.project.ttaptshirt.dto.ChiTietSanPhamDTO;
 import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.*;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -211,6 +213,23 @@ public class SanPhamCustomerController {
                 .collect(Collectors.toList());
 
         return sizes;
+    }
+
+    @GetMapping("/product/{productId}/details")
+    public ResponseEntity<ChiTietSanPhamDTO> getProductDetails(
+            @PathVariable Long productId,
+            @RequestParam Long colorId,
+            @RequestParam Long sizeId) {
+        Optional<ChiTietSanPham> chiTietSanPham = chiTietSanPhamServiceImpl.getsolgandgia(productId, colorId, sizeId);
+        if (chiTietSanPham.isPresent()) {
+            ChiTietSanPhamDTO dto = new ChiTietSanPhamDTO(
+                    chiTietSanPham.get().getGiaBan(),
+                    chiTietSanPham.get().getSoLuong()
+            );
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
