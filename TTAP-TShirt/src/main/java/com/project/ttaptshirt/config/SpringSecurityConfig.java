@@ -22,28 +22,20 @@ public class SpringSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((auth) -> auth
-//
-//                        .requestMatchers("/*").permitAll()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/TTAP/**").permitAll()
-//                        .anyRequest().permitAll()
-//                ).formLogin(login -> login.loginPage("/login").loginProcessingUrl("/login")
-//                        .usernameParameter("username").passwordParameter("password")
-//                        .successHandler(new CustomAuthenticationSuccessHandler())
-//                        .permitAll())
-//                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/TTAP/trang-chu"));
-//
-//
-//        return http.build();
-//    }
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeHttpRequests()
-                .anyRequest().permitAll(); // Cho phép truy cập tất cả các URL mà không cần đăng nhập
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((auth) -> auth
+
+                        .requestMatchers("/*").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/TTAP/**").permitAll()
+                        .anyRequest().permitAll()
+                ).formLogin(login -> login.loginPage("/login").loginProcessingUrl("/login")
+                        .usernameParameter("username").passwordParameter("password")
+                        .successHandler(new CustomAuthenticationSuccessHandler())
+                        .permitAll())
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/TTAP/trang-chu"));
+
 
         return http.build();
     }
