@@ -127,7 +127,9 @@ public class ThongKeService {
         return thuNhapThang;  // Trả về danh sách thu nhập cho từng tháng
     }
 
-
+    public List<Object[]> thongKeDoanhThuTheoThangVaNam() {
+        return hoaDonRepository.thongKeDoanhThuTheoThangVaNam();
+    }
 
 
 }
