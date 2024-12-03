@@ -49,7 +49,7 @@ public class GioHangController {
 
 
     @GetMapping("/add")
-    public String addItemToCart( @RequestParam Long productId, @RequestParam int quantity,
+    public String addItemToCart(@RequestParam Long productId, @RequestParam int quantity,
                                 RedirectAttributes redirectAttributes, Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
@@ -126,13 +126,13 @@ public class GioHangController {
     // Tạo đơn hàng từ giỏ hàng
     @GetMapping("/checkout")
     public String checkout(@RequestParam(value = "selectedProductIds", required = false)
-                               List<Long> selectedProductIds,Authentication authentication, RedirectAttributes redirectAttributes) {
+                           List<Long> selectedProductIds, Authentication authentication, RedirectAttributes redirectAttributes) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
             try {
                 List<CartItemDTO> selectedItems = getSelectedItemsFromCart(user, selectedProductIds);
-                GioHang order = gioHangService.createOrderFromCart(user,selectedItems); // Tạo đơn hàng từ giỏ hàng
+                GioHang order = gioHangService.createOrderFromCart(user, selectedItems); // Tạo đơn hàng từ giỏ hàng
                 redirectAttributes.addFlashAttribute("message", "Đơn hàng đã được tạo thành công.");
                 return "redirect:/TTAP/order/view/" + order.getId(); // Điều hướng đến trang xem đơn hàng
             } catch (RuntimeException e) {
@@ -172,8 +172,8 @@ public class GioHangController {
         GioHang cart = gioHangService.getOrCreateCart(user);
         return cart.getItems().stream()
                 .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId()))
-                .map(item -> new CartItemDTO(item.getChiTietSanPham().getId(),item.getChiTietSanPham().getSanPham().getTen(),
-                         item.getGia(), item.getSoLuong()))
+                .map(item -> new CartItemDTO(item.getChiTietSanPham().getId(), item.getChiTietSanPham().getSanPham().getTen(),
+                        item.getGia(), item.getSoLuong()))
                 .collect(Collectors.toList());
     }
 
@@ -225,7 +225,7 @@ public class GioHangController {
                 List<Long> selectedProductIds = Arrays.stream(selectedProductIdsStr.split(","))
                         .map(Long::parseLong)
                         .collect(Collectors.toList());
-                HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds,diaChi);
+                HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi);
                 redirectAttributes.addFlashAttribute("message", "Hóa đơn đã được tạo thành công!");
                 model.addAttribute("userLogged", user);
                 return "redirect:/TTAP/cart/hoa-don"; // Chuyển đến trang chi tiết hóa đơn
@@ -306,16 +306,18 @@ public class GioHangController {
     }
 
     @GetMapping("/hoa-don-chi-tiet/hien-thi")
-    public String hienThi(@RequestParam Long id, Model model, Authentication authentication){
+    public String hienThi(@RequestParam Long id, Model model, Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
 
-                HoaDon hoaDon = hoaDonService.getDonHang(id);
-                model.addAttribute("hoaDon", hoaDon);
-                model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
+            HoaDon hoaDon = hoaDonService.getDonHang(id);
+            model.addAttribute("hoaDon", hoaDon);
+            model.addAttribute("listHDCT", hdctr.getHoaDonChiTietByHoaDonId(id));
+            NumberUtils numberUtils = new NumberUtils();
+            model.addAttribute("numberUtils", numberUtils);
             model.addAttribute("userLogged", user);
-                return "/user/home/cart"; // Đường dẫn đến view danh sách hóa đơn
+            return "/user/home/cart"; // Đường dẫn đến view danh sách hóa đơn
 
         }
         return "redirect:/login";
@@ -360,10 +362,10 @@ public class GioHangController {
 
     @PostMapping("/getdiscount")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> applyDiscount(@RequestParam String code){
+    public ResponseEntity<Map<String, Object>> applyDiscount(@RequestParam String code) {
         // Lấy mã giảm giá từ service
         MaGiamGia discount = discountService.getMaGiamGia(code);
-        Map<String,Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         // Kiểm tra nếu mã giảm giá hợp lệ
         if (discount != null) {
             response.put("discount", Map.of("discountPercentage", discount.getGiaTriGiam()));
