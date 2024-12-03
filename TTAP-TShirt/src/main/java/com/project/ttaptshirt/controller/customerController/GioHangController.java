@@ -98,12 +98,12 @@ public class GioHangController {
             User user = customUserDetail.getUser();
 
             // Lấy địa chỉ đã chọn từ ID
-            DiaChi selectedAddress = serDc.findById(selectedAddressId).orElse(null);
+            DiaChi selectedAddress = serDc.findById(selectedAddressId);
 
             if (selectedAddress != null) {
                 // Cập nhật địa chỉ cho người dùng
-                user.setDiaChi(selectedAddress); // Địa chỉ mới
-                userService.save(user); // Lưu thông tin người dùng
+                 // Địa chỉ mới
+                userRepo.save(user); // Lưu thông tin người dùng
 
                 // Lấy lại giỏ hàng của người dùng
                 GioHang cart = gioHangService.getOrCreateCart(user);
