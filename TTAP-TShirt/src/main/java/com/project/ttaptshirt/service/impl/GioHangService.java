@@ -236,6 +236,8 @@ public class GioHangService {
                 .mapToDouble(item -> item.getDonGia() * item.getSoLuong())
                 .sum();
         hoaDon.setTongTien(totalAmount);
+        hoaDon.setTienThu(totalAmount);
+        // Tìm hiểu chức năng check nếu có khuyến mại => tiền thu = tổng tiền - tiền giảm(nhớ save cả tiền giảm vào db)
         hoaDonRepository.save(hoaDon);
 
         // Xóa các sản phẩm đã chọn khỏi giỏ hàng
