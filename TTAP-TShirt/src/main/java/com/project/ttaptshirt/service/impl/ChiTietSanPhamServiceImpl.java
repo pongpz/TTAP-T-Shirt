@@ -58,7 +58,7 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
     public List<ChiTietSanPham> getChiTietSanPhamBySanPhamAndMauSac(Long sanPhamId, Long mauSacId) {
         return chiTietSanPhamRepository.findBySanPhamAndAndMauSac(sanPhamId, mauSacId);
     }
-    public Optional<ChiTietSanPham> getsolg(Long sanPhamId, Long mauSacId, Long kichCoId) {
+    public Optional<ChiTietSanPham> getsolgandgia(Long sanPhamId, Long mauSacId, Long kichCoId) {
         return chiTietSanPhamRepository.findsoluong(sanPhamId, mauSacId,kichCoId);
     }
 }

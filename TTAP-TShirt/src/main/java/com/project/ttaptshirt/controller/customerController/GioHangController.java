@@ -62,62 +62,52 @@ public class GioHangController {
 
     // Xem giỏ hàng
     @GetMapping("/view")
-    public String viewCart(Model model, Authentication authentication,@ModelAttribute DiaChi address) {
+    public String viewCart(Model model, Authentication authentication,
+                           @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
+                           @ModelAttribute DiaChi address) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
-            GioHang cart = gioHangService.getOrCreateCart(user); // Lấy giỏ hàng của người dùng
-            model.addAttribute("cart", cart); // Đảm bảo luôn truyền giỏ hàng vào model
+            GioHang cart = gioHangService.getOrCreateCart(user);
+            model.addAttribute("cart", cart);
             model.addAttribute("userLogged", user);
 
+            // Lấy danh sách địa chỉ
             List<DiaChi> addresses = serDc.findAddressesByUser(user.getId());
             model.addAttribute("addresses", addresses);
-            NumberUtils numberUtils = new NumberUtils();
 
-            // Khởi tạo address nếu chưa có
             if (address == null) {
                 address = new DiaChi(); // Tạo đối tượng mới nếu không có
             }
-
-            if (!addresses.isEmpty()) {
-                model.addAttribute("selectedAddress", addresses.get(0));  // Địa chỉ đã chọn
+            // Lấy địa chỉ đã chọn hoặc địa chỉ đầu tiên mặc định
+            DiaChi selectedAddress = null;
+            if (selectedAddressId != null) {
+                selectedAddress = addresses.stream()
+                        .filter(addr -> addr.getId().equals(selectedAddressId))
+                        .findFirst()
+                        .orElse(null);
             }
+            if (selectedAddress == null && !addresses.isEmpty()) {
+                selectedAddress = addresses.get(0); // Mặc định là địa chỉ đầu tiên nếu chưa chọn
+            }
+            model.addAttribute("selectedAddress", selectedAddress);
             model.addAttribute("address", address);
 
+            // Tiện ích số học
+            NumberUtils numberUtils = new NumberUtils();
             model.addAttribute("numberUtils", numberUtils);
+
             return "/user/home/cart2";
         }
         return "redirect:/login";
     }
 
-//    @PostMapping("/cart/updateAddress")
-//    public String updateAddress(@RequestParam("address") Long selectedAddressId,
-//                                Authentication authentication, Model model) {
-//        if (authentication != null) {
-//            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-//            User user = customUserDetail.getUser();
-//
-//            // Lấy địa chỉ đã chọn từ ID
-//            DiaChi selectedAddress = serDc.findById(selectedAddressId).orElse(null);
-//
-//            if (selectedAddress != null) {
-//                // Cập nhật địa chỉ cho người dùng
-//                user.setDiaChi(selectedAddress); // Địa chỉ mới
-//                userService.save(user); // Lưu thông tin người dùng
-//
-//                // Lấy lại giỏ hàng của người dùng
-//                GioHang cart = gioHangService.getOrCreateCart(user);
-//
-//                // Trả về trang giỏ hàng với địa chỉ đã chọn
-//                model.addAttribute("cart", cart);
-//                model.addAttribute("userLogged", user);
-//                model.addAttribute("addresses", serDc.findAddressesByUser(user.getId()));
-//                model.addAttribute("selectedAddress", selectedAddress);
-//            }
-//            return "/user/home/cart2"; // Trả về trang giỏ hàng
-//        }
-//        return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
-//    }
+    @PostMapping("/updateAddress")
+    public String updateAddress(@RequestParam("addressId") Long addressId, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("selectedAddressId", addressId);
+        return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng sau khi chọn
+    }
+
 
     // Xóa sản phẩm khỏi giỏ hàng
     @GetMapping("/remove")

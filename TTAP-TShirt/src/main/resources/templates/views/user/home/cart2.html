@@ -56,7 +56,7 @@
     <div class="cart-content-2021">
         <div class="cart-content-2021-left">
             <div class="container my-4">
-                <form th:action="@{/TTAP/cart/checkout}" method="post" >
+                <form th:action="@{/TTAP/cart/checkout}" method="post" onsubmit="return validateCartSelection()" >
 
                     <div class="card mb-4">
                         <div class="card-header d-flex align-items-center">
@@ -196,44 +196,46 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- List of addresses to choose from using radio buttons -->
+                    <!-- Kiểm tra danh sách địa chỉ -->
                     <div th:if="${addresses != null && !addresses.isEmpty()}">
-                        <!-- List of addresses to choose from using radio buttons -->
-                        <form id="addressForm" th:action="@{/TTAP/cart/cart/updateAddress}" method="post">
+                        <!-- Form chọn địa chỉ -->
+                        <form id="addressForm" th:action="@{/TTAP/cart/updateAddress}" method="post">
                             <div th:each="address, iterStat : ${addresses}" class="mb-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="address" th:id="'address' + ${iterStat.index}" th:value="${address.id}">
-                                    <label class="form-check-label" th:for="'address' + ${iterStat.index}" th:text="${address.soNha} + ' , '+${address.tenDuong} + ' , ' + ${address.tenQuanhuyen} + ' , ' + ${address.tenThanhpho}"></label>
+                                    <input class="form-check-input" type="radio" name="addressId"
+                                           th:id="'address' + ${iterStat.index}" th:value="${address.id}"
+                                           th:checked="${selectedAddress != null and selectedAddress.id == address.id}">
+                                    <label class="form-check-label" th:for="'address' + ${iterStat.index}"
+                                           th:text="${address.soNha} + ' , ' + ${address.tenDuong} + ' , ' + ${address.tenQuanhuyen} + ' , ' + ${address.tenThanhpho}"></label>
                                 </div>
                             </div>
+                            <!-- Nút submit trong form -->
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">Chọn Địa Chỉ</button>
+                            </div>
                         </form>
-                        <!-- Display "Add Address" button -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAddressModal">
-                            Thêm Địa Chỉ
-                        </button>
                     </div>
-                    <!-- If no addresses, show message -->
+                    <!-- Thông báo nếu không có địa chỉ -->
                     <div th:if="${addresses == null || addresses.isEmpty()}">
                         <p>Chưa có địa chỉ nào. Hãy thêm địa chỉ mới.</p>
-                        <!-- Display "Add Address" button even if no addresses exist -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAddressModal">
-                            Thêm Địa Chỉ
-                        </button>
                     </div>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAddressModal">
+                        Thêm Địa Chỉ
+                    </button>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                    <button type="button" class="btn btn-primary" id="selectAddressBtn">Chọn Địa Chỉ</button>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="createAddressModal" tabindex="-1" aria-labelledby="createAddressModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createAddressModalLabel">Tạo Địa Chỉ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Form nhập địa chỉ -->
@@ -271,21 +273,35 @@
     </div>
 </section>
 <script>
-    document.getElementById('selectAddressBtn').addEventListener('click', function() {
-        const selectedAddress = document.querySelector('input[name="address"]:checked');
+    function validateCartSelection() {
+        // Lấy danh sách các checkbox sản phẩm
+        const checkboxes = document.querySelectorAll('.product-checkbox');
+        let isProductSelected = false;
 
-        if (selectedAddress) {
-            alert("Bạn đã chọn địa chỉ: " + selectedAddress.value);
+        // Kiểm tra xem có sản phẩm nào được chọn không
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                isProductSelected = true;
+            }
+        });
 
-            // Bạn có thể lưu hoặc sử dụng địa chỉ đã chọn ở đây
-            // Ví dụ: Gửi đến backend để lưu địa chỉ đã chọn cho người dùng
-
-            // Đóng modal sau khi chọn địa chỉ
-            var myModal = new bootstrap.Modal(document.getElementById('selectAddressModal'));
-            myModal.hide();
-        } else {
-            alert("Vui lòng chọn một địa chỉ!");
+        // Nếu không có sản phẩm nào được chọn, hiển thị thông báo lỗi
+        if (!isProductSelected) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để tiến hành đặt hàng.");
+            return false; // Ngăn chặn việc gửi form
         }
+
+        return true; // Cho phép gửi form
+    }
+</script>
+<script>
+    // Khi modal "createAddressModal" đóng lại
+    const createAddressModal = document.getElementById('createAddressModal');
+    const selectAddressModal = new bootstrap.Modal(document.getElementById('selectAddressModal'));
+
+    createAddressModal.addEventListener('hidden.bs.modal', function () {
+        // Tự động mở lại modal "selectAddressModal"
+        selectAddressModal.show();
     });
 </script>
 <script>

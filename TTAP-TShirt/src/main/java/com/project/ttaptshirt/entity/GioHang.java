@@ -26,7 +26,8 @@ public class GioHang {
     @JoinColumn(name = "id_customer")
     private User user;
 
-    @Column(name = "ghi_chu")
+    @Column(name = "ghi_chu", columnDefinition = "NVARCHAR(255)")
+
     private String ghiChu;
 
 
@@ -36,7 +37,8 @@ public class GioHang {
     @Column(name = "giam_gia")
     private Double giamGia;
 
-    @Column(name = "phuong_thuc_thanh_toan")
+    @Column(name = "phuong_thuc_thanh_toan", columnDefinition = "NVARCHAR(255)")
+
     private String phuongThucThanhToan;
 
     @Column(name = "tong_tien")

@@ -30,7 +30,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "ho_ten")
+    @Column(name = "ho_ten", columnDefinition = "NVARCHAR(255)")
     @NotBlank(message = "Họ tên không được phép trống")
     @Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]+$", message = "Họ tên chỉ được chứa các ký tự chữ và dấu cách")
     private String hoTen;
