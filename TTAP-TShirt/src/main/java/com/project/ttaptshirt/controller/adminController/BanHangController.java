@@ -472,7 +472,11 @@ public class BanHangController {
         for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiet) {
             Integer soLuongHoi = hoaDonChiTiet.getSoLuong();
             ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
-            chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong() + soLuongHoi), chiTietSanPham.getId());
+            Integer soLuongCu = chiTietSanPham.getSoLuong();
+            chiTietSanPham.setTrangThai(0);
+            chiTietSanPham.setSoLuong(soLuongCu+soLuongHoi);
+            chiTietSanPhamRepository.save(chiTietSanPham);
+//            chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong() + soLuongHoi), chiTietSanPham.getId());
             hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
         }
         hoaDonService.updateTongTien(idhd, 0.0);
@@ -638,6 +642,9 @@ public class BanHangController {
 
             // Cập nhật lại số lượng tồn kho
             chiTietSanPham1.setSoLuong(soLuongSauUpdate);
+            if (soLuongSauUpdate == 0){
+                chiTietSanPham1.setTrangThai(1);
+            }
             chiTietSanPhamService.save(chiTietSanPham1);
 
             // Cập nhật tổng tiền hóa đơn
@@ -800,12 +807,16 @@ public class BanHangController {
         // Tính toán số lượng cập nhật sau khi xóa sản phẩm khỏi hóa đơn
         // (tăng số lượng sản phẩm trong kho lên số lượng đã xóa khỏi hóa đơn)
         Integer soLuongUpdate = chiTietSanPhamService.findById(chiTietSanPham.getId()).getSoLuong() + soLuong;
+        chiTietSanPham.setTrangThai(0);
+        chiTietSanPham.setSoLuong(soLuongUpdate);
 
         // Xóa sản phẩm chi tiết khỏi hóa đơn
         hoaDonChiTietService.deleteById(idHdct);
 
         // Cập nhật lại số lượng sản phẩm trong kho
-        chiTietSanPhamService.updateSoLuongCtsp(soLuongUpdate, chiTietSanPham.getId());
+//        chiTietSanPhamService.updateSoLuongCtsp(soLuongUpdate, chiTietSanPham.getId());
+
+        chiTietSanPhamRepository.save(chiTietSanPham);
 
         // Thêm một thuộc tính flash vào model để thông báo việc xóa thành công
         redirectAttributes.addFlashAttribute("deleteSuccess", true);
@@ -848,7 +859,11 @@ public class BanHangController {
         for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiet) {
             Integer soLuongHoi = hoaDonChiTiet.getSoLuong();
             ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
-            chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong() + soLuongHoi), chiTietSanPham.getId());
+            Integer soLuongCu = chiTietSanPham.getSoLuong();
+//            chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong() + soLuongHoi), chiTietSanPham.getId());
+            chiTietSanPham.setSoLuong(soLuongCu+soLuongHoi);
+            chiTietSanPham.setTrangThai(0);
+            chiTietSanPhamRepository.save(chiTietSanPham);
             hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
         }
         HoaDon hoaDon = hoaDonService.findById(idHD);
