@@ -222,9 +222,10 @@ public class SanPhamCustomerController {
             @RequestParam Long sizeId) {
         Optional<ChiTietSanPham> chiTietSanPham = chiTietSanPhamServiceImpl.getsolgandgia(productId, colorId, sizeId);
         if (chiTietSanPham.isPresent()) {
+            int soLuongHienThi = Math.max(chiTietSanPham.get().getSoLuong(), 0);
             ChiTietSanPhamDTO dto = new ChiTietSanPhamDTO(
                     chiTietSanPham.get().getGiaBan(),
-                    chiTietSanPham.get().getSoLuong()
+                    soLuongHienThi
             );
             return ResponseEntity.ok(dto);
         } else {
