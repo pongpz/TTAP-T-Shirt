@@ -71,10 +71,17 @@
                                 <div class="col-md-10">
                                     <p class="fw-bold mb-1" th:text="${userLogged.hoTen}"></p>
                                     <p class="fw-bold mb-1" th:text="${userLogged.soDienthoai}"></p>
-                                    <p class="mb-1" th:text="${selectedAddress.soNha} + ' ' + ${selectedAddress.tenDuong}
+                                    <div th:if="${selectedAddress == null }">
+                                        <p>Chưa có địa chỉ nào. Hãy thêm địa chỉ mới.</p>
+                                    </div>
+                                    <div th:if="${selectedAddress != null}">
+                                        <p class="mb-1" th:text="${selectedAddress.soNha} + ' ' + ${selectedAddress.tenDuong}
                                 + ', ' + ${selectedAddress.tenQuanhuyen} + ', ' + ${selectedAddress.tenThanhpho}"></p>
-                                    <input type="hidden" name="diaChi" th:value="${selectedAddress.soNha} + ' '
+                                        <input type="hidden" name="diaChi" th:value="${selectedAddress.soNha} + ' '
                                 + ${selectedAddress.tenDuong} + ', ' + ${selectedAddress.tenQuanhuyen} + ', ' + ${selectedAddress.tenThanhpho}">
+                                    </div>
+
+
                                 </div>
                                 <div class="col-md-2 text-end">
                                     <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#selectAddressModal">Thay đổi</button>
@@ -288,6 +295,12 @@
         // Nếu không có sản phẩm nào được chọn, hiển thị thông báo lỗi
         if (!isProductSelected) {
             alert("Vui lòng chọn ít nhất một sản phẩm để tiến hành đặt hàng.");
+            return false; // Ngăn chặn việc gửi form
+        }
+
+        const selectedAddress = document.querySelector('input[name="diaChi"]');
+        if (!selectedAddress || selectedAddress.value.trim() === "") {
+            alert("Vui lòng chọn hoặc nhập địa chỉ giao hàng.");
             return false; // Ngăn chặn việc gửi form
         }
 
