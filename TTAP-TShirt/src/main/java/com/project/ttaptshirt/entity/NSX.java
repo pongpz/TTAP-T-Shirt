@@ -26,6 +26,7 @@ public class NSX {
     private String ma;
 
     @Column(name = "ten",columnDefinition = "nvarchar(255)")
+
     private String ten;
 
     @Column(name = "trang_thai")

@@ -32,6 +32,7 @@ public class MaGiamGia {
 
         @NotBlank
         @Column(name = "ten", columnDefinition = "NVARCHAR(255)")
+
         private String ten;
 
         @NotNull

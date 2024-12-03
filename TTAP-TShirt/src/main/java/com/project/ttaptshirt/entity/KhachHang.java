@@ -29,6 +29,7 @@ public class KhachHang {
     private Long id;
 
     @Column(name = "ho_ten", columnDefinition = "NVARCHAR(255)")
+
     private String hoTen;
 
     @Column(name = "so_dien_thoai")

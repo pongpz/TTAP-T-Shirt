@@ -19,7 +19,11 @@
 
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
     <div class="main-content content flex-grow-1 p-4">
-
+        <div class="d-flex">
+            <a th:href="@{/admin/hoa-don/hien-thi}" class="fw-medium fs-5 text-black" style="text-decoration:none">Hoá đơn</a>
+            <a>&nbsp / &nbsp</a>
+            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration: none">Hóa đơn chi tiết</a>
+        </div>
         <div id="toast-root"></div>
         <div style="width: 80%; margin: auto; position: relative;">
             <h2 style="font-size: 30px; text-align: center;" th:text="'Theo dõi đơn hàng: '+${hoaDon.ma}"></h2>

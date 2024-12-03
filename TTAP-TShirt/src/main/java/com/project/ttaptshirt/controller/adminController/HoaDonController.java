@@ -43,9 +43,9 @@ public class HoaDonController {
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page) {
         Pageable pageab = PageRequest.of(page, 5);
-        model.addAttribute("listHD", hr.getAllHDTaiQuay(pageab));
+        model.addAttribute("listHD", hr.getAllHD(pageab));
         model.addAttribute("page", page);
-        if (hr.getAllHDTaiQuay(pageab).size() == 0) {
+        if (hr.getAllHD(pageab).size() == 0) {
             model.addAttribute("nullhd", "Không có hóa đơn nào");
         }
         NumberUtils numberUtils = new NumberUtils();
@@ -53,29 +53,29 @@ public class HoaDonController {
         return "admin/hoadon/hoa-don";
     }
 
-    @GetMapping("/hien-thi/online")
-    public String hienThiOnline(Model model, @RequestParam(defaultValue = "0") Integer page) {
-        Pageable pageab = PageRequest.of(page, 5);
-        model.addAttribute("listHD", hr.getAllHDOnline(pageab));
-        model.addAttribute("page", page);
-        if (hr.getAllHDOnline(pageab).size() == 0) {
-            model.addAttribute("nullhd", "Không có hóa đơn nào");
-        }
-        NumberUtils numberUtils = new NumberUtils();
-        model.addAttribute("numberUtils",numberUtils);
-        return "admin/hoadon/hoa-don-online";
-    }
+//    @GetMapping("/hien-thi/online")
+//    public String hienThiOnline(Model model, @RequestParam(defaultValue = "0") Integer page) {
+//        Pageable pageab = PageRequest.of(page, 5);
+//        model.addAttribute("listHD", hr.getAllHDOnline(pageab));
+//        model.addAttribute("page", page);
+//        if (hr.getAllHDOnline(pageab).size() == 0) {
+//            model.addAttribute("nullhd", "Không có hóa đơn nào");
+//        }
+//        NumberUtils numberUtils = new NumberUtils();
+//        model.addAttribute("numberUtils",numberUtils);
+//        return "admin/hoadon/hoa-don-online";
+//    }
 
-    @GetMapping("/chi-tiet-hoa-don-online/{idhd}")
-    public String hienThiHDCTOnline(@PathVariable("idhd") Long idhd, Model model){
-        HoaDon hoaDon = hoaDonService.findById(idhd);
-        model.addAttribute("hoaDon",hoaDon);
-        List<HoaDonChiTiet> listSPOrder = hoaDonChiTietService.getListHdctByIdHd(idhd);
-        model.addAttribute("listSPOrder",listSPOrder);
-        NumberUtils numberUtils = new NumberUtils();
-        model.addAttribute("numberUtils",numberUtils);
-        return "admin/hoadon/chi-tiet-hoa-don-online";
-    }
+//    @GetMapping("/chi-tiet-hoa-don-online/{idhd}")
+//    public String hienThiHDCTOnline(@PathVariable("idhd") Long idhd, Model model){
+//        HoaDon hoaDon = hoaDonService.findById(idhd);
+//        model.addAttribute("hoaDon",hoaDon);
+//        List<HoaDonChiTiet> listSPOrder = hoaDonChiTietService.getListHdctByIdHd(idhd);
+//        model.addAttribute("listSPOrder",listSPOrder);
+//        NumberUtils numberUtils = new NumberUtils();
+//        model.addAttribute("numberUtils",numberUtils);
+//        return "admin/hoadon/chi-tiet-hoa-don-online";
+//    }
     @GetMapping("/xac-nhan-hoa-don/{idHD}")
     public String xacNhanHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes){
         hoaDonService.xacNhanHoaDon(idHD);
@@ -137,7 +137,7 @@ public class HoaDonController {
                           @RequestParam(required = false, value = "keyword") String keyword,
 //                          @RequestParam(required = false, value = "tennv") String tennv,
 //                          @RequestParam(required = false, value = "tenkh") String tenkh,
-//                          @RequestParam(required = false, value = "loaiDon") Integer loaiDon,
+                          @RequestParam(required = false, value = "loaiDon") Integer loaiDon,
                           @RequestParam(required = false, value = "trangThai") Integer trangThai,
                           @RequestParam(value = "ngayThanhToan", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ngayThanhToan,
                           @RequestParam(defaultValue = "0") Integer page,
@@ -146,9 +146,9 @@ public class HoaDonController {
 //        List<HoaDon> lsSearch = hr.search("", "", "", "", null, null, pageab);
         List<HoaDon> lsSearch = new ArrayList<>();
         if(keyword.trim().isEmpty()){
-            lsSearch = hr.search2(ma.trim(),trangThai,ngayThanhToan,1,pageab);
+            lsSearch = hr.search2(ma.trim(),trangThai,ngayThanhToan,loaiDon,pageab);
         }else {
-            lsSearch = hr.search(ma.trim(),keyword.trim(),trangThai,ngayThanhToan,1,pageab);
+            lsSearch = hr.search(ma.trim(),keyword.trim(),trangThai,ngayThanhToan,loaiDon,pageab);
         }
         NumberUtils numberUtils = new NumberUtils();
         model.addAttribute("numberUtils",numberUtils);

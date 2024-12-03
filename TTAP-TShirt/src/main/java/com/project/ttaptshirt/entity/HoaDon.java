@@ -35,6 +35,7 @@ public class HoaDon {
     private LocalDate ngayThanhToan;
 
     @Column(name = "ghi_chu", columnDefinition = "NVARCHAR(255)")
+
     private String ghiChu;
 
     @Column(name = "tong_tien")
@@ -80,6 +81,7 @@ public class HoaDon {
     private Integer trangThai;
 
     @Column(name = "ten_nguoi_nhan", columnDefinition = "NVARCHAR(255)")
+
     private String tenNguoiNhan;
 
     @Column(name = "loai_don")
