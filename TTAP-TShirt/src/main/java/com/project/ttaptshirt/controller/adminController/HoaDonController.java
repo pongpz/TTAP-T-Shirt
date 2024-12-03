@@ -1,9 +1,11 @@
 package com.project.ttaptshirt.controller.adminController;
 
 import com.project.ttaptshirt.dto.NumberUtils;
+import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.repository.HoaDonRepository;
+import com.project.ttaptshirt.service.ChiTietSanPhamService;
 import com.project.ttaptshirt.service.HoaDonChiTietService;
 import com.project.ttaptshirt.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class HoaDonController {
     HoaDonService hoaDonService;
     @Autowired
     HoaDonChiTietService hoaDonChiTietService;
+
+    @Autowired
+    ChiTietSanPhamService chiTietSanPhamService;
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page) {
@@ -74,7 +79,12 @@ public class HoaDonController {
     @GetMapping("/xac-nhan-hoa-don/{idHD}")
     public String xacNhanHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes){
         hoaDonService.xacNhanHoaDon(idHD);
-
+        List<HoaDonChiTiet> listSanPham = hoaDonChiTietService.getListHdctByIdHd(idHD);
+        for (HoaDonChiTiet hdct: listSanPham) {
+            ChiTietSanPham chiTietSanPham = hdct.getChiTietSanPham();
+            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong()-hdct.getSoLuong());
+            chiTietSanPhamService.save(chiTietSanPham);
+        }
         // Add a flash attribute for success message
         redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã được xác nhận!");
 

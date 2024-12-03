@@ -101,6 +101,10 @@
     </div>
     <br>
     <br>
+    <button
+            class="btn btn-info"
+            style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; color: white; border: none;position: absolute;right: 200px;top: 350px"
+    >Lịch sử</button>
     <div class="row" style="margin-left: 520px">
         <!-- Button: Xác nhận đơn -->
         <button
@@ -153,30 +157,44 @@
 
     <div style="flex-wrap: wrap; gap: 20px; font-family: Arial, sans-serif; margin: 40px;margin-left: 320px">
         <!-- Danh sách sản phẩm -->
-        <div style="flex: 1; min-width: 300px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
+        <div style="background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
             <h3 style="margin: 0 0 20px; font-size: 18px;">Danh sách sản phẩm</h3>
             <hr>
-            <div th:each="hdct :${listSPOrder}" style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 20px;">
-                <img src="https://res.cloudinary.com/dld7uoqyh/image/upload/v1728726810/productImg/bbe9a9e0-9b71-45cc-b1c1-778fba4b2a25.jpg"
-                     alt="Product Image"
-                     style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 60px;"/>
-                <div style="flex: 1;">
-                    <p style="margin: 0; font-size: 14px; font-weight: bold;" th:text="'Tên sản phẩm: '+${hdct.chiTietSanPham.sanPham.ten}"></p>
-                    <p style="margin: 5px 0; font-size: 14px; color: red;" th:text="'Giá Bán: '+${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan)}"></p>
-                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Mã sản phẩm: '+${hdct.chiTietSanPham.sanPham.ma}">Mã sản phẩm: SP001</p>
-                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Kiểu dáng: '+${hdct.chiTietSanPham.sanPham.kieuDang.ten}">Kiểu dáng: Giày thể thao</p>
-                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Thương hiệu: '+${hdct.chiTietSanPham.sanPham.thuongHieu.ten}">Thương hiệu: Balen</p>
-                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Size: '+${hdct.chiTietSanPham.kichCo.ten}">Size: 41</p>
-                    <p style="margin: 5px 0; font-size: 12px;" th:text="'Số lượng mua: '+${hdct.soLuong}"></p>
-                </div>
-                <div style="text-align: right;">
-                    <span style="margin: 0 10px;font-size: 16px" th:text="'Số lượng mua: '+${hdct.soLuong}">3</span>
-                    <p style="margin: 10px 0 0; font-size: 24px; color: red;"
-                       th:text="'Thành tiền: '+${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan*hdct.soLuong)}"></p>
-                </div>
-            </div>
-
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <thead>
+                <tr style="background-color: #f1f1f1;">
+                    <th style="padding: 10px; border: 1px solid #ddd;">Hình ảnh</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Tên sản phẩm</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Giá bán</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Mã sản phẩm</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Kiểu dáng</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Thương hiệu</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Size</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Số lượng mua</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Thành tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="hdct : ${listSPOrder}">
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                        <img src="https://res.cloudinary.com/dld7uoqyh/image/upload/v1728726810/productImg/bbe9a9e0-9b71-45cc-b1c1-778fba4b2a25.jpg"
+                             alt="Product Image"
+                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;"/>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.ten}">Áo thun fpt</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; color: red;" th:text="${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan)}">300,000 đ</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.ma}">SP95226</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.kieuDang.ten}">Sành điệu</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.thuongHieu.ten}">Puma</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.kichCo.ten}">M</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.soLuong}">4</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; color: red; text-align: right;"
+                        th:text="${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan * hdct.soLuong)}">1,200,000 đ</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+
     </div>
 
 
@@ -184,12 +202,8 @@
     <!-- Thông tin hóa đơn -->
     <div style="flex: 1; min-width: 300px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 20px;margin-left: 320px">
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-            <p style="margin: 0; font-size: 14px;">Phiếu giảm giá:</p>
-            <span style="font-size: 14px;">Không áp dụng</span>
-        </div>
-        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-            <p style="margin: 0; font-size: 14px;">Giảm giá từ cửa hàng:</p>
-            <span style="font-size: 14px;">0%</span>
+            <p style="margin: 0; font-size: 14px;">Mã giảm giá:</p>
+            <span style="font-size: 14px;" th:text="${hoaDon.soTienGiamGia!=null?numberUtils.formatCurrency(hoaDon.soTienGiamGia):'Không áp dụng'}"></span>
         </div>
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
             <p style="margin: 0; font-size: 14px;">Tổng tiền hàng:</p>
@@ -206,7 +220,7 @@
         </div>
         <div style="margin-top: 20px; display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
             <p style="margin: 0;">Tổng tiền:</p>
-            <label style="color: red;" th:text="'Tổng tiền thanh toán: '+${numberUtils.formatCurrency((hoaDon.tongTien)-50000)}"></label>
+            <label style="color: red;" th:text="'Tổng tiền thanh toán: '+${numberUtils.formatCurrency((hoaDon.tongTien)+50000)}"></label>
         </div>
     </div>
 </div>
