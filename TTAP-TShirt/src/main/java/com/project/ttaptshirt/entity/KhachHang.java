@@ -28,7 +28,7 @@ public class KhachHang {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ho_ten")
+    @Column(name = "ho_ten", columnDefinition = "nvarchar(255)")
     private String hoTen;
 
     @Column(name = "so_dien_thoai")

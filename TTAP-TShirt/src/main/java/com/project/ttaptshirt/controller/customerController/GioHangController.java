@@ -90,34 +90,6 @@ public class GioHangController {
         return "redirect:/login";
     }
 
-    @PostMapping("/cart/updateAddress")
-    public String updateAddress(@RequestParam("address") Long selectedAddressId,
-                                Authentication authentication, Model model) {
-        if (authentication != null) {
-            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
-
-            // Lấy địa chỉ đã chọn từ ID
-            DiaChi selectedAddress = serDc.findById(selectedAddressId);
-
-            if (selectedAddress != null) {
-                // Cập nhật địa chỉ cho người dùng
-                 // Địa chỉ mới
-                userRepo.save(user); // Lưu thông tin người dùng
-
-                // Lấy lại giỏ hàng của người dùng
-                GioHang cart = gioHangService.getOrCreateCart(user);
-
-                // Trả về trang giỏ hàng với địa chỉ đã chọn
-                model.addAttribute("cart", cart);
-                model.addAttribute("userLogged", user);
-                model.addAttribute("addresses", serDc.findAddressesByUser(user.getId()));
-                model.addAttribute("selectedAddress", selectedAddress);
-            }
-            return "/user/home/cart2"; // Trả về trang giỏ hàng
-        }
-        return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
-    }
 
     // Xóa sản phẩm khỏi giỏ hàng
     @GetMapping("/remove")

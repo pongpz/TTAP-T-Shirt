@@ -10,6 +10,7 @@ import com.project.ttaptshirt.repository.ChatLieuRepository;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.KieuDangRepository;
 import com.project.ttaptshirt.repository.NSXRepository;
+import com.project.ttaptshirt.repository.SanPhamRepository;
 import com.project.ttaptshirt.repository.ThuongHieuRepository;
 import com.project.ttaptshirt.service.ChiTietSanPhamService;
 //import com.project.ttaptshirt.service.HinhAnhService;
@@ -17,6 +18,7 @@ import com.project.ttaptshirt.service.KichCoService;
 import com.project.ttaptshirt.service.MauSacService;
 import com.project.ttaptshirt.service.SanPhamService;
 import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,7 +52,8 @@ public class ChiTietSanPhamController {
     ThuongHieuRepository thuongHieuRepository;
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
-
+    @Autowired
+    SanPhamRepository sanPhamRepository;
     @Autowired
     ChiTietSanPhamServiceImpl chiTietSanPhamServiceImpl;
 //    @Autowired
@@ -102,6 +105,7 @@ public class ChiTietSanPhamController {
         return "admin/sanpham/them-chi-tiet-san-pham";
     }
 
+    @Transactional
     @PostMapping("/add")
     public String createNewCTSP(
             @RequestParam("idSanPham") Long idSanPham,
@@ -113,8 +117,7 @@ public class ChiTietSanPhamController {
             return "redirect:/admin/chi-tiet-san-pham/" + idSanPham;
         }
 
-        SanPham sanPham = new SanPham();
-        sanPham.setId(idSanPham);
+        SanPham sanPham = sanPhamRepository.getReferenceById(idSanPham);
         List<String> duplicateWarnings = new ArrayList<>();
 
         for (String variant : selectedVariants) {
@@ -140,7 +143,7 @@ public class ChiTietSanPhamController {
                 continue;
             }
 
-
+//            System.out.println(sanPham.getTrangThai());
             ChiTietSanPham newChiTietSanPham = new ChiTietSanPham();
             newChiTietSanPham.setSanPham(sanPham);
             newChiTietSanPham.setTrangThai(sanPham.getTrangThai());

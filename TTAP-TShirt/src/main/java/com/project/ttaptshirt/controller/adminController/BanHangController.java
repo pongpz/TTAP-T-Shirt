@@ -178,9 +178,8 @@ public class BanHangController {
 
         // Tạo link QR code thanh toán với thông tin từ hóa đơn
         model.addAttribute("linkqr",
-                "https://api.vietqr.io/image/970407-1938170304-oJ6IfGN.jpg?accountName=DUONGTRUNGANH&amount="
-                        + (int) totalMoneyAfter + "&addInfo=" + hoaDon.getMa());
-
+                "https://api.vietqr.io/image/970407-1938170304-compact2.jpg?accountName=DUONGTRUNGANH&amount="
+                        +(long) totalMoneyAfter + "&addInfo=" + hoaDon.getMa());
         // Trả về trang chi tiết hóa đơn
         return "admin/banhangtaiquay/chiTietHoaDon";
     }
