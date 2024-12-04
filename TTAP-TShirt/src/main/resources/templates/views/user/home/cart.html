@@ -104,8 +104,13 @@
                     <h4>Tổng tiền: <span th:text="${numberUtils.formatCurrency2(hoaDon.tienThu)}"></span> VND</h4>
 
                 </div>
+            <form th:action="@{/TTAP/cart/huy-hoa-don-online(idHD=${hoaDon.id})}" method="post" class="d-inline" onsubmit="return confirmCancel()">
+                <button type="submit" class="btn btn-danger" th:disabled="${hoaDon.trangThai != 3}">
+                    Hủy hóa đơn
+                </button>
+            </form>
 
-                <!-- Form nhập thông tin thanh toán -->
+            <!-- Form nhập thông tin thanh toán -->
                 <div class="mt-4">
                     <h4>Thông tin chi tiết</h4>
                     <div class="form-group">
@@ -128,58 +133,25 @@
                                th:value="${hoaDon.diaChiGiaoHang}"
                                class="form-control" required />
                     </div>
-
-<!--                    <div class="form-group">-->
-<!--                        <label for="fullName">Họ và tên</label>-->
-<!--                        <input type="text" id="fullName" th:text="${hoaDon.tenNguoiNhan}" class="form-control" required />-->
-<!--                    </div>-->
-
-<!--                    <div class="form-group">-->
-<!--                        <label for="phoneNumber">Số điện thoại</label>-->
-<!--                        <input type="text" id="phoneNumber" th:text="${hoaDon.sdtNguoiNhan}" class="form-control" required />-->
-<!--                    </div>-->
-
-<!--                    <div class="form-group">-->
-<!--                        <label for="address">Địa chỉ</label>-->
-<!--                        <input type="text" id="address" th:text="${hoaDon.diaChiGiaoHang}" class="form-control" required />-->
-<!--                    </div>-->
                 </div>
 
         </div>
+<!--        <div class="text-center mt-4">-->
+<!--            <a href="/TTAP/cart/hoa-don" class="btn btn-secondary">Quay lại giỏ hàng</a>-->
+<!--            <a th:href="@{/cancel-hoa-don/online/{idHD}(idHD=${hoaDon.id})}" th:if="${hoaDon.trangThai==3}" onclick="return confirmCancelOrder()" class="btn btn-secondary">Hủy đơn hàng</a>-->
+<!--        </div>-->
         <div class="text-center mt-4">
-            <a href="/TTAP/cart/hoa-don" class="btn btn-secondary">Quay lại giỏ hàng</a>
-            <a th:href="@{/cancel-hoa-don/online/{idHD}(idHD=${hoaDon.id})}" th:if="${hoaDon.trangThai==3}" onclick="return confirmCancelOrder()" class="btn btn-secondary">Hủy đơn hàng</a>
+            <a href="/TTAP/cart/hoa-don" class="btn btn-secondary">Quay lại danh sách đơn hàng</a>
         </div>
     </div>
 </section>
 
 
 <script>
-    function calculateTotal() {
-        let checkboxes = document.querySelectorAll('.product-checkbox');
-        let total = 0;
-
-        // Lọc những sản phẩm được chọn
-        let selectedProductIds = [];
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                selectedProductIds.push(checkbox.value);
-                let row = checkbox.closest('tr');
-                let amount = parseFloat(row.querySelector('td:nth-child(6)').textContent.replace(/,/g, ''));
-                total += amount;
-            }
-        });
-
-        // Cập nhật tổng tiền
-        document.getElementById('totalAmount').textContent = new Intl.NumberFormat('vi-VN').format(total);
-
-        // Gửi danh sách các sản phẩm đã chọn tới backend
-        let inputSelectedProductIds = document.createElement('input');
-        inputSelectedProductIds.type = 'hidden';
-        inputSelectedProductIds.name = 'selectedProductIds';
-        inputSelectedProductIds.value = selectedProductIds.join(',');
-        document.getElementById('cartForm').appendChild(inputSelectedProductIds);
+        function confirmCancel() {
+        return confirm("Bạn có chắc chắn muốn hủy hóa đơn này không?");
     }
+
 </script>
 
 <script>

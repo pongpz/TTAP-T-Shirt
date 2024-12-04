@@ -99,10 +99,59 @@
     </div>
     <br>
     <br>
-    <button
+
+    <!-- Nút xem Lịch sử thay đổi -->
+    <button type="button"
             class="btn btn-info"
-            style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; color: white; border: none;position: absolute;right: 200px;top: 350px"
-    >Lịch sử</button>
+            style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; color: white; border: none; position: absolute; right: 200px; top: 350px"
+            data-bs-toggle="modal" data-bs-target="#historyModal">
+        Lịch sử
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="historyModalLabel">Lịch sử thao tác hóa đơn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Log Table -->
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead class="table-dark">
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 17%;">Hành động</th>
+                            <th style="width: 18%;">Thời gian</th>
+                            <th style="width: 10%;">Người thực hiện</th>
+                            <th style="width: 40%;">Ghi chú</th>
+                            <th style="width: 15%;">Trạng thái</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="log, iterStat : ${listHoaDonLog}">
+                            <td th:text="${iterStat.count}"></td>
+                            <td th:text="${log.hanhDong}"></td>
+                            <td th:text="${#temporals.format(log.thoiGian, 'HH:mm:ss dd-MM-yyyy')}"></td>
+                            <td th:text="${log.nguoiThucHien}"></td>
+                            <td th:text="${log.ghiChu}" style="word-wrap: break-word;"></td>
+                            <td th:text="${log.trangThai==0?'Thành Công':'Thất bại'}" style="word-wrap: break-word;"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     <div class="row" style="margin-left: 520px">
         <!-- Button: Xác nhận đơn -->
         <button

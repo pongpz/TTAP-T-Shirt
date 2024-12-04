@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>TTAP T-SHIRT</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
     <link rel="shortcut icon" type="image/png"
-          th:href="@{/images/logo2tap.jpg}" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link th:href="@{/customercss/bootstrap.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/customercss/elegant-icons.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/customercss/nice-select.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/customercss/jquery-ui.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/customercss/owl.carousel.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/customercss/slicknav.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/customercss/style.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/customercss/style-customer.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/customercss/cart-hover.css}" rel="stylesheet" type="text/css" />
+          th:href="@{/images/logo2tap.jpg}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link th:href="@{/customercss/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/elegant-icons.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/nice-select.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/jquery-ui.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/owl.carousel.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/slicknav.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/style.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/style-customer.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/cart-hover.css}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="/customcss/toastMessage.css ">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
           type="text/css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -29,19 +33,23 @@
         h1, h3 {
             margin-bottom: 20px;
         }
+
         table {
             background-color: #fff;
             border-radius: 5px;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         table th, table td {
             text-align: center;
         }
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
         }
+
         footer {
             background-color: #343a40;
             color: #fff;
@@ -56,11 +64,12 @@
     <div class="cart-content-2021">
         <div class="cart-content-2021-left">
             <div class="container my-4">
-                <form th:action="@{/TTAP/cart/checkout}" method="post" onsubmit="return validateCartSelection()" >
+                <form th:action="@{/TTAP/cart/checkout}" method="post" onsubmit="return validateCartSelection()">
 
                     <div class="card mb-4">
                         <div class="card-header d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt me-2" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-geo-alt me-2" viewBox="0 0 16 16">
                                 <path d="M12.166 8.94c0 1.126-2.614 4.385-3.675 5.69a.866.866 0 0 1-1.312 0C6.112 13.325 3.5 10.066 3.5 8.94 3.5 6.614 5.22 5 8 5s4.5 1.614 4.5 3.94zm-.966-.94c0-1.29-1.267-2.4-3.2-2.4s-3.2 1.11-3.2 2.4c0 .844.9 2.32 3.2 4.792 2.3-2.472 3.2-3.948 3.2-4.792z"/>
                                 <path d="M8 8.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -68,7 +77,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row align-items-center">
-                                <div th:if="${selectedAddress!=null}" class="col-md-10">
+                                <div class="col-md-10">
                                     <p class="fw-bold mb-1" th:text="${userLogged.hoTen}"></p>
                                     <p class="fw-bold mb-1" th:text="${userLogged.soDienthoai}"></p>
                                     <div th:if="${selectedAddress == null }">
@@ -84,7 +93,9 @@
 
                                 </div>
                                 <div class="col-md-2 text-end">
-                                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#selectAddressModal">Thay đổi</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#selectAddressModal">Thay đổi
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +106,8 @@
                         <div class="col-md-9">
                             <div class="d-flex border-bottom pb-4">
                                 <div class="col-md-4 d-flex align-items-center">
-                                    <input type="checkbox" class="form-check-input me-2" id="selectAll" onchange="toggleSelectAll(this)">
+                                    <input type="checkbox" class="form-check-input me-2" id="selectAll"
+                                           onchange="toggleSelectAll(this)">
                                     <span>Tất cả (sản phẩm)</span>
                                 </div>
                                 <div class="col-md-2 text-center fw-bold">Đơn giá</div>
@@ -118,10 +130,14 @@
                                              class="img-thumbnail me-3"
                                              style="width: 80px; height: 80px; object-fit: contain;">
                                         <div>
-                                            <p class="text-dark fw-bold" th:text="${item.chiTietSanPham.sanPham.ten}"></p>
-                                            <p class="small text-muted mb-1">Mã SP: <b th:text="${item.chiTietSanPham.sanPham.ma}"></b></p>
-                                            <p class="small text-success" th:text="${item.chiTietSanPham.mauSac.ten}"></p>
-                                            <p class="small text-success" th:text="${item.chiTietSanPham.kichCo.ten}"></p>
+                                            <p class="text-dark fw-bold"
+                                               th:text="${item.chiTietSanPham.sanPham.ten}"></p>
+                                            <p class="small text-muted mb-1">Mã SP: <b
+                                                    th:text="${item.chiTietSanPham.sanPham.ma}"></b></p>
+                                            <p class="small text-success"
+                                               th:text="${item.chiTietSanPham.mauSac.ten}"></p>
+                                            <p class="small text-success"
+                                               th:text="${item.chiTietSanPham.kichCo.ten}"></p>
                                         </div>
                                     </div>
 
@@ -137,7 +153,8 @@
                                     <div class="col-4 col-md-2 text-center px-1">
                                         <div class="d-flex align-items-center justify-content-center">
                                             <button type="button" class="btn btn-sm btn-outline-secondary btn-quantity"
-                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')">-</button>
+                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')">-
+                                            </button>
                                             <input class="form-control form-control-sm text-center mx-2 quantity-input"
                                                    style="width: 50px;"
                                                    type="number" name="quantity"
@@ -145,7 +162,8 @@
                                                    th:value="${item.soLuong}"
                                                    th:attr="data-id=${item.id}" min="1" max="20">
                                             <button type="button" class="btn btn-sm btn-outline-secondary btn-quantity"
-                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')">+</button>
+                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')">+
+                                            </button>
                                         </div>
                                     </div>
 
@@ -159,7 +177,8 @@
 
                                     <!-- Nút xóa sản phẩm -->
                                     <div class="col-4 col-md-2 text-center px-1">
-                                        <a th:href="@{/TTAP/cart/remove(productId=${item.id})}" class="btn btn-danger btn-sm">
+                                        <a th:href="@{/TTAP/cart/remove(productId=${item.id})}"
+                                           class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này này?');">
                                             <i class="bi bi-trash"></i> Xóa
                                         </a>
                                     </div>
@@ -182,20 +201,21 @@
                                     </p>
                                     <small class="text-muted">(Đã bao gồm VAT nếu có)</small>
                                 </div>
-                                <button class="btn btn-success w-100 mt-3" onclick="return confirmCreateOrder()" type="submit">Tiến hành đặt hàng</button>
+                                <button class="btn btn-success w-100 mt-3" type="submit" >Tiến hành đặt hàng</button>
                             </div>
                         </div>
                     </div>
 
                 </form>
                 <!-- Địa chỉ nhận hàng -->
+            </div>
         </div>
     </div>
-    </div>
     <div class="alert alert-danger text-center" role="alert" th:if="${cart.items == null or cart.items.isEmpty()}">
-                    <p>Giỏ hàng của bạn đang trống.</p>
+        <p>Giỏ hàng của bạn đang trống.</p>
     </div>
-    <div class="modal fade" id="selectAddressModal" tabindex="-1" aria-labelledby="selectAddressModalLabel" aria-hidden="true">
+    <div class="modal fade" id="selectAddressModal" tabindex="-1" aria-labelledby="selectAddressModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -226,7 +246,8 @@
                     <div th:if="${addresses == null || addresses.isEmpty()}">
                         <p>Chưa có địa chỉ nào. Hãy thêm địa chỉ mới.</p>
                     </div>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAddressModal">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#createAddressModal">
                         Thêm Địa Chỉ
                     </button>
                 </div>
@@ -237,12 +258,13 @@
         </div>
     </div>
 
-    <div class="modal fade" id="createAddressModal" tabindex="-1" aria-labelledby="createAddressModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createAddressModal" tabindex="-1" aria-labelledby="createAddressModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createAddressModalLabel">Tạo Địa Chỉ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Form nhập địa chỉ -->
@@ -259,7 +281,8 @@
 
                         <div class="mb-3">
                             <label for="tenQuanhuyen" class="form-label">Tên quận/huyện</label>
-                            <input type="text" class="form-control" id="tenQuanhuyen" th:field="*{tenQuanhuyen}" required>
+                            <input type="text" class="form-control" id="tenQuanhuyen" th:field="*{tenQuanhuyen}"
+                                   required>
                         </div>
 
                         <div class="mb-3">
@@ -305,7 +328,7 @@
             return false; // Ngăn chặn việc gửi form
         }
 
-        return true; // Cho phép gửi form
+        return confirm('Bạn có chắc chắn muốn đặt hàng không?'); // Cho phép gửi form
     }
 </script>
 <script>
@@ -321,11 +344,12 @@
 <script>
     function toggleSelectAll(selectAllCheckbox) {
         var checkboxes = document.querySelectorAll('.product-checkbox');
-        checkboxes.forEach(function(checkbox) {
+        checkboxes.forEach(function (checkbox) {
             checkbox.checked = selectAllCheckbox.checked;
         });
         calculateTotal(); // Cập nhật tổng tiền mỗi khi thay đổi trạng thái của "Select All"
     }
+
     function calculateTotal() {
         const checkboxes = document.querySelectorAll('.product-checkbox:checked');
         let total = 0;
@@ -398,12 +422,12 @@
                 productId: productId,
                 newQuantity: currentQuantity
             },
-            success: function(response) {
+            success: function (response) {
                 console.log('Cập nhật số lượng thành công:', response);
                 // Gọi lại hàm calculateTotal() để tính tổng sau khi cập nhật thành công
                 calculateTotal();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 const errorMessage = xhr.responseJSON ? xhr.responseJSON.error : 'Có lỗi xảy ra';
                 alert(errorMessage);
             }
@@ -423,8 +447,8 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-crossorigin="anonymous"></script>
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/banhang.js}"></script>
 <script src="/js/toastMessage.js"></script>

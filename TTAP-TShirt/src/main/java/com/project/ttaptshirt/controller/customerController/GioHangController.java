@@ -320,6 +320,12 @@ public class GioHangController {
         return "redirect:/login";
     }
 
+    @PostMapping("/huy-hoa-don-online")
+    public String huyHDOnline(@RequestParam("idHD") Long idHD){
+        hoaDonService.huyHoaDonOnline(idHD);
+        return "redirect:/TTAP/cart/hoa-don-chi-tiet/hien-thi?id=" + idHD;
+    }
+
     @PostMapping("/updateProductQuantity")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateProductQuantity(@RequestParam Long productId,

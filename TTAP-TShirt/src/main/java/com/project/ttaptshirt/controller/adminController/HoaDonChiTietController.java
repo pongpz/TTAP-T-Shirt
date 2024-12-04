@@ -3,9 +3,11 @@ package com.project.ttaptshirt.controller.adminController;
 import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
+import com.project.ttaptshirt.entity.HoaDonLog;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.service.HoaDonChiTietService;
+import com.project.ttaptshirt.service.HoaDonLogService;
 import com.project.ttaptshirt.service.HoaDonService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class HoaDonChiTietController {
     @Autowired
     HoaDonChiTietService hoaDonChiTietService;
 
+
+
     @Transactional
     @GetMapping("/admin/hoa-don-chi-tiet/hien-thi")
     public String hienThi(@RequestParam Long id, Model model, @RequestParam(defaultValue = "0") Integer page){
@@ -49,6 +53,7 @@ public class HoaDonChiTietController {
         if (hdr.getReferenceById(id).getLoaiDon() == 1){
             return "admin/hoadon/hoa-don";
         }else {
+
             return "admin/hoadon/chi-tiet-hoa-don-online";
         }
     }

@@ -41,7 +41,14 @@
                 <h4 style="margin-left: 10px; color: red" th:text="${listSP.ten}"></h4>
                 <a class="btn btn-secondary ms-auto" th:href="@{/admin/chi-tiet-san-pham/add/{id}(id=${listSP.id})}">Thêm chi tiết sản phẩm</a>
             </div>
-                    <div class="box-body table-responsive no-padding">
+            <div class="d-flex">
+                <img th:each="image : ${listSP.hinhAnhList}"
+                     th:src="${image.path}"
+                     alt="Ảnh sản phẩm"
+                     style="max-width: 100px; height: 120px; margin-right: 10px;">
+            </div>
+
+            <div class="box-body table-responsive no-padding">
                         <table class="table table-hover table-bordered table-striped">
                             <thead>
                             <tr>
