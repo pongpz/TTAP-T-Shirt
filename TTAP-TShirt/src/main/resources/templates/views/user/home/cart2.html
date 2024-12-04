@@ -182,7 +182,7 @@
                                     </p>
                                     <small class="text-muted">(Đã bao gồm VAT nếu có)</small>
                                 </div>
-                                <button class="btn btn-success w-100 mt-3" type="submit">Tiến hành đặt hàng</button>
+                                <button class="btn btn-success w-100 mt-3" onclick="return confirmCreateOrder()" type="submit">Tiến hành đặt hàng</button>
                             </div>
                         </div>
                     </div>
@@ -448,6 +448,16 @@ crossorigin="anonymous"></script>
     /*]]>*/
 </script>
 
+<script>
+    function confirmCreateOrder (){
+        let confirmCreate = window.confirm("Bạn có chắc muốn đặt hàng không??")
+        if (confirmCreate){
+            return true
+        }else {
+            return false
+        }
+    }
+</script>
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
     <p>&copy; 2024 TTAP T-SHIRT. All rights reserved.</p>
 </footer>

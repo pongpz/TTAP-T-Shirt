@@ -88,20 +88,20 @@
                         <!--            <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.gia : 'Không có'}"></td>-->
                         <td th:text="${hdct.chiTietSanPham.mauSac != null  ? hdct.chiTietSanPham.mauSac.ten : 'Không có'}"></td>
                         <td th:text="${hdct.chiTietSanPham.kichCo != null  ? hdct.chiTietSanPham.kichCo.ten : 'Không có'}"></td>
-                        <td th:text="${hdct.donGia != null ? hdct.donGia : 'Không có'}"></td>
+                        <td th:text="${hdct.donGia != null ? numberUtils.formatCurrency(hdct.donGia) : 'Không có'}"></td>
                         <td th:text="${hdct.soLuong != null ? hdct.soLuong : 'Không có'}"></td>
-                        <td th:text="${hdct.donGia != null &&hdct.soLuong != null ? hdct.donGia*hdct.soLuong : 'Không có'}"></td>
+                        <td th:text="${hdct.donGia != null &&hdct.soLuong != null ? numberUtils.formatCurrency(hdct.donGia*hdct.soLuong) : 'Không có'}"></td>
                     </tr>
                     </tbody>
                 </table>
 
                 <!-- Hiển thị tổng tiền -->
                 <div class="text-end mt-3">
-                    <h4>Tạm tính: <span th:text="${numberUtils.formatCurrency(hoaDon.tongTien)}"></span> VND</h4>
+                    <h4>Tạm tính: <span th:text="${numberUtils.formatCurrency2(hoaDon.tongTien)}"></span> VND</h4>
                     <br>
-                    <h4>Phí vận chuyển: <span >50,000</span> VND</h4>
+                    <h4>Phí vận chuyển: <span th:text="${hoaDon.tienShip != null ? numberUtils.formatCurrency2(hoaDon.tienShip) :''}"></span> VND</h4>
                     <br>
-                    <h4>Tổng tiền: <span th:text="${numberUtils.formatCurrency((hoaDon.tongTien)+50000)}"></span> VND</h4>
+                    <h4>Tổng tiền: <span th:text="${numberUtils.formatCurrency2(hoaDon.tienThu)}"></span> VND</h4>
 
                 </div>
 
@@ -110,21 +110,21 @@
                     <h4>Thông tin chi tiết</h4>
                     <div class="form-group">
                         <label for="fullName">Họ và tên</label>
-                        <input type="text" id="fullName" name="tenNguoiNhan"
+                        <input disabled type="text" id="fullName" name="tenNguoiNhan"
                                th:value="${hoaDon.tenNguoiNhan}"
                                class="form-control" required />
                     </div>
 
                     <div class="form-group">
                         <label for="phoneNumber">Số điện thoại</label>
-                        <input type="text" id="phoneNumber" name="sdtNguoiNhan"
+                        <input disabled type="text" id="phoneNumber" name="sdtNguoiNhan"
                                th:value="${hoaDon.sdtNguoiNhan}"
                                class="form-control" required />
                     </div>
 
                     <div class="form-group">
                         <label for="address">Địa chỉ</label>
-                        <input type="text" id="address" name="diaChiGiaoHang"
+                        <input disabled type="text" id="address" name="diaChiGiaoHang"
                                th:value="${hoaDon.diaChiGiaoHang}"
                                class="form-control" required />
                     </div>
@@ -148,6 +148,7 @@
         </div>
         <div class="text-center mt-4">
             <a href="/TTAP/cart/hoa-don" class="btn btn-secondary">Quay lại giỏ hàng</a>
+            <a th:href="@{/cancel-hoa-don/online/{idHD}(idHD=${hoaDon.id})}" th:if="${hoaDon.trangThai==3}" onclick="return confirmCancelOrder()" class="btn btn-secondary">Hủy đơn hàng</a>
         </div>
     </div>
 </section>
@@ -178,6 +179,17 @@
         inputSelectedProductIds.name = 'selectedProductIds';
         inputSelectedProductIds.value = selectedProductIds.join(',');
         document.getElementById('cartForm').appendChild(inputSelectedProductIds);
+    }
+</script>
+
+<script>
+    function confirmCancelOrder (){
+        let confirmCancel = window.confirm("Bạn có chắc muốn hủy đơn này không?")
+        if (confirmCancel){
+            return true
+        }else {
+            return false
+        }
     }
 </script>
 
