@@ -101,14 +101,14 @@
                                             <td th:text="${ctsp.mauSac.ten}"></td>
                                             <td th:text="${ctsp.soLuong}"></td>
                                             <td th:text="${ctsp.giaBan != null ? numberUtils.formatCurrency(ctsp.giaBan) : 'N/A'}"></td>
+                                            <form class="d-flex align-items-center"
+                                                  th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
+                                                  method="post"
+                                                  onsubmit="setQuantity(${ctsp.id})">
                                             <td>
-                                                <form class="d-flex align-items-center" id="formSP"
-                                                      th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
-                                                      method="post"
-                                                      onsubmit="setQuantity(${ctsp.id})">
                                                     <input type="hidden" name="idctsp" th:value="${ctsp.id}"/>
                                                     <input type="hidden" th:value="${hoadon.id}" name="idhd">
-                                                    <input
+                                                    <input  id="soLuongSP"
                                                             class="form-control me-2"
                                                             type="number"
                                                             name="soLuong"
@@ -120,18 +120,17 @@
                                                             oninput="this.setCustomValidity('')"
                                                             required
                                                     />
-                                                </form>
                                             </td>
                                             <td>
-                                                <button onclick="submitSP()"
-                                                        type="submit"
-                                                        class="btn btn-primary"
-                                                        style="font-size: 1.2rem; padding: 0.5rem 1rem; border-radius: 0.5rem;">
-                                                    <!-- Button styled -->
-                                                    Thêm
-                                                </button>
+                                                    <button onclick="submitSP()"
+                                                            type="submit"
+                                                            class="btn btn-primary"
+                                                            style="font-size: 1.2rem; padding: 0.5rem 1rem; border-radius: 0.5rem;">
+                                                        <!-- Button styled -->
+                                                        Thêm
+                                                    </button>
                                             </td>
-
+                                            </form>
                                         </tr>
                                         </tbody>
                                     </table>

@@ -110,14 +110,22 @@
                         <label for="ten" class="form-label">Tên nhà sản xuất</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
                     </div>
-
+                    <span class="text-danger">[[${errorNSX}}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const showModal = [[${showModalnsx}]]; // Thymeleaf expression
+                if (showModal) {
+                    const modal = new bootstrap.Modal(document.getElementById('modalAddNSX'));
+                    modal.show();
+                }
+            });
+        </script>
 <div class="modal fade" th:id="modalAddChatLieu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
         <div class="modal-content">
@@ -131,13 +139,23 @@
                         <label for="ten" class="form-label">Tên chất liệu</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
                     </div>
-
+                    <span class="text-danger">[[${error}}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const showModal = [[${showModalnsx}]]; // Thymeleaf expression
+                if (showModal) {
+                    const modal = new bootstrap.Modal(document.getElementById('modalAddChatLieu'));
+                    modal.show();
+                }
+            });
+        </script>
 
 <div class="modal fade" th:id="modalAddThuongHieu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
@@ -152,14 +170,22 @@
                         <label for="ten" class="form-label">Tên thương hiệu</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
                     </div>
-
+                    <span class="text-danger">[[${error}}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const showModal = [[${showModalth}]]; // Thymeleaf expression
+                if (showModal) {
+                    const modal = new bootstrap.Modal(document.getElementById('modalAddThuongHieu'));
+                    modal.show();
+                }
+            });
+        </script>
 <div class="modal fade" th:id="modalAddKieuDang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
         <div class="modal-content">
@@ -173,7 +199,7 @@
                         <label for="ten" class="form-label">Tên kiểu dáng</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
                     </div>
-
+                    <span class="text-danger">[[${error}}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
