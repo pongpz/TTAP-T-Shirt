@@ -388,10 +388,7 @@ public class BanHangController {
             chiTietSanPham.setTrangThai(0);
             chiTietSanPham.setSoLuong(soLuongCu+soLuongHoi);
             chiTietSanPhamRepository.save(chiTietSanPham);
-//            chiTietSanPhamService.updateSoLuongCtsp((chiTietSanPham.getSoLuong() + soLuongHoi), chiTietSanPham.getId());
-            hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
         }
-        hoaDonService.updateTongTien(idhd, 0.0);
         hoaDonService.updateTrangThaiHD(2, idhd);
         redirectAttributes.addFlashAttribute("isCancelInvoice", true);
         return "redirect:/admin/ban-hang";
@@ -593,13 +590,15 @@ public class BanHangController {
 
     @PostMapping("/chon-khach-hang")
     public String chonKhachHang(@RequestParam("idhd") Long idhd,
-                                @RequestParam("idkh") Long idkh) {
+                                @RequestParam("idkh") Long idkh,
+                                RedirectAttributes redirectAttributes) {
         System.out.println(idhd);
         HoaDon existingHoaDon = hoaDonRepository.findById(idhd).orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idhd));
         KhachHang khachHang = new KhachHang();
         khachHang.setId(idkh);
         existingHoaDon.setKhachHang(khachHang);
         hoaDonService.save(existingHoaDon);
+        redirectAttributes.addFlashAttribute("addCustomerToInvoiceSuccess",true);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
 
