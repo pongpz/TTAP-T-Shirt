@@ -241,27 +241,39 @@ public class SanPhamController {
 
 
     @PostMapping("/add/nsx")
-    public String addChatLieu(NSX nsx) {
-        nsxRepository.save(nsx);
-        return "redirect:/admin/san-pham";
+    public String addNSX(NSX nsx,Model model) {
+        NSX NSXCheck = nsxRepository.getNSXByTen(nsx.getTen());
+        if (NSXCheck == null){
+            nsxRepository.save(nsx);
+            return "redirect:/admin/san-pham/them-san-pham";
+        }else if (nsx.getTen().isEmpty()){
+            model.addAttribute("errorNSX","Không được bỏ trống trường này!");
+            model.addAttribute("showModalnsx",true);
+            return "admin/sanpham/san-pham-new";
+        }
+        else {
+            model.addAttribute("errorNSX","Nhà sản xuất này đã tồn tại!");
+            model.addAttribute("showModalnsx",true);
+            return "admin/sanpham/san-pham-new";
+        }
     }
 
     @PostMapping("/add/chat-lieu")
     public String addChatLieu(ChatLieu cl){
         chatLieuRepository.save(cl);
-        return "redirect:/admin/san-pham";
+        return "redirect:/admin/san-pham/them-san-pham";
     }
 
     @PostMapping("/add/thuong-hieu")
     public String addThuongHieu(ThuongHieu th){
         thuongHieuRepository.save(th);
-        return "redirect:/admin/san-pham";
+        return "redirect:/admin/san-pham/them-san-pham";
     }
 
     @PostMapping("/add/kieu-dang")
     public String addKieuDang(KieuDang kieuDang){
         kieuDangRepository.save(kieuDang);
-        return "redirect:/admin/san-pham";
+        return "redirect:/admin/san-pham/them-san-pham";
     }
 
 
