@@ -472,6 +472,16 @@
     /*]]>*/
 </script>
 
+<script>
+    function confirmCreateOrder (){
+        let confirmCreate = window.confirm("Bạn có chắc muốn đặt hàng không??")
+        if (confirmCreate){
+            return true
+        }else {
+            return false
+        }
+    }
+</script>
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
     <p>&copy; 2024 TTAP T-SHIRT. All rights reserved.</p>
 </footer>

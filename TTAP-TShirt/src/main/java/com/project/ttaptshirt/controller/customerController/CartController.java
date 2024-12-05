@@ -11,6 +11,7 @@ import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.CartService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -129,6 +130,15 @@ public class CartController {
             model.addAttribute("message", "Không tìm thấy hóa đơn.");
             return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
         }
+    }
+
+    @Transactional
+    @GetMapping("/cancel-hoa-don/online/{idHD}")
+    public String cancelHD(@PathVariable("idHD") Long idHD){
+        HoaDon hd = hoaDonService.findById(idHD);
+        hd.setTrangThai(2);
+        hoaDonService.save(hd);
+        return "redirect:/TTAP/cart/hoa-don";
     }
 
 
