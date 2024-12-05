@@ -44,7 +44,7 @@
                  style="height: 800px; background-color: var(--bs-info-bg-subtle); margin-right: 30px; overflow-y: auto; padding: 20px">
                 <div class="row">
                     <h3 class="col-6">Sản Phẩm</h3>
-                    <button class="col-2 btn btn-primary" id="btn-select-products" data-bs-toggle="modal"
+                    <button class="col-3 btn btn-primary" id="btn-select-products" data-bs-toggle="modal"
                             data-bs-target="#modalAddSP">Thêm Sản
                         Phẩm
                     </button>
@@ -85,7 +85,8 @@
                                             <th scope="col">Mau Sac</th>
                                             <th scope="col">Số Lượng Tồn</th>
                                             <th scope="col">Giá bán</th>
-                                            <th scope="col">Số lượng mua Hành động</th>
+                                            <th scope="col">Số lượng mua</th>
+                                            <th scope="col">Hành động</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -101,7 +102,7 @@
                                             <td th:text="${ctsp.soLuong}"></td>
                                             <td th:text="${ctsp.giaBan != null ? numberUtils.formatCurrency(ctsp.giaBan) : 'N/A'}"></td>
                                             <td>
-                                                <form class="d-flex align-items-center"
+                                                <form class="d-flex align-items-center" id="formSP"
                                                       th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
                                                       method="post"
                                                       onsubmit="setQuantity(${ctsp.id})">
@@ -119,15 +120,16 @@
                                                             oninput="this.setCustomValidity('')"
                                                             required
                                                     />
-
-                                                    <button
-                                                            type="submit"
-                                                            class="btn btn-primary col-4"
-                                                            style="font-size: 1.2rem; padding: 0.5rem 1rem; border-radius: 0.5rem;">
-                                                        <!-- Button styled -->
-                                                        Thêm
-                                                    </button>
                                                 </form>
+                                            </td>
+                                            <td>
+                                                <button onclick="submitSP()"
+                                                        type="submit"
+                                                        class="btn btn-primary"
+                                                        style="font-size: 1.2rem; padding: 0.5rem 1rem; border-radius: 0.5rem;">
+                                                    <!-- Button styled -->
+                                                    Thêm
+                                                </button>
                                             </td>
 
                                         </tr>
@@ -144,6 +146,13 @@
                         </div>
                     </div>
 
+
+                    <script>
+                        function submitSP(){
+                            let sp = document.getElementById('formSP')
+                            sp.submit()
+                        }
+                    </script>
 
                     <script>
                         function customValidationMessage(input) {
@@ -588,17 +597,16 @@
                 <textarea id="note" style="width: 400px; height: 80px"></textarea>
                 <br/><br/>
 
-                <div class="paying">
+                <div class="paying d-flex">
                     <button class="col-4 btn btn-primary" style="height: 50px"
                             onclick="confirmCheckout()">Thanh Toán
                         <!-- Hidden input field to hold the HoaDon ID -->
                         <input type="hidden" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
                     </button>
-                    <a class="col-4 btn btn-primary" style="height: 50px"
-                       th:href="@{/admin/ban-hang/hoa-don/thanh-toan-vnpay?idhd={idhd}(idhd=${hoadon.id})}">Chuyển khoản
-                        <!-- Hidden input field to hold the HoaDon ID -->
-                        <!--                        <input type="hidden" id="hoaDonIdCheckOut2" th:value="${hoadon.id}">-->
-                    </a>
+                    <form th:action="@{/admin/ban-hang/hoa-don/create-payment-link?idhd={idhd}(idhd=${hoadon.id})}" method="post" class="col-4">
+                        <button class="btn btn-primary col-12" style="height: 50px">Chuyển khoản
+                        </button>
+                    </form>
                 </div>
 
                 <script>

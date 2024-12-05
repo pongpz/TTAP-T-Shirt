@@ -102,8 +102,8 @@
                                 </div>
                             </div>
                             </div>
-                            <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${numberUtils.formatCurrency3(mgg.giaTriToiDa) ?: ''}">
-                            <div class="col-1">
+<!--                            <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${numberUtils.formatCurrency3(mgg.giaTriToiDa) ?: ''}">-->
+<!--                            <div class="col-1">-->
 
                             </div>
                             <div class="col-3">
@@ -153,12 +153,12 @@
     let hinhThuc = document.getElementById('hinhThuc')
     let giaTriToiDa = document.getElementById('giaTriToiDa')
     let giaTriGiam = document.getElementById('giaTriGiam')
-    let gttoida = document.getElementById('gttoida')
+    // let gttoida = document.getElementById('gttoida')
     function checkGiaTriToiDa(){
         if (hinhThuc.value === "true"){
             giaTriToiDa.hidden = true
             giaTriToiDa.value = giaTriGiam.value
-            gttoida.value = giaTriToiDa.value
+            // gttoida.value = giaTriToiDa.value
         }else {
             giaTriToiDa.hidden = false
         }
