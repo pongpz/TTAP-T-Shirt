@@ -89,7 +89,7 @@ public class MaGiamGia {
 
         // Optional: Method to check if the voucher is valid (active and within the valid date range)
         public boolean isValid() {
-                return isStart() && !isExpired() && trangThai != null && trangThai;
+                return isStart() && !isExpired() && trangThai != null && trangThai && soLuong>0;
         }
 }
 

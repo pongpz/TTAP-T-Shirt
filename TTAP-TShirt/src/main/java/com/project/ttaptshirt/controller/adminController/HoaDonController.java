@@ -96,20 +96,18 @@ public class HoaDonController {
     public String xacNhanHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes, Authentication authentication) {
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
         User user = customUserDetail.getUser();
-        hoaDonService.xacNhanHoaDon(idHD);
         List<HoaDonChiTiet> listSanPham = hoaDonChiTietService.getListHdctByIdHd(idHD);
         for (HoaDonChiTiet hdct : listSanPham) {
 
             ChiTietSanPham chiTietSanPham = hdct.getChiTietSanPham();
             if (chiTietSanPham.getSoLuong() < hdct.getSoLuong()) {
-                redirectAttributes.addFlashAttribute("confirmErrorMessage", "Đơn hàng xác nhận thất bại" +
-                        "(số lượng sản phẩm còn lại không đủ)!");
+                redirectAttributes.addFlashAttribute("confirmErrorMessage", true);
                 HoaDonLog hoaDonLog = new HoaDonLog();
                 hoaDonLog.setHoaDon(hdct.getHoaDon());
                 hoaDonLog.setHanhDong("Xác nhận");
                 hoaDonLog.setThoiGian(LocalDateTime.now());
                 hoaDonLog.setNguoiThucHien(user.getHoTen());
-                hoaDonLog.setGhiChu("đã thực hiện xác nhận đơn hàng online (số lượng sản phẩm không đủ)");
+                hoaDonLog.setGhiChu("xác nhận đơn hàng online (số lượng sản phẩm không đủ)");
                 hoaDonLog.setTrangThai(1);
                 hoaDonLogService.save(hoaDonLog);
                 return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
@@ -124,6 +122,7 @@ public class HoaDonController {
             hoaDonLog.setGhiChu("đã thực hiện xác nhận đơn hàng online");
             hoaDonLog.setTrangThai(0);
             hoaDonLogService.save(hoaDonLog);
+            hoaDonService.xacNhanHoaDon(idHD);
         }
         // Add a flash attribute for success message
         redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã được xác nhận!");

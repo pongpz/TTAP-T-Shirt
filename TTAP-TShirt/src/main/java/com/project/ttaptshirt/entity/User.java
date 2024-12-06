@@ -94,4 +94,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiaChi> diaChiList = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "id_dia_chi")
+    private DiaChi defaultAddress;
 }

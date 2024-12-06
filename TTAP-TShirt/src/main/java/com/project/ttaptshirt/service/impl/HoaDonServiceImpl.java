@@ -133,6 +133,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         }
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
+        hoaDon.setTienShip(50000.0);
         hoaDon.setTenNguoiNhan(fullName);
         hoaDon.setSdtNguoiNhan(phoneNumber);
         hoaDon.setDiaChiGiaoHang(address);
@@ -140,6 +141,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setTrangThai(3);
         hoaDon.setLoaiDon(0);
         hoaDon.setTongTien(cart.getTotalAmount().doubleValue());
+        hoaDon.setTienThu(cart.getTotalAmount().doubleValue()+50000);
 
         HoaDon saveHd = hoaDonRepository.save(hoaDon);
 
