@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/chat-lieu")
@@ -34,15 +35,17 @@ public class ChatLieuController {
     }
 
     @PostMapping("/add")
-    public String addChatLieu(ChatLieu cl){
+    public String addChatLieu(ChatLieu cl, RedirectAttributes redirectAttributes){
         cli.save(cl);
+        redirectAttributes.addFlashAttribute("createSuccess", true);
         return "redirect:/admin/chat-lieu/view";
     }
 
     @PostMapping("/update/{id}")
-    public String updateChatLieu(ChatLieu cl,@PathVariable("id") Long id){
+    public String updateChatLieu(ChatLieu cl, @PathVariable("id") Long id, RedirectAttributes redirectAttributes){
         cl.setId(id);
         cli.save(cl);
+        redirectAttributes.addFlashAttribute("updateSuccess", true);
         return "redirect:/admin/chat-lieu/view";
     }
 

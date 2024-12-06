@@ -21,15 +21,6 @@
     <div class="main-content content flex-grow-1 p-4">
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <ul>
-                <li th:each="month : ${months}" th:text="${month}">Month</li>
-            </ul>
-            <ul>
-                <li th:each="revenue : ${revenues}" th:text="${revenue}">Revenue</li>
-            </ul>
-
-
             <!-- Main Content -->
             <div id="content">
 
@@ -93,6 +84,12 @@
                         </div>
                     </div>
 
+                    <form action="/thong-ke" method="get">
+                        <label for="date">Chọn ngày:</label>
+                        <input type="date" id="date" name="date" value="{{${date}}}">
+                        <button type="submit">Xem thống kê</button>
+                    </form>
+
                     <!-- Content Row -->
 
                     <div class="row">
@@ -104,7 +101,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="bieuDoDoanhThu"></canvas>
+                                        <canvas id="bieuDoDoanhThu" style="height: 600px "></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -116,12 +113,8 @@
 
                     <script th:inline="javascript">
                         // Lấy dữ liệu từ Thymeleaf
-                        const labels = JSON.parse(/*[[${months}]]*/ '[]'); // JSON parse từ chuỗi months
-                        const data = JSON.parse(/*[[${revenues}]]*/ '[]'); // JSON parse từ chuỗi revenues
-
-                        // Hiển thị console kiểm tra dữ liệu
-                        console.log("Months:", labels);
-                        console.log("Revenues:", data);
+                        const labels = JSON.parse(/*[[${months}]]*/ '[]').map(month => `Tháng ${month}`);
+                        const data = JSON.parse(/*[[${revenues}]]*/ '[]');
 
                         // Vẽ biểu đồ đường (line chart)
                         const ctx = document.getElementById('bieuDoDoanhThu').getContext('2d');
@@ -130,17 +123,18 @@
                             data: {
                                 labels: labels,
                                 datasets: [{
-                                    label: 'Doanh thu theo tháng',
+                                    label: 'Doanh thu',
                                     data: data,
                                     borderColor: 'rgba(75, 192, 192, 1)',
                                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                    tension: 0.4, // Làm mượt đường biểu đồ
+                                    tension: 0.4,
                                     fill: true,
                                     borderWidth: 2
                                 }]
                             },
                             options: {
                                 responsive: true,
+                                maintainAspectRatio: false, // Tắt tỷ lệ mặc định
                                 scales: {
                                     y: {
                                         beginAtZero: true,

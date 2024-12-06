@@ -66,6 +66,7 @@ public class ThongKeController {
 
                 // Tính tổng doanh thu của hóa đơn
                 double doanhThu = hoaDonChiTiets.stream()
+                        .filter(chiTiet -> chiTiet.getDonGia() != null && chiTiet.getSoLuong() != null) // Kiểm tra null
                         .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
                         .sum();
 
@@ -79,7 +80,7 @@ public class ThongKeController {
         List<Double> revenues = new ArrayList<>(doanhThuTheoThang.values());
 
         // Sắp xếp theo thứ tự tháng
-        months.sort(Comparator.naturalOrder());  // Sắp xếp tháng từ 1 đến 12
+        months.sort(Comparator.naturalOrder()); // Sắp xếp tháng từ 1 đến 12
 
         // Sắp xếp revenues theo thứ tự tháng
         List<Double> sortedRevenues = new ArrayList<>();
@@ -97,6 +98,8 @@ public class ThongKeController {
             model.addAttribute("months", "[]");
             model.addAttribute("revenues", "[]");
         }
+
+
 
         // Trả về view
         return "/admin/thongke/thong-ke";

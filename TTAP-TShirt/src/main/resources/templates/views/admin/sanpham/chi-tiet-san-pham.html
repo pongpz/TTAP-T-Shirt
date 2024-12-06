@@ -73,7 +73,6 @@
                                 <td th:text="${ctsp.trangThai} == 0 ? 'Đang bán' : 'Ngừng bán'"> "></td>
                                 <td>
                                     <a class="btn btn-secondary" th:href="@{/admin/chi-tiet-san-pham/detail/{id}(id=${ctsp.id})}">Sửa</a>
-                                    <a class="btn btn-danger" th:href="@{/admin/chi-tiet-san-pham/delete/{id}(id=${ctsp.id})}">Xóa</a>
                                 </td>
                             </tr>
                             </tbody>

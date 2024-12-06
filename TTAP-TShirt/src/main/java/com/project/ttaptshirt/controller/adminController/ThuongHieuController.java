@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/thuong-hieu")
@@ -26,14 +27,16 @@ public class ThuongHieuController {
     }
 
     @PostMapping("/add")
-    public String addThuongHieu(ThuongHieu th){
+    public String addThuongHieu(ThuongHieu th, RedirectAttributes redirectAttributes){
         thi.save(th);
+        redirectAttributes.addFlashAttribute("createSuccess", true);
         return "redirect:/admin/thuong-hieu/view";
     }
 
     @PostMapping("/update/{id}")
-    public String updateThuongHieu(ThuongHieu th){
+    public String updateThuongHieu(ThuongHieu th, RedirectAttributes redirectAttributes){
         thi.save(th);
+        redirectAttributes.addFlashAttribute("updateSuccess", true);
         return "redirect:/admin/thuong-hieu/view";
     }
 

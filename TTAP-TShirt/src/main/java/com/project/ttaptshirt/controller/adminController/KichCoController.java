@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/kich-co")
@@ -28,15 +29,17 @@ public class KichCoController {
     }
 
     @PostMapping("/save-kich-co")
-    public String createNewKichCo(KichCo kichCo){
+    public String createNewKichCo(KichCo kichCo, RedirectAttributes redirectAttributes){
         kichCoService.save(kichCo);
+        redirectAttributes.addFlashAttribute("createSuccess", true);
         return "redirect:/admin/kich-co";
     }
 
     @PostMapping("update-kich-co/{id}")
-    public String updateMauSac(KichCo kichCo, @PathVariable("id") Long id){
+    public String updateMauSac(KichCo kichCo, @PathVariable("id") Long id, RedirectAttributes redirectAttributes){
         kichCo.setId(id);
         kichCoService.save(kichCo);
+        redirectAttributes.addFlashAttribute("updateSuccess", true);
         return "redirect:/admin/kich-co";
     }
 

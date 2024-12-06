@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/mau-sac")
@@ -22,15 +23,18 @@ public class MauSacController {
     }
 
     @PostMapping("/save-mau-sac")
-    public String createNewMauSac(@ModelAttribute MauSac mauSac) {
+    public String createNewMauSac(@ModelAttribute MauSac mauSac, RedirectAttributes redirectAttributes) {
         mauSacService.save(mauSac);
+        redirectAttributes.addFlashAttribute("createSuccess", true);
         return "redirect:/admin/mau-sac";
     }
 
     @PostMapping("/update-mau-sac/{id}")
-    public String updateMauSac(@ModelAttribute MauSac mauSac, @PathVariable("id") Long id) {
+    public String updateMauSac(@ModelAttribute MauSac mauSac, @PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         mauSac.setId(id);
         mauSacService.save(mauSac);
+        redirectAttributes.addFlashAttribute("updateSuccess", true);
+
         return "redirect:/admin/mau-sac";
     }
 

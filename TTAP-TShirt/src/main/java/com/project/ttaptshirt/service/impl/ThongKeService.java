@@ -53,7 +53,11 @@ public class ThongKeService {
 
             // Tính tổng thu nhập từ các chi tiết hóa đơn
             for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
-                totalIncome += chiTiet.getDonGia() * chiTiet.getSoLuong();  // Cộng tổng thu nhập
+                Float donGia = chiTiet.getDonGia();
+                Integer soLuong = chiTiet.getSoLuong();
+                if (donGia != null && soLuong != null) {
+                    totalIncome += donGia * soLuong;  // Cộng tổng thu nhập
+                }
             }
         }
 
@@ -61,18 +65,6 @@ public class ThongKeService {
     }
 
     public Double tinhThuNhapTheoThang(int month, int year) {
-        // Lấy ngày hiện tại
-        LocalDate today = LocalDate.now();  // Lấy ngày hiện tại
-
-        // Nếu bạn chỉ cần lấy tháng và năm hiện tại
-        int currentMonth = today.getMonthValue();  // Lấy tháng hiện tại (1-12)
-        int currentYear = today.getYear();        // Lấy năm hiện tại
-
-        // Nếu tháng và năm truyền vào không khớp với tháng và năm hiện tại, bạn có thể xử lý
-        if (month != currentMonth || year != currentYear) {
-            throw new IllegalArgumentException("Tháng và năm không khớp với tháng và năm hiện tại.");
-        }
-
         // Lấy tất cả hóa đơn có ngày thanh toán trong tháng và năm đã chọn
         List<HoaDon> hoaDons = hoaDonRepository.findHoaDonsByMonthAndYear(month, year);
 
@@ -85,7 +77,11 @@ public class ThongKeService {
 
             // Tính tổng thu nhập từ các chi tiết hóa đơn
             for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
-                totalIncome += chiTiet.getDonGia() * chiTiet.getSoLuong();  // Cộng tổng thu nhập
+                Float donGia = chiTiet.getDonGia();
+                Integer soLuong = chiTiet.getSoLuong();
+                if (donGia != null && soLuong != null) {
+                    totalIncome += donGia * soLuong;  // Cộng tổng thu nhập
+                }
             }
         }
 
@@ -96,14 +92,21 @@ public class ThongKeService {
         List<HoaDon> hoaDons = hoaDonRepository.findHoaDonsByYear(year);
 
         double totalIncome = 0.0;
+
         for (HoaDon hoaDon : hoaDons) {
             List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
+
             for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
-                totalIncome += chiTiet.getDonGia() * chiTiet.getSoLuong();
+                Float donGia = chiTiet.getDonGia();
+                Integer soLuong = chiTiet.getSoLuong();
+                if (donGia != null && soLuong != null) {
+                    totalIncome += donGia * soLuong;  // Cộng tổng thu nhập
+                }
             }
         }
 
         return totalIncome;
     }
+
 
 }
