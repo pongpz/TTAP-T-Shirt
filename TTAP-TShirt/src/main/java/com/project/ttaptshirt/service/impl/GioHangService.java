@@ -210,6 +210,21 @@ public class GioHangService {
         hoaDon.setTrangThai(3); // Đặt trạng thái hóa đơn là chờ xử lý
         hoaDonRepository.save(hoaDon);
 
+        // Tính toán phí vận chuyển
+        double totalAmount = cart.getItems().stream()
+                .mapToDouble(item -> item.getGia().doubleValue() * item.getSoLuong())
+                .sum();
+
+        double shippingFee = 0;
+        if (totalAmount > 500000) {
+            shippingFee = 0;  // Miễn phí vận chuyển nếu tổng tiền trên 500,000đ
+        } else {
+            shippingFee = 30000;  // Ví dụ phí vận chuyển là 30,000đ
+        }
+
+        hoaDon.setTienShip(shippingFee); // Lưu phí vận chuyển vào hóa đơn
+
+        hoaDonRepository.save(hoaDon);
         // Duyệt qua danh sách sản phẩm được chọn trong giỏ hàng
         List<GioHangChiTiet> itemsToMove = cart.getItems().stream()
                 .filter(item -> selectedProductIds.contains(item.getId())) // Chỉ chọn sản phẩm có ID được truyền
@@ -232,11 +247,9 @@ public class GioHangService {
         hoaDonChiTietRepository.saveAll(hoaDonChiTietList);
 
         // Cập nhật tổng tiền hóa đơn
-        double totalAmount = hoaDonChiTietList.stream()
-                .mapToDouble(item -> item.getDonGia() * item.getSoLuong())
-                .sum();
+
         hoaDon.setTongTien(totalAmount);
-        hoaDon.setTienThu(totalAmount);
+        hoaDon.setTienThu(totalAmount+shippingFee);
         // Tìm hiểu chức năng check nếu có khuyến mại => tiền thu = tổng tiền - tiền giảm(nhớ save cả tiền giảm vào db)
         hoaDonRepository.save(hoaDon);
 
