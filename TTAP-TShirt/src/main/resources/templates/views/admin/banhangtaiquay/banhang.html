@@ -74,7 +74,7 @@
                             <tr th:each="hoaDon,stat : ${listHoaDon}">
                                 <td th:text="${stat.index+1}"></td>
                                 <td th:text="${hoaDon.ma}"></td>
-                                <td th:text="${hoaDon.ngayTao}"></td>
+                                <td th:text="${@dateTimeUtil.formatLocalDateTime(hoaDon.ngayTao, 'HH:mm:ss dd-MM-yyyy')}"></td>
                                 <td th:text="${hoaDon.khachHang != null ? hoaDon.khachHang.hoTen : 'chưa có'}"></td>
                                 <td th:text="${hoaDon.trangThai==0?'Chưa Thanh Toán':''}"></td>
 
