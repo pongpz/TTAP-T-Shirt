@@ -316,5 +316,9 @@
     toastSuccess('Success', "thao tác đơn hàng thành công !");
 </script>
 
+<script th:if="${confirmErrorMessage}">
+    toastError('Error', "thao tác đơn hàng thất bại !");
+</script>
+
 </body>
 </html>
