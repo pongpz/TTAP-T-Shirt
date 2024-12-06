@@ -195,18 +195,25 @@ public class BanHangController {
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/hoa-don/create-payment-link", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public void checkout(HttpServletRequest request, HttpServletResponse httpServletResponse,@RequestParam("idhd") Long idHD, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public void checkout(HttpServletRequest request, HttpServletResponse httpServletResponse,@RequestParam("idhd") Long idHD,RedirectAttributes redirectAttributes,Model model,Authentication authentication) throws IOException {
 
-//        if (authentication != null) {
-//            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-//            User user = customUserDetail.getUser();
-//            model.addAttribute("userLogged", user); // Gửi thông tin người dùng vào model
-//        }
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user); // Gửi thông tin người dùng vào model
+        }
 
         // Tìm hóa đơn theo ID
         HoaDon hoaDon = hoaDonService.findById(idHD);
         // Lấy danh sách chi tiết hóa đơn theo ID hóa đơn
         List<HoaDonChiTiet> listHDCT = hoaDonChiTietRepository.getHoaDonChiTietByIdHd(idHD);
+
+        if (listHDCT.size() == 0) {
+            System.out.println("Hóa đơn trống");
+            redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
+            httpServletResponse.sendRedirect("/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD);
+            return;
+        }
 
         // Nếu hóa đơn không có chi tiết, chuyển hướng về trang chi tiết hóa đơn với thông báo lỗi
 //        if (listHDCT== null) {
