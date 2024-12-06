@@ -33,4 +33,7 @@ public interface MaGiamGiaRepo extends JpaRepository<MaGiamGia, Long> {
 
     @Query("select km from MaGiamGia  km where km.ma =:code")
     Optional<MaGiamGia> findByCode(String code);
+
+    @Query("select km from MaGiamGia  km where km.ma =:ma")
+    List<MaGiamGia> findByMa(String ma);
 }
