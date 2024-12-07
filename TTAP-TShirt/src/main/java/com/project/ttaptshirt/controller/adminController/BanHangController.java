@@ -532,7 +532,6 @@ public class BanHangController {
                             hoaDon.setTienThu(tongTien-discount);
                             hoaDon.setSoTienGiamGia(discount);
                             hoaDonService.save(hoaDon);
-                            System.out.println(345);
                         }
                     } else {
                         hoaDon.setTienThu(tongTien);
