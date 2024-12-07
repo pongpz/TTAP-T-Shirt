@@ -29,7 +29,9 @@
 
         <hr>
         <div class="d-flex">
-            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Sản phẩm</a>
+            <a th:href="@{/admin/san-pham}" class="fw-medium fs-5 text-black" style="text-decoration:none">Sản phẩm</a>
+            <a>&nbsp / &nbsp</a>
+            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Thêm sản phẩm</a>
         </div>
 
 
@@ -110,8 +112,8 @@
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên nhà sản xuất</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
+                        <span class="text-danger">[[${errorNSX}]]</span>
                     </div>
-                    <span class="text-danger">[[${errorNSX}}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
@@ -139,8 +141,8 @@
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên chất liệu</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
+                        <span class="text-danger">[[${errorCl}]]</span>
                     </div>
-                    <span class="text-danger">[[${error}}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
@@ -150,7 +152,7 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const showModal = [[${showModalnsx}]]; // Thymeleaf expression
+                const showModal = [[${showModalCl}]]; // Thymeleaf expression
                 if (showModal) {
                     const modal = new bootstrap.Modal(document.getElementById('modalAddChatLieu'));
                     modal.show();
@@ -170,8 +172,8 @@
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên thương hiệu</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
+                        <span class="text-danger">[[${errorTh}]]</span>
                     </div>
-                    <span class="text-danger">[[${error}}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
@@ -199,15 +201,23 @@
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên kiểu dáng</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
+                        <span class="text-danger">[[${errorKd}]]</span>
                     </div>
-                    <span class="text-danger">[[${error}}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const showModal = [[${showModalKd}]]; // Thymeleaf expression
+                if (showModal) {
+                    const modal = new bootstrap.Modal(document.getElementById('modalAddKieuDang'));
+                    modal.show();
+                }
+            });
+        </script>
         <!-- Modal hiển thị danh sách ảnh -->
         <div id="imageModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
@@ -274,6 +284,16 @@
     console.log(uploadSuccess);  // Debugging line to ensure the attribute is set
     if (uploadSuccess) {
         toastSuccess('Thành Công!', 'Ảnh đã được thêm thành công!');
+    }
+    /*]]>*/
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var addNSXSuccess = [[${addNSXSuccess}]];
+    console.log(addNSXSuccess);  // Debugging line to ensure the attribute is set
+    if (addNSXSuccess) {
+        toastSuccess('Thành Công!', 'Thuộc tính đã được thêm thành công!');
     }
     /*]]>*/
 </script>

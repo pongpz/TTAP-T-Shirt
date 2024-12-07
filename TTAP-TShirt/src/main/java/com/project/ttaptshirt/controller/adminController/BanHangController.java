@@ -213,8 +213,8 @@ public class BanHangController {
 
         if (listHDCT.size() == 0) {
             System.out.println("Hóa đơn trống");
-            redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
             httpServletResponse.sendRedirect("/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD);
+            redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
             return;
         }
 
@@ -268,17 +268,38 @@ public class BanHangController {
 
         try {
             final String baseUrl = getBaseUrl(request);
-            final String productName = "Sản phẩm của TTAP";
+//            final String productName = "Sản phẩm của TTAP";
             final String description = "Thanh toan "+hoaDon.getMa();
             final String returnUrl = baseUrl + "/admin/ban-hang/hoa-don/xac-nhan-chuyen-khoan?idhd="+hoaDon.getId();
             final String cancelUrl = baseUrl + "/admin/ban-hang/hoa-don/thanh-toan-that-bai?hoadonId="+hoaDon.getId();
             final int price = (int) totalMoneyAfter;
+
+            if (price < 2000){
+                System.out.println("Giá trị đơn hàng tối thiểu 2000đ");
+                redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
+                httpServletResponse.sendRedirect("/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD);
+                return;
+            }
+
             // Gen order code
+            List<ItemData> items = new ArrayList<>();
+            for (int i = 0 ; i< listHDCT.size() ; i ++){
+                HoaDonChiTiet hdct = new HoaDonChiTiet();
+                hdct = listHDCT.get(i);
+                String tenSP = hdct.getChiTietSanPham().getSanPham().getTen();
+                String mauSac = hdct.getChiTietSanPham().getMauSac().getTen();
+                String kichCo = hdct.getChiTietSanPham().getKichCo().getTen();
+                String productName = tenSP+" + "+mauSac+" + "+kichCo;
+                int soLuong = hdct.getSoLuong();
+                int priceItem = Math.round(hdct.getDonGia()*hdct.getSoLuong());
+                ItemData item = ItemData.builder().name(productName).quantity(soLuong).price(priceItem).build();
+                items.add(item);
+            }
             String currentTimeString = String.valueOf(new Date().getTime());
             long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
-            ItemData item = ItemData.builder().name(productName).quantity(1).price(price).build();
+//            ItemData item = ItemData.builder().name(productName).quantity(1).price(price).build();
             PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount(price).description(description)
-                    .returnUrl(returnUrl).cancelUrl(cancelUrl).item(item).build();
+                    .returnUrl(returnUrl).cancelUrl(cancelUrl).items(items).build();
             CheckoutResponseData data = payOS.createPaymentLink(paymentData);
 
             String checkoutUrl = data.getCheckoutUrl();

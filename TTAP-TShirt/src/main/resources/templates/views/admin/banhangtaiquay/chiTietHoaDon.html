@@ -597,16 +597,50 @@
                 <br/><br/>
 
                 <div class="paying d-flex">
-                    <button class="col-4 btn btn-primary" style="height: 50px;padding-right: 20px"
+                    <button class="col-4 btn btn-primary" style="height: 50px;padding-right: 20px;margin-right: 50px"
                             onclick="confirmCheckout()">Thanh Toán
                         <!-- Hidden input field to hold the HoaDon ID -->
                         <input type="hidden" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
                     </button>
-                    <form th:action="@{/admin/ban-hang/hoa-don/create-payment-link?idhd={idhd}(idhd=${hoadon.id})}" method="post" class="col-4">
-                        <button class="btn btn-primary col-12" style="height: 50px">Chuyển khoản
+                    <form th:action="@{/admin/ban-hang/hoa-don/create-payment-link?idhd={idhd}(idhd=${hoadon.id})}" method="post" class="col-4" id="formThanhToanOnline">
+                        <button class="btn btn-primary col-12" onclick="return confirmCheckoutOnline(event)" style="height: 50px">Chuyển khoản
                         </button>
                     </form>
                 </div>
+
+                <script>
+                    function confirmCheckoutOnline(event) {
+                        // Get the length of the listHDCT from the hidden input
+                        event.preventDefault();
+                        const lengthlistHDCT = parseInt(document.getElementById('lengthlistHDCT').value) || 0;
+                        console.log(lengthlistHDCT)
+                        // Check if the list is empty
+                        if (lengthlistHDCT === 0) {
+                            toastWarning('Cảnh báo!', 'Hóa đơn trống. Không thể thực hiện thanh toán!');
+                            return false; // Prevent the checkout if the list is empty
+                        }
+
+
+                        // Show confirmation dialog using SweetAlert
+                        Swal.fire({
+                            title: 'Xác nhận thanh toán',
+                            text: 'Bạn có chắc chắn muốn thanh toán hóa đơn này?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Có, thanh toán!',
+                            cancelButtonText: 'Hủy'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Call the actual checkout function if confirmed
+                                document.getElementById('formThanhToanOnline').submit();
+                            }
+                        });
+
+                    }
+
+                </script>
 
                 <script>
                     function confirmCheckout() {

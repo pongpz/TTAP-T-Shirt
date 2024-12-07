@@ -107,7 +107,7 @@ public class HoaDonController {
                 hoaDonLog.setHanhDong("Xác nhận");
                 hoaDonLog.setThoiGian(LocalDateTime.now());
                 hoaDonLog.setNguoiThucHien(user.getHoTen());
-                hoaDonLog.setGhiChu("xác nhận đơn hàng online (số lượng sản phẩm không đủ)");
+                hoaDonLog.setGhiChu("xác nhận(số lượng sản phẩm không đủ)");
                 hoaDonLog.setTrangThai(1);
                 hoaDonLogService.save(hoaDonLog);
                 return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
