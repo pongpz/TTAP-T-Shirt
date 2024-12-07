@@ -243,6 +243,16 @@
     /*]]>*/
 </script>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var updateSuccess = [[${updateSuccess}]];
+    console.log(updateSuccess);  // Debugging line to ensure the attribute is set
+    if (updateSuccess) {
+        toastSuccess('Thành Công!', 'Sản phẩm đã được sửa thành công!');
+    }
+    /*]]>*/
+</script>
+
 
 
 </body>
