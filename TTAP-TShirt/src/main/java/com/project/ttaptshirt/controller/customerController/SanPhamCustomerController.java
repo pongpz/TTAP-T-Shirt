@@ -193,6 +193,20 @@ public class SanPhamCustomerController {
         ChiTietSanPham chiTietSanPham = !chiTietSanPhamList.isEmpty() ? chiTietSanPhamList.get(0) : null;
         double giaBan = chiTietSanPham != null ? chiTietSanPham.getGiaBan() : 0;
 
+        // Lọc các màu sắc và kích cỡ có sẵn cho sản phẩm
+        // Lọc các màu sắc và kích cỡ có sẵn cho sản phẩm
+        Set<Map.Entry<Long, String>> availableColors = new HashSet<>();
+        Set<Map.Entry<Long, String>> availableSizes = new HashSet<>();
+
+        for (ChiTietSanPham detail : chiTietSanPhamList) {
+            // Lấy id và tên màu sắc
+            availableColors.add(new AbstractMap.SimpleEntry<>(detail.getMauSac().getId(), detail.getMauSac().getTen()));
+
+            // Lấy id và tên kích cỡ
+            availableSizes.add(new AbstractMap.SimpleEntry<>(detail.getKichCo().getId(), detail.getKichCo().getTen()));
+        }
+
+
         NumberUtils numberUtils = new NumberUtils();
 
         model.addAttribute("numberUtils", numberUtils);
@@ -200,8 +214,8 @@ public class SanPhamCustomerController {
         model.addAttribute("sanPham", sanPham);
         model.addAttribute("mainImage", images.isEmpty() ? "/images/no-image.png" : images.get(0));
         model.addAttribute("images", images);
-        model.addAttribute("colors", mauSacRepository.findAll());
-        model.addAttribute("sizes", kichCoRepository.findAll());
+        model.addAttribute("colors", availableColors);
+        model.addAttribute("sizes", availableSizes);
 
         return "user/home/sanphamdetail";
     }

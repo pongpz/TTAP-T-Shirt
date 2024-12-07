@@ -141,6 +141,23 @@ public class NhanVienController {
         return "redirect:/admin/nhanvien/view";
     }
 
+    @GetMapping("/activate/{id}")
+    public String activateUser(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            User user = userService.findById(id);
+            if (user != null) {
+                user.setEnable(true); // Đặt trạng thái enable thành false để ngưng hoạt động
+                userService.save(user); // Lưu lại người dùng với trạng thái mới
+                redirectAttributes.addFlashAttribute("success", "User deactivated successfully!");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "User not found.");
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error deactivating user: " + e.getMessage());
+        }
+        return "redirect:/admin/nhanvien/view";
+    }
+
     @GetMapping("/detail/{id}")
     public String showUserDetails(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
