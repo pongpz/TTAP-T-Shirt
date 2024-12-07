@@ -28,6 +28,8 @@ public interface UserRepo extends JpaRepository<User, Long> {
     @Query("select us from User us where us.email =:email")
     User findUserByEmail(String email);
 
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleName = :roleName")
+    Page<User> findUsersByRoleName( String roleName, Pageable pageable);
 
 //    Optional<User> findByEmail(String email);
 //

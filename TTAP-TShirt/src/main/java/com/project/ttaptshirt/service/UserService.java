@@ -13,10 +13,13 @@ public interface UserService extends CommonService<User> {
 
     Page<User> findAll(Pageable pageable);
 
+    Page<User> findAllNv(String rolename,Pageable pageable);
+
     User findUserByUsername(String userName);
 
     void insertDefaultUserRole(Long userId);
 
+    void insertDefaultNvRole(Long userId);
 
     User updateDiachi(Long userId, DiaChi diaChi);
 
