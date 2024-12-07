@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ThongKeService {
@@ -106,6 +105,26 @@ public class ThongKeService {
         }
 
         return totalIncome;
+    }
+
+    public Map<LocalDate, Long> thongKeSoHoaDonTheoNgay() {
+        List<Object[]> results = hoaDonRepository.countHoaDonTheoNgay();
+        LocalDate today = LocalDate.now();
+        return results.stream()
+                .filter(result -> ((LocalDate) result[0]).equals(today))  // Lọc chỉ lấy hóa đơn của ngày hôm nay
+                .collect(Collectors.toMap(
+                        result -> (LocalDate) result[0], // ngày
+                        result -> (Long) result[1]      // số lượng
+                ));
+    }
+
+
+
+    public Map<String, Double> thongKeDoanhThuTheoLoaiDon() {
+        Map<String, Double> doanhThu = new HashMap<>();
+        doanhThu.put("Online", hoaDonRepository.tinhTongDoanhThuTheoLoaiDon(0));
+        doanhThu.put("Offline", hoaDonRepository.tinhTongDoanhThuTheoLoaiDon(1));
+        return doanhThu;
     }
 
 

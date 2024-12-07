@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
@@ -85,11 +86,15 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     List<HoaDon> findHoaDonsByYear(@Param("year") int year);
 
 
-    @Query("SELECT MONTH(h.ngayThanhToan) AS thang, YEAR(h.ngayThanhToan) AS nam, SUM(h.tongTien) AS tongDoanhThu " +
-            "FROM HoaDon h " +
-            "WHERE h.trangThai = 1 AND h.ngayThanhToan IS NOT NULL " +
-            "GROUP BY YEAR(h.ngayThanhToan), MONTH(h.ngayThanhToan) " +
-            "ORDER BY nam ASC, thang ASC")
-    List<Object[]> thongKeDoanhThuTheoThangVaNam();
+    @Query("SELECT h.ngayThanhToan, COUNT(h.id) FROM HoaDon h " +
+            "WHERE h.ngayThanhToan IS NOT NULL " +
+            "GROUP BY h.ngayThanhToan")
+    List<Object[]> countHoaDonTheoNgay();
+
+
+    @Query("SELECT SUM(h.tongTien) FROM HoaDon h WHERE h.loaiDon = :loaiDon AND h.ngayThanhToan IS NOT NULL AND h.trangThai = 1")
+    Double tinhTongDoanhThuTheoLoaiDon(@Param("loaiDon") Integer loaiDon);
+
+
 
 }

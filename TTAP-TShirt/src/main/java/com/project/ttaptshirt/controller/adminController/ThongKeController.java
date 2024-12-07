@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.*;
 
@@ -99,10 +100,17 @@ public class ThongKeController {
             model.addAttribute("revenues", "[]");
         }
 
+        Map<LocalDate, Long> tongHoaDonTheoNgay = thongKeService.thongKeSoHoaDonTheoNgay();
+        model.addAttribute("tongHoaDonTheoNgay", tongHoaDonTheoNgay);
+
+        // Doanh thu Online và Offline
+        Map<String, Double> doanhThuTheoLoaiDon = thongKeService.thongKeDoanhThuTheoLoaiDon();
+        model.addAttribute("doanhThuOnline", doanhThuTheoLoaiDon.get("Online"));
+        model.addAttribute("doanhThuOffline", doanhThuTheoLoaiDon.get("Offline"));
 
 
         // Trả về view
-        return "/admin/thongke/thong-ke";
+        return "admin/thongke/thong-ke";
     }
 
 

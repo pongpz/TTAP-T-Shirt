@@ -84,11 +84,56 @@
                         </div>
                     </div>
 
-                    <form action="/thong-ke" method="get">
-                        <label for="date">Chọn ngày:</label>
-                        <input type="date" id="date" name="date" value="{{${date}}}">
-                        <button type="submit">Xem thống kê</button>
-                    </form>
+                    <div class=" row">
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Tổng hóa đơn đã thanh toán(hôm nay)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:each="entry : ${tongHoaDonTheoNgay}"> <span th:text="${entry.value}"></span></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Tổng tiền bán tại quầy</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(doanhThuOffline)}|"></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Tổng tiền bán online</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(doanhThuOnline)}|"></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Content Row -->
 
