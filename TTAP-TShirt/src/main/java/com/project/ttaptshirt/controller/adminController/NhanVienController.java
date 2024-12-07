@@ -120,7 +120,7 @@ public class NhanVienController {
         userService.insertDefaultNvRole(user.getId());
 
         // Thông báo thành công
-        redirectAttributes.addFlashAttribute("isRegisterSuccess", "Thêm nhân viên thành công.");
+        redirectAttributes.addFlashAttribute("isRegisterSuccess", true);
         return "redirect:/admin/nhanvien/view"; // Trả về trang danh sách nhân viên
     }
 
@@ -131,7 +131,7 @@ public class NhanVienController {
             if (user != null) {
                 user.setEnable(false); // Đặt trạng thái enable thành false để ngưng hoạt động
                 userService.save(user); // Lưu lại người dùng với trạng thái mới
-                redirectAttributes.addFlashAttribute("success", "User deactivated successfully!");
+                redirectAttributes.addFlashAttribute("deratisuccess", true);
             } else {
                 redirectAttributes.addFlashAttribute("error", "User not found.");
             }
@@ -174,7 +174,7 @@ public class NhanVienController {
                 userService.save(user);
 
                 // Thêm thông báo thành công
-                redirectAttributes.addFlashAttribute("success", "User updated successfully!");
+                redirectAttributes.addFlashAttribute("success", true);
             } else {
                 // Nếu không tìm thấy người dùng
                 redirectAttributes.addFlashAttribute("error", "User not found.");

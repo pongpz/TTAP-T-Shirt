@@ -60,7 +60,7 @@
         <td th:text="${user.username}"></td>
         <td th:text="${user.enable} ? 'Kích hoạt' : 'Khóa'"></td>
         <td>
-          <a class="btn btn-danger btn-sm" th:href="@{/admin/nhanvien/deactivate/{id}(id = ${user.id})}">
+          <a class="btn btn-danger btn-sm" th:href="@{/admin/nhanvien/deactivate/{id}(id = ${user.id})}" onclick="return confirmForm()">
             Hủy
           </a>
           <a class="btn btn-primary" th:href="@{/admin/nhanvien/detail/{id}(id = ${user.id})}">
@@ -102,4 +102,39 @@
 <script src="/js/toastMessage.js"></script>
 </body>
 
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var isRegisterSuccess = [[${isRegisterSuccess}]];
+  console.log("checkoutSuccess:", isRegisterSuccess); // Log the value to check
+  if (isRegisterSuccess) {
+    toastSuccess('Thành Công !', 'Thêm nhân viên thành công!');
+  }
+  /*]]>*/
+</script>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var success = [[${success}]];
+  console.log("checkoutSuccess:", success); // Log the value to check
+  if (success) {
+    toastSuccess('Thành Công !', 'Sửa nhân viên thành công!');
+  }
+  /*]]>*/
+</script>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var deratisuccess = [[${deratisuccess}]];
+  console.log("checkoutSuccess:", deratisuccess); // Log the value to check
+  if (deratisuccess) {
+    toastSuccess('Thành Công !', 'Cho nghỉ việc nhân viên thành công!');
+  }
+  /*]]>*/
+</script>
+
+<script>
+  function confirmForm(){
+    return confirm("Bạn có chắc muốn cho nghỉ nhân viên này không?")
+  }
+</script>
 </html>
