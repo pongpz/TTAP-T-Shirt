@@ -78,7 +78,7 @@
               <input type="tel" id="soDienthoai" name="soDienthoai" class="form-control" th:field="*{user.soDienthoai}" />
               <span class="text-danger" id="phoneError">[[${ErrorPhoneNumber}]]</span>
             </div>
-            <button type="submit" class="btn btn-primary">Đăng Kí</button>
+            <button type="submit" class="btn btn-primary" onclick="return confirmForm()">Đăng Kí</button>
           </form>
         </div>
       </div>
@@ -139,6 +139,12 @@
     }
 
     return true; // Nếu tất cả hợp lệ, form sẽ được gửi đi
+  }
+</script>
+
+<script>
+  function confirmForm(){
+    return confirm("Bạn có chắc muốn thêm nhân viên này không?")
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

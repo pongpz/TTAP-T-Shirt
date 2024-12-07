@@ -265,7 +265,7 @@ public class GioHangController {
     @PostMapping("/huy-hoa-don-online")
     public String huyHDOnline(@RequestParam("idHD") Long idHD,RedirectAttributes redirectAttributes){
         hoaDonService.huyHoaDonOnline(idHD);
-        redirectAttributes.addFlashAttribute("message", true);
+        redirectAttributes.addFlashAttribute("cancelHoaDon", true);
         return "redirect:/TTAP/cart/hoa-don-chi-tiet/hien-thi?id=" + idHD;
     }
 
