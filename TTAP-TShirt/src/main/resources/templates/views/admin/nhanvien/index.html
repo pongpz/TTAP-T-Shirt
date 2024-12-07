@@ -60,8 +60,11 @@
         <td th:text="${user.username}"></td>
         <td th:text="${user.enable} ? 'Kích hoạt' : 'Khóa'"></td>
         <td>
-          <a class="btn btn-danger btn-sm" th:href="@{/admin/nhanvien/deactivate/{id}(id = ${user.id})}" onclick="return confirmForm()">
+          <a class="btn btn-danger btn-sm" th:href="@{/admin/nhanvien/deactivate/{id}(id = ${user.id})}" onclick="return confirmForm()" th:if="${user.enable == true}">
             Hủy
+          </a>
+          <a class="btn btn-success btn-sm" th:href="@{/admin/nhanvien/activate/{id}(id = ${user.id})}" th:if="${user.enable == false}">
+            xác nhận
           </a>
           <a class="btn btn-primary" th:href="@{/admin/nhanvien/detail/{id}(id = ${user.id})}">
             Chi tiết</a>

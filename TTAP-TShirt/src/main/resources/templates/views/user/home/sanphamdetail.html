@@ -109,8 +109,8 @@
                         </div>
 
                         <button th:each="color : ${colors}"
-                                th:text="${color.ten}"
-                                th:data-id="${color.id}"
+                                th:text="${color.value}"
+                                th:data-id="${color.key}"
                                 class=" btn btn-outline-primary btn-sm me-1"
                                 onclick="selectColor(this)"
                                 type="button"
@@ -126,8 +126,8 @@
                         </div>
 
                         <button th:each="size : ${sizes}"
-                                th:text="${size.ten}"
-                                th:data-id="${size.id}"
+                                th:text="${size.value}"
+                                th:data-id="${size.key}"
                                 class="size-btn btn btn-outline-secondary btn-sm me-1"
                                 onclick="selectSize(this)"
                                 type="button"

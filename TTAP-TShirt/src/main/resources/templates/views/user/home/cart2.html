@@ -153,16 +153,20 @@
                                     <div class="col-4 col-md-2 text-center px-1">
                                         <div class="d-flex align-items-center justify-content-center">
                                             <button type="button" class="btn btn-sm btn-outline-secondary btn-quantity"
-                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')">-
+                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'minus')"
+                                                    >-
                                             </button>
                                             <input class="form-control form-control-sm text-center mx-2 quantity-input"
                                                    style="width: 50px;"
                                                    type="number" name="quantity"
                                                    th:id="'quantityInput_' + ${item.id}"
                                                    th:value="${item.soLuong}"
-                                                   th:attr="data-id=${item.id}" min="1" max="20">
+                                                   th:attr="data-id=${item.id},data-max-quantity=${item.chiTietSanPham.soLuong}" min="1"
+                                                   onchange="validateQuantity(this)"
+                                            >
                                             <button type="button" class="btn btn-sm btn-outline-secondary btn-quantity"
-                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')">+
+                                                    th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')"
+                                                    >+
                                             </button>
                                         </div>
                                     </div>
@@ -341,6 +345,22 @@
     });
 </script>
 <script>
+    function validateQuantity(input) {
+        const currentQuantity = parseInt(input.value, 10);
+        const maxQuantity = parseInt(input.getAttribute('data-max-quantity'), 10);
+
+        if (currentQuantity > maxQuantity) {
+            alert(`Số lượng không thể vượt quá ${maxQuantity}`);
+            input.value = maxQuantity;
+        } else if (currentQuantity < 1) {
+            alert("Số lượng không thể nhỏ hơn 1");
+            input.value = 1;
+        }
+
+        // Gọi hàm tính lại tổng tiền nếu cần
+        calculateTotal();
+    }
+
     function toggleSelectAll(selectAllCheckbox) {
         var checkboxes = document.querySelectorAll('.product-checkbox');
         checkboxes.forEach(function (checkbox) {
@@ -400,12 +420,17 @@
         const productId = $(button).data('id');
         const quantityInput = $('#quantityInput_' + productId);
         let currentQuantity = parseInt(quantityInput.val());
+        // Lấy số lượng tồn từ input
+        const maxQuantity = parseInt(quantityInput.data('max-quantity') || 0);
 
         // Cập nhật số lượng sản phẩm
         if (action === 'minus' && currentQuantity > 1) {
             currentQuantity--;
-        } else if (action === 'plus') {
+        } else if (action === 'plus' && currentQuantity < maxQuantity) {
             currentQuantity++;
+        } else if (action === 'plus' && currentQuantity >= maxQuantity) {
+            alert(`Số lượng không thể vượt quá ${maxQuantity}`);
+            return;
         }
 
         // Cập nhật lại giá trị số lượng trong input
