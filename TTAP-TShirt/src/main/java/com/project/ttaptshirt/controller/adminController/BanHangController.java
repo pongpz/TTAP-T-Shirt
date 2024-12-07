@@ -273,8 +273,8 @@ public class BanHangController {
             final String cancelUrl = baseUrl + "/admin/ban-hang/hoa-don/thanh-toan-that-bai?hoadonId="+hoaDon.getId();
             final int price = (int) totalMoneyAfter;
 
-            if (price < 2000){
-                System.out.println("Giá trị đơn hàng tối thiểu 2000đ");
+            if (price < 2000 || price >= 1000000000){
+                System.out.println("Giá trị đơn hàng phải từ 2000 đến 1 tỷ");
                 redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
                 httpServletResponse.sendRedirect("/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD);
                 return;
