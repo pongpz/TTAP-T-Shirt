@@ -613,6 +613,7 @@
                         // Get the length of the listHDCT from the hidden input
                         event.preventDefault();
                         const lengthlistHDCT = parseInt(document.getElementById('lengthlistHDCT').value) || 0;
+                        const tien = parseInt(document.getElementById('lengthlistHDCT').value) || 0;
                         console.log(lengthlistHDCT)
                         // Check if the list is empty
                         if (lengthlistHDCT === 0) {
@@ -620,6 +621,14 @@
                             return false; // Prevent the checkout if the list is empty
                         }
 
+                        const tongTienText = document.getElementById('tongTienLabel').innerText;
+                        const tongTien = parseFloat(tongTienText.replace(' đ', '').replace(/,/g, '')) || 0;
+
+                        // Check if the total amount is sufficient
+                        if (tongTien < 2000 || tongTien >= 1000000000) {
+                            toastWarning('Cảnh báo!', 'Số tiền chuyển khoản phải từ 2,000đ đến 1 tỷ!');
+                            return false; // Prevent the checkout if the amount is insufficient
+                        }
 
                         // Show confirmation dialog using SweetAlert
                         Swal.fire({

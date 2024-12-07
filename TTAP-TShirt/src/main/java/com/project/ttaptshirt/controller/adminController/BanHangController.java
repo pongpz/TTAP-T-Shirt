@@ -214,7 +214,6 @@ public class BanHangController {
         if (listHDCT.size() == 0) {
             System.out.println("Hóa đơn trống");
             httpServletResponse.sendRedirect("/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD);
-            redirectAttributes.addFlashAttribute("isInvoiceEmptyCheckout", true);
             return;
         }
 

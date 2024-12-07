@@ -135,7 +135,29 @@ public class SanPhamController {
                                        @RequestParam("idChatLieu") Long idChatLieu,
                                        @RequestParam("idThuongHieu") Long idThuongHieu,
                                        @RequestParam("idKieuDang") Long idKieuDang,
-                                       RedirectAttributes redirectAttributes) {
+                                       RedirectAttributes redirectAttributes,
+                                       Model model) {
+
+        if (sanPhamRepository.getSanPhamEmpty(sanPham.getTen(), idThuongHieu,idChatLieu,idKieuDang,idKieuDang).size() > 0){
+            model.addAttribute("sanPhamEmpty","Sản phẩm đã tồn tại!");
+            model.addAttribute("ten",sanPham.getTen());
+
+            List<NSX> listNsx = nsxRepository.findAll();
+            model.addAttribute("listNsx", listNsx);
+
+            List<ChatLieu> listChatLieu = chatLieuRepository.findAll();
+            model.addAttribute("listChatLieu", listChatLieu);
+
+            List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
+            model.addAttribute("listThuongHieu", thuongHieu);
+
+            List<KieuDang> kieuDang = kieuDangRepository.findAll();
+            model.addAttribute("listKieuDang", kieuDang);
+
+            List<HinhAnh> images = hinhAnhRepository.findBySanPhamIsNull(Sort.by(Sort.Direction.DESC, "id"));
+            model.addAttribute("images", images);
+            return "/admin/sanpham/them-san-pham";
+        }
 
         // Thiết lập các thuộc tính cho sản phẩm
         sanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
@@ -206,11 +228,22 @@ public class SanPhamController {
                            @RequestParam("idNSX") Long idNsx,
                            @RequestParam("idChatLieu") Long idChatLieu,
                            @RequestParam("idThuongHieu") Long idThuongHieu,
-                           @RequestParam("idKieuDang") Long idKieuDang) {
+                           @RequestParam("idKieuDang") Long idKieuDang,
+                           Model model) {
 
         SanPham existingSanPham = sanPhamRepository.findById(id).orElse(null);
         if (existingSanPham == null) {
             return "redirect:/admin/san-pham";
+        }
+
+        if (sanPhamRepository.getSanPhamUpdateEmpty(sanPham.getTen(),idThuongHieu,idChatLieu,idNsx,idKieuDang,id).size() > 0){
+            model.addAttribute("ssanpham", sanPham);
+            model.addAttribute("nsxList", nsxRepository.findAll());
+            model.addAttribute("chatLieuList", chatLieuRepository.findAll());
+            model.addAttribute("thuongHieuList", thuongHieuRepository.findAll());
+            model.addAttribute("kieuDangList", kieuDangRepository.findAll());
+            model.addAttribute("errorSanPhamUpdateEmpty","Sản phẩm đã tồn tại!");
+            return "/admin/sanpham/sua-san-pham";
         }
 
         sanPham.setMa(existingSanPham.getMa());
@@ -274,7 +307,7 @@ public class SanPhamController {
     }
 
     @PostMapping("/add/chat-lieu")
-    public String addChatLieu(ChatLieu cl,Model model){
+    public String addChatLieu(ChatLieu cl,Model model,RedirectAttributes redirectAttributes){
         List<NSX> listNsx = nsxRepository.findAll();
         model.addAttribute("listNsx", listNsx);
 
@@ -291,6 +324,7 @@ public class SanPhamController {
         model.addAttribute("images", images);
         ChatLieu ClCheck = chatLieuRepository.getChatLieuByTen(cl.getTen());
         if (ClCheck == null){
+            redirectAttributes.addFlashAttribute("addNSXSuccess",true);
             chatLieuRepository.save(cl);
             return "redirect:/admin/san-pham/them-san-pham";
         }else if (cl.getTen().isEmpty()){
@@ -306,7 +340,7 @@ public class SanPhamController {
     }
 
     @PostMapping("/add/thuong-hieu")
-    public String addThuongHieu(ThuongHieu th,Model model){
+    public String addThuongHieu(ThuongHieu th,Model model,RedirectAttributes redirectAttributes){
         List<NSX> listNsx = nsxRepository.findAll();
         model.addAttribute("listNsx", listNsx);
 
@@ -323,6 +357,7 @@ public class SanPhamController {
         model.addAttribute("images", images);
         ThuongHieu ThCheck = thuongHieuRepository.getThuongHieuByTen(th.getTen());
         if (ThCheck == null){
+            redirectAttributes.addFlashAttribute("addNSXSuccess",true);
             thuongHieuRepository.save(th);
             return "redirect:/admin/san-pham/them-san-pham";
         }else if (th.getTen().isEmpty()){
@@ -338,7 +373,7 @@ public class SanPhamController {
     }
 
     @PostMapping("/add/kieu-dang")
-    public String addKieuDang(KieuDang kieuDang2,Model model){
+    public String addKieuDang(KieuDang kieuDang2,Model model,RedirectAttributes redirectAttributes){
         List<NSX> listNsx = nsxRepository.findAll();
         model.addAttribute("listNsx", listNsx);
 
@@ -355,6 +390,7 @@ public class SanPhamController {
         model.addAttribute("images", images);
         KieuDang CdCheck = kieuDangRepository.getKieuDangByTen(kieuDang2.getTen());
         if (CdCheck == null){
+            redirectAttributes.addFlashAttribute("addNSXSuccess",true);
             kieuDangRepository.save(kieuDang2);
             return "redirect:/admin/san-pham/them-san-pham";
         }else if (kieuDang2.getTen().isEmpty()){

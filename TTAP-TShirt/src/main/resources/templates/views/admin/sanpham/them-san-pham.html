@@ -43,7 +43,7 @@
             </div>
             <div class="mb-3">
                 <label for="ten" class="form-label">Tên Sản Phẩm</label>
-                <input type="text" class="form-control" id="ten" name="ten" required>
+                <input type="text" class="form-control" id="ten" name="ten" th:value="${ten}" required>
             </div>
 
             <div class="mb-3">
@@ -95,7 +95,8 @@
                 <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#imageModal">Chọn ảnh</button>
                 <input type="hidden" id="selectedImages" name="selectedImages">
             </div>
-
+            <span class="text-danger">[[${sanPhamEmpty}]]</span>
+                <br>
             <button type="submit" class="btn btn-primary" onclick="return handleAddProduct()">Thêm sản phẩm</button>
             </div>
         </form>
@@ -112,8 +113,8 @@
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên nhà sản xuất</label>
                         <input type="text" class="form-control" id="ten" name="ten" required>
-                        <span class="text-danger">[[${errorNSX}]]</span>
                     </div>
+                    <span class="text-danger">[[${errorNSX}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
