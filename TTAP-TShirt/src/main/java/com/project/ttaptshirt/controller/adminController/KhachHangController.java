@@ -217,12 +217,11 @@ public class KhachHangController {
             if (user != null) {
                 // Cập nhật thông tin từ form
                 user.setHoTen(updatedUser.getHoTen());
-                user.setNgaySinh(updatedUser.getNgaySinh());
+                user.setUsername(updatedUser.getUsername());
                 user.setGioiTinh(updatedUser.getGioiTinh());
                 user.setSoDienthoai(updatedUser.getSoDienthoai());
                 user.setEmail(updatedUser.getEmail());
                 user.setUsername(updatedUser.getUsername());
-                user.setEnable(updatedUser.getEnable()); // Cập nhật trạng thái nếu cần
 
                 serUser.save(user); // Lưu lại thay đổi vào database
                 redirectAttributes.addFlashAttribute("success", "User updated successfully!");
