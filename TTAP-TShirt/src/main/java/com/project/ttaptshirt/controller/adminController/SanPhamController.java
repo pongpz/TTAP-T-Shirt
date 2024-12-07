@@ -229,7 +229,8 @@ public class SanPhamController {
                            @RequestParam("idChatLieu") Long idChatLieu,
                            @RequestParam("idThuongHieu") Long idThuongHieu,
                            @RequestParam("idKieuDang") Long idKieuDang,
-                           Model model) {
+                           Model model,
+                           RedirectAttributes redirectAttributes) {
 
         SanPham existingSanPham = sanPhamRepository.findById(id).orElse(null);
         if (existingSanPham == null) {
@@ -266,9 +267,8 @@ public class SanPhamController {
         existingSanPham.setChatLieu(chatLieuRepository.findById(idChatLieu).orElse(null));
         existingSanPham.setThuongHieu(thuongHieuRepository.findById(idThuongHieu).orElse(null));
         existingSanPham.setKieuDang(kieuDangRepository.findById(idKieuDang).orElse(null));
-
+        redirectAttributes.addFlashAttribute("updateSuccess",true);
         sanPhamRepository.save(existingSanPham);
-
         return "redirect:/admin/san-pham";
     }
 

@@ -20,6 +20,7 @@
         </div>
                     <form th:action="@{/admin/hoa-don/tim-kiem}" method="get" class="d-flex row">
                         <h5 class="text-center">Tìm kiếm/lọc</h5>
+                        <input type="hidden" th:value="${id}" name="id">
                         <div class="mb-3 col-4">
                             <label for="ma" class="form-label">Mã hóa đơn</label>
                             <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}">
@@ -121,7 +122,7 @@
             </td>
             <td  th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
             <td>
-                <a th:if="${hd.loaiDon==1}" th:href="@{/admin/hoa-don-chi-tiet/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
+                <a th:if="${hd.loaiDon==1}" th:href="@{/admin/hoa-don/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
                 <a th:if="${hd.loaiDon==0}" th:href="@{/admin/hoa-don/chi-tiet-hoa-don-online/{id}(id=${hd.id})}" class="btn btn-info">Chi tiết</a>
             </td>
         </tr>
@@ -129,9 +130,9 @@
     </table>
     <h5 class="text-center">[[${nullhd}]]</h5>
     <div class="justify-content-center d-flex mb-5">
-        <a th:href="@{/admin/hoa-don/hien-thi?(page=${page <= 0 ? 0 : page - 1})}" class="btn btn-outline-primary">Trang trước</a>
+        <a th:href="@{/admin/hoa-don/hien-thi?(page=${page <= 0 ? 0 : page - 1},id = ${id})}" class="btn btn-outline-primary">Trang trước</a>
         <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
-        <a th:href="@{/admin/hoa-don/hien-thi?(page = ${page+1})}" class="btn btn-outline-primary">Trang sau</a>
+        <a th:href="@{/admin/hoa-don/hien-thi?(page = ${page+1},id = ${id})}" class="btn btn-outline-primary">Trang sau</a>
     </div>
     <h1 class="text-center">Hóa đơn chi tiết</h1>
     <table class="table">
