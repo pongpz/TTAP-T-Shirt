@@ -42,6 +42,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public String determineTargetUrl(final Authentication authentication) {
         HashMap<String, String> roleTargetUrlMap = new HashMap<>();
         roleTargetUrlMap.put("ROLE_ADMIN", "/admin/ban-hang");
+        roleTargetUrlMap.put("ROLE_EMPLOYEE", "/admin/ban-hang");
         roleTargetUrlMap.put("ROLE_CUSTOMER", "/TTAP/trang-chu");
 
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

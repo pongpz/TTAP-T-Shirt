@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TTAP</title>
+  <link rel="stylesheet" href="/customcss/banhang.css">
+  <link rel="stylesheet" href="/customcss/toastMessage.css ">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+        type="text/css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <meta name="vie wport" content="width=device-width, initial-scale=1">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Main Content Wrapper -->
+<div class="main-content content flex-grow-1 p-4">
+  <!-- Sidebar -->
+  <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
+
+  <!-- Toast Notification -->
+  <div id="toast-root"></div>
+
+  <!-- Employee Management Section -->
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registerModalLabel">Chi tiết tài khoản</h5>
+        </div>
+        <div class="modal-body">
+          <!-- Registration Form -->
+          <form id="updateForm" th:action="@{/admin/nhanvien/updateUser/{id}(id=${user.id})}" method="post" onsubmit="return validateForm()">
+            <div class="mb-3">
+              <label for="username" class="form-label">Tên Đăng Nhập</label>
+              <input type="text" id="username" name="username" class="form-control" th:field="*{user.username}" />
+              <span class="text-danger" id="usernameError">[[${usernameIsInvalid}]]</span>
+            </div>
+            <div class="mb-3">
+              <label for="hoTen" class="form-label">Họ Tên</label>
+              <input type="text" id="hoTen" name="hoTen" class="form-control" th:field="*{user.hoTen}" />
+              <span class="text-danger" id="hoTenError">[[${nameError}]]</span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Giới Tính</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="gioiTinh" value="1" id="maleGender" th:field="*{user.gioiTinh}" />
+                  <label class="form-check-label" for="maleGender">Nam</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="gioiTinh" value="0" id="femaleGender" th:field="*{user.gioiTinh}" />
+                  <label class="form-check-label" for="femaleGender">Nữ</label>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" name="email" class="form-control" th:field="*{user.email}" />
+              <span class="text-danger" id="emailError">[[${emailIsInvalid}]]</span>
+            </div>
+            <div class="mb-3">
+              <label for="soDienthoai" class="form-label">Số Điện Thoại</label>
+              <input type="tel" id="soDienthoai" name="soDienthoai" class="form-control" th:field="*{user.soDienthoai}" />
+              <span class="text-danger" id="phoneError">[[${ErrorPhoneNumber}]]</span>
+            </div>
+            <!-- Trường ẩn để gửi ID người dùng -->
+            <input type="hidden" name="id" th:value="${user.id}" />
+
+            <button type="submit" class="btn btn-primary" onclick="return confirmForm()">Cập Nhật</button>
+          </form>
+
+        </div>
+      </div>
+</div>
+<!-- Scripts -->
+<script>
+  function validateForm() {
+    // Reset all error messages
+    document.getElementById("usernameError").innerText = "";
+    document.getElementById("hoTenError").innerText = "";
+    document.getElementById("passwordError").innerText = "";
+    document.getElementById("emailError").innerText = "";
+    document.getElementById("phoneError").innerText = "";
+
+    // Lấy các giá trị từ form
+    var username = document.getElementById("username").value.trim();
+    var hoTen = document.getElementById("hoTen").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var soDienthoai = document.getElementById("soDienthoai").value.trim();
+
+    // Kiểm tra trống
+    if (username === "") {
+      document.getElementById("usernameError").innerText = "Tên đăng nhập không được để trống";
+      return false;
+    }
+    if (hoTen === "") {
+      document.getElementById("hoTenError").innerText = "Họ tên không được để trống";
+      return false;
+    }
+    if (password === "") {
+      document.getElementById("passwordError").innerText = "Mật khẩu không được để trống";
+      return false;
+    }
+    if (email === "") {
+      document.getElementById("emailError").innerText = "Email không được để trống";
+      return false;
+    }
+    if (soDienthoai === "") {
+      document.getElementById("phoneError").innerText = "Số điện thoại không được để trống";
+      return false;
+    }
+
+    // Kiểm tra định dạng email
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      document.getElementById("emailError").innerText = "Email không hợp lệ";
+      return false;
+    }
+
+    // Kiểm tra định dạng số điện thoại (chỉ chứa số)
+    var phonePattern = /^[0-9]+$/;
+    if (!phonePattern.test(soDienthoai)) {
+      document.getElementById("phoneError").innerText = "Số điện thoại không hợp lệ";
+      return false;
+    }
+
+    return true; // Nếu tất cả hợp lệ, form sẽ được gửi đi
+  }
+</script>
+  <script>
+    function confirmForm(){
+      return confirm("Bạn có chắc muốn sửa nhân viên này không?")
+    }
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/banhang.js}"></script>
+<script src="/js/toastMessage.js"></script>
+</body>
+
+</html>
+
+</body>
+</html>

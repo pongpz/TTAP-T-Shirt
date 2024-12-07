@@ -20,14 +20,13 @@
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
 
     <div class="main-content content flex-grow-1 p-4">
-        <div class="">
             <h1 class="text-center mt-5">Mã giảm giá</h1>
             <hr>
             <div class="d-flex">
                 <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Mã giảm giá</a>
             </div>
             <form th:action="@{/admin/ma-giam-gia/tim-kiem}" method="get"
-                  style="border: brown solid 1px; border-radius: 1ch" class="row justify-content-center d-flex">
+                  style="border: #a52a2a solid 1px; border-radius: 1ch" class="row justify-content-center d-flex">
                 <h6>Tìm kiếm/Lọc</h6>
                 <div class="col-4">
                     <div class="mb-3">
@@ -63,7 +62,7 @@
                 </div>
                 <button type="submit" class="mb-3 btn btn-primary col-2">Tìm kiếm</button>
             </form>
-            <a th:href="@{/admin/ma-giam-gia/form-add}" style="position: absolute;left: 350px;top:90px;height: 40px"
+            <a th:href="@{/admin/ma-giam-gia/form-add}" style="position: absolute;left: 350px;top:460px;height: 40px"
                class="btn btn-success">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      class="bi bi-receipt-cutoff" viewBox="0 0 16 16">

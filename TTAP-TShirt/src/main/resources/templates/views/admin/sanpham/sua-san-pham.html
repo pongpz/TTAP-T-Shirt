@@ -86,9 +86,10 @@
                           <input type="radio" class="form-check-input" id="trangThaiHetHang" name="trangThai" value="1" th:checked="${ssanpham.trangThai == 1}" required>
                           <label class="form-check-label" for="trangThaiHetHang">Ngừng bán</label>
                         </div>
+                        <span class="text-danger">[[${errorSanPhamUpdateEmpty}]]</span>
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Sửa</button>
+                        <button type="submit" class="btn btn-primary" onclick="return confrimUpdateSP()">Sửa</button>
                       </div>
                     </form>
                   </div>
@@ -102,4 +103,9 @@
   </div>
 </div>
 </body>
+<script>
+  function confrimUpdateSP() {
+    return confirm("Bạn có chắc muốn sửa sản phẩm này không?")
+  }
+</script>
 </html>

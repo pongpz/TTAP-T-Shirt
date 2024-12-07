@@ -56,6 +56,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<User> findAllNv(String rolename, Pageable pageable) {
+        return userRepo.findUsersByRoleName(rolename, pageable);
+    }
+
+
+    @Override
     public User findUserByUsername(String userName) {
         return userRepo.findByUsername(userName) ;
     }
@@ -63,6 +69,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insertDefaultUserRole(Long userId) {
         userRepo.insertUserRole(userId,Long.valueOf(2));
+    }
+
+    @Override
+    public void insertDefaultNvRole(Long userId) {
+        userRepo.insertUserRole(userId,Long.valueOf(3));
     }
 
     @Override

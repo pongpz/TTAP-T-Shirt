@@ -38,25 +38,25 @@ public class HoaDonChiTietController {
 
 
 
-    @Transactional
-    @GetMapping("/admin/hoa-don-chi-tiet/hien-thi")
-    public String hienThi(@RequestParam Long id, Model model, @RequestParam(defaultValue = "0") Integer page){
-        Pageable pageab = PageRequest.of(page, 5);
-        NumberUtils numberUtils = new NumberUtils();
-        HoaDon hoaDon = hoaDonService.findById(id);
-        model.addAttribute("hoaDon",hoaDon);
-        model.addAttribute("numberUtils",numberUtils);
-        model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
-        model.addAttribute("listSPOrder",hdctr.getHoaDonChiTietByHoaDonId(id));
-        model.addAttribute("listHD", hdr.getAllHD(pageab));
-        model.addAttribute("page",page);
-        if (hdr.getReferenceById(id).getLoaiDon() == 1){
-            return "admin/hoadon/hoa-don";
-        }else {
-
-            return "admin/hoadon/chi-tiet-hoa-don-online";
-        }
-    }
+//    @Transactional
+//    @GetMapping("/admin/hoa-don/hien-thi")
+//    public String hienThi(@RequestParam Long id, Model model, @RequestParam(defaultValue = "0") Integer page){
+//        Pageable pageab = PageRequest.of(page, 5);
+//        NumberUtils numberUtils = new NumberUtils();
+//        HoaDon hoaDon = hoaDonService.findById(id);
+//        model.addAttribute("hoaDon",hoaDon);
+//        model.addAttribute("numberUtils",numberUtils);
+//        model.addAttribute("listHDCT",hdctr.getHoaDonChiTietByHoaDonId(id));
+//        model.addAttribute("listSPOrder",hdctr.getHoaDonChiTietByHoaDonId(id));
+//        model.addAttribute("listHD", hdr.getAllHD(pageab));
+//        model.addAttribute("page",page);
+//        if (hdr.getReferenceById(id).getLoaiDon() == 1){
+//            return "admin/hoadon/hoa-don";
+//        }else {
+//
+//            return "admin/hoadon/chi-tiet-hoa-don-online";
+//        }
+//    }
 
 
     @GetMapping("/admin/hoa-don-chi-tiet/hien-thi/online")

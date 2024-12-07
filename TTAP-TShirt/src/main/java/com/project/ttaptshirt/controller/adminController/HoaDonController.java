@@ -6,6 +6,7 @@ import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.entity.HoaDonLog;
 import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.ChiTietSanPhamService;
@@ -44,16 +45,22 @@ public class HoaDonController {
     HoaDonChiTietService hoaDonChiTietService;
 
     @Autowired
+    HoaDonChiTietRepository hoaDonChiTietRepository;
+
+    @Autowired
     ChiTietSanPhamService chiTietSanPhamService;
 
     @Autowired
     HoaDonLogService hoaDonLogService;
 
     @GetMapping("/hien-thi")
-    public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page) {
+    public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page, @RequestParam(required = false,value = "id") Long id) {
         Pageable pageab = PageRequest.of(page, 5);
+        model.addAttribute("listHDCT",hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
+        model.addAttribute("listSPOrder",hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
         model.addAttribute("listHD", hr.getAllHD(pageab));
         model.addAttribute("page", page);
+        model.addAttribute("id", id);
         if (hr.getAllHD(pageab).size() == 0) {
             model.addAttribute("nullhd", "Không có hóa đơn nào");
         }
@@ -107,7 +114,7 @@ public class HoaDonController {
                 hoaDonLog.setHanhDong("Xác nhận");
                 hoaDonLog.setThoiGian(LocalDateTime.now());
                 hoaDonLog.setNguoiThucHien(user.getHoTen());
-                hoaDonLog.setGhiChu("xác nhận đơn hàng online (số lượng sản phẩm không đủ)");
+                hoaDonLog.setGhiChu("xác nhận(số lượng sản phẩm không đủ)");
                 hoaDonLog.setTrangThai(1);
                 hoaDonLogService.save(hoaDonLog);
                 return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
@@ -218,8 +225,10 @@ public class HoaDonController {
 //                          @RequestParam(required = false, value = "tenkh") String tenkh,
             @RequestParam(required = false, value = "loaiDon") Integer loaiDon,
             @RequestParam(required = false, value = "trangThai") Integer trangThai,
+            @RequestParam(required = false, value = "id") Long id,
             @RequestParam(value = "ngayThanhToan", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ngayThanhToan,
             @RequestParam(defaultValue = "0") Integer page,
+
             Model model) {
         Pageable pageab = PageRequest.of(page, 5);
 //        List<HoaDon> lsSearch = hr.search("", "", "", "", null, null, pageab);
@@ -229,6 +238,8 @@ public class HoaDonController {
         } else {
             lsSearch = hr.search(ma.trim(), keyword.trim(), trangThai, ngayThanhToan, loaiDon, pageab);
         }
+        model.addAttribute("listHDCT",hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
+        model.addAttribute("listSPOrder",hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
         NumberUtils numberUtils = new NumberUtils();
         model.addAttribute("numberUtils", numberUtils);
 //        System.out.println(lsSearch);
@@ -238,6 +249,7 @@ public class HoaDonController {
 //        model.addAttribute("tenkh", tenkh);
 //        model.addAttribute("sdt", sdt);
         model.addAttribute("keyword", keyword.trim());
+        model.addAttribute("id", id);
         model.addAttribute("ngayThanhToan", ngayThanhToan);
 //        model.addAttribute("loaiDon", loaiDon);
         model.addAttribute("trangThai", trangThai);
