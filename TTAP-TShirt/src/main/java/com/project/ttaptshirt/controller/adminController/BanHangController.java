@@ -639,7 +639,6 @@ public class BanHangController {
                             hoaDon.setTienThu(tongTien-discount);
                             hoaDon.setSoTienGiamGia(discount);
                             hoaDonService.save(hoaDon);
-                            System.out.println(345);
                         }
                     } else {
                         hoaDon.setTienThu(tongTien);
@@ -712,7 +711,6 @@ public class BanHangController {
                 } else {
                     MaGiamGia voucher1 = hoaDon.getMaGiamGia();
                     double discount = 0.0;
-
                     // Nếu có mã giảm giá, tính số tiền giảm
                     if (voucher1 != null) {
                         if (Boolean.FALSE.equals(voucher1.getHinhThuc())) { // Giảm giá theo phần trăm
@@ -724,12 +722,13 @@ public class BanHangController {
                             discount = voucher1.getGiaTriGiam();
                         }
                     }
-
+                    hoaDon.setTongTien(tongTien);
                     hoaDon.setTienThu(tongTien-discount);
                     hoaDon.setSoTienGiamGia(discount);
                     hoaDonService.save(hoaDon);
                 }
             } else {
+                System.out.println(345);
                 hoaDon1.setTienThu(tongTien);
                 hoaDonService.save(hoaDon1);
             }
