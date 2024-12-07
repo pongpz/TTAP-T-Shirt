@@ -135,7 +135,29 @@ public class SanPhamController {
                                        @RequestParam("idChatLieu") Long idChatLieu,
                                        @RequestParam("idThuongHieu") Long idThuongHieu,
                                        @RequestParam("idKieuDang") Long idKieuDang,
-                                       RedirectAttributes redirectAttributes) {
+                                       RedirectAttributes redirectAttributes,
+                                       Model model) {
+
+        if (sanPhamRepository.getSanPhamEmpty(sanPham.getTen(), idThuongHieu,idChatLieu,idKieuDang,idKieuDang).size() > 0){
+            model.addAttribute("sanPhamEmpty","Sản phẩm đã tồn tại!");
+            model.addAttribute("ten",sanPham.getTen());
+
+            List<NSX> listNsx = nsxRepository.findAll();
+            model.addAttribute("listNsx", listNsx);
+
+            List<ChatLieu> listChatLieu = chatLieuRepository.findAll();
+            model.addAttribute("listChatLieu", listChatLieu);
+
+            List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
+            model.addAttribute("listThuongHieu", thuongHieu);
+
+            List<KieuDang> kieuDang = kieuDangRepository.findAll();
+            model.addAttribute("listKieuDang", kieuDang);
+
+            List<HinhAnh> images = hinhAnhRepository.findBySanPhamIsNull(Sort.by(Sort.Direction.DESC, "id"));
+            model.addAttribute("images", images);
+            return "/admin/sanpham/them-san-pham";
+        }
 
         // Thiết lập các thuộc tính cho sản phẩm
         sanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
@@ -206,11 +228,22 @@ public class SanPhamController {
                            @RequestParam("idNSX") Long idNsx,
                            @RequestParam("idChatLieu") Long idChatLieu,
                            @RequestParam("idThuongHieu") Long idThuongHieu,
-                           @RequestParam("idKieuDang") Long idKieuDang) {
+                           @RequestParam("idKieuDang") Long idKieuDang,
+                           Model model) {
 
         SanPham existingSanPham = sanPhamRepository.findById(id).orElse(null);
         if (existingSanPham == null) {
             return "redirect:/admin/san-pham";
+        }
+
+        if (sanPhamRepository.getSanPhamUpdateEmpty(sanPham.getTen(),idThuongHieu,idChatLieu,idNsx,idKieuDang,id).size() > 0){
+            model.addAttribute("ssanpham", sanPham);
+            model.addAttribute("nsxList", nsxRepository.findAll());
+            model.addAttribute("chatLieuList", chatLieuRepository.findAll());
+            model.addAttribute("thuongHieuList", thuongHieuRepository.findAll());
+            model.addAttribute("kieuDangList", kieuDangRepository.findAll());
+            model.addAttribute("errorSanPhamUpdateEmpty","Sản phẩm đã tồn tại!");
+            return "/admin/sanpham/sua-san-pham";
         }
 
         sanPham.setMa(existingSanPham.getMa());
@@ -241,40 +274,134 @@ public class SanPhamController {
 
 
     @PostMapping("/add/nsx")
-    public String addNSX(NSX nsx,Model model) {
+    public String addNSX(NSX nsx,Model model,RedirectAttributes redirectAttributes) {
+        List<NSX> listNsx = nsxRepository.findAll();
+        model.addAttribute("listNsx", listNsx);
+
+        List<ChatLieu> listChatLieu = chatLieuRepository.findAll();
+        model.addAttribute("listChatLieu", listChatLieu);
+
+        List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
+        model.addAttribute("listThuongHieu", thuongHieu);
+
+        List<KieuDang> kieuDang = kieuDangRepository.findAll();
+        model.addAttribute("listKieuDang", kieuDang);
+
+        List<HinhAnh> images = hinhAnhRepository.findBySanPhamIsNull(Sort.by(Sort.Direction.DESC, "id"));
+        model.addAttribute("images", images);
         NSX NSXCheck = nsxRepository.getNSXByTen(nsx.getTen());
         if (NSXCheck == null){
             nsxRepository.save(nsx);
+            redirectAttributes.addFlashAttribute("addNSXSuccess",true);
             return "redirect:/admin/san-pham/them-san-pham";
         }else if (nsx.getTen().isEmpty()){
             model.addAttribute("errorNSX","Không được bỏ trống trường này!");
             model.addAttribute("showModalnsx",true);
-            return "admin/sanpham/san-pham-new";
+            return "admin/sanpham/them-san-pham";
         }
         else {
             model.addAttribute("errorNSX","Nhà sản xuất này đã tồn tại!");
             model.addAttribute("showModalnsx",true);
-            return "admin/sanpham/san-pham-new";
+            return "admin/sanpham/them-san-pham";
         }
     }
 
     @PostMapping("/add/chat-lieu")
-    public String addChatLieu(ChatLieu cl){
-        chatLieuRepository.save(cl);
-        return "redirect:/admin/san-pham/them-san-pham";
+    public String addChatLieu(ChatLieu cl,Model model,RedirectAttributes redirectAttributes){
+        List<NSX> listNsx = nsxRepository.findAll();
+        model.addAttribute("listNsx", listNsx);
+
+        List<ChatLieu> listChatLieu = chatLieuRepository.findAll();
+        model.addAttribute("listChatLieu", listChatLieu);
+
+        List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
+        model.addAttribute("listThuongHieu", thuongHieu);
+
+        List<KieuDang> kieuDang = kieuDangRepository.findAll();
+        model.addAttribute("listKieuDang", kieuDang);
+
+        List<HinhAnh> images = hinhAnhRepository.findBySanPhamIsNull(Sort.by(Sort.Direction.DESC, "id"));
+        model.addAttribute("images", images);
+        ChatLieu ClCheck = chatLieuRepository.getChatLieuByTen(cl.getTen());
+        if (ClCheck == null){
+            redirectAttributes.addFlashAttribute("addNSXSuccess",true);
+            chatLieuRepository.save(cl);
+            return "redirect:/admin/san-pham/them-san-pham";
+        }else if (cl.getTen().isEmpty()){
+            model.addAttribute("errorCl","Không được bỏ trống trường này!");
+            model.addAttribute("showModalCl",true);
+            return "admin/sanpham/them-san-pham";
+        }
+        else {
+            model.addAttribute("errorCl","Chất liệu này đã tồn tại!");
+            model.addAttribute("showModalCl",true);
+            return "admin/sanpham/them-san-pham";
+        }
     }
 
     @PostMapping("/add/thuong-hieu")
-    public String addThuongHieu(ThuongHieu th){
-        thuongHieuRepository.save(th);
-        return "redirect:/admin/san-pham/them-san-pham";
+    public String addThuongHieu(ThuongHieu th,Model model,RedirectAttributes redirectAttributes){
+        List<NSX> listNsx = nsxRepository.findAll();
+        model.addAttribute("listNsx", listNsx);
+
+        List<ChatLieu> listChatLieu = chatLieuRepository.findAll();
+        model.addAttribute("listChatLieu", listChatLieu);
+
+        List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
+        model.addAttribute("listThuongHieu", thuongHieu);
+
+        List<KieuDang> kieuDang = kieuDangRepository.findAll();
+        model.addAttribute("listKieuDang", kieuDang);
+
+        List<HinhAnh> images = hinhAnhRepository.findBySanPhamIsNull(Sort.by(Sort.Direction.DESC, "id"));
+        model.addAttribute("images", images);
+        ThuongHieu ThCheck = thuongHieuRepository.getThuongHieuByTen(th.getTen());
+        if (ThCheck == null){
+            redirectAttributes.addFlashAttribute("addNSXSuccess",true);
+            thuongHieuRepository.save(th);
+            return "redirect:/admin/san-pham/them-san-pham";
+        }else if (th.getTen().isEmpty()){
+            model.addAttribute("errorTh","Không được bỏ trống trường này!");
+            model.addAttribute("showModalTh",true);
+            return "admin/sanpham/them-san-pham";
+        }
+        else {
+            model.addAttribute("errorTh","Thương hiệu này đã tồn tại!");
+            model.addAttribute("showModalTh",true);
+            return "admin/sanpham/them-san-pham";
+        }
     }
 
     @PostMapping("/add/kieu-dang")
-    public String addKieuDang(KieuDang kieuDang){
-        kieuDangRepository.save(kieuDang);
-        return "redirect:/admin/san-pham/them-san-pham";
+    public String addKieuDang(KieuDang kieuDang2,Model model,RedirectAttributes redirectAttributes){
+        List<NSX> listNsx = nsxRepository.findAll();
+        model.addAttribute("listNsx", listNsx);
+
+        List<ChatLieu> listChatLieu = chatLieuRepository.findAll();
+        model.addAttribute("listChatLieu", listChatLieu);
+
+        List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
+        model.addAttribute("listThuongHieu", thuongHieu);
+
+        List<KieuDang> kieuDang = kieuDangRepository.findAll();
+        model.addAttribute("listKieuDang", kieuDang);
+
+        List<HinhAnh> images = hinhAnhRepository.findBySanPhamIsNull(Sort.by(Sort.Direction.DESC, "id"));
+        model.addAttribute("images", images);
+        KieuDang CdCheck = kieuDangRepository.getKieuDangByTen(kieuDang2.getTen());
+        if (CdCheck == null){
+            redirectAttributes.addFlashAttribute("addNSXSuccess",true);
+            kieuDangRepository.save(kieuDang2);
+            return "redirect:/admin/san-pham/them-san-pham";
+        }else if (kieuDang2.getTen().isEmpty()){
+            model.addAttribute("errorKd","Không được bỏ trống trường này!");
+            model.addAttribute("showModalKd",true);
+            return "admin/sanpham/them-san-pham";
+        }
+        else {
+            model.addAttribute("errorKd","Kiểu dáng này đã tồn tại!");
+            model.addAttribute("showModalKd",true);
+            return "admin/sanpham/them-san-pham";
+        }
     }
-
-
 }

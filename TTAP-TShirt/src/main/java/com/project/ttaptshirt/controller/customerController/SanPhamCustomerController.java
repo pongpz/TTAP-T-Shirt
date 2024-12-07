@@ -144,6 +144,12 @@ public class SanPhamCustomerController {
 
         model.addAttribute("numberUtils", numberUtils);
         model.addAttribute("listsp", sanPhamPage);
+        model.addAttribute("ten", ten);
+        model.addAttribute("nsxId", nhaSanXuatId);
+        model.addAttribute("thuongHieuId", thuongHieuId);
+        model.addAttribute("kieuDangId", kieuDangId);
+        model.addAttribute("chatLieuId", chatLieuId);
+        model.addAttribute("priceRangerId", priceRangerId);
         model.addAttribute("giasanpham", giaSanPham);
         model.addAttribute("hinhAnhSanPham", hinhAnhSanPham);
         model.addAttribute("kichCoList", kichCoRepository.findAll());

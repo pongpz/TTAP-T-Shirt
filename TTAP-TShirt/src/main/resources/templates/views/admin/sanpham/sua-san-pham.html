@@ -86,6 +86,7 @@
                           <input type="radio" class="form-check-input" id="trangThaiHetHang" name="trangThai" value="1" th:checked="${ssanpham.trangThai == 1}" required>
                           <label class="form-check-label" for="trangThaiHetHang">Ngừng bán</label>
                         </div>
+                        <span class="text-danger">[[${errorSanPhamUpdateEmpty}]]</span>
                       </div>
                       <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Sửa</button>
