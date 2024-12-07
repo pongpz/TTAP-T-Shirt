@@ -219,7 +219,7 @@ public class GioHangService {
         if (totalAmount > 500000) {
             shippingFee = 0;  // Miễn phí vận chuyển nếu tổng tiền trên 500,000đ
         } else {
-            shippingFee = 30000;  // Ví dụ phí vận chuyển là 30,000đ
+            shippingFee = 50000;  // Ví dụ phí vận chuyển là 30,000đ
         }
 
         hoaDon.setTienShip(shippingFee); // Lưu phí vận chuyển vào hóa đơn
@@ -288,7 +288,12 @@ public class GioHangService {
 
         if (existingItem.isPresent()) {
             GioHangChiTiet item = existingItem.get();
-            item.setSoLuong(item.getSoLuong() + request.getQuantity());
+            int newQuantity = item.getSoLuong() + request.getQuantity();
+            // Kiểm tra nếu số lượng mới vượt quá tồn kho
+            if (chiTietSanPham.getSoLuong() < newQuantity) {
+                throw new InsufficientStockException("Số lượng sản phẩm không đủ để thêm vào giỏ hàng!");
+            }
+            item.setSoLuong(newQuantity);
             gioHangChiTietRepository.save(item);
         } else {
             GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
@@ -296,6 +301,11 @@ public class GioHangService {
             gioHangChiTiet.setChiTietSanPham(chiTietSanPham);
             gioHangChiTiet.setSoLuong(request.getQuantity());
             gioHangChiTiet.setGia(chiTietSanPham.getGiaBan());
+            // Kiểm tra số lượng tồn kho trước khi thêm sản phẩm mới vào giỏ hàng
+            if (chiTietSanPham.getSoLuong() < request.getQuantity()) {
+                throw new InsufficientStockException("Số lượng sản phẩm không đủ để thêm vào giỏ hàng!");
+            }
+
             gioHangChiTietRepository.save(gioHangChiTiet);
         }
 

@@ -158,11 +158,11 @@
                                             </button>
                                             <input class="form-control form-control-sm text-center mx-2 quantity-input"
                                                    style="width: 50px;"
-                                                   type="number" name="quantity"
+                                                   type="number" name="quantity" readonly
                                                    th:id="'quantityInput_' + ${item.id}"
                                                    th:value="${item.soLuong}"
                                                    th:attr="data-id=${item.id},data-max-quantity=${item.chiTietSanPham.soLuong}" min="1"
-                                                   onchange="validateQuantity(this)"
+                                                   oninput="validateQuantity(this)"
                                             >
                                             <button type="button" class="btn btn-sm btn-outline-secondary btn-quantity"
                                                     th:data-id="${item.id}" onclick="updateQuantity(this, 'plus')"
