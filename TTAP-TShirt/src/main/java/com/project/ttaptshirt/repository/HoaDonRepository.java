@@ -52,12 +52,22 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Transactional
     @Modifying
     @Query(value = "update hoa_don set trang_thai = 7 where id=?1" ,nativeQuery = true)
+    void hdChuanBiHang(Long idHd);
+    @Transactional
+    @Modifying
+    @Query(value = "update hoa_don set trang_thai = 8 where id=?1" ,nativeQuery = true)
     void hdChoGiaoHang(Long idHd);
 
     @Transactional
     @Modifying
-    @Query(value = "update hoa_don set trang_thai = 8 where id=?1" ,nativeQuery = true)
+    @Query(value = "update hoa_don set trang_thai = 9 where id=?1" ,nativeQuery = true)
     void xacNhanDangGiaoHang(Long idHd);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update hoa_don set trang_thai = 10 where id=?1" ,nativeQuery = true)
+    void hdDaGiaoHang(Long idHd);
+
     @Transactional
     @Modifying
     @Query(value = "update hoa_don set trang_thai = 1 where id=?1" ,nativeQuery = true)

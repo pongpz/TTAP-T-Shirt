@@ -79,15 +79,17 @@
           <td th:text="${hoaDon.ngayTao}"></td>
           <td th:text="${hoaDon.tienThu != null ?numberUtils.formatCurrency(hoaDon.tienThu):''}"></td>
           <td th:switch="${hoaDon.trangThai}">
-            <span th:case="3">Chờ xác nhận</span>
+            <span th:case="0">Chờ thanh toán</span>
+            <span th:case="1">Thành Công</span>
             <span th:case="2">Đã hủy</span>
+            <span th:case="3">Chờ xác nhận</span>
             <span th:case="6">Đã Xác nhận</span>
             <span th:case="7">Người gửi đang chuẩn bị hàng</span>
-            <span th:case="8">Đang giao hàng</span>
-            <span th:case="2">Đã hủy</span>
-            <span th:case="1">Thành Công</span>
-            <span th:case="0">Chờ thanh toán</span>
+            <span th:case="8">Đang chờ đơn vị vận chuyển lấy hàng</span>
+            <span th:case="9">Đang giao hàng</span>
+            <span th:case="10">Đã giao hàng</span>
           </td>
+
           <td>
             <a th:href="@{/TTAP/cart/hoa-don-chi-tiet/hien-thi(id=${hoaDon.id})}" class="btn btn-info btn-sm">Xem chi tiết</a>
           </td>
