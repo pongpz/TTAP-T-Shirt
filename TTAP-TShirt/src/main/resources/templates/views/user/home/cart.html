@@ -111,7 +111,7 @@
 
                 </div>
             <form th:action="@{/TTAP/cart/huy-hoa-don-online(idHD=${hoaDon.id})}" method="post" class="d-inline" onsubmit="return confirmCancel()">
-                <button type="submit" class="btn btn-danger" th:disabled="${hoaDon.trangThai != 3}">
+                <button type="submit" class="btn btn-danger" th:disabled="${hoaDon.trangThai != 3}"  th:if="${hoaDon.trangThai == 3}">
                     Hủy hóa đơn
                 </button>
             </form>
