@@ -82,13 +82,13 @@
     <nav th:if="${emp.totalPages > 1}">
       <ul class="pagination justify-content-center">
         <li class="page-item" th:classappend="${emp.hasPrevious()} ? '' : 'disabled'">
-          <a class="page-link" th:href="${emp.hasPrevious()} ? @{/admin/user/view(p=${emp.number - 1})} : '#'" aria-label="Previous">«</a>
+          <a class="page-link" th:href="${emp.hasPrevious()} ? @{/admin/nhanvien/view(p=${emp.number - 1})} : '#'" aria-label="Previous">«</a>
         </li>
         <li th:each="i : ${#numbers.sequence(0, emp.totalPages - 1)}" class="page-item" th:classappend="${emp.number == i} ? 'active'">
-          <a class="page-link" th:href="@{/admin/user/view(p=${i})}" th:text="${i + 1}"></a>
+          <a class="page-link" th:href="@{/admin/nhanvien/view(p=${i})}" th:text="${i + 1}"></a>
         </li>
         <li class="page-item" th:classappend="${emp.hasNext()} ? '' : 'disabled'">
-          <a class="page-link" th:href="${emp.hasNext()} ? @{/admin/user/view(p=${emp.number + 1})} : '#'" aria-label="Next">»</a>
+          <a class="page-link" th:href="${emp.hasNext()} ? @{/admin/nhanvien/view(p=${emp.number + 1})} : '#'" aria-label="Next">»</a>
         </li>
       </ul>
     </nav>
