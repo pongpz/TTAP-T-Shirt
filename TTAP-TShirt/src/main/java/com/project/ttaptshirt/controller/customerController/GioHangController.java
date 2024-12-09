@@ -4,6 +4,7 @@ import com.project.ttaptshirt.dto.AddToCartRequest;
 import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
+import com.project.ttaptshirt.repository.HinhAnhRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import com.project.ttaptshirt.repository.UserRepo;
@@ -47,6 +48,9 @@ public class GioHangController {
     @Autowired
     private DiaChiService serDc;
 
+    @Autowired
+    private HinhAnhRepository hinhAnhRepository;
+
     // Xem giỏ hàng
     @GetMapping("/view")
     public String viewCart(Model model, Authentication authentication,
@@ -75,6 +79,20 @@ public class GioHangController {
                     : user.getDefaultAddress();
             model.addAttribute("selectedAddress", selectedAddress);
             model.addAttribute("address", address);
+
+            List<GioHangChiTiet> cartItems = cart.getItems();
+
+            // Lấy hình ảnh đầu tiên cho mỗi sản phẩm
+            Map<Long, String> productImages = new HashMap<>();
+            for (GioHangChiTiet item : cartItems) {
+                Long productId = item.getChiTietSanPham().getSanPham().getId();
+
+                // Lấy hình ảnh đầu tiên
+                List<String> images = hinhAnhRepository.findBySanPhamId(productId);
+                String firstImage = images.isEmpty() ? "/default-image.jpg" : images.get(0);
+                productImages.put(productId, firstImage);
+            }
+            model.addAttribute("productImages", productImages);
 
             // Tiện ích số học
             NumberUtils numberUtils = new NumberUtils();
@@ -165,9 +183,9 @@ public class GioHangController {
                         .map(Long::parseLong)
                         .collect(Collectors.toList());
                 HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi);
-                redirectAttributes.addFlashAttribute("message", "Hóa đơn đã được tạo thành công!");
+                redirectAttributes.addFlashAttribute("message", true);
                 model.addAttribute("userLogged", user);
-                return "redirect:/TTAP/cart/hoa-don"; // Chuyển đến trang chi tiết hóa đơn
+                return "redirect:/TTAP/cart/view"; // Chuyển đến trang chi tiết hóa đơn
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Lỗi khi tạo hóa đơn: " + e.getMessage());
                 return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng

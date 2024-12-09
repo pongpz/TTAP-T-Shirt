@@ -215,12 +215,7 @@ public class GioHangService {
                 .mapToDouble(item -> item.getGia().doubleValue() * item.getSoLuong())
                 .sum();
 
-        double shippingFee = 0;
-        if (totalAmount > 500000) {
-            shippingFee = 0;  // Miễn phí vận chuyển nếu tổng tiền trên 500,000đ
-        } else {
-            shippingFee = 50000;  // Ví dụ phí vận chuyển là 30,000đ
-        }
+        double shippingFee = 50000;
 
         hoaDon.setTienShip(shippingFee); // Lưu phí vận chuyển vào hóa đơn
 

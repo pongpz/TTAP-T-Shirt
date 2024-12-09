@@ -125,7 +125,7 @@
                                         <input type="checkbox"
                                                name="selectedProductIds" th:value="${item.id}"
                                                class="product-checkbox" onchange="calculateTotal()">
-                                        <img src="https://hanoicomputercdn.com/media/product/250_84332_pc_dell_inspiron_3030s_sffi33003w1_8g_512g_1a.jpg"
+                                        <img th:src="${productImages[item.chiTietSanPham.sanPham.id]}"
                                              alt="Product Image"
                                              class="img-thumbnail me-3"
                                              style="width: 80px; height: 80px; object-fit: contain;">
@@ -372,7 +372,7 @@
     function calculateTotal() {
         const checkboxes = document.querySelectorAll('.product-checkbox:checked');
         let total = 0;
-        let shippingFee = 0;
+        const shippingFee = 50000;
         const selectedProductIds = [];
 
         checkboxes.forEach(checkbox => {
@@ -389,22 +389,23 @@
         // Cập nhật tổng tiền
         const totalAmountElement = document.getElementById('totalAmount');
         totalAmountElement.textContent = formatCurrency(total);
-        if (total > 500000) {
-            shippingFee = 0;  // Miễn phí vận chuyển
-        } else {
-            shippingFee = 50000;  // Ví dụ phí vận chuyển là 50,000đ
-        }
 
-        // Cập nhật phí vận chuyển
+        // Kiểm tra nếu có sản phẩm được chọn thì hiển thị phí vận chuyển và tính tổng tiền
         const shippingFeeElement = document.getElementById('shippingFee');
-        shippingFeeElement.textContent = formatCurrency(shippingFee);
-
-        // Cập nhật thành tiền (tổng tiền + phí vận chuyển)
-        const finalAmount = total + shippingFee;
-
-        // Cập nhật thành tiền
         const totalPaymentElement = document.getElementById('total-cart-payment');
-        totalPaymentElement.textContent = formatCurrency(finalAmount);
+
+        if (checkboxes.length > 0) {
+            // Hiển thị phí vận chuyển
+            shippingFeeElement.textContent = formatCurrency(shippingFee);
+
+            // Cập nhật thành tiền (tổng tiền + phí vận chuyển)
+            const finalAmount = total + shippingFee;
+            totalPaymentElement.textContent = formatCurrency(finalAmount);
+        } else {
+            // Nếu không có sản phẩm nào được chọn, ẩn phí vận chuyển và tổng tiền
+            shippingFeeElement.textContent = formatCurrency(0);
+            totalPaymentElement.textContent = formatCurrency(0);
+        }
 
         // Hiển thị danh sách ID sản phẩm đã chọn (nếu cần thiết)
         console.log("Selected Product IDs:", selectedProductIds.join(','));
@@ -414,6 +415,7 @@
     document.querySelectorAll('.product-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', calculateTotal);
     });
+
 
     function updateQuantity(button, action) {
         // Lấy ID sản phẩm và giá trị hiện tại của số lượng
@@ -491,6 +493,16 @@
     console.log(removemessage);  // Debugging line to ensure the attribute is set
     if (removemessage) {
         toastSuccess('Thành Công!', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
+    }
+    /*]]>*/
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var message = [[${message}]];
+    console.log(message);  // Debugging line to ensure the attribute is set
+    if (message) {
+        toastSuccess('Thành Công!', 'Đơn hàng đã đặt thành công');
     }
     /*]]>*/
 </script>
