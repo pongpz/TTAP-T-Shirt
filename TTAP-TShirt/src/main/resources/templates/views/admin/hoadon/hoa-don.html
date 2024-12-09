@@ -18,167 +18,191 @@
         <div class="d-flex">
             <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Hoá đơn</a>
         </div>
-                    <form th:action="@{/admin/hoa-don/tim-kiem}" method="get" class="d-flex row">
-                        <h5 class="text-center">Tìm kiếm/lọc</h5>
-                        <input type="hidden" th:value="${id}" name="id">
-                        <div class="mb-3 col-4">
-                            <label for="ma" class="form-label">Mã hóa đơn</label>
-                            <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}">
-                        </div>
-<!--                        <div class="mb-3 col-4">-->
-<!--                            <label for="keyword" class="form-label">Tìm kiếm</label>-->
-<!--                            <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}">-->
-<!--                        </div>-->
-                        <div class="mb-3 col-4">
-                            <label for="keyword" class="form-label">Khách hàng</label>
-                            <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}" placeholder="Tên, SDT, Email">
-                        </div>
-<!--                        <div class="mb-3 col-4">-->
-<!--                            <label for="tennv" class="form-label">Tên nhân viên</label>-->
-<!--                            <input type="text" class="form-control" id="tennv" name="tennv" th:value="${tennv}">-->
-<!--                        </div>-->
-<!--                        <div class="mb-3 col-4">-->
-<!--                            <label for="sdt" class="form-label">Số điện thoại khách hàng</label>-->
-<!--                            <input type="text" class="form-control" id="sdt" name="sdt" th:value="${sdt}">-->
-<!--                        </div>-->
-                        <div class="col-4">
-                            <label class="form-label">Trạng thái</label>
-                            <select class="form-select" aria-label="Default select example" name="trangThai">
-                                <option selected value="">Tất cả</option>
-                                <!--                    <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>-->
-                                <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>
-                                <option value="1" th:selected="${trangThai==1}">Đã thanh toán</option>
-                                <option value="2" th:selected="${trangThai==2}">Đã hủy</option>
-                                <option value="3" th:selected="${trangThai==3}">Chờ xác nhận</option>
-                                <option value="3" th:selected="${trangThai==6}">Đã xác nhận</option>
-                                <option value="3" th:selected="${trangThai==7}">Chờ lấy hàng</option>
-                                <option value="3" th:selected="${trangThai==8}">Đang giao hàng</option>
-                            </select>
-                        </div>
-                        <div class="mb-3 col-4">
-                            <label for="ngayThanhToan" class="form-label">Ngày thanh toán</label>
-                            <input type="date" class="form-control" id="ngayThanhToan" name="ngayThanhToan" th:value="${ngayThanhToan}">
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">Loại đơn</label>
-                            <select class="form-select" aria-label="Default select example" name="loaiDon">
-                                <option selected value="">Tất cả</option>
-                                <option value="1" th:selected="${loaiDon==1}">Tại quầy</option>
-                                <option value="0" th:selected="${loaiDon==0}">Online</option>
-                            </select>
-                        </div>
-                        <div class="col-12 justify-content-center">
-                        <button type="submit" class="btn btn-primary col-3">Tìm kiếm</button>
-                        </div>
-                    </form>
-<div class="">
-    <h1 class="text-center">Hóa đơn</h1>
-    <table class="table-sm table-hover">
-        <thead>
-        <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Mã hóa đơn</th>
-<!--            <th scope="col">Nhân viên</th>-->
-            <th scope="col">Khách hàng</th>
-            <th scope="col">SDT khách hàng</th>
-            <th scope="col">Loại đơn</th>
-            <th scope="col">Phí vận chuyển</th>
-            <th scope="col">Ngày thanh toán</th>
-            <th scope="col">SĐT người nhận</th>
-            <th scope="col">Tên người nhận</th>
-            <th scope="col">Tiền ban đầu</th>
-            <th scope="col">Tiền giảm</th>
-            <th scope="col">Tổng tiền</th>
-            <th scope="col">Trạng thái</th>
-            <th scope="col">Mã giảm giá</th>
-            <th scope="col">Hành động</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="hd, stat: ${listHD}" >
-            <td th:text="${stat.index+1}"></td>
-            <td th:text="${hd.ma}"></td>
-<!--            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>-->
-            <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Vãng lai'}"></td>
-            <td th:text="${hd.khachHang != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
-            <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
-                th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
-            </td>
-            <td th:text="${hd.tienShip != null ? numberUtils.formatCurrency(hd.tienShip) : 'Không có'}"></td>
-            <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
-            <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
-            <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
-            <td th:text="${hd.tongTien != null?numberUtils.formatCurrency(hd.tongTien): 'Không có'}"></td>
-            <td th:text="${hd.soTienGiamGia != null?numberUtils.formatCurrency(hd.soTienGiamGia): 'Không có'}"></td>
-            <td th:text="${hd.tienThu != null?numberUtils.formatCurrency(hd.tienThu): 'Không có'}"></td>
-            <td>
-                <span th:if="${hd.trangThai == 0}" class="text-warning">Chưa thanh toán</span>
-                <span th:if="${hd.trangThai == 1}" class="text-success">Đã thanh toán</span>
-                <span th:if="${hd.trangThai == 2}" class="text-danger">Đã hủy</span>
-                <span th:if="${hd.trangThai == 3}" class="text-primary">Chờ xác nhận</span>
-                <span th:if="${hd.trangThai == 6}" class="text-primary">Đã xác nhận</span>
-                <span th:if="${hd.trangThai == 7}" class="text-primary">Chờ lấy hàng</span>
-                <span th:if="${hd.trangThai == 8}" class="text-primary">Đang giao hàng</span>
-            </td>
-            <td  th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
-            <td>
-                <a th:if="${hd.loaiDon==1}" th:href="@{/admin/hoa-don/hien-thi(page=${page},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
-                <a th:if="${hd.loaiDon==0}" th:href="@{/admin/hoa-don/chi-tiet-hoa-don-online/{id}(id=${hd.id})}" class="btn btn-info">Chi tiết</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <h5 class="text-center">[[${nullhd}]]</h5>
-    <div class="justify-content-center d-flex mb-5">
-        <a th:href="@{/admin/hoa-don/hien-thi?(page=${page <= 0 ? 0 : page - 1},id = ${id})}" class="btn btn-outline-primary">Trang trước</a>
-        <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
-        <a th:href="@{/admin/hoa-don/hien-thi?(page = ${page+1},id = ${id})}" class="btn btn-outline-primary">Trang sau</a>
+        <form th:action="@{/admin/hoa-don/tim-kiem}" method="get" class="d-flex row">
+            <h5 class="text-center">Tìm kiếm/lọc</h5>
+            <input type="hidden" th:value="${id}" name="id">
+            <div class="mb-3 col-4">
+                <label for="ma" class="form-label">Mã hóa đơn</label>
+                <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}">
+            </div>
+            <!--                        <div class="mb-3 col-4">-->
+            <!--                            <label for="keyword" class="form-label">Tìm kiếm</label>-->
+            <!--                            <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}">-->
+            <!--                        </div>-->
+            <div class="mb-3 col-4">
+                <label for="keyword" class="form-label">Khách hàng</label>
+                <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}"
+                       placeholder="Tên, SDT, Email">
+            </div>
+            <!--                        <div class="mb-3 col-4">-->
+            <!--                            <label for="tennv" class="form-label">Tên nhân viên</label>-->
+            <!--                            <input type="text" class="form-control" id="tennv" name="tennv" th:value="${tennv}">-->
+            <!--                        </div>-->
+            <!--                        <div class="mb-3 col-4">-->
+            <!--                            <label for="sdt" class="form-label">Số điện thoại khách hàng</label>-->
+            <!--                            <input type="text" class="form-control" id="sdt" name="sdt" th:value="${sdt}">-->
+            <!--                        </div>-->
+            <div class="col-4">
+                <label class="form-label">Trạng thái</label>
+                <select class="form-select" aria-label="Default select example" name="trangThai">
+                    <option selected value="">Tất cả</option>
+                    <!--                    <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>-->
+                    <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>
+                    <option value="1" th:selected="${trangThai==1}">Đã thanh toán</option>
+                    <option value="2" th:selected="${trangThai==2}">Đã hủy</option>
+                    <option value="3" th:selected="${trangThai==3}">Chờ xác nhận</option>
+                    <option value="3" th:selected="${trangThai==6}">Đã xác nhận</option>
+                    <option value="3" th:selected="${trangThai==7}">Chờ lấy hàng</option>
+                    <option value="3" th:selected="${trangThai==8}">Đang giao hàng</option>
+                </select>
+            </div>
+            <div class="mb-3 col-4">
+                <label for="ngayThanhToan" class="form-label">Ngày thanh toán</label>
+                <input type="date" class="form-control" id="ngayThanhToan" name="ngayThanhToan"
+                       th:value="${ngayThanhToan}">
+            </div>
+            <div class="col-4">
+                <label class="form-label">Loại đơn</label>
+                <select class="form-select" aria-label="Default select example" name="loaiDon">
+                    <option selected value="">Tất cả</option>
+                    <option value="1" th:selected="${loaiDon==1}">Tại quầy</option>
+                    <option value="0" th:selected="${loaiDon==0}">Online</option>
+                </select>
+            </div>
+            <div class="col-12 justify-content-center">
+                <button type="submit" class="btn btn-primary col-3">Tìm kiếm</button>
+            </div>
+        </form>
+        <div class="">
+            <h1 class="text-center">Hóa đơn</h1>
+            <table class="table-sm table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Mã hóa đơn</th>
+                    <!--            <th scope="col">Nhân viên</th>-->
+                    <th scope="col">Khách hàng</th>
+                    <th scope="col">SDT khách hàng</th>
+                    <th scope="col">Loại đơn</th>
+                    <th scope="col">Phí vận chuyển</th>
+                    <th scope="col">Ngày thanh toán</th>
+                    <th scope="col">SĐT người nhận</th>
+                    <th scope="col">Tên người nhận</th>
+                    <th scope="col">Tiền ban đầu</th>
+                    <th scope="col">Tiền giảm</th>
+                    <th scope="col">Tổng tiền</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Mã giảm giá</th>
+                    <th scope="col">Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="hd, stat: ${listHD}">
+                    <td th:text="${stat.index+1}"></td>
+                    <td th:text="${hd.ma}"></td>
+                    <!--            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>-->
+                    <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Vãng lai'}"></td>
+                    <td th:text="${hd.khachHang != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
+                    <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
+                        th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
+                    </td>
+                    <td th:text="${hd.tienShip != null ? numberUtils.formatCurrency(hd.tienShip) : 'Không có'}"></td>
+                    <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
+                    <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
+                    <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
+                    <td th:text="${hd.tongTien != null?numberUtils.formatCurrency(hd.tongTien): 'Không có'}"></td>
+                    <td th:text="${hd.soTienGiamGia != null?numberUtils.formatCurrency(hd.soTienGiamGia): 'Không có'}"></td>
+                    <td th:text="${hd.tienThu != null?numberUtils.formatCurrency(hd.tienThu): 'Không có'}"></td>
+                    <td>
+    <span th:classappend="${hd.trangThai == 0 ? 'text-warning' :
+                          hd.trangThai == 1 ? 'text-success' :
+                          hd.trangThai == 2 ? 'text-danger' :
+                          hd.trangThai == 3 ? 'text-primary' :
+                          hd.trangThai == 6 ? 'text-primary' :
+                          hd.trangThai == 7 ? 'text-primary' :
+                          hd.trangThai == 8 ? 'text-primary' :
+                          hd.trangThai == 9 ? 'text-info' :
+                          hd.trangThai == 10 ? 'text-success' : 'text-info'}">
+        <span th:text="${hd.trangThai == 0 ? 'Chưa thanh toán' :
+                        hd.trangThai == 1 ? 'Đã thanh toán' :
+                        hd.trangThai == 2 ? 'Đã hủy' :
+                        hd.trangThai == 3 ? 'Chờ xác nhận' :
+                        hd.trangThai == 6 ? 'Đã xác nhận' :
+                        hd.trangThai == 7 ? 'Chuẩn bị hàng' :
+                        hd.trangThai == 8 ? 'Chờ vận chuyển' :
+                        hd.trangThai == 9 ? 'Đang giao hàng' :
+                        hd.trangThai == 10 ? 'Đã giao hàng' :
+                        'không xác định'}">
+        </span>
+    </span>
+                    </td>
+
+
+                    <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
+                    <td>
+                        <a th:if="${hd.loaiDon==1}" th:href="@{/admin/hoa-don/hien-thi(page=${page},id=${hd.id})}"
+                           class="btn btn-info">Chi tiết</a>
+                        <a th:if="${hd.loaiDon==0}"
+                           th:href="@{/admin/hoa-don/chi-tiet-hoa-don-online/{id}(id=${hd.id})}" class="btn btn-info">Chi
+                            tiết</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <h5 class="text-center">[[${nullhd}]]</h5>
+            <div class="justify-content-center d-flex mb-5">
+                <a th:href="@{/admin/hoa-don/hien-thi?(page=${page <= 0 ? 0 : page - 1},id = ${id})}"
+                   class="btn btn-outline-primary">Trang trước</a>
+                <input type="text" class="form-control-sm text-center" th:value="${page+1}"
+                       onchange="changePage(this.value)" id="input-page">
+                <a th:href="@{/admin/hoa-don/hien-thi?(page = ${page+1},id = ${id})}" class="btn btn-outline-primary">Trang
+                    sau</a>
+            </div>
+            <h1 class="text-center">Hóa đơn chi tiết</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Mã hóa đơn</th>
+                    <th scope="col">Mã sản phẩm</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <!--            <th scope="col">Giá sản phẩm</th>-->
+                    <th scope="col">Màu sắc</th>
+                    <th scope="col">Kích cỡ</th>
+                    <th scope="col">Đơn giá</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Tổng</th>
+                    <!--            <th scope="col">Tên khuyến mãi</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="hdct, stat: ${listHDCT}">
+                    <td th:text="${stat.index+1}"></td>
+                    <td th:text="${hdct.hoaDon.ma?: 'Không có'}"></td>
+                    <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.ma : 'Không có'}"></td>
+                    <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.ten : 'Không có'}"></td>
+                    <!--            <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.gia : 'Không có'}"></td>-->
+                    <td th:text="${hdct.chiTietSanPham.mauSac != null  ? hdct.chiTietSanPham.mauSac.ten : 'Không có'}"></td>
+                    <td th:text="${hdct.chiTietSanPham.kichCo != null  ? hdct.chiTietSanPham.kichCo.ten : 'Không có'}"></td>
+                    <td th:text="${hdct.donGia != null ? numberUtils.formatCurrency(hdct.donGia) : 'Không có'}"></td>
+                    <td th:text="${hdct.soLuong != null ? hdct.soLuong : 'Không có'}"></td>
+                    <td th:text="${hdct.soLuong != null && hdct.donGia != null ? numberUtils.formatCurrency(hdct.soLuong*hdct.donGia) : 'Không có'}"></td>
+                    <!--            <td th:text="${hdct.hoaDon.maGiamGia != null ? hdct.hoaDon.maGiamGia.ten : 'Không có'}"></td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <h1 class="text-center">Hóa đơn chi tiết</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Mã hóa đơn</th>
-            <th scope="col">Mã sản phẩm</th>
-            <th scope="col">Tên sản phẩm</th>
-<!--            <th scope="col">Giá sản phẩm</th>-->
-            <th scope="col">Màu sắc</th>
-            <th scope="col">Kích cỡ</th>
-            <th scope="col">Đơn giá</th>
-            <th scope="col">Số lượng</th>
-            <th scope="col">Tổng</th>
-<!--            <th scope="col">Tên khuyến mãi</th>-->
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="hdct, stat: ${listHDCT}">
-            <td th:text="${stat.index+1}"></td>
-            <td th:text="${hdct.hoaDon.ma?: 'Không có'}"></td>
-            <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.ma : 'Không có'}"></td>
-            <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.ten : 'Không có'}"></td>
-<!--            <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.gia : 'Không có'}"></td>-->
-            <td th:text="${hdct.chiTietSanPham.mauSac != null  ? hdct.chiTietSanPham.mauSac.ten : 'Không có'}"></td>
-            <td th:text="${hdct.chiTietSanPham.kichCo != null  ? hdct.chiTietSanPham.kichCo.ten : 'Không có'}"></td>
-            <td th:text="${hdct.donGia != null ? numberUtils.formatCurrency(hdct.donGia) : 'Không có'}"></td>
-            <td th:text="${hdct.soLuong != null ? hdct.soLuong : 'Không có'}"></td>
-            <td th:text="${hdct.soLuong != null && hdct.donGia != null ? numberUtils.formatCurrency(hdct.soLuong*hdct.donGia) : 'Không có'}"></td>
-<!--            <td th:text="${hdct.hoaDon.maGiamGia != null ? hdct.hoaDon.maGiamGia.ten : 'Không có'}"></td>-->
-        </tr>
-        </tbody>
-    </table>
 </div>
-    </div>
-    </div>
 </body>
 <script>
     let pageInput = document.getElementById('input-page').value;
     let linkSearch = new URLSearchParams(window.location.search);
     let page = parseInt(pageInput)
 
-    function changePage(page){
+    function changePage(page) {
         if (page >= 1) {
-            window.location.href = window.location.origin + '/admin/hoa-don/hien-thi?page='+(page-1);
+            window.location.href = window.location.origin + '/admin/hoa-don/hien-thi?page=' + (page - 1);
 
         } else {
             window.location.href = window.location.origin + '/admin/hoa-don/hien-thi?page=0';

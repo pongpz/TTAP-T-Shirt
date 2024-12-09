@@ -222,6 +222,11 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
+    public void hdChuanBiHang(Long idHoaDon) {
+        hoaDonRepository.hdChuanBiHang(idHoaDon);
+    }
+
+    @Override
     public void hdChoGiaoHang(Long idHoaDon) {
         hoaDonRepository.hdChoGiaoHang(idHoaDon);
     }
@@ -229,6 +234,11 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Override
     public void xacNhanDangGiaoHang(Long idHoaDon) {
         hoaDonRepository.xacNhanDangGiaoHang(idHoaDon);
+    }
+
+    @Override
+    public void hdDaGiaoHang(Long idHoaDon) {
+        hoaDonRepository.hdDaGiaoHang(idHoaDon);
     }
 
     @Override
