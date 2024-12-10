@@ -40,7 +40,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/admin/kich-co/save-kich-co" method="post">
+                        <form action="/admin/kich-co/save-kich-co" method="post" onsubmit="return validateForm()">
                             <div class="mb-3">
                                 <label for="ten" class="form-label">Tên kích cỡ</label>
                                 <input type="text" class="form-control" id="ten" name="ten" required>
@@ -116,6 +116,19 @@
         toastSuccess('Thành Công!', 'Kích cỡ đã được sửa thành công!');
     }
     /*]]>*/
+</script>
+<script>
+    function validateForm() {
+        const inputField = document.getElementById('ten');
+        const value = inputField.value.trim(); // Loại bỏ khoảng trắng thừa
+
+        if (value === '') {
+            toastWarning('Cảnh báo','Tên kích cỡ không được để trống!');
+            return false; // Ngăn form gửi đi
+        }
+
+        return true; // Cho phép form gửi đi
+    }
 </script>
 </body>
 </html>

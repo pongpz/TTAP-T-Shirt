@@ -96,6 +96,28 @@ public class SanPhamController {
         return "/admin/sanpham/them-san-pham";
     }
 
+    @PostMapping("/images/add")
+    public String themAnh(@RequestParam("files") MultipartFile[] files,
+                                              RedirectAttributes redirectAttributes) {
+        try {
+            for (MultipartFile file : files) {
+                String imageUrl = hinhAnhService.uploadFile(file);
+
+                HinhAnh hinhAnh = new HinhAnh();
+                hinhAnh.setPath(imageUrl);
+                hinhAnh.setTrangThai(1);
+                hinhAnh.setSanPham(null);
+                hinhAnhRepository.save(hinhAnh);
+            }
+            // Thêm thông báo flash
+            redirectAttributes.addFlashAttribute("uploadSuccess", true);
+            return "redirect:/admin/san-pham/them-san-pham";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không thể tải ảnh lên: " + e.getMessage());
+            return "redirect:/admin/san-pham/them-san-pham";
+        }
+    }
+
     @GetMapping("/tim-kiem")
     public String timKiem(@RequestParam("ten") String ten, Model model, @RequestParam(defaultValue = "0") int page){
 

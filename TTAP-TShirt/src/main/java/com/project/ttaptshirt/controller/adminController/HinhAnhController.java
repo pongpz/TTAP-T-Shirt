@@ -43,7 +43,7 @@ public class HinhAnhController {
             }
             // Thêm thông báo flash
             redirectAttributes.addFlashAttribute("uploadSuccess", true);
-            return "redirect:/admin/san-pham/them-san-pham";
+            return "redirect:/admin/sanpham/them-san-pham";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Không thể tải ảnh lên: " + e.getMessage());
             return "redirect:/admin/san-pham/them-san-pham";

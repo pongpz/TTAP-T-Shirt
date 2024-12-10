@@ -43,11 +43,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form th:action="@{/admin/chat-lieu/add}" th:object="${chatLieu}" method="post">
-                        <div class="mb-3">
-                            <label for="ten" class="form-label">Tên chất liệu</label>
-                            <input type="text" class="form-control" id="ten" name="ten" required>
-                        </div>
+                        <form th:action="@{/admin/chat-lieu/add}" th:object="${chatLieu}" method="post" onsubmit="return validateForm()">
+                            <div class="mb-3">
+                                <label for="ten" class="form-label">Tên chất liệu</label>
+                                <input type="text" class="form-control" id="ten" name="ten" required>
+                            </div>
                             <button type="submit" class="btn btn-primary">Thêm</button>
                         </form>
                     </div>
@@ -91,6 +91,7 @@
         </section>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
@@ -114,6 +115,20 @@
         toastSuccess('Thành Công!', 'Chất liệu đã được sửa thành công!');
     }
     /*]]>*/
+</script>
+
+<script>
+    function validateForm() {
+        const inputField = document.getElementById('ten');
+        const value = inputField.value.trim(); // Loại bỏ khoảng trắng thừa
+
+        if (value === '') {
+            toastWarning('Cảnh báo','Tên chất liệu không được để trống!');
+            return false; // Ngăn form gửi đi
+        }
+
+        return true; // Cho phép form gửi đi
+    }
 </script>
 </body>
 </html>
