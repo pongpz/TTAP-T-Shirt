@@ -170,25 +170,25 @@ public class SanPhamCustomerController {
 
 
 
-    @GetMapping("/san-pham-detail/{idSP}")
-    public String sanPhamDetail(@PathVariable Long idSP, Model model, Authentication authentication,
-                                HttpServletRequest request) {
-        if (authentication != null) {
-            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
-            model.addAttribute("userLogged", user);
-        }
-        model.addAttribute("requestURI", request.getRequestURI());
-        SanPham sanPham = sanPhamRepository.findById(idSP)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm!"));
+        @GetMapping("/san-pham-detail/{idSP}")
+        public String sanPhamDetail(@PathVariable Long idSP, Model model, Authentication authentication,
+                                    HttpServletRequest request) {
+            if (authentication != null) {
+                CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+                User user = customUserDetail.getUser();
+                model.addAttribute("userLogged", user);
+            }
+            model.addAttribute("requestURI", request.getRequestURI());
+            SanPham sanPham = sanPhamRepository.findById(idSP)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm!"));
 
-        List<String> images = hinhAnhRepository.findBySanPhamId(idSP);
+            List<String> images = hinhAnhRepository.findBySanPhamId(idSP);
 
-        List<ChiTietSanPham> chiTietSanPhamList = chiTietSanPhamRepository.findBySanPhamId(idSP);
+            List<ChiTietSanPham> chiTietSanPhamList = chiTietSanPhamRepository.findBySanPhamId(idSP);
 
-        if (chiTietSanPhamList.isEmpty()) {
-            model.addAttribute("noDetails", true);
-        }
+            if (chiTietSanPhamList.isEmpty()) {
+                model.addAttribute("noDetails", true);
+            }
 
         ChiTietSanPham chiTietSanPham = !chiTietSanPhamList.isEmpty() ? chiTietSanPhamList.get(0) : null;
         double giaBan = chiTietSanPham != null ? chiTietSanPham.getGiaBan() : 0;

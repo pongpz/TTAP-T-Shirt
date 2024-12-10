@@ -59,14 +59,15 @@
         <h5 class="card-title">Hóa Đơn #<span th:text="${hoaDon.ma}"></span></h5>
         <h4>Trạng thái:  <span th:switch="${hoaDon.trangThai}">
          <span th:case="3">Chờ xác nhận</span>
+           <span th:case="0">Chờ thanh toán</span>
+            <span th:case="1">Thành Công</span>
             <span th:case="2">Đã hủy</span>
+            <span th:case="3">Chờ xác nhận</span>
             <span th:case="6">Đã Xác nhận</span>
             <span th:case="7">Người gửi đang chuẩn bị hàng</span>
-            <span th:case="8">Đang giao hàng</span>
-            <span th:case="2">Đã hủy</span>
-            <span th:case="1">Thành Công</span>
-            <span th:case="0">Chờ thanh toán</span>
-
+            <span th:case="8">Đang chờ đơn vị vận chuyển lấy hàng</span>
+            <span th:case="9">Đang giao hàng</span>
+            <span th:case="10">Đã giao hàng</span>
             <span th:case="*" class="text-secondary">Không xác định</span>
 
     </span></h4>
@@ -111,7 +112,7 @@
 
                 </div>
             <form th:action="@{/TTAP/cart/huy-hoa-don-online(idHD=${hoaDon.id})}" method="post" class="d-inline" onsubmit="return confirmCancel()">
-                <button type="submit" class="btn btn-danger" th:disabled="${hoaDon.trangThai != 3}">
+                <button type="submit" class="btn btn-danger" th:disabled="${hoaDon.trangThai != 3}"  th:if="${hoaDon.trangThai == 3}">
                     Hủy hóa đơn
                 </button>
             </form>

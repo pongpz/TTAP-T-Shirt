@@ -310,7 +310,7 @@
                 <br/>
                 <div class="row">
                     <label class="col-7" style="font-size: 18px; font-weight: bold"
-                           th:text="${hoadon != null && hoadon.nhanVien != null ? 'Nhân Viên Tạo: ' + hoadon.nhanVien.hoTen : 'Nhân Viên: Chưa Chọn'}">
+                           th:text="${hoadon != null && hoadon.nhanVien != null ? 'Nhân Viên Tạo: ' + hoadon.nhanVien.hoTen : 'Nhân Viên: ADMIN'}">
                     </label>
 
                     <label class="col-5" style="font-size: 18px; font-weight: bold"
@@ -320,7 +320,7 @@
                 <br/>
                 <div class="row">
                     <label class="col-7" style="font-size: 18px; font-weight: bold"
-                           th:text="${hoadon != null && hoadon.khachHang != null ? 'Khách Hàng: ' + hoadon.khachHang.hoTen : 'Khách Hàng: Chưa Chọn'}">
+                           th:text="${hoadon != null && hoadon.khachHang != null ? 'Khách Hàng: ' + hoadon.khachHang.hoTen : 'Khách Hàng: Vãng lai'}">
                     </label>
                     <button class="col-4 btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCustomer">
                         Chọn Khách Hàng
@@ -343,7 +343,7 @@
                                                style="width: 620px;height: 60px" class="col-7" type="number"
                                                name="soDienThoaiKH">
                                         <a class="col-4 btn btn-primary" style="width: 120px;height: 60px;margin-right: 30px"
-                                           th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}">Khách vãng lai</a>
+                                           th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}" onclick="return confirmCancelKH()">Khách vãng lai</a>
                                         <button class="btn btn-primary"
                                                 style="width: 120px;height: 60px;margin-right: 30px;"
                                                 data-bs-toggle="modal" data-bs-target="#modalAddNewCustomer">
@@ -482,7 +482,7 @@
                                         <input class="col-7" type="hidden" name="hoadonId" th:value="${hoadon.id}">
                                         <button class="col-1 btn btn-primary" type="submit">Tìm kiếm</button>
                                         <a  class="col-1 btn btn-primary"
-                                            th:href="@{/admin/ban-hang/huy-ma-giam-gia?hoadonId={idHd}(idHd=${hoadon.id})}">Bỏ chọn</a>
+                                            th:href="@{/admin/ban-hang/huy-ma-giam-gia?hoadonId={idHd}(idHd=${hoadon.id})}" onclick="return confirmCancelMGG()">Bỏ chọn</a>
                                     </form>
                                 </div>
                                 <div class="modal-body">
@@ -924,11 +924,63 @@
         <script th:inline="javascript">
             /*<![CDATA[*/
             /* Check if the deleteSuccess attribute is present in the model */
+            var cancelKH = [[${cancelKH}]];
+            if (cancelKH) {
+                toastSuccess('Thành công !', 'Bỏ chọn khách hàng thành công!');
+            }
+            /*]]>*/
+        </script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var cancelMGG = [[${cancelMGG}]];
+            if (cancelMGG) {
+                toastSuccess('Thành công !', 'Bỏ chọn mã giảm giá thành công!');
+            }
+            /*]]>*/
+        </script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var nullMGG = [[${nullMGG}]];
+            if (nullMGG) {
+                toastInfo('Lỗi !', 'Hiện không có mã giảm giá nào!');
+            }
+            /*]]>*/
+        </script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
+            var nullKH = [[${nullKH}]];
+            if (nullKH) {
+                toastInfo('Lỗi !', 'Hiện không có khách hàng nào!');
+            }
+            /*]]>*/
+        </script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            /* Check if the deleteSuccess attribute is present in the model */
             var isInvoiceEmptyCheckout = [[${isInvoiceEmptyCheckout}]];
             if (isInvoiceEmptyCheckout) {
                 toastError('Lỗi !', 'Hóa đơn trống không có sản phẩm!');
             }
             /*]]>*/
+        </script>
+
+        <script>
+            function confirmCancelMGG(){
+                return window.confirm('Bạn có chắc muốn bỏ mã giảm giá này không?')
+            }
+        </script>
+
+        <script>
+            function confirmCancelKH(){
+                return window.confirm('Bạn có chắc muốn bỏ khách hàng này không?')
+            }
         </script>
 
         <script th:inline="javascript">

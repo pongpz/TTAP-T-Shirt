@@ -755,18 +755,24 @@ public class BanHangController {
 
     @Transactional
     @GetMapping("/huy-khach-hang")
-    public String huyKhachHang(@RequestParam("hoadonId") Long idhd) {
+    public String huyKhachHang(@RequestParam("hoadonId") Long idhd, RedirectAttributes redirectAttributes) {
         HoaDon hoaDon = hoaDonRepository.getReferenceById(idhd);
+        if (hoaDon.getKhachHang()==null){
+            redirectAttributes.addFlashAttribute("nullKH",true);
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+        }
         hoaDon.setKhachHang(null);
+        redirectAttributes.addFlashAttribute("cancelKH",true);
         hoaDonRepository.save(hoaDon);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
     }
 
     @Transactional
     @GetMapping("/huy-ma-giam-gia")
-    public String huyMgg(@RequestParam("hoadonId") Long idhd) {
+    public String huyMgg(@RequestParam("hoadonId") Long idhd, RedirectAttributes redirectAttributes) {
         HoaDon hoaDon = hoaDonRepository.getReferenceById(idhd);
         if (hoaDon.getMaGiamGia()==null){
+            redirectAttributes.addFlashAttribute("nullMGG",true);
             return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
         }else {
             try {
@@ -782,6 +788,7 @@ public class BanHangController {
                 hoaDon.setMaGiamGia(null);
                 hoaDon.setSoTienGiamGia(0.0);
                 hoaDon.setTienThu(totalMoneyBefore);
+                redirectAttributes.addFlashAttribute("cancelMGG",true);
                 hoaDonRepository.save(hoaDon);
             }catch (Exception e){
                 e.printStackTrace();

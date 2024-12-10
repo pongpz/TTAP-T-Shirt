@@ -99,7 +99,7 @@
                     <td th:text="${stat.index+1}"></td>
                     <td th:text="${hd.ma}"></td>
                     <!--            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>-->
-                    <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Không có'}"></td>
+                    <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Vãng lai'}"></td>
                     <td th:text="${hd.khachHang != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
                     <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
                         th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
@@ -113,13 +113,27 @@
                     <td th:text="${hd.tienThu != null?numberUtils.formatCurrency(hd.tienThu): 'Không có'}"></td>
 
                     <td>
-                        <span th:if="${hd.trangThai == 0}" class="text-warning">Chưa thanh toán</span>
-                        <span th:if="${hd.trangThai == 1}" class="text-success">Đã thanh toán</span>
-                        <span th:if="${hd.trangThai == 2}" class="text-danger">Đã hủy</span>
-                        <span th:if="${hd.trangThai == 3}" class="text-primary">Chờ xác nhận</span>
-                        <span th:if="${hd.trangThai == 6}" class="text-primary">Đã xác nhận</span>
-                        <span th:if="${hd.trangThai == 7}" class="text-primary">Chờ lấy hàng</span>
-                        <span th:if="${hd.trangThai == 8}" class="text-primary">Đang giao hàng</span>
+    <span th:classappend="${hd.trangThai == 0 ? 'text-warning' :
+                          hd.trangThai == 1 ? 'text-success' :
+                          hd.trangThai == 2 ? 'text-danger' :
+                          hd.trangThai == 3 ? 'text-primary' :
+                          hd.trangThai == 6 ? 'text-primary' :
+                          hd.trangThai == 7 ? 'text-primary' :
+                          hd.trangThai == 8 ? 'text-primary' :
+                          hd.trangThai == 9 ? 'text-info' :
+                          hd.trangThai == 10 ? 'text-success' : 'text-info'}">
+        <span th:text="${hd.trangThai == 0 ? 'Chưa thanh toán' :
+                        hd.trangThai == 1 ? 'Đã thanh toán' :
+                        hd.trangThai == 2 ? 'Đã hủy' :
+                        hd.trangThai == 3 ? 'Chờ xác nhận' :
+                        hd.trangThai == 6 ? 'Đã xác nhận' :
+                        hd.trangThai == 7 ? 'Chuẩn bị hàng' :
+                        hd.trangThai == 8 ? 'Chờ vận chuyển' :
+                        hd.trangThai == 9 ? 'Đang giao hàng' :
+                        hd.trangThai == 10 ? 'Đã giao hàng' :
+                        'không xác định'}">
+        </span>
+    </span>
                     </td>
                     <td th:text="${hd.maGiamGia != null ?numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%' ): 'Không có'}"></td>
                     <td>
