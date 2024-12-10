@@ -167,7 +167,7 @@ public class NhanVienController {
 
     @PostMapping("/updateUser/{id}")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User updatedUser,
-                             RedirectAttributes redirectAttributes, Authentication authentication) {
+                             RedirectAttributes redirectAttributes, Authentication authentication,Model model) {
         try {
             // Kiểm tra người dùng đã đăng nhập
             if (authentication != null) {
@@ -178,6 +178,47 @@ public class NhanVienController {
 
             // Lấy thông tin người dùng từ cơ sở dữ liệu
             User user = userService.findById(id);
+            // Kiểm tra username đã tồn tại
+            if (userRepo.findUserByUsernameUpdate(updatedUser.getUsername(),id) != null) {
+                model.addAttribute("usernameIsInvalid", "Tài khoản đã tồn tại");
+                return "/admin/nhanvien/update"; // Đảm bảo trang không redirect mà giữ lại modal
+            }
+
+            // Kiểm tra tên có hợp lệ
+            if (!user.getHoTen().matches("^[a-zA-ZÀ-ỹ\\s]+$")) {
+                model.addAttribute("nameError", "Tên không hợp lệ");
+                return "/admin/nhanvien/update";
+            }
+
+            // Kiểm tra email đã tồn tại
+            if (userRepo.findUserByEmailUpdate(updatedUser.getEmail(),id) != null) {
+                model.addAttribute("emailIsInvalid", "Email đã tồn tại");
+                return "/admin/nhanvien/update";
+            }
+
+            // Kiểm tra số điện thoại có hợp lệ
+            if (!user.getSoDienthoai().matches("\\d+")) {
+                model.addAttribute("ErrorPhoneNumber", "Số điện thoại không hợp lệ");
+                return "/admin/nhanvien/update";
+            }
+
+            // Kiểm tra trường trống trong controller
+            if (user.getUsername().trim().isEmpty()) {
+                model.addAttribute("usernameError", "Tên đăng nhập không được để trống");
+                return "/admin/nhanvien/update";
+            }
+            if (user.getHoTen().trim().isEmpty()) {
+                model.addAttribute("nameError", "Họ tên không được để trống");
+                return "/admin/nhanvien/update";
+            }
+            if (user.getEmail().trim().isEmpty()) {
+                model.addAttribute("emailIsInvalid", "Email không được để trống");
+                return "/admin/nhanvien/update";
+            }
+            if (user.getSoDienthoai().trim().isEmpty()) {
+                model.addAttribute("ErrorPhoneNumber", "Số điện thoại không được để trống");
+                return "/admin/nhanvien/update";
+            }
             if (user != null) {
                 // Cập nhật các trường từ form
                 user.setHoTen(updatedUser.getHoTen());

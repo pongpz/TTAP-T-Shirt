@@ -136,6 +136,27 @@ public class HoaDonController {
         return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
     }
 
+    @GetMapping("/hoa-don-chuan-bi-hang/{idHD}")
+    public String hdChuanBiHang(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes, Authentication authentication) {
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        User user = customUserDetail.getUser();
+        hoaDonService.hdChuanBiHang(idHD);
+
+        // Add a flash attribute for success message
+        redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã chuyển sang trạng thái chuẩn bị hàng!");
+        HoaDon hoaDon = hoaDonService.findById(idHD);
+        HoaDonLog hoaDonLog = new HoaDonLog();
+        hoaDonLog.setHoaDon(hoaDon);
+        hoaDonLog.setHanhDong("Chuẩn bị hàng");
+        hoaDonLog.setThoiGian(LocalDateTime.now());
+        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setGhiChu("Đã xác nhận chuẩn bị hàng để gửi cho khách hàng");
+        hoaDonLog.setTrangThai(0);
+        hoaDonLogService.save(hoaDonLog);
+        return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
+    }
+
+
     @GetMapping("/hoa-don-cho-giao-hang/{idHD}")
     public String hdChoGiaoHang(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes,Authentication authentication) {
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
@@ -150,7 +171,7 @@ public class HoaDonController {
         hoaDonLog.setHanhDong("Chờ giao hàng");
         hoaDonLog.setThoiGian(LocalDateTime.now());
         hoaDonLog.setNguoiThucHien(user.getHoTen());
-        hoaDonLog.setGhiChu("đã thực hiện đóng gọi đơn hàng và chờ đơn vị vận chuyển");
+        hoaDonLog.setGhiChu("đã thực hiện đóng gói đơn hàng và chờ đơn vị vận chuyển");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
         return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
@@ -174,6 +195,26 @@ public class HoaDonController {
         // Add a flash attribute for success message
         redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đang giao!");
 
+        return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
+    }
+
+    @GetMapping("/hoa-don-da-giao-hang/{idHD}")
+    public String hdDaGiaoHang(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes, Authentication authentication) {
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        User user = customUserDetail.getUser();
+        hoaDonService.hdDaGiaoHang(idHD);
+
+        // Add a flash attribute for success message
+        redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã chuyển sang trạng thái đã giao hàng!");
+        HoaDon hoaDon = hoaDonService.findById(idHD);
+        HoaDonLog hoaDonLog = new HoaDonLog();
+        hoaDonLog.setHoaDon(hoaDon);
+        hoaDonLog.setHanhDong("Đã giao hàng");
+        hoaDonLog.setThoiGian(LocalDateTime.now());
+        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setGhiChu("Đơn hàng đã được giao thành công đến khách hàng");
+        hoaDonLog.setTrangThai(0);
+        hoaDonLogService.save(hoaDonLog);
         return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
     }
 
