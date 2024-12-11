@@ -97,12 +97,13 @@
         <div >
         <label class="form-label">Giá trị giảm tối đa</label>
         <div class="input-group mb-3">
-            <input type="number" class="form-control" name="giaTriToiDa" id="giaTriToiDa" th:value="${mgg.giaTriToiDa ?: ''}">
+            <input type="number" class="form-control" id="giaTriToiDa" th:value="${mgg.giaTriToiDa ?: ''}">
             <span class="input-group-text" id="basic-addon">đ</span>
         </div>
+            <input type="hidden" name="giaTriToiDa" id="gttoida" th:value="${mgg.giaTriToiDa ?: ''}">
         </div>
     </div>
-
+    <span class="text-danger mt-3">[[${errors}]]</span>
     <button class="btn btn-primary col-3" id="btnAdd">Thêm</button>
     <script>
         document.getElementById('btnAdd').addEventListener('click', function (event) {
@@ -129,9 +130,6 @@
         });
     </script>
 
-
-
-    <h4 class="text-danger mt-3">[[${errors}]]</h4>
 </form>
     </div>
 </div>
