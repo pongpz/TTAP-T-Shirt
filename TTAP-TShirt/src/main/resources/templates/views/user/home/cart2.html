@@ -138,6 +138,8 @@
                                                th:text="${item.chiTietSanPham.mauSac.ten}"></p>
                                             <p class="small text-success"
                                                th:text="${item.chiTietSanPham.kichCo.ten}"></p>
+                                            <p class="small text-success"
+                                               th:text="${item.chiTietSanPham.kichCo.ten}"></p>
                                         </div>
                                     </div>
 
@@ -209,7 +211,7 @@
                                     </p>
                                     <small class="text-muted">(Đã bao gồm VAT nếu có)</small>
                                 </div>
-                                <button class="btn btn-success w-100 mt-3" type="submit" >Tiến hành đặt hàng</button>
+                                <button class="btn btn-success w-100 mt-3" type="submit" onclick="return confirmCreateOrder()">Tiến hành đặt hàng</button>
                             </div>
                         </div>
                     </div>
@@ -276,37 +278,65 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form nhập địa chỉ -->
-                    <form th:action="@{/TTAP/user/address}" method="post" th:object="${address}">
+                    <form th:action="@{/TTAP/user/address}" method="post" th:object="${address}" onsubmit="return validateAddressForm()">
                         <div class="mb-3">
                             <label for="soNha" class="form-label">Số nhà</label>
                             <input type="text" class="form-control" id="soNha" th:field="*{soNha}" required>
+                            <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
                         </div>
 
                         <div class="mb-3">
                             <label for="tenDuong" class="form-label">Tên đường</label>
                             <input type="text" class="form-control" id="tenDuong" th:field="*{tenDuong}" required>
+                            <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
                         </div>
 
                         <div class="mb-3">
                             <label for="tenQuanhuyen" class="form-label">Tên quận/huyện</label>
-                            <input type="text" class="form-control" id="tenQuanhuyen" th:field="*{tenQuanhuyen}"
-                                   required>
+                            <input type="text" class="form-control" id="tenQuanhuyen" th:field="*{tenQuanhuyen}" required>
+                            <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
                         </div>
 
                         <div class="mb-3">
                             <label for="tenThanhpho" class="form-label">Tên thành phố</label>
                             <input type="text" class="form-control" id="tenThanhpho" th:field="*{tenThanhpho}" required>
+                            <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
                         </div>
 
                         <button type="submit" class="btn btn-primary">Tạo Địa Chỉ</button>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
 
 </section>
+
+
 <script>
+    function validateAddressForm() {
+        const fields = ['soNha', 'tenDuong', 'tenQuanhuyen', 'tenThanhpho'];
+        let isValid = true;
+
+        fields.forEach(field => {
+            const input = document.getElementById(field);
+            const value = input.value.trim(); // Loại bỏ khoảng trắng dư thừa
+
+            // Kiểm tra xem trường có để trống không
+            if (!value) {
+                isValid = false;
+                input.classList.add('is-invalid'); // Thêm lớp hiển thị lỗi
+                input.nextElementSibling.textContent = 'Trường này không được để trống.';
+            } else {
+                input.classList.remove('is-invalid'); // Loại bỏ lớp lỗi nếu hợp lệ
+                input.nextElementSibling.textContent = '';
+            }
+        });
+
+        return isValid; // Ngăn submit nếu không hợp lệ
+    }
+
     function validateCartSelection() {
         // Lấy danh sách các checkbox sản phẩm
         const checkboxes = document.querySelectorAll('.product-checkbox');
@@ -512,20 +542,28 @@
     /* Check if the deleteSuccess attribute is present in the model */
     var addressNullError = [[${addressNullError}]];
     if (addressNullError) {
-        toastError('Thành Công !', 'Địa chỉ của bạn không hợp lệ!');
+        toastError('Lỗi !', 'Địa chỉ của bạn không hợp lệ!');
     }
     /*]]>*/
 </script>
 
-<script>
-    function confirmCreateOrder (){
-        let confirmCreate = window.confirm("Bạn có chắc muốn đặt hàng không??")
-        if (confirmCreate){
-            return true
-        }else {
-            return false
-        }
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    /* Check if the deleteSuccess attribute is present in the model */
+    var successDcMessage = [[${successDcMessage}]];
+    if (successDcMessage) {
+        toastSuccess('Thành công', 'Địa chỉ của bạn đã được chọn');
     }
+    /*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    /* Check if the deleteSuccess attribute is present in the model */
+    var successAddress= [[${successAddress}]];
+    if (successAddress) {
+        toastSuccess('Thành công', 'Địa chỉ của bạn đã được thêm ');
+    }
+    /*]]>*/
 </script>
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
     <p>&copy; 2024 TTAP T-SHIRT. All rights reserved.</p>

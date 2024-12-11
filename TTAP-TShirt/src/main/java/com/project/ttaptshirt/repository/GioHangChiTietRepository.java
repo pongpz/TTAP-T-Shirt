@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, Long> {
     List<GioHangChiTiet> findByGioHang(GioHang gioHang);
+    void deleteByGioHang_Id(Long gioHangId);
 }
