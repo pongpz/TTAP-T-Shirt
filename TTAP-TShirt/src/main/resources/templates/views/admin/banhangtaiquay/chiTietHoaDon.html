@@ -148,8 +148,11 @@
 
                     <script>
                         function submitSP(){
-                            let sp = document.getElementById('formSP')
-                            sp.submit()
+                          let isConfirmAdd = window.confirm("bạn có muốn thêm sản phẩm này vào hóa đơn !");
+                          if (isConfirmAdd) {
+                              let sp = document.getElementById('formSP')
+                              sp.submit();
+                          }
                         }
                     </script>
 

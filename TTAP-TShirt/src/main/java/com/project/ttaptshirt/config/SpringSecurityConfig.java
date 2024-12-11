@@ -23,22 +23,37 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((auth) -> auth
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .authorizeRequests(auth -> auth
                         .requestMatchers("/*").permitAll()
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN","EMPLOYEE")
+                        .requestMatchers("/admin/nhanvien/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/thong-ke/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "EMPLOYEE")
                         .requestMatchers("/TTAP/**").permitAll()
                         .anyRequest().permitAll()
-                ).formLogin(login -> login.loginPage("/login").loginProcessingUrl("/login")
-                        .usernameParameter("username").passwordParameter("password")
+                )
+                .formLogin(login -> login
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                         .successHandler(new CustomAuthenticationSuccessHandler())
-                        .permitAll())
-                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/TTAP/trang-chu"));
-
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/TTAP/trang-chu")
+                )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/handlePageError/forbiddenPage") // Handles 403 errors
+                );
 
         return http.build();
     }
+
+
+
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {

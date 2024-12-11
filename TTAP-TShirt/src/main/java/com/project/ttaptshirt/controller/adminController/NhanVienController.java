@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,7 @@ public class NhanVienController {
     }
 
     @GetMapping("/register")
-    public String register(Authentication authentication,Model model) {
+    public String register(Authentication authentication, Model model) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
@@ -161,13 +162,28 @@ public class NhanVienController {
     @GetMapping("/detail/{id}")
     public String showUserDetails(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
-            model.addAttribute("user", user);
+        model.addAttribute("user", user);
         return "/admin/nhanvien/update";
     }
 
+    @PostMapping("/reset-password/{idUser}")
+    public String resetPassword(@PathVariable("idUser") Long idUser, @RequestParam("newPassword") String newPassword,
+                                RedirectAttributes redirectAttributes) {
+        String passwordEncode = new BCryptPasswordEncoder().encode(newPassword);
+        User user = userService.findById(idUser);
+        user.setPassword(passwordEncode);
+        userService.save(user);
+
+        // Add a flash attribute to notify of successful password reset
+        redirectAttributes.addFlashAttribute("isResetPasswordSuccess", true);
+
+        return "redirect:/admin/nhanvien/view"; // Redirect to the list of employees page
+    }
+
+
     @PostMapping("/updateUser/{id}")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User updatedUser,
-                             RedirectAttributes redirectAttributes, Authentication authentication,Model model) {
+                             RedirectAttributes redirectAttributes, Authentication authentication, Model model) {
         try {
             // Kiểm tra người dùng đã đăng nhập
             if (authentication != null) {
@@ -179,7 +195,7 @@ public class NhanVienController {
             // Lấy thông tin người dùng từ cơ sở dữ liệu
             User user = userService.findById(id);
             // Kiểm tra username đã tồn tại
-            if (userRepo.findUserByUsernameUpdate(updatedUser.getUsername(),id) != null) {
+            if (userRepo.findUserByUsernameUpdate(updatedUser.getUsername(), id) != null) {
                 model.addAttribute("usernameIsInvalid", "Tài khoản đã tồn tại");
                 return "/admin/nhanvien/update"; // Đảm bảo trang không redirect mà giữ lại modal
             }
@@ -191,7 +207,7 @@ public class NhanVienController {
             }
 
             // Kiểm tra email đã tồn tại
-            if (userRepo.findUserByEmailUpdate(updatedUser.getEmail(),id) != null) {
+            if (userRepo.findUserByEmailUpdate(updatedUser.getEmail(), id) != null) {
                 model.addAttribute("emailIsInvalid", "Email đã tồn tại");
                 return "/admin/nhanvien/update";
             }

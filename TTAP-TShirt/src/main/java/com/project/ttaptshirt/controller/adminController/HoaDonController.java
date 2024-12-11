@@ -121,16 +121,17 @@ public class HoaDonController {
             }
             chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - hdct.getSoLuong());
             chiTietSanPhamService.save(chiTietSanPham);
-            HoaDonLog hoaDonLog = new HoaDonLog();
-            hoaDonLog.setHoaDon(hdct.getHoaDon());
-            hoaDonLog.setHanhDong("Xác nhận");
-            hoaDonLog.setThoiGian(LocalDateTime.now());
-            hoaDonLog.setNguoiThucHien(user.getHoTen());
-            hoaDonLog.setGhiChu("đã thực hiện xác nhận đơn hàng online");
-            hoaDonLog.setTrangThai(0);
-            hoaDonLogService.save(hoaDonLog);
-            hoaDonService.xacNhanHoaDon(idHD);
         }
+        HoaDonLog hoaDonLog = new HoaDonLog();
+        HoaDon hoaDon2 = hoaDonService.findById(idHD);
+        hoaDonLog.setHoaDon(hoaDon2);
+        hoaDonLog.setHanhDong("Xác nhận");
+        hoaDonLog.setThoiGian(LocalDateTime.now());
+        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setGhiChu("đã thực hiện xác nhận đơn hàng online");
+        hoaDonLog.setTrangThai(0);
+        hoaDonLogService.save(hoaDonLog);
+        hoaDonService.xacNhanHoaDon(idHD);
         // Add a flash attribute for success message
         redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã được xác nhận!");
         return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
