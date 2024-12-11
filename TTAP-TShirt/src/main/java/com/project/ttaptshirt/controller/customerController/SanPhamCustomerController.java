@@ -168,57 +168,88 @@ public class SanPhamCustomerController {
     }
 
 
+    @GetMapping("/san-pham-detail/{idSP}")
+    public String sanPhamDetail(@PathVariable Long idSP, Model model, Authentication authentication,
+                                HttpServletRequest request) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
+        model.addAttribute("requestURI", request.getRequestURI());
 
+        // Lấy thông tin sản phẩm
+        SanPham sanPham = sanPhamRepository.findById(idSP)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm!"));
 
-        @GetMapping("/san-pham-detail/{idSP}")
-        public String sanPhamDetail(@PathVariable Long idSP, Model model, Authentication authentication,
-                                    HttpServletRequest request) {
-            if (authentication != null) {
-                CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-                User user = customUserDetail.getUser();
-                model.addAttribute("userLogged", user);
-            }
-            model.addAttribute("requestURI", request.getRequestURI());
-            SanPham sanPham = sanPhamRepository.findById(idSP)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm!"));
+        // Lấy danh sách hình ảnh sản phẩm
+        List<String> images = hinhAnhRepository.findBySanPhamId(idSP);
 
-            List<String> images = hinhAnhRepository.findBySanPhamId(idSP);
+        // Lấy chi tiết sản phẩm
+        List<ChiTietSanPham> chiTietSanPhamList = chiTietSanPhamRepository.findBySanPhamId(idSP);
 
-            List<ChiTietSanPham> chiTietSanPhamList = chiTietSanPhamRepository.findBySanPhamId(idSP);
+        if (chiTietSanPhamList.isEmpty()) {
+            model.addAttribute("noDetails", true);
+        }
 
-            if (chiTietSanPhamList.isEmpty()) {
-                model.addAttribute("noDetails", true);
-            }
+        // Khởi tạo các biến cần thiết
+        double giaBan = 0;
+        int totalQuantity = 0;
+        double minPrice = Double.MAX_VALUE; // Giá ban đầu là giá lớn nhất có thể
 
-        ChiTietSanPham chiTietSanPham = !chiTietSanPhamList.isEmpty() ? chiTietSanPhamList.get(0) : null;
-        double giaBan = chiTietSanPham != null ? chiTietSanPham.getGiaBan() : 0;
-
-        // Lọc các màu sắc và kích cỡ có sẵn cho sản phẩm
-        // Lọc các màu sắc và kích cỡ có sẵn cho sản phẩm
         Set<Map.Entry<Long, String>> availableColors = new HashSet<>();
         Set<Map.Entry<Long, String>> availableSizes = new HashSet<>();
 
+        // Duyệt qua các chi tiết sản phẩm để tính tổng số lượng và giá thấp nhất
         for (ChiTietSanPham detail : chiTietSanPhamList) {
-            // Lấy id và tên màu sắc
-            availableColors.add(new AbstractMap.SimpleEntry<>(detail.getMauSac().getId(), detail.getMauSac().getTen()));
+            // Kiểm tra số lượng sản phẩm có sẵn
+            if (detail.getSoLuong() > 0) {
+                totalQuantity += detail.getSoLuong();
 
-            // Lấy id và tên kích cỡ
-            availableSizes.add(new AbstractMap.SimpleEntry<>(detail.getKichCo().getId(), detail.getKichCo().getTen()));
+                // Cập nhật giá thấp nhất nếu cần
+                if (detail.getGiaBan() < minPrice) {
+                    minPrice = detail.getGiaBan();
+                }
+
+                // Kiểm tra màu sắc có sẵn
+                if (detail.getMauSac() != null) {
+                    availableColors.add(new AbstractMap.SimpleEntry<>(detail.getMauSac().getId(), detail.getMauSac().getTen()));
+                }
+
+                // Kiểm tra kích cỡ có sẵn
+                if (detail.getKichCo() != null) {
+                    availableSizes.add(new AbstractMap.SimpleEntry<>(detail.getKichCo().getId(), detail.getKichCo().getTen()));
+                }
+            }
         }
 
+        // Nếu không có chi tiết sản phẩm hợp lệ, gán giá và số lượng mặc định
+        if (minPrice == Double.MAX_VALUE) {
+            minPrice = 0; // Nếu không có giá hợp lệ, gán giá bằng 0
+        }
 
         NumberUtils numberUtils = new NumberUtils();
 
+        // Gửi các dữ liệu cần thiết tới giao diện người dùng
         model.addAttribute("numberUtils", numberUtils);
-        model.addAttribute("giaBan", giaBan);
+        model.addAttribute("giaBan", minPrice); // Giá thấp nhất
         model.addAttribute("sanPham", sanPham);
+        model.addAttribute("totalQuantity", totalQuantity); // Tổng số lượng
         model.addAttribute("mainImage", images.isEmpty() ? "/images/no-image.png" : images.get(0));
         model.addAttribute("images", images);
-        model.addAttribute("colors", availableColors);
-        model.addAttribute("sizes", availableSizes);
+
+        // Chỉ thêm màu sắc và kích cỡ nếu có
+        if (!availableColors.isEmpty()) {
+            model.addAttribute("colors", availableColors);
+        }
+        if (!availableSizes.isEmpty()) {
+            model.addAttribute("sizes", availableSizes);
+        }
 
         return "user/home/sanphamdetail";
     }
+
+
 
     @GetMapping("/product/{id}/sizes")
     @ResponseBody

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -66,7 +67,8 @@ public class DiaChiController {
     }
 
     @PostMapping("/address")
-    public String createAddress(@ModelAttribute DiaChi address, Authentication authentication) {
+    public String createAddress(@ModelAttribute DiaChi address, Authentication authentication,
+                                RedirectAttributes redirectAttributes) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             User user = customUserDetail.getUser();
@@ -74,6 +76,7 @@ public class DiaChiController {
             address.setUser(user); // Gắn địa chỉ với người dùng hiện tại
             serDc.save(address); // Lưu địa chỉ vào cơ sở dữ liệu
 
+            redirectAttributes.addFlashAttribute("successAddress", true);
             return "redirect:/TTAP/cart/view"; // Sau khi lưu, chuyển hướng đến danh sách địa chỉ
         }
         return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
