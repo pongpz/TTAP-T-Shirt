@@ -128,4 +128,44 @@ public class ThongKeService {
     }
 
 
+    public Map<LocalDate, Double> thongKeDoanhThuTheoNgay(int day, int month, int year) {
+        LocalDate selectedDate = LocalDate.of(year, month, day);
+
+        List<HoaDon> hoaDons = hoaDonRepository.findAll();
+        Map<LocalDate, Double> doanhThuTheoNgay = new HashMap<>();
+
+        for (HoaDon hoaDon : hoaDons) {
+            if (hoaDon.getNgayThanhToan() != null && hoaDon.getNgayThanhToan().isEqual(selectedDate)) {
+                // Lấy chi tiết hóa đơn
+                List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
+
+                // Tính tổng doanh thu của hóa đơn
+                double doanhThu = hoaDonChiTiets.stream()
+                        .filter(chiTiet -> chiTiet.getDonGia() != null && chiTiet.getSoLuong() != null) // Kiểm tra null
+                        .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
+                        .sum();
+
+                doanhThuTheoNgay.put(selectedDate, doanhThu);
+            }
+        }
+
+        return doanhThuTheoNgay;
+    }
+    public Map<Integer, Double> thongKeDoanhThuTheoThang(List<HoaDon> hoaDons) {
+        Map<Integer, Double> doanhThuTheoThang = new HashMap<>();
+        for (HoaDon hoaDon : hoaDons) {
+            if (hoaDon.getNgayThanhToan() != null) {
+                int monthValue = hoaDon.getNgayThanhToan().getMonthValue();
+                List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
+                double doanhThu = hoaDonChiTiets.stream()
+                        .filter(chiTiet -> chiTiet.getDonGia() != null && chiTiet.getSoLuong() != null)
+                        .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
+                        .sum();
+                doanhThuTheoThang.put(monthValue, doanhThuTheoThang.getOrDefault(monthValue, 0.0) + doanhThu);
+            }
+        }
+        return doanhThuTheoThang;
+    }
+
+
 }

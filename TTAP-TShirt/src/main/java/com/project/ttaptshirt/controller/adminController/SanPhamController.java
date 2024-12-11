@@ -75,6 +75,44 @@ public class SanPhamController {
         return "/admin/sanpham/san-pham";
     }
 
+    @GetMapping("/tim-kiem")
+    public String timKiem(@RequestParam("ten") String ten,
+                          @RequestParam(value = "trangThai", required = false) Integer trangThai,
+                          Model model,
+                          @RequestParam(defaultValue = "0") int page) {
+
+        Pageable pageable = PageRequest.of(page, 6);
+
+        Page<SanPham> timSp;
+        if (ten.isEmpty() && trangThai == null) {
+            timSp = sanPhamRepository.findAllByOrderByNgayTaoDesc(pageable);
+        } else if (!ten.isEmpty() && trangThai == null) {
+            timSp = sanPhamRepository.findByTenContaining(ten, pageable);
+        } else if (ten.isEmpty() && trangThai != null) {
+            timSp = sanPhamRepository.findByTrangThai(trangThai, pageable);
+        } else {
+            timSp = sanPhamRepository.findByTenContainingAndTrangThai(ten, trangThai, pageable);
+        }
+
+        model.addAttribute("listSP", timSp);
+        model.addAttribute("ten", ten);
+        model.addAttribute("trangThai", trangThai); // Để giữ giá trị trạng thái trong form
+
+        List<NSX> listNsx = nsxRepository.findAll();
+        model.addAttribute("listNsx", listNsx);
+
+        List<ChatLieu> listChatLieu = chatLieuRepository.findAll();
+        model.addAttribute("listChatLieu", listChatLieu);
+
+        List<ThuongHieu> listThuongHieu = thuongHieuRepository.findAll();
+        model.addAttribute("listThuongHieu", listThuongHieu);
+
+        List<KieuDang> listKieuDang = kieuDangRepository.findAll();
+        model.addAttribute("listKieuDang", listKieuDang);
+
+        return "/admin/sanpham/san-pham";
+    }
+
 
     @GetMapping("/them-san-pham")
     public String themSanPham(Model model){
@@ -98,7 +136,7 @@ public class SanPhamController {
 
     @PostMapping("/images/add")
     public String themAnh(@RequestParam("files") MultipartFile[] files,
-                                              RedirectAttributes redirectAttributes) {
+                          RedirectAttributes redirectAttributes) {
         try {
             for (MultipartFile file : files) {
                 String imageUrl = hinhAnhService.uploadFile(file);
@@ -116,32 +154,6 @@ public class SanPhamController {
             redirectAttributes.addFlashAttribute("errorMessage", "Không thể tải ảnh lên: " + e.getMessage());
             return "redirect:/admin/san-pham/them-san-pham";
         }
-    }
-
-    @GetMapping("/tim-kiem")
-    public String timKiem(@RequestParam("ten") String ten, Model model, @RequestParam(defaultValue = "0") int page){
-
-        Pageable pageable = PageRequest.of(page, 6);
-        Page<SanPham> timSp = ten.isEmpty()
-                ? sanPhamRepository.findAllByOrderByNgayTaoDesc(pageable)
-                : sanPhamRepository.findByTenContaining(ten, pageable);
-
-        model.addAttribute("listSP", timSp);
-        model.addAttribute("ten",ten);
-
-        List<NSX> listNsx = nsxRepository.findAll();
-        model.addAttribute("listNsx", listNsx);
-
-        List<ChatLieu> listChatLieu = chatLieuRepository.findAll();
-        model.addAttribute("listChatLieu", listChatLieu);
-
-        List<ThuongHieu> listThuongHieu = thuongHieuRepository.findAll();
-        model.addAttribute("listThuongHieu", listThuongHieu);
-
-        List<KieuDang> listKieuDang = kieuDangRepository.findAll();
-        model.addAttribute("listKieuDang", listKieuDang);
-
-        return "/admin/sanpham/san-pham";
     }
 
     @GetMapping("/add")

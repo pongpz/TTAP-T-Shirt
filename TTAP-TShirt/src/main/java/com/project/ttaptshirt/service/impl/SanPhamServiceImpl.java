@@ -37,6 +37,4 @@ public class SanPhamServiceImpl implements SanPhamService {
         return sanPhamRepository.findAll();
     }
 
-
-
 }
