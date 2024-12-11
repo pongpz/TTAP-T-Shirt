@@ -93,11 +93,15 @@
 <!--            </div>-->
             <div class="mt-3">
                 <label><strong>Giá tiền:</strong></label>
-                <span id="productPrice" style="font-size: 30px; font-weight: bold; color: red;">0 VNĐ</span>
+                <span id="productPrice" style="font-size: 30px; font-weight: bold; color: red;">
+                    <span th:text="${numberUtils.formatCurrency(giaBan)}">0 VNĐ</span>
+                </span>
             </div>
                 <div class="mt-3">
                 <label><strong>Số lượng:</strong></label>
-                <span id="productStock" style="font-size: 20px; font-weight: bold;">0</span>
+                <span id="productStock" style="font-size: 20px; font-weight: bold;">
+                    <span th:text="${totalQuantity}">0</span>
+                </span>
             </div>
                 <!-- Màu sắc -->
                 <div class="mt-3">
@@ -188,7 +192,7 @@
 
         // Kiểm tra người dùng đã chọn đầy đủ màu sắc và kích thước
         if (!colorId || !sizeId) {
-            document.getElementById("productPrice").innerText = "0 VNĐ";
+            document.getElementById("productPrice").innerText = "0 đ";
             document.getElementById("productStock").innerText = "0";
             return;
         }
@@ -203,7 +207,7 @@
             })
             .then(data => {
                 // Cập nhật thông tin giá và số lượng vào giao diện
-                document.getElementById("productPrice").innerText = `${data.giaBan.toLocaleString()} VNĐ`;
+                document.getElementById("productPrice").innerText = `${data.giaBan.toLocaleString()} đ`;
                 document.getElementById("productStock").innerText = data.soLuong;
             })
             .catch(error => {

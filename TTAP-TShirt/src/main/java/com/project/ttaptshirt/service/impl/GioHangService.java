@@ -164,6 +164,11 @@ public class GioHangService {
         return order;
     }
 
+    public void clearCart(Long gioHangId) {
+        // Xóa tất cả sản phẩm trong giỏ hàng
+        gioHangChiTietRepository.deleteByGioHang_Id(gioHangId);
+    }
+
     // Xóa sản phẩm khỏi giỏ hàng
     public void removeProductFromCart(User user, Long productId) {
         // Lấy giỏ hàng hiện tại
@@ -322,5 +327,17 @@ public class GioHangService {
         }
     }
 
+    // Lưu giỏ hàng
+    @Transactional
+    public void save(GioHang cart) {
+        gioHangRepository.save(cart);
+    }
+
+    // Xóa hết sản phẩm trong giỏ hàng
+    @Transactional
+    public void clearCart(GioHang cart) {
+        cart.getItems().clear();
+        gioHangRepository.save(cart); // Lưu lại giỏ hàng đã được xóa hết sản phẩm
+    }
 
 }

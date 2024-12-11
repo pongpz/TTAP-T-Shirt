@@ -114,8 +114,33 @@ public class GioHangController {
         user.setDefaultAddress(selectedAddress); // Giả sử bạn có phương thức để gán địa chỉ mặc định
         userRepo.save(user);  // Lưu người dùng với địa chỉ mặc định
         redirectAttributes.addAttribute("selectedAddressId", addressId);
+        redirectAttributes.addFlashAttribute("successDcMessage", true);
         return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng sau khi chọn
     }
+
+    @PostMapping("/clearCart")
+    public String clearCart(Authentication authentication, RedirectAttributes redirectAttributes) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            User user = customUserDetail.getUser();
+
+            // Lấy giỏ hàng hiện tại của người dùng
+            GioHang cart = gioHangService.getOrCreateCart(user);
+
+            // Xóa tất cả sản phẩm trong giỏ hàng
+            cart.getItems().clear();
+
+            // Lưu giỏ hàng đã cập nhật
+
+
+            // Thêm thông báo thành công
+            redirectAttributes.addFlashAttribute("message", "Giỏ hàng đã được làm trống.");
+
+            return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng sau khi xóa hết sản phẩm
+        }
+        return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
+    }
+
 
 
     // Xóa sản phẩm khỏi giỏ hàng
