@@ -10,6 +10,7 @@ import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
+import com.project.ttaptshirt.service.HoaDonLogService;
 import com.project.ttaptshirt.service.impl.DiscountService;
 import com.project.ttaptshirt.service.impl.GioHangService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
@@ -24,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,6 +52,9 @@ public class GioHangController {
 
     @Autowired
     private HinhAnhRepository hinhAnhRepository;
+
+    @Autowired
+    HoaDonLogService hoaDonLogService;
 
     // Xem giỏ hàng
     @GetMapping("/view")
@@ -184,6 +189,17 @@ public class GioHangController {
                         .collect(Collectors.toList());
                 HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi);
                 redirectAttributes.addFlashAttribute("message", true);
+
+                HoaDonLog hoaDonLog = new HoaDonLog();
+                hoaDonLog.setHoaDon(hoaDon);
+                hoaDonLog.setHanhDong("Đặt hàng");
+                hoaDonLog.setThoiGian(LocalDateTime.now());
+                hoaDonLog.setNguoiThucHien("Khách Hàng:"+ user.getHoTen());
+                hoaDonLog.setGhiChu("đã thực hiện đặt hàng online");
+                hoaDonLog.setTrangThai(0);
+                hoaDonLogService.save(hoaDonLog);
+
+
                 model.addAttribute("userLogged", user);
                 return "redirect:/TTAP/cart/view"; // Chuyển đến trang chi tiết hóa đơn
             } catch (Exception e) {

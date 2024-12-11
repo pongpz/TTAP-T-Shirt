@@ -90,7 +90,7 @@ public class User {
                 ", email='" + email + '\'' +
                 '}';
     }
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiaChi> diaChiList = new ArrayList<>();
 
