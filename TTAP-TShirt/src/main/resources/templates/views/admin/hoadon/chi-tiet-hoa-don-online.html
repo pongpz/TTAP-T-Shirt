@@ -226,9 +226,10 @@
         <button
                 th:if="${hoaDon.trangThai == 3}"
                 style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; background-color: white; color: #dc3545; border: 1px solid #dc3545;"
-                th:onclick="|confirmAction('/admin/hoa-don/huy-hoa-don-online/' + ${hoaDon.id}, 'Hủy hóa đơn này?')|">
+                th:onclick="|confirmWithReason('/admin/hoa-don/huy-hoa-don-online/' + ${hoaDon.id})|">
             Hủy đơn hàng
         </button>
+
     </div>
 
 
@@ -348,18 +349,51 @@
             });
     }
 
-    function toastSuccess(title, message) {
-        // Assuming you're using a library like Toastify or another toast library
-        Toastify({
-            text: message,
-            duration: 3000, // duration in ms
-            close: true,
-            gravity: "top", // position: top or bottom
-            position: "right", // position: left, center, right
-            backgroundColor: "green", // customize color as needed
-            stopOnFocus: true // stops the toast from disappearing when hovered
-        }).showToast();
+
+    function confirmWithReason(url) {
+        swal({
+            title: "Lý do hủy hóa đơn",
+            text: "Vui lòng nhập lý do hủy đơn hàng:",
+            content: {
+                element: "input",
+                attributes: {
+                    placeholder: "Nhập lý do...",
+                    type: "text",
+                },
+            },
+            buttons: {
+                cancel: "Hủy",
+                confirm: {
+                    text: "Xác nhận",
+                    closeModal: false,
+                },
+            },
+        }).then((reason) => {
+            if (reason) {
+                // Proceed with confirmation
+                swal({
+                    title: "Xác nhận",
+                    text: "Bạn có chắc chắn muốn hủy hóa đơn này không?",
+                    icon: "warning",
+                    buttons: ["Không", "Có"],
+                    dangerMode: true,
+                }).then((willProceed) => {
+                    if (willProceed) {
+                        // Redirect to URL with the reason as a query parameter (or send via POST)
+                        window.location.href = `${url}?reason=${encodeURIComponent(reason)}`;
+                    }
+                });
+            } else{
+                if (reason.trim() === "") {
+                    swal("Thông báo", "Lý do không được để trống.", "error");
+                    return;
+                }
+            }
+        });
     }
+
+
+
 
 </script>
 <!-- Display Toast on Success -->

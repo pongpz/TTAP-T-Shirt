@@ -219,7 +219,7 @@ public class GioHangController {
                 hoaDonLog.setHoaDon(hoaDon);
                 hoaDonLog.setHanhDong("Đặt hàng");
                 hoaDonLog.setThoiGian(LocalDateTime.now());
-                hoaDonLog.setNguoiThucHien("Khách Hàng:"+ user.getHoTen());
+                hoaDonLog.setNguoiThucHien(user.getSoDienthoai());
                 hoaDonLog.setGhiChu("đã thực hiện đặt hàng online");
                 hoaDonLog.setTrangThai(0);
                 hoaDonLogService.save(hoaDonLog);
@@ -322,8 +322,10 @@ public class GioHangController {
     }
 
     @PostMapping("/huy-hoa-don-online")
-    public String huyHDOnline(@RequestParam("idHD") Long idHD,RedirectAttributes redirectAttributes){
-        hoaDonService.huyHoaDonOnline(idHD);
+    public String huyHDOnline(@RequestParam("idHD") Long idHD,RedirectAttributes redirectAttributes,Authentication authentication){
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        User user = customUserDetail.getUser();
+        hoaDonService.huyHoaDonOnline(idHD,user.getSoDienthoai()+" đã thực hiện hủy hóa đơn !");
         redirectAttributes.addFlashAttribute("cancelHoaDon", true);
         return "redirect:/TTAP/cart/hoa-don-chi-tiet/hien-thi?id=" + idHD;
     }
