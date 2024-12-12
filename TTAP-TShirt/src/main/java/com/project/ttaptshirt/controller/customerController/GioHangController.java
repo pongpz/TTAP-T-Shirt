@@ -62,6 +62,7 @@ public class GioHangController {
     private HoaDonLogService hoaDonLogService;
 
 
+
     // Xem giỏ hàng
     @GetMapping("/view")
     public String viewCart(Model model, Authentication authentication,
@@ -431,5 +432,17 @@ public class GioHangController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+
+    @GetMapping("/deleteAddress/{id}")
+    public String deleteAddress(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            serDc.deleteAddress(id); // Xử lý xóa trong service
+            redirectAttributes.addFlashAttribute("successRemoveaddress", "Địa chỉ đã được xóa thành công.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorRemoveaddress", "Xóa địa chỉ thất bại. Vui lòng thử lại.");
+        }
+        return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
+    }
+
 
 }
