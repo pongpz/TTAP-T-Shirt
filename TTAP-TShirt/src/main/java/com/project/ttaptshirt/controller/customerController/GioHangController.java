@@ -99,7 +99,7 @@ public class GioHangController {
             Map<Long, Integer> productStockQuantities = new HashMap<>();
             for (GioHangChiTiet item : cartItems) {
                 Long productId = item.getChiTietSanPham().getSanPham().getId();
-
+                Long ctproductId = item.getChiTietSanPham().getId();
                 // Lấy hình ảnh đầu tiên
                 List<String> images = hinhAnhRepository.findBySanPhamId(productId);
                 String firstImage = images.isEmpty() ? "/default-image.jpg" : images.get(0);
@@ -107,7 +107,7 @@ public class GioHangController {
 
                 // Lấy số lượng sản phẩm trong kho
                 Integer stockQuantity = item.getChiTietSanPham().getSoLuong(); // Lấy số lượng trong kho của sản phẩm
-                productStockQuantities.put(productId, stockQuantity);
+                productStockQuantities.put(ctproductId, stockQuantity);
             }
             model.addAttribute("productImages", productImages);
             model.addAttribute("productStockQuantities", productStockQuantities); // Thêm số lượng vào mô hình
@@ -240,7 +240,7 @@ public class GioHangController {
                     }
 
                     // Kiểm tra trạng thái sản phẩm
-                    if (productDetail.getTrangThai() != 1) {
+                    if (productDetail.getTrangThai() != 0) {
                         // Loại bỏ sản phẩm khỏi giỏ hàng nếu cần thiết
                         gioHangService.removeProductFromCart(user, productId);
                         redirectAttributes.addFlashAttribute("error",
