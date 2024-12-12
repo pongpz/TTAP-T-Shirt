@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,4 +46,10 @@ public interface UserRepo extends JpaRepository<User, Long> {
     Optional<User> findBySoDienthoai(String sdt);
 
     Page<User> findBySoDienthoaiContaining(String phoneNumber, Pageable pageable);
+
+    // Repository cho User
+    @Modifying
+    @Query("UPDATE User u SET u.defaultAddress = NULL WHERE u.defaultAddress.id = :addressId")
+    void updateAddressToNull(@Param("addressId") Long addressId);
+
 }
