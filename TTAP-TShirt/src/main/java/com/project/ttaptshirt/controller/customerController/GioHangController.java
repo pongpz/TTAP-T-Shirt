@@ -11,6 +11,7 @@ import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
 import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
+import com.project.ttaptshirt.service.HoaDonLogService;
 import com.project.ttaptshirt.service.impl.DiscountService;
 import com.project.ttaptshirt.service.impl.GioHangService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
@@ -25,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,7 +55,12 @@ public class GioHangController {
     private HinhAnhRepository hinhAnhRepository;
 
     @Autowired
+
     private ChiTietSanPhamServiceImpl chiTietSanPhamService;
+
+    @Autowired
+    private HoaDonLogService hoaDonLogService;
+
 
     // Xem giỏ hàng
     @GetMapping("/view")
@@ -255,6 +262,17 @@ public class GioHangController {
                 }
                 HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi);
                 redirectAttributes.addFlashAttribute("message", true);
+
+                HoaDonLog hoaDonLog = new HoaDonLog();
+                hoaDonLog.setHoaDon(hoaDon);
+                hoaDonLog.setHanhDong("Đặt hàng");
+                hoaDonLog.setThoiGian(LocalDateTime.now());
+                hoaDonLog.setNguoiThucHien(user.getSoDienthoai());
+                hoaDonLog.setGhiChu("đã thực hiện đặt hàng online");
+                hoaDonLog.setTrangThai(0);
+                hoaDonLogService.save(hoaDonLog);
+
+
                 model.addAttribute("userLogged", user);
                 return "redirect:/TTAP/cart/view"; // Chuyển đến trang chi tiết hóa đơn
             } catch (Exception e) {
@@ -352,8 +370,10 @@ public class GioHangController {
     }
 
     @PostMapping("/huy-hoa-don-online")
-    public String huyHDOnline(@RequestParam("idHD") Long idHD,RedirectAttributes redirectAttributes){
-        hoaDonService.huyHoaDonOnline(idHD);
+    public String huyHDOnline(@RequestParam("idHD") Long idHD,RedirectAttributes redirectAttributes,Authentication authentication){
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        User user = customUserDetail.getUser();
+        hoaDonService.huyHoaDonOnline(idHD,user.getSoDienthoai()+" đã thực hiện hủy hóa đơn !");
         redirectAttributes.addFlashAttribute("cancelHoaDon", true);
         return "redirect:/TTAP/cart/hoa-don-chi-tiet/hien-thi?id=" + idHD;
     }

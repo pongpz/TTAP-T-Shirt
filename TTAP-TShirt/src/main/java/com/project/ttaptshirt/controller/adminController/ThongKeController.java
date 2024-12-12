@@ -29,10 +29,18 @@ public class ThongKeController {
     @Autowired
     private HoaDonChiTietRepository hoaDonChiTietRepository;
 
+    @Autowired
+    public ThongKeController(ThongKeService thongKeService, HoaDonRepository hoaDonRepository, HoaDonChiTietRepository hoaDonChiTietRepository) {
+        this.thongKeService = thongKeService;
+        this.hoaDonRepository = hoaDonRepository;
+        this.hoaDonChiTietRepository = hoaDonChiTietRepository;
+    }
+
     @GetMapping
     public String getThongKe(Model model,
                              @RequestParam(name = "month", defaultValue = "#{T(java.time.LocalDate).now().monthValue}") int month,
-                             @RequestParam(name = "year", defaultValue = "#{T(java.time.LocalDate).now().year}") int year) {
+                             @RequestParam(name = "year", defaultValue = "#{T(java.time.LocalDate).now().year}") int year,
+                             @RequestParam(name = "day", required = false) Integer day) {
 
         // Tổng thu nhập hôm nay
         double tongTienHomNay = thongKeService.tongTienHomNay();
@@ -47,43 +55,23 @@ public class ThongKeController {
         model.addAttribute("tienTheoNam", tienTheoNam);
 
         // Thêm NumberUtils vào model
-        NumberUtils numberUtils = new NumberUtils();
-        model.addAttribute("numberUtils", numberUtils);
+        model.addAttribute("numberUtils", new NumberUtils());
 
-        // Lấy tất cả hóa đơn
-        List<HoaDon> hoaDons = hoaDonRepository.findAll();
-
-        // Tạo Map để nhóm doanh thu theo tháng
-        Map<Integer, Double> doanhThuTheoThang = new HashMap<>();
-
-        // Lặp qua từng hóa đơn
-        for (HoaDon hoaDon : hoaDons) {
-            // Kiểm tra ngày thanh toán
-            if (hoaDon.getNgayThanhToan() != null) {
-                int monthValue = hoaDon.getNgayThanhToan().getMonthValue(); // Lấy tháng (1-12)
-
-                // Lấy chi tiết hóa đơn
-                List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
-
-                // Tính tổng doanh thu của hóa đơn
-                double doanhThu = hoaDonChiTiets.stream()
-                        .filter(chiTiet -> chiTiet.getDonGia() != null && chiTiet.getSoLuong() != null) // Kiểm tra null
-                        .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
-                        .sum();
-
-                // Cộng doanh thu vào Map
-                doanhThuTheoThang.put(monthValue, doanhThuTheoThang.getOrDefault(monthValue, 0.0) + doanhThu);
-            }
+        // Nếu ngày được chọn, tính thống kê cho ngày đó
+        if (day != null) {
+            // Lọc doanh thu theo ngày
+            Map<LocalDate, Double> doanhThuTheoNgay = thongKeService.thongKeDoanhThuTheoNgay(day, month, year);
+            model.addAttribute("doanhThuTheoNgay", doanhThuTheoNgay);
         }
+
+        // Lấy tất cả hóa đơn và nhóm doanh thu theo tháng
+        List<HoaDon> hoaDons = hoaDonRepository.findAll();
+        Map<Integer, Double> doanhThuTheoThang = thongKeService.thongKeDoanhThuTheoThang(hoaDons);
 
         // Tách keys và values từ Map và sắp xếp theo tháng
         List<Integer> months = new ArrayList<>(doanhThuTheoThang.keySet());
-        List<Double> revenues = new ArrayList<>(doanhThuTheoThang.values());
+        months.sort(Comparator.naturalOrder());
 
-        // Sắp xếp theo thứ tự tháng
-        months.sort(Comparator.naturalOrder()); // Sắp xếp tháng từ 1 đến 12
-
-        // Sắp xếp revenues theo thứ tự tháng
         List<Double> sortedRevenues = new ArrayList<>();
         for (int monthValue : months) {
             sortedRevenues.add(doanhThuTheoThang.get(monthValue));
@@ -100,6 +88,7 @@ public class ThongKeController {
             model.addAttribute("revenues", "[]");
         }
 
+        // Thống kê số hóa đơn theo ngày
         Map<LocalDate, Long> tongHoaDonTheoNgay = thongKeService.thongKeSoHoaDonTheoNgay();
         model.addAttribute("tongHoaDonTheoNgay", tongHoaDonTheoNgay);
 
@@ -107,13 +96,11 @@ public class ThongKeController {
         Map<String, Double> doanhThuTheoLoaiDon = thongKeService.thongKeDoanhThuTheoLoaiDon();
         model.addAttribute("doanhThuOnline", doanhThuTheoLoaiDon.get("Online"));
         model.addAttribute("doanhThuOffline", doanhThuTheoLoaiDon.get("Offline"));
-
-
+        LocalDate today = LocalDate.now();
+        model.addAttribute("day", today.getDayOfMonth());
+        model.addAttribute("month", today.getMonthValue());
+        model.addAttribute("year", today.getYear());
         // Trả về view
         return "admin/thongke/thong-ke";
     }
-
-
-
-
 }

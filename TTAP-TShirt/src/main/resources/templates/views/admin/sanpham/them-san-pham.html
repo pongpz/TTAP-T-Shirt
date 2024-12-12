@@ -230,9 +230,9 @@
                 <div class="modal-body">
                     <div class="row">
                         <!-- Form upload ảnh -->
-                        <form id="uploadImageForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
+                        <form th:action="@{/admin/san-pham/images/add}" method="post" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
                             <input type="file" id="imageFiles" name="files" accept="image/*" multiple>
-                            <button type="button" id="uploadImageButton" class="btn btn-primary">Thêm ảnh</button>
+                            <button type="submit" class="btn btn-primary">Thêm ảnh</button>
                         </form>
                         <hr>
                         <!-- Form chọn ảnh -->
@@ -279,15 +279,7 @@
     /*]]>*/
 </script>
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var uploadSuccess = [[${uploadSuccess}]];
-    console.log(uploadSuccess);  // Debugging line to ensure the attribute is set
-    if (uploadSuccess) {
-        toastSuccess('Thành Công!', 'Ảnh đã được thêm thành công!');
-    }
-    /*]]>*/
-</script>
+
 
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -303,6 +295,14 @@
     function handleAddProduct() {
         // Lấy danh sách checkbox ảnh được chọn từ modal
         const checkboxes = document.querySelectorAll("#imageSelectionForm input[name='selectedImages']:checked");
+
+        const tenSanPhamInput = document.getElementById("ten");
+        const tenSanPhamValue = tenSanPhamInput.value.trim(); // Loại bỏ khoảng trắng đầu/cuối
+
+        if (tenSanPhamValue === "") {
+            toastWarning('Cảnh báo',"Tên Sản Phẩm không được để trống");
+            return false; // Ngăn form gửi đi
+        }
 
         // Nếu không có ảnh nào được chọn
         if (checkboxes.length === 0) {

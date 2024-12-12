@@ -31,26 +31,38 @@
         <div class="d-flex">
             <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Sản phẩm</a>
         </div>
-                        <div class="row">
-                            <form th:action="@{/admin/san-pham/tim-kiem}" method="get" class="row mb-3">
-                                <div class="form-group col-md-5">
-                                    <div class="form-outline">
-                                        <input type="text" id="form1" name="ten" placeholder="Tìm kiếm" class="form-control" th:value="${ten}" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <div class="form-outline">
-                                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
-                                    </div>
-                                </div>
+        <div class="row">
+            <form th:action="@{/admin/san-pham/tim-kiem}" method="get" class="row mb-3">
+                <div class="form-group col-md-4">
+                    <div class="form-outline">
+                        <input type="text" id="form1" name="ten" placeholder="Tìm kiếm" class="form-control" th:value="${ten}" />
+                    </div>
+                </div>
 
-                                <div class="form-group col-md-3 text-end">
-                                        <a class="btn btn-secondary" href="/admin/san-pham/them-san-pham">Thêm Sản Phẩm</a>
+                <div class="form-group col-md-3">
+                    <div class="form-outline">
+                        <select class="form-control" name="trangThai" th:value="${trangThai}">
+                            <option value="">Tất cả sản phẩm</option>
+                            <option value="0">Đang bán</option>
+                            <option value="1">Ngừng bán</option>
+                            <option value="2">Hết hàng</option>
+                        </select>
+                    </div>
+                </div>
 
-                                </div>
-                            </form>
-                        </div>
-                        <span class="d-block text-center mt-3" th:if="${listSP.isEmpty()}">Không có sản phẩm nào</span>
+                <div class="form-group col-md-3">
+                    <div class="form-outline">
+                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-2 text-end">
+                    <a class="btn btn-secondary" href="/admin/san-pham/them-san-pham">Thêm Sản Phẩm</a>
+                </div>
+            </form>
+        </div>
+
+        <span class="d-block text-center mt-3" th:if="${listSP.isEmpty()}">Không có sản phẩm nào</span>
                         <div th:if="${not listSP.isEmpty()}">
                             <table class="table table-bordered">
                                 <thead>
@@ -91,7 +103,7 @@
                                     </td>
 
                                     <td>
-                                <span th:text="${sanPham.trangThai} == 0 ? 'Đang bán' : 'Ngừng bán'">
+                                        <span th:text="${sanPham.trangThai} == 0 ? 'Đang bán' : (${sanPham.trangThai} == 1 ? 'Ngừng bán' : 'Hết hàng')">Trạng thái</span>
                                 </span>
                                     </td>
                                     <td>

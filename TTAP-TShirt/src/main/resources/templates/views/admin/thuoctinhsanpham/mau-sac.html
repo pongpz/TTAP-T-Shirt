@@ -40,7 +40,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form th:action="@{/admin/mau-sac/save-mau-sac}" th:object="${mauSac}" method="post">
+                        <form th:action="@{/admin/mau-sac/save-mau-sac}" th:object="${mauSac}" method="post" onsubmit="return validateForm()">
                             <div class="mb-3">
                                 <label for="ten" class="form-label">Tên màu sắc</label>
                                 <input type="text" class="form-control" id="ten" name="ten" required>
@@ -119,6 +119,18 @@
     }
     /*]]>*/
 </script>
+<script>
+    function validateForm() {
+        const inputField = document.getElementById('ten');
+        const value = inputField.value.trim(); // Loại bỏ khoảng trắng thừa
 
+        if (value === '') {
+            toastWarning('Cảnh báo','Tên màu sắc không được để trống!');
+            return false; // Ngăn form gửi đi
+        }
+
+        return true; // Cho phép form gửi đi
+    }
+</script>
 </body>
 </html>

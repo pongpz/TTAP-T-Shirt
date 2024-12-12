@@ -13,6 +13,9 @@ public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
 
     boolean existsByMa(String ma);
     Page<SanPham> findByTenContaining(String ten, Pageable pageable);
+    public Page<SanPham> findByTenContainingAndTrangThai(String ten, Integer trangThai, Pageable pageable);
+    public Page<SanPham> findByTrangThai(Integer trangThai, Pageable pageable);
+
 
     Page<SanPham> findAllByOrderByNgayTaoDesc(Pageable pageable);
 

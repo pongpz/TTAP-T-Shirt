@@ -54,10 +54,10 @@ public class HoaDonController {
     HoaDonLogService hoaDonLogService;
 
     @GetMapping("/hien-thi")
-    public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page, @RequestParam(required = false,value = "id") Long id) {
+    public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page, @RequestParam(required = false, value = "id") Long id) {
         Pageable pageab = PageRequest.of(page, 5);
-        model.addAttribute("listHDCT",hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
-        model.addAttribute("listSPOrder",hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
+        model.addAttribute("listHDCT", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
+        model.addAttribute("listSPOrder", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
         model.addAttribute("listHD", hr.getAllHD(pageab));
         model.addAttribute("page", page);
         model.addAttribute("id", id);
@@ -107,30 +107,37 @@ public class HoaDonController {
         for (HoaDonChiTiet hdct : listSanPham) {
 
             ChiTietSanPham chiTietSanPham = hdct.getChiTietSanPham();
-            if (chiTietSanPham.getSoLuong() < hdct.getSoLuong()) {
+            if (chiTietSanPham.getSoLuong() < hdct.getSoLuong() || chiTietSanPham.getTrangThai() != 0) {
                 redirectAttributes.addFlashAttribute("confirmErrorMessage", true);
                 HoaDonLog hoaDonLog = new HoaDonLog();
                 hoaDonLog.setHoaDon(hdct.getHoaDon());
                 hoaDonLog.setHanhDong("Xác nhận");
                 hoaDonLog.setThoiGian(LocalDateTime.now());
                 hoaDonLog.setNguoiThucHien(user.getHoTen());
-                hoaDonLog.setGhiChu("xác nhận(số lượng sản phẩm không đủ)");
+                if (chiTietSanPham.getSoLuong() < hdct.getSoLuong()) {
+                    hoaDonLog.setGhiChu("xác nhận(số lượng sản phẩm không đủ)");
+                } else {
+                    hoaDonLog.setGhiChu("xác nhận(Sản phẩm đã hết hàng hoặc ngừng bán !)");
+                }
                 hoaDonLog.setTrangThai(1);
                 hoaDonLogService.save(hoaDonLog);
                 return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
             }
+
+
             chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - hdct.getSoLuong());
             chiTietSanPhamService.save(chiTietSanPham);
-            HoaDonLog hoaDonLog = new HoaDonLog();
-            hoaDonLog.setHoaDon(hdct.getHoaDon());
-            hoaDonLog.setHanhDong("Xác nhận");
-            hoaDonLog.setThoiGian(LocalDateTime.now());
-            hoaDonLog.setNguoiThucHien(user.getHoTen());
-            hoaDonLog.setGhiChu("đã thực hiện xác nhận đơn hàng online");
-            hoaDonLog.setTrangThai(0);
-            hoaDonLogService.save(hoaDonLog);
-            hoaDonService.xacNhanHoaDon(idHD);
         }
+        HoaDonLog hoaDonLog = new HoaDonLog();
+        HoaDon hoaDon2 = hoaDonService.findById(idHD);
+        hoaDonLog.setHoaDon(hoaDon2);
+        hoaDonLog.setHanhDong("Xác nhận");
+        hoaDonLog.setThoiGian(LocalDateTime.now());
+        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setGhiChu("đã thực hiện xác nhận đơn hàng online");
+        hoaDonLog.setTrangThai(0);
+        hoaDonLogService.save(hoaDonLog);
+        hoaDonService.xacNhanHoaDon(idHD);
         // Add a flash attribute for success message
         redirectAttributes.addFlashAttribute("successMessage", "Đơn hàng đã được xác nhận!");
         return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
@@ -158,7 +165,7 @@ public class HoaDonController {
 
 
     @GetMapping("/hoa-don-cho-giao-hang/{idHD}")
-    public String hdChoGiaoHang(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes,Authentication authentication) {
+    public String hdChoGiaoHang(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes, Authentication authentication) {
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
         User user = customUserDetail.getUser();
         hoaDonService.hdChoGiaoHang(idHD);
@@ -179,7 +186,7 @@ public class HoaDonController {
     }
 
     @GetMapping("/xac-nhan-dang-giao-hang/{idHD}")
-    public String xacNhanDangGiaoHang(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes,Authentication authentication) {
+    public String xacNhanDangGiaoHang(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes, Authentication authentication) {
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
         User user = customUserDetail.getUser();
         hoaDonService.xacNhanDangGiaoHang(idHD);
@@ -220,7 +227,7 @@ public class HoaDonController {
 
 
     @GetMapping("/hoan-thanh-hoa-don/{idHD}")
-    public String hoanThanhHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes,Authentication authentication) {
+    public String hoanThanhHD(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes, Authentication authentication) {
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
         User user = customUserDetail.getUser();
         hoaDonService.hoanThanhHoaDon(idHD);
@@ -240,7 +247,8 @@ public class HoaDonController {
 
 
     @GetMapping("/huy-hoa-don-online/{idHD}")
-    public String huyHDOnline(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes,Authentication authentication) {
+    public String huyHDOnline(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes
+            , Authentication authentication, @RequestParam("reason") String reason) {
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
         User user = customUserDetail.getUser();
         HoaDon hoaDon = hoaDonService.findById(idHD);
@@ -249,10 +257,10 @@ public class HoaDonController {
         hoaDonLog.setHanhDong("Hủy đơn hàng");
         hoaDonLog.setThoiGian(LocalDateTime.now());
         hoaDonLog.setNguoiThucHien(user.getHoTen());
-        hoaDonLog.setGhiChu("Hủy đơn hàng có mã: "+hoaDon.getMa());
+        hoaDonLog.setGhiChu("Hủy đơn hàng (Lý do: +" + reason + " )");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
-        hoaDonService.huyHoaDonOnline(idHD);
+        hoaDonService.huyHoaDonOnline(idHD, reason);
         redirectAttributes.addFlashAttribute("successMessage", "Hủy hóa đơn thành công!");
         return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
     }
@@ -279,8 +287,8 @@ public class HoaDonController {
         } else {
             lsSearch = hr.search(ma.trim(), keyword.trim(), trangThai, ngayThanhToan, loaiDon, pageab);
         }
-        model.addAttribute("listHDCT",hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
-        model.addAttribute("listSPOrder",hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
+        model.addAttribute("listHDCT", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
+        model.addAttribute("listSPOrder", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
         NumberUtils numberUtils = new NumberUtils();
         model.addAttribute("numberUtils", numberUtils);
 //        System.out.println(lsSearch);

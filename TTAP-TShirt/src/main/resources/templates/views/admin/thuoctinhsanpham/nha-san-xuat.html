@@ -40,7 +40,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form th:action="@{/admin/nsx/add}" th:object="${nhaSanXuat}" method="post">
+                        <form th:action="@{/admin/nsx/add}" th:object="${nhaSanXuat}" method="post" onsubmit="return validateForm()">
                             <div class="mb-3">
                                 <label for="ten" class="form-label">Tên nhà sản xuất</label>
                                 <input type="text" class="form-control" id="ten" name="ten" required>
@@ -119,6 +119,20 @@
         toastSuccess('Thành Công!', 'Nhà sản xuất đã được sửa thành công!');
     }
     /*]]>*/
+</script>
+
+<script>
+    function validateForm() {
+        const inputField = document.getElementById('ten');
+        const value = inputField.value.trim(); // Loại bỏ khoảng trắng thừa
+
+        if (value === '') {
+            toastWarning('Cảnh báo','Tên nhà sản xuất không được để trống!');
+            return false; // Ngăn form gửi đi
+        }
+
+        return true; // Cho phép form gửi đi
+    }
 </script>
 </body>
 </html>
