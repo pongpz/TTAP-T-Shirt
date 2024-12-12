@@ -123,7 +123,7 @@
                                     <!-- Checkbox và Hình ảnh sản phẩm -->
                                     <div class="col-6 col-md-4 d-flex align-items-center px-1">
                                         <input type="checkbox"
-                                               name="selectedProductIds" th:value="${item.id}"
+                                               name="selectedProductIds" th:value="${item.chiTietSanPham.id}"
                                                class="product-checkbox" onchange="calculateTotal()">
                                         <img th:src="${productImages[item.chiTietSanPham.sanPham.id]}"
                                              alt="Product Image"
@@ -133,13 +133,13 @@
                                             <p class="text-dark fw-bold"
                                                th:text="${item.chiTietSanPham.sanPham.ten}"></p>
                                             <p class="small text-muted mb-1">Mã SP: <b
-                                                    th:text="${item.chiTietSanPham.sanPham.ma}"></b></p>
+                                                    th:text="${item.chiTietSanPham.ma}"></b></p>
                                             <p class="small text-success"> Màu sắc: <b
                                                     th:text="${item.chiTietSanPham.mauSac.ten}"></b></p>
                                             <p class="small text-success"> Kích cỡ: <b
                                                     th:text="${item.chiTietSanPham.kichCo.ten}"></b></p>
                                             <p class="small text-black">
-                                                Số lượng trong kho: <b th:text="${productStockQuantities[item.chiTietSanPham.sanPham.id]}"></b>
+                                                Số lượng trong kho: <b th:text="${productStockQuantities[item.chiTietSanPham.id]}"></b>
                                             </p>
                                         </div>
                                     </div>
@@ -212,7 +212,7 @@
                                     </p>
                                     <small class="text-muted">(Đã bao gồm VAT nếu có)</small>
                                 </div>
-                                <button class="btn btn-success w-100 mt-3" type="submit" onclick="return confirmCreateOrder()">Tiến hành đặt hàng</button>
+                                <button class="btn btn-success w-100 mt-3" type="submit" onclick="submitCheckout()">Tiến hành đặt hàng</button>
                             </div>
                         </div>
                     </div>
@@ -512,7 +512,27 @@
             }
         });
     }
+    function submitCheckout() {
+        const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+        const selectedProductIds = [];
+        checkboxes.forEach(checkbox => {
+            selectedProductIds.push(checkbox.value);
+        });
 
+        const form = document.querySelector('#checkoutForm');
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'selectedProductIds';
+        input.value = selectedProductIds.join(',');
+        form.appendChild(input);
+
+        form.submit();  // Gửi form
+    }
+
+    // Lắng nghe sự kiện thay đổi checkbox
+    document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', calculateTotal);
+    });
     function formatCurrency(value) {
         // Sử dụng Intl.NumberFormat để định dạng theo kiểu Việt Nam
         const formatter = new Intl.NumberFormat('vi-VN', {

@@ -6,6 +6,7 @@ import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.entity.HoaDonLog;
 import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.repository.HinhAnhRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.security.CustomUserDetail;
@@ -27,10 +28,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/hoa-don")
@@ -52,6 +56,9 @@ public class HoaDonController {
 
     @Autowired
     HoaDonLogService hoaDonLogService;
+
+    @Autowired
+    private HinhAnhRepository hinhAnhRepository;
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page, @RequestParam(required = false, value = "id") Long id) {
@@ -96,6 +103,17 @@ public class HoaDonController {
             System.out.println(hdlog.getGhiChu());
         }
         model.addAttribute("listHoaDonLog", listHoaDonLog);
+        // Lấy hình ảnh đầu tiên cho mỗi sản phẩm
+        Map<Long, String> productImages = new HashMap<>();
+        for (HoaDonChiTiet hdct : listSPOrder) {
+            Long productId = hdct.getChiTietSanPham().getSanPham().getId();
+
+            // Lấy hình ảnh đầu tiên của sản phẩm
+            List<String> images = hinhAnhRepository.findBySanPhamId(productId);
+            String firstImage = images.isEmpty() ? "/default-image.jpg" : images.get(0);
+            productImages.put(productId, firstImage);
+        }
+        model.addAttribute("productImages", productImages);
         return "admin/hoadon/chi-tiet-hoa-don-online";
     }
 
