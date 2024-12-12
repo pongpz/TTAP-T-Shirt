@@ -134,12 +134,13 @@
                                                th:text="${item.chiTietSanPham.sanPham.ten}"></p>
                                             <p class="small text-muted mb-1">Mã SP: <b
                                                     th:text="${item.chiTietSanPham.sanPham.ma}"></b></p>
-                                            <p class="small text-success"
-                                               th:text="${item.chiTietSanPham.mauSac.ten}"></p>
-                                            <p class="small text-success"
-                                               th:text="${item.chiTietSanPham.kichCo.ten}"></p>
-                                            <p class="small text-success"
-                                               th:text="${item.chiTietSanPham.kichCo.ten}"></p>
+                                            <p class="small text-success"> Màu sắc: <b
+                                                    th:text="${item.chiTietSanPham.mauSac.ten}"></b></p>
+                                            <p class="small text-success"> Kích cỡ: <b
+                                                    th:text="${item.chiTietSanPham.kichCo.ten}"></b></p>
+                                            <p class="small text-black">
+                                                Số lượng trong kho: <b th:text="${productStockQuantities[item.chiTietSanPham.sanPham.id]}"></b>
+                                            </p>
                                         </div>
                                     </div>
 
@@ -562,6 +563,14 @@
     var successAddress= [[${successAddress}]];
     if (successAddress) {
         toastSuccess('Thành công', 'Địa chỉ của bạn đã được thêm ');
+    }
+    /*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var errorMessage = [[${error}]];
+    if (errorMessage) {
+        toastError('Lỗi', errorMessage);
     }
     /*]]>*/
 </script>
