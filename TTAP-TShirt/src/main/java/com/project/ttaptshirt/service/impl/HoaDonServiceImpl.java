@@ -247,7 +247,10 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public void huyHoaDonOnline(Long idHoaDon) {
+    public void huyHoaDonOnline(Long idHoaDon,String reason) {
+        HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).orElse(null);
+        hoaDon.setGhiChu(reason);
+        hoaDonRepository.save(hoaDon);
         hoaDonRepository.huyHoaDonOnline(idHoaDon);
     }
 
