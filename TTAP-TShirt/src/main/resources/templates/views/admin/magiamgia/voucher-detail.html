@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/customcss/toastMessage.css ">
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -16,6 +17,7 @@
 <div class="d-flex">
 
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
+    <div id="toast-root"></div>
 
     <div class="main-content content flex-grow-1 p-4">
                     <div class="container">
@@ -47,7 +49,7 @@
                             </div>
                             <div class="mb-3 col-3">
                                 <label class="form-label">Số lượng</label>
-                                <input type="number" class="form-control" name="soLuong" id="soLuong" th:value="${mgg.soLuong}">
+                                <input type="number" class="form-control" max="1000000000" oninput="this.value = Math.min(this.value, 1000000000)" name="soLuong" id="soLuong" th:value="${mgg.soLuong}">
                             </div>
                             <div class="col-1">
 
@@ -105,7 +107,7 @@
                             </div>
                             </div>
 
-                            <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${numberUtils.formatCurrency3(mgg.giaTriToiDa) ?: ''}">
+                            <input type="hidden" class="form-control" name="giaTriToiDa" id="gttoida" th:value="${mgg.giaTriToiDa ?: ''}">
                             <div class="col-1">
 
                             </div>
@@ -127,7 +129,7 @@
                             <div class="col-8">
 
                             </div>
-                            <span class="text-danger mt-3">[[${errors}]]</span>
+<!--                            <span class="text-danger mt-3">[[${errors}]]</span>-->
 
                             <button type="submit" class="btn btn-warning col-3 mt-3" id="btnSave">Lưu</button>
                             <script>
@@ -154,8 +156,6 @@
                                     });
                                 });
                             </script>
-
-
                         </form>
                     </div>
                 </div>
@@ -163,6 +163,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
+<script src="/js/toastMessage.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var updateFail = [[${updateFail}]];
+    var message = [[${errors}]];
+    console.log("updateFail:", updateFail); // Log the value to check
+    if (updateFail) {
+        toastError('Thất bại !', message);
+    }
+    /*]]>*/
+</script>
 <script>
     let ma = document.getElementById("inputMa")
     function generateSecureCode(event) {
