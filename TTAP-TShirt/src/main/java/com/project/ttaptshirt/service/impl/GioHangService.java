@@ -227,7 +227,7 @@ public class GioHangService {
         hoaDonRepository.save(hoaDon);
         // Duyệt qua danh sách sản phẩm được chọn trong giỏ hàng
         List<GioHangChiTiet> itemsToMove = cart.getItems().stream()
-                .filter(item -> selectedProductIds.contains(item.getId())) // Chỉ chọn sản phẩm có ID được truyền
+                .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId())) // Chỉ chọn sản phẩm có ID được truyền
                 .collect(Collectors.toList());
 
         if (itemsToMove.isEmpty()) {

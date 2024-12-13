@@ -10,6 +10,7 @@ import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
+import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
 import com.project.ttaptshirt.service.HoaDonLogService;
 import com.project.ttaptshirt.service.impl.DiscountService;
 import com.project.ttaptshirt.service.impl.GioHangService;
@@ -54,7 +55,13 @@ public class GioHangController {
     private HinhAnhRepository hinhAnhRepository;
 
     @Autowired
-    HoaDonLogService hoaDonLogService;
+
+    private ChiTietSanPhamServiceImpl chiTietSanPhamService;
+
+    @Autowired
+    private HoaDonLogService hoaDonLogService;
+
+
 
     // Xem giỏ hàng
     @GetMapping("/view")
@@ -89,15 +96,22 @@ public class GioHangController {
 
             // Lấy hình ảnh đầu tiên cho mỗi sản phẩm
             Map<Long, String> productImages = new HashMap<>();
+            Map<Long, Integer> productStockQuantities = new HashMap<>();
             for (GioHangChiTiet item : cartItems) {
                 Long productId = item.getChiTietSanPham().getSanPham().getId();
-
+                Long ctproductId = item.getChiTietSanPham().getId();
                 // Lấy hình ảnh đầu tiên
                 List<String> images = hinhAnhRepository.findBySanPhamId(productId);
                 String firstImage = images.isEmpty() ? "/default-image.jpg" : images.get(0);
                 productImages.put(productId, firstImage);
+
+                // Lấy số lượng sản phẩm trong kho
+                Integer stockQuantity = item.getChiTietSanPham().getSoLuong(); // Lấy số lượng trong kho của sản phẩm
+                productStockQuantities.put(ctproductId, stockQuantity);
             }
             model.addAttribute("productImages", productImages);
+            model.addAttribute("productStockQuantities", productStockQuantities); // Thêm số lượng vào mô hình
+
 
             // Tiện ích số học
             NumberUtils numberUtils = new NumberUtils();
@@ -212,6 +226,41 @@ public class GioHangController {
                 List<Long> selectedProductIds = Arrays.stream(selectedProductIdsStr.split(","))
                         .map(Long::parseLong)
                         .collect(Collectors.toList());
+                // Kiểm tra số lượng và trạng thái sản phẩm
+                for (Long productId : selectedProductIds) {
+                    ChiTietSanPham productDetail = chiTietSanPhamService.findById(productId);
+
+                    // Kiểm tra nếu không tìm thấy sản phẩm
+                    if (productDetail == null) {
+                        // Loại bỏ sản phẩm khỏi giỏ hàng nếu cần thiết
+                        gioHangService.removeProductFromCart(user, productId);
+                        redirectAttributes.addFlashAttribute("error",
+                                "Sản phẩm với ID " + productId + " không tồn tại hoặc đã bị xóa.");
+                        return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
+                    }
+
+                    // Kiểm tra trạng thái sản phẩm
+                    if (productDetail.getTrangThai() != 0) {
+                        // Loại bỏ sản phẩm khỏi giỏ hàng nếu cần thiết
+                        gioHangService.removeProductFromCart(user, productId);
+                        redirectAttributes.addFlashAttribute("error",
+                                "Sản phẩm " + productDetail.getSanPham().getTen() +
+                                        " (Size: " + productDetail.getKichCo().getTen() +
+                                        ", Màu sắc: " + productDetail.getMauSac().getTen() + ") không còn hoạt động.");
+                        return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
+                    }
+
+                    // Kiểm tra số lượng sản phẩm
+                    if (productDetail.getSoLuong() <= 0) {
+                        // Loại bỏ sản phẩm khỏi giỏ hàng nếu cần thiết
+                        gioHangService.removeProductFromCart(user, productId);
+                        redirectAttributes.addFlashAttribute("error",
+                                "Sản phẩm " + productDetail.getSanPham().getTen() +
+                                        " (Size: " + productDetail.getKichCo().getTen() +
+                                        ", Màu sắc: " + productDetail.getMauSac().getTen() + ") đã hết hàng.");
+                        return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
+                    }
+                }
                 HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi);
                 redirectAttributes.addFlashAttribute("message", true);
 
@@ -219,7 +268,7 @@ public class GioHangController {
                 hoaDonLog.setHoaDon(hoaDon);
                 hoaDonLog.setHanhDong("Đặt hàng");
                 hoaDonLog.setThoiGian(LocalDateTime.now());
-                hoaDonLog.setNguoiThucHien("Khách Hàng:"+ user.getHoTen());
+                hoaDonLog.setNguoiThucHien(user.getSoDienthoai());
                 hoaDonLog.setGhiChu("đã thực hiện đặt hàng online");
                 hoaDonLog.setTrangThai(0);
                 hoaDonLogService.save(hoaDonLog);
@@ -322,8 +371,10 @@ public class GioHangController {
     }
 
     @PostMapping("/huy-hoa-don-online")
-    public String huyHDOnline(@RequestParam("idHD") Long idHD,RedirectAttributes redirectAttributes){
-        hoaDonService.huyHoaDonOnline(idHD);
+    public String huyHDOnline(@RequestParam("idHD") Long idHD,RedirectAttributes redirectAttributes,Authentication authentication){
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        User user = customUserDetail.getUser();
+        hoaDonService.huyHoaDonOnline(idHD,user.getSoDienthoai()+" đã thực hiện hủy hóa đơn !");
         redirectAttributes.addFlashAttribute("cancelHoaDon", true);
         return "redirect:/TTAP/cart/hoa-don-chi-tiet/hien-thi?id=" + idHD;
     }
@@ -381,5 +432,17 @@ public class GioHangController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+
+    @GetMapping("/deleteAddress/{id}")
+    public String deleteAddress(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            serDc.deleteAddress(id); // Xử lý xóa trong service
+            redirectAttributes.addFlashAttribute("successRemoveaddress", "Địa chỉ đã được xóa thành công.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorRemoveaddress", "Xóa địa chỉ thất bại. Vui lòng thử lại.");
+        }
+        return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
+    }
+
 
 }

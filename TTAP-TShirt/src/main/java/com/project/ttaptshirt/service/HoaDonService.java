@@ -42,6 +42,6 @@ public interface HoaDonService extends CommonService<HoaDon> {
 
     void hoanThanhHoaDon(Long idHoaDon);
 
-    void huyHoaDonOnline(Long idHoaDon);
+    void huyHoaDonOnline(Long idHoaDon,String reason);
 
 }

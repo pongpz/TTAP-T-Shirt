@@ -55,6 +55,7 @@ public class NhanVienController {
             model.addAttribute("userLogged", user);
         }
         User user = new User();
+        user.setGioiTinh(true);
         model.addAttribute("user", user);
         return "/admin/nhanvien/register";
     }

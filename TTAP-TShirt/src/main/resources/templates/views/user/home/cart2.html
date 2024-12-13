@@ -123,7 +123,7 @@
                                     <!-- Checkbox và Hình ảnh sản phẩm -->
                                     <div class="col-6 col-md-4 d-flex align-items-center px-1">
                                         <input type="checkbox"
-                                               name="selectedProductIds" th:value="${item.id}"
+                                               name="selectedProductIds" th:value="${item.chiTietSanPham.id}"
                                                class="product-checkbox" onchange="calculateTotal()">
                                         <img th:src="${productImages[item.chiTietSanPham.sanPham.id]}"
                                              alt="Product Image"
@@ -133,13 +133,14 @@
                                             <p class="text-dark fw-bold"
                                                th:text="${item.chiTietSanPham.sanPham.ten}"></p>
                                             <p class="small text-muted mb-1">Mã SP: <b
-                                                    th:text="${item.chiTietSanPham.sanPham.ma}"></b></p>
-                                            <p class="small text-success"
-                                               th:text="${item.chiTietSanPham.mauSac.ten}"></p>
-                                            <p class="small text-success"
-                                               th:text="${item.chiTietSanPham.kichCo.ten}"></p>
-                                            <p class="small text-success"
-                                               th:text="${item.chiTietSanPham.kichCo.ten}"></p>
+                                                    th:text="${item.chiTietSanPham.ma}"></b></p>
+                                            <p class="small text-success"> Màu sắc: <b
+                                                    th:text="${item.chiTietSanPham.mauSac.ten}"></b></p>
+                                            <p class="small text-success"> Kích cỡ: <b
+                                                    th:text="${item.chiTietSanPham.kichCo.ten}"></b></p>
+                                            <p class="small text-black">
+                                                Số lượng trong kho: <b th:text="${productStockQuantities[item.chiTietSanPham.id]}"></b>
+                                            </p>
                                         </div>
                                     </div>
 
@@ -211,7 +212,7 @@
                                     </p>
                                     <small class="text-muted">(Đã bao gồm VAT nếu có)</small>
                                 </div>
-                                <button class="btn btn-success w-100 mt-3" type="submit" onclick="return confirmCreateOrder()">Tiến hành đặt hàng</button>
+                                <button class="btn btn-success w-100 mt-3" type="submit" onclick="submitCheckout()">Tiến hành đặt hàng</button>
                             </div>
                         </div>
                     </div>
@@ -224,49 +225,62 @@
     <div class="alert alert-danger text-center" role="alert" th:if="${cart.items == null or cart.items.isEmpty()}">
         <p>Giỏ hàng của bạn đang trống.</p>
     </div>
-    <div class="modal fade" id="selectAddressModal" tabindex="-1" aria-labelledby="selectAddressModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="selectAddressModal" tabindex="-1" aria-labelledby="selectAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
+                <!-- Tiêu đề -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="selectAddressModalLabel">Chọn Địa Chỉ</h5>
+                    <h5 class="modal-title" id="selectAddressModalLabel">Chọn Địa Chỉ Giao Hàng</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <!-- Nội dung -->
                 <div class="modal-body">
                     <!-- Kiểm tra danh sách địa chỉ -->
                     <div th:if="${addresses != null && !addresses.isEmpty()}">
-                        <!-- Form chọn địa chỉ -->
                         <form id="addressForm" th:action="@{/TTAP/cart/updateAddress}" method="post">
-                            <div th:each="address, iterStat : ${addresses}" class="mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="addressId"
-                                           th:id="'address' + ${iterStat.index}" th:value="${address.id}"
-                                           th:checked="${selectedAddress != null and selectedAddress.id == address.id}">
-                                    <label class="form-check-label" th:for="'address' + ${iterStat.index}"
-                                           th:text="${address.soNha} + ' , ' + ${address.tenDuong} + ' , ' + ${address.tenQuanhuyen} + ' , ' + ${address.tenThanhpho}"></label>
+                            <div class="list-group">
+                                <!-- Lặp qua danh sách địa chỉ -->
+                                <div th:each="address, iterStat : ${addresses}" class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <input class="form-check-input me-3" type="radio" name="addressId"
+                                               th:id="'address' + ${iterStat.index}" th:value="${address.id}"
+                                               th:checked="${selectedAddress != null and selectedAddress.id == address.id}">
+                                        <label class="form-check-label w-100" th:for="'address' + ${iterStat.index}"
+                                               th:text="${address.soNha} + ', ' + ${address.tenDuong} + ', ' + ${address.tenQuanhuyen} + ', ' + ${address.tenThanhpho}"></label>
+                                    </div>
+                                    <!-- Icon xóa địa chỉ -->
+                                    <a th:href="@{/TTAP/cart/deleteAddress/{id}(id=${address.id})}" class="text-danger ms-3" onclick="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')" title="Xóa địa chỉ">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
                                 </div>
                             </div>
-                            <!-- Nút submit trong form -->
-                            <div class="mt-3">
+                            <!-- Nút chọn địa chỉ -->
+                            <div class="d-flex justify-content-end mt-4">
                                 <button type="submit" class="btn btn-primary">Chọn Địa Chỉ</button>
                             </div>
                         </form>
                     </div>
                     <!-- Thông báo nếu không có địa chỉ -->
                     <div th:if="${addresses == null || addresses.isEmpty()}">
-                        <p>Chưa có địa chỉ nào. Hãy thêm địa chỉ mới.</p>
+                        <div class="alert alert-warning text-center">
+                            <p>Chưa có địa chỉ nào. Hãy thêm địa chỉ mới.</p>
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#createAddressModal">
-                        Thêm Địa Chỉ
-                    </button>
+                    <!-- Nút thêm địa chỉ mới -->
+                    <div class="d-flex justify-content-center mt-3">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createAddressModal">
+                            Thêm Địa Chỉ Mới
+                        </button>
+                    </div>
                 </div>
+                <!-- Footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
                 </div>
             </div>
         </div>
     </div>
+
 
     <div class="modal fade" id="createAddressModal" tabindex="-1" aria-labelledby="createAddressModalLabel"
          aria-hidden="true">
@@ -498,7 +512,27 @@
             }
         });
     }
+    function submitCheckout() {
+        const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+        const selectedProductIds = [];
+        checkboxes.forEach(checkbox => {
+            selectedProductIds.push(checkbox.value);
+        });
 
+        const form = document.querySelector('#checkoutForm');
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'selectedProductIds';
+        input.value = selectedProductIds.join(',');
+        form.appendChild(input);
+
+        form.submit();  // Gửi form
+    }
+
+    // Lắng nghe sự kiện thay đổi checkbox
+    document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', calculateTotal);
+    });
     function formatCurrency(value) {
         // Sử dụng Intl.NumberFormat để định dạng theo kiểu Việt Nam
         const formatter = new Intl.NumberFormat('vi-VN', {
@@ -562,6 +596,22 @@
     var successAddress= [[${successAddress}]];
     if (successAddress) {
         toastSuccess('Thành công', 'Địa chỉ của bạn đã được thêm ');
+    }
+    /*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var errorMessage = [[${error}]];
+    if (errorMessage) {
+        toastError('Lỗi', errorMessage);
+    }
+    /*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var successRemoveaddress= [[${successRemoveaddress}]];
+    if (successRemoveaddress) {
+        toastSuccess('Thành công', successRemoveaddress);
     }
     /*]]>*/
 </script>
