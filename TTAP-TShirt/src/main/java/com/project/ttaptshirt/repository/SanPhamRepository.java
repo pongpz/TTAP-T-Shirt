@@ -40,8 +40,8 @@ public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
             Pageable pageable
     );
 
-    @Query("select sp from SanPham sp where sp.trangThai = 0 order by sp.ngayTao desc ")
-    Page<SanPham> pageSPMoi(Pageable pageable);
+//    @Query("select sp from SanPham sp where sp.trangThai = 0 order by sp.ngayTao desc ")
+//    Page<SanPham> pageSPMoi(Pageable pageable);
 
     @Query("select sp from SanPham sp where sp.trangThai = 0 order by sp.id desc ")
     Page<SanPham> pageSP(Pageable pageable);
