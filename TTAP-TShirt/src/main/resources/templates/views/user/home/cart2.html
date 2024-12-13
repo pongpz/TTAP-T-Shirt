@@ -130,8 +130,8 @@
                                              class="img-thumbnail me-3"
                                              style="width: 80px; height: 80px; object-fit: contain;">
                                         <div>
-                                            <p class="text-dark fw-bold"
-                                               th:text="${item.chiTietSanPham.sanPham.ten}"></p>
+                                            <a th:href="@{/TTAP/san-pham-detail/{id}(id=${item.chiTietSanPham.sanPham.id})}" class="text-dark fw-bold"
+                                               th:text="${item.chiTietSanPham.sanPham.ten}"></a>
                                             <p class="small text-muted mb-1">Mã SP: <b
                                                     th:text="${item.chiTietSanPham.ma}"></b></p>
                                             <p class="small text-success"> Màu sắc: <b

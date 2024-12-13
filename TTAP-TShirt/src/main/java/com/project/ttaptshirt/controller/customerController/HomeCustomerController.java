@@ -2,6 +2,7 @@ package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
+import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.entity.SanPham;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
@@ -15,6 +16,7 @@ import com.project.ttaptshirt.service.MauSacService;
 import com.project.ttaptshirt.service.impl.CartService;
 import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,10 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/TTAP")
@@ -86,6 +90,7 @@ public class HomeCustomerController {
 //        return "user/home/trangchu"; // Trả về trang chủ
 //    }
 
+    @Transactional
     @GetMapping("/trang-chu")
     public String sanPhamCustomer(HttpServletRequest request, Model model,
                                   @RequestParam(defaultValue = "0") int page,
@@ -100,11 +105,34 @@ public class HomeCustomerController {
         Pageable pageable = PageRequest.of(page, 6);
 
         Page<SanPham> sanPhamPage = spr.pageSP(pageable);
-        Page<SanPham> sanPhamMoiPage = spr.pageSPMoi(pageable);
 
+        List<?> sanPhamBanChay = hdctrp.findAll().stream().collect(Collectors.groupingBy(cthd -> cthd.getChiTietSanPham().getSanPham().getId(),Collectors.summingInt(HoaDonChiTiet::getSoLuong)))
+                .entrySet()
+                .stream()
+                .map(entry -> Map.of("id_san_pham",entry.getKey(),"so_luong",entry.getValue()))
+                .collect(Collectors.toList());
 
+        List<Map<String, Object>> sanPhamBanChayList = (List<Map<String, Object>>) sanPhamBanChay;
+
+        List<SanPham> listSPBanChay = new ArrayList<>();
+
+        for (Map<String, Object> sanPham : sanPhamBanChayList) {
+            Long idSanPham = (Long) sanPham.get("id_san_pham");
+            Integer soLuong = (Integer) sanPham.get("so_luong");
+            System.out.println("ID Sản Phẩm: " + idSanPham + ", Số Lượng: " + soLuong);
+            listSPBanChay.add(spr.getReferenceById(idSanPham));
+        }
+
+        List<SanPham> listSPBanChayFinal = null;
 //        Pageable pageable = PageRequest.of(page, 6);
 //        Page<SanPham> sanPhamPage = sanPhamRepository.findAll(pageable);
+        if (listSPBanChay.size()>6){
+            for (int i = 0 ; i <6 ; i ++){
+                listSPBanChayFinal.add(listSPBanChay.get(i));
+            }
+        }else {
+            listSPBanChayFinal = listSPBanChay;
+        }
 
         // Lấy giá sp
         Map<Long, Double> giaSanPham = new HashMap<>();
@@ -122,29 +150,29 @@ public class HomeCustomerController {
             }
         }
 
-        Map<Long, Double> giaSanPhamMoi = new HashMap<>();
-        for (SanPham sanPhamm : sanPhamMoiPage) {
+        Map<Long, Double> giaSanPhamBanChay = new HashMap<>();
+        for (SanPham sanPhamm : listSPBanChayFinal) {
             Double giaMin = chiTietSanPhamServiceIplm.getMinGiaBan(sanPhamm.getId());
-            giaSanPhamMoi.put(sanPhamm.getId(), giaMin != null ? giaMin : 0);
+            giaSanPhamBanChay.put(sanPhamm.getId(), giaMin != null ? giaMin : 0);
         }
 
         // Lấy hình ảnh
-        Map<Long, String> hinhAnhSanPhamMoi = new HashMap<>();
-        for (SanPham sanPhamm : sanPhamMoiPage) {
+        Map<Long, String> hinhAnhSanPhamBanChay = new HashMap<>();
+        for (SanPham sanPhamm : listSPBanChayFinal) {
             if (sanPhamm.getHinhAnhList() != null && !sanPhamm.getHinhAnhList().isEmpty()) {
                 String imageUrl = sanPhamm.getHinhAnhList().get(0).getPath();
-                hinhAnhSanPhamMoi.put(sanPhamm.getId(), imageUrl);
+                hinhAnhSanPhamBanChay.put(sanPhamm.getId(), imageUrl);
             }
         }
         NumberUtils numberUtils = new NumberUtils();
 
         model.addAttribute("numberUtils", numberUtils);
         model.addAttribute("listsp", sanPhamPage);
-        model.addAttribute("listspm", sanPhamMoiPage);
+        model.addAttribute("listspc", listSPBanChayFinal);
         model.addAttribute("giasanpham", giaSanPham);
-        model.addAttribute("giasanphamm", giaSanPhamMoi);
+        model.addAttribute("giasanphamc", giaSanPhamBanChay);
         model.addAttribute("hinhAnhSanPham", hinhAnhSanPham);
-        model.addAttribute("hinhAnhSanPhamm", hinhAnhSanPhamMoi);
+        model.addAttribute("hinhAnhSanPhamc", hinhAnhSanPhamBanChay);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", sanPhamPage.getTotalPages());
         model.addAttribute("totalItems", sanPhamPage.getTotalElements());
