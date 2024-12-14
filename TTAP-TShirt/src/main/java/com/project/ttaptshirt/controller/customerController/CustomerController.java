@@ -1,7 +1,9 @@
 package com.project.ttaptshirt.controller.customerController;
 
+import com.project.ttaptshirt.entity.KhachHang;
 import com.project.ttaptshirt.entity.User;
 import com.project.ttaptshirt.security.CustomUserDetail;
+import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+
 @Controller
 @RequestMapping("/TTAP/user/detail")
 public class CustomerController {
@@ -20,6 +24,9 @@ public class CustomerController {
     private UserServiceImpl serUser;
     @Autowired
     private UserServiceImpl userServiceImpl;
+
+    @Autowired
+    private KhachHangServiceImpl serKhachHang;
 
     @GetMapping("/view")
     String view(Model model, RedirectAttributes redirectAttributes,
@@ -51,6 +58,17 @@ public class CustomerController {
                 user.setEmail(updatedUser.getEmail());
                 user.setPassword(password); // Cập nhật mật khẩu đã mã hóa
 
+                // Lấy thông tin khách hàng
+                KhachHang khachHang = user.getKhachHang();  // Giả sử có phương thức để lấy khách hàng từ User
+
+                // Cập nhật thông tin khách hàng
+                khachHang.setHoTen(updatedUser.getHoTen());  // Cập nhật tên khách hàng
+                khachHang.setSoDienThoai(updatedUser.getSoDienthoai());  // Cập nhật số điện thoại khách hàng
+
+                // Cập nhật thời gian tạo nếu cần
+                khachHang.setNgayTao(LocalDate.now());  // Cập nhật ngày
+
+                serKhachHang.save(khachHang);
                 serUser.save(user); // Lưu thông tin vào cơ sở dữ liệu
 
                 // Cập nhật lại thông tin người dùng trong session (sau khi thay đổi)
