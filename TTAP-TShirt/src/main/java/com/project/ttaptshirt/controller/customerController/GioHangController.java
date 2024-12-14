@@ -89,6 +89,14 @@ public class GioHangController {
                             .findFirst()
                             .orElse(null)
                     : user.getDefaultAddress();
+            if (selectedAddress == null && !addresses.isEmpty()) {
+                selectedAddress = addresses.get(0); // Lấy địa chỉ đầu tiên làm mặc định
+            }
+            // Lấy địa chỉ từ redirectAttributes (nếu có)
+            DiaChi flashSelectedAddress = (DiaChi) model.asMap().get("selectedAddress");
+            if (flashSelectedAddress != null) {
+                selectedAddress = flashSelectedAddress;
+            }
             model.addAttribute("selectedAddress", selectedAddress);
             model.addAttribute("address", address);
 

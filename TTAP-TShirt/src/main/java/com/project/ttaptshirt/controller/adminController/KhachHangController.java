@@ -210,19 +210,18 @@ public class KhachHangController {
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User updatedUser,
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User updatedUser,@RequestParam("password") String passwordString,
                              RedirectAttributes redirectAttributes) {
         try {
             User user = serUser.findById(id);
             if (user != null) {
+                String password = new BCryptPasswordEncoder().encode(passwordString);
                 // Cập nhật thông tin từ form
                 user.setHoTen(updatedUser.getHoTen());
                 user.setUsername(updatedUser.getUsername());
-                user.setGioiTinh(updatedUser.getGioiTinh());
                 user.setSoDienthoai(updatedUser.getSoDienthoai());
                 user.setEmail(updatedUser.getEmail());
-                user.setUsername(updatedUser.getUsername());
-
+                user.setPassword(password);
                 serUser.save(user); // Lưu lại thay đổi vào database
                 redirectAttributes.addFlashAttribute("success", "User updated successfully!");
             } else {
@@ -231,7 +230,7 @@ public class KhachHangController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error updating user: " + e.getMessage());
         }
-        return "redirect:/users"; // Điều hướng về danh sách người dùng sau khi cập nhật
+        return "redirect:/TTAP/user/detail/view"; // Điều hướng về danh sách người dùng sau khi cập nhật
     }
 
     @PostMapping("/update/{id}/DiaChi")

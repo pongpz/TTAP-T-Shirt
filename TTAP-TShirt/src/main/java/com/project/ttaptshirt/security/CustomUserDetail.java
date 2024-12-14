@@ -22,6 +22,10 @@ public class CustomUserDetail implements UserDetails {
         return this.user;
     }
 
+    public void setUser(User user) {
+        this.user = user; // Cập nhật thông tin người dùng
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
