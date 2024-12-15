@@ -37,10 +37,12 @@ public class ThongKeService {
     private HoaDonRepository hoaDonRepository;
 
 
-    public Double tongTienHomNay() {
-        LocalDate today = LocalDate.now();
+    public Double tongTienHomNay(Integer day, Integer month, Integer year) {
+        // Nếu tham số ngày, tháng, năm không được truyền vào, mặc định là ngày hôm nay
+        LocalDate today = (day != null && month != null && year != null) ?
+                LocalDate.of(year, month, day) : LocalDate.now();
 
-        // Lấy tất cả hóa đơn có ngày thanh toán là hôm nay
+        // Lấy tất cả hóa đơn có ngày thanh toán trong khoảng ngày tháng năm đã cho
         List<HoaDon> hoaDons = hoaDonRepository.findHoaDonsByNgayThanhToan(today);
 
         double totalIncome = 0;
@@ -62,6 +64,9 @@ public class ThongKeService {
 
         return totalIncome;
     }
+
+
+
 
     public Double tinhThuNhapTheoThang(int month, int year) {
         // Lấy tất cả hóa đơn có ngày thanh toán trong tháng và năm đã chọn
@@ -107,26 +112,26 @@ public class ThongKeService {
         return totalIncome;
     }
 
-    public Map<LocalDate, Long> thongKeSoHoaDonTheoNgay() {
-        List<Object[]> results = hoaDonRepository.countHoaDonTheoNgay();
-        LocalDate today = LocalDate.now();
+    public Map<LocalDate, Long> thongKeSoHoaDonTheoNgay(LocalDate filterDate) {
+        List<Object[]> results = hoaDonRepository.countHoaDonTheoNgay(filterDate);
         return results.stream()
-                .filter(result -> ((LocalDate) result[0]).equals(today))  // Lọc chỉ lấy hóa đơn của ngày hôm nay
+                .filter(result -> ((LocalDate) result[0]).equals(filterDate))  // Lọc theo ngày được truyền vào
                 .collect(Collectors.toMap(
                         result -> (LocalDate) result[0], // ngày
-                        result -> (Long) result[1]      // số lượng
+                        result -> (Long) result[1]        // số lượng
                 ));
     }
 
-
-
-    public Map<String, Double> thongKeDoanhThuTheoLoaiDon() {
+    public Map<String, Double> thongKeDoanhThuTheoLoaiDon(LocalDate ngayThanhToan) {
         Map<String, Double> doanhThu = new HashMap<>();
-        doanhThu.put("Online", hoaDonRepository.tinhTongDoanhThuTheoLoaiDon(0));
-        doanhThu.put("Offline", hoaDonRepository.tinhTongDoanhThuTheoLoaiDon(1));
+        Double doanhThuOnline = hoaDonRepository.tinhTongDoanhThuTheoLoaiDon(0, ngayThanhToan);
+        Double doanhThuOffline = hoaDonRepository.tinhTongDoanhThuTheoLoaiDon(1, ngayThanhToan);
+
+        doanhThu.put("Online", doanhThuOnline != null ? doanhThuOnline : 0.0);
+        doanhThu.put("Offline", doanhThuOffline != null ? doanhThuOffline : 0.0);
+
         return doanhThu;
     }
-
 
     public Map<LocalDate, Double> thongKeDoanhThuTheoNgay(int day, int month, int year) {
         LocalDate selectedDate = LocalDate.of(year, month, day);

@@ -38,12 +38,12 @@ public class ThongKeController {
 
     @GetMapping
     public String getThongKe(Model model,
-                             @RequestParam(name = "month", defaultValue = "#{T(java.time.LocalDate).now().monthValue}") int month,
-                             @RequestParam(name = "year", defaultValue = "#{T(java.time.LocalDate).now().year}") int year,
+                             @RequestParam(name = "month", defaultValue = "#{T(java.time.LocalDate).now().monthValue}") Integer month,
+                             @RequestParam(name = "year", defaultValue = "#{T(java.time.LocalDate).now().year}") Integer year,
                              @RequestParam(name = "day", required = false) Integer day) {
 
         // Tổng thu nhập hôm nay
-        double tongTienHomNay = thongKeService.tongTienHomNay();
+        double tongTienHomNay = thongKeService.tongTienHomNay(day, month, year);
         model.addAttribute("tongTienHomNay", tongTienHomNay);
 
         // Thu nhập theo tháng
@@ -88,14 +88,20 @@ public class ThongKeController {
             model.addAttribute("revenues", "[]");
         }
 
+        LocalDate filterDate = (day != null) ? LocalDate.of(year, month, day) : LocalDate.now();
+
         // Thống kê số hóa đơn theo ngày
-        Map<LocalDate, Long> tongHoaDonTheoNgay = thongKeService.thongKeSoHoaDonTheoNgay();
+        Map<LocalDate, Long> tongHoaDonTheoNgay = thongKeService.thongKeSoHoaDonTheoNgay(filterDate);
         model.addAttribute("tongHoaDonTheoNgay", tongHoaDonTheoNgay);
 
-        // Doanh thu Online và Offline
-        Map<String, Double> doanhThuTheoLoaiDon = thongKeService.thongKeDoanhThuTheoLoaiDon();
+        LocalDate ngayThanhToan = (day != null) ? LocalDate.of(year, month, day) : LocalDate.now();
+
+        // Doanh thu theo loại đơn
+        Map<String, Double> doanhThuTheoLoaiDon = thongKeService.thongKeDoanhThuTheoLoaiDon(ngayThanhToan);
+        model.addAttribute("doanhThuTheoLoaiDon", doanhThuTheoLoaiDon);
         model.addAttribute("doanhThuOnline", doanhThuTheoLoaiDon.get("Online"));
         model.addAttribute("doanhThuOffline", doanhThuTheoLoaiDon.get("Offline"));
+
         LocalDate today = LocalDate.now();
         model.addAttribute("day", today.getDayOfMonth());
         model.addAttribute("month", today.getMonthValue());

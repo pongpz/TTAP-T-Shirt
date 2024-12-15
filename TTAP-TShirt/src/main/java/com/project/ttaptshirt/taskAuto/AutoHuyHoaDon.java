@@ -1,7 +1,9 @@
 package com.project.ttaptshirt.taskAuto;
 
 
+import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.SanPham;
+import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.SanPhamRepository;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import com.project.ttaptshirt.service.impl.SanPhamServiceImpl;
@@ -21,6 +23,8 @@ public class AutoHuyHoaDon {
     SanPhamServiceImpl sanPhamService;
     @Autowired
     private SanPhamRepository sanPhamRepository;
+    @Autowired
+    private ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @Scheduled(cron = "0 0 * * * *")
     public void tuDongHuyHoaDonCho(){
@@ -32,23 +36,24 @@ public class AutoHuyHoaDon {
     public void doitrangthaisp() {
         List<SanPham> sanPhams = sanPhamRepository.findAll();
         for (SanPham sanPham : sanPhams) {
-            if (sanPham.tongSoLuong() == 0) {
-                // Nếu sản phẩm không có số lượng và không phải đang ngừng bán, chuyển sang trạng thái hết hàng
-                if (sanPham.getTrangThai() != 1) {
-                    sanPham.setTrangThai(2); // Hết hàng
-                }
+            // Kiểm tra danh sách chi tiết sản phẩm liên quan
+            List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamRepository.findBySanPhamId(sanPham.getId());
+
+            boolean tatCaNgungBan = chiTietSanPhams.stream().allMatch(ctsp -> ctsp.getTrangThai() == 1); // 2: Ngừng bán
+            boolean coSanPhamConSoLuong = chiTietSanPhams.stream().anyMatch(ctsp -> ctsp.getSoLuong() > 0);
+
+            if (tatCaNgungBan) {
+                sanPham.setTrangThai(1); // Ngừng bán
+            } else if (!coSanPhamConSoLuong) {
+                sanPham.setTrangThai(2); // Hết hàng
             } else {
-                // Nếu sản phẩm còn số lượng, chuyển về trạng thái đang bán
                 sanPham.setTrangThai(0); // Đang bán
             }
-            if (sanPham.tongSoLuong()>0){
-                if (sanPham.getTrangThai() != 1) {
-                    sanPham.setTrangThai(0);
-                }
-            }
+
             sanPhamRepository.save(sanPham);
         }
     }
+
 
 
 }

@@ -104,6 +104,11 @@
             return false;
         }
 
+        if(giaBan == 0){
+            toastWarning("Cảnh báo", "Giá bán phải lớn hơn 0.")
+            return false;
+        }
+
         // Kiểm tra nếu trường số lượng trống hoặc số âm
         if (soLuong === "" || parseInt(soLuong) < 0) {
             toastWarning("Cảnh báo", "Số lượng không thể là số âm và không được để trống.");

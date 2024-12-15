@@ -85,26 +85,27 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     List<HoaDon> findByKhachHang(KhachHang khachHang);
 
 
-    @Query("SELECT h FROM HoaDon h WHERE h.ngayThanhToan = :today")
+    @Query("SELECT h FROM HoaDon h WHERE h.ngayThanhToan = :today and h.trangThai=1")
     List<HoaDon> findHoaDonsByNgayThanhToan(@Param("today") LocalDate today);
 
-    @Query("SELECT h FROM HoaDon h WHERE YEAR(h.ngayThanhToan) = :year AND MONTH(h.ngayThanhToan) = :month")
+    @Query("SELECT h FROM HoaDon h WHERE YEAR(h.ngayThanhToan) = :year AND MONTH(h.ngayThanhToan) = :month and h.trangThai=1")
     List<HoaDon> findHoaDonsByMonthAndYear(@Param("month") int month, @Param("year") int year);
 
 
-    @Query("SELECT h FROM HoaDon h WHERE FUNCTION('YEAR', h.ngayThanhToan) = :year")
+    @Query("SELECT h FROM HoaDon h WHERE FUNCTION('YEAR', h.ngayThanhToan) = :year and h.trangThai=1")
     List<HoaDon> findHoaDonsByYear(@Param("year") int year);
 
 
     @Query("SELECT h.ngayThanhToan, COUNT(h.id) FROM HoaDon h " +
-            "WHERE h.ngayThanhToan IS NOT NULL " +
+            "WHERE h.ngayThanhToan IS NOT NULL and h.trangThai=1" +
+            "AND h.ngayThanhToan = :filterDate " + // Thêm điều kiện lọc theo ngày
             "GROUP BY h.ngayThanhToan")
-    List<Object[]> countHoaDonTheoNgay();
+    List<Object[]> countHoaDonTheoNgay(@Param("filterDate") LocalDate filterDate);
 
-
-    @Query("SELECT SUM(h.tongTien) FROM HoaDon h WHERE h.loaiDon = :loaiDon AND h.ngayThanhToan IS NOT NULL AND h.trangThai = 1")
-    Double tinhTongDoanhThuTheoLoaiDon(@Param("loaiDon") Integer loaiDon);
-
-
+    @Query("SELECT SUM(h.tongTien) FROM HoaDon h " +
+            "WHERE h.loaiDon = :loaiDon AND h.ngayThanhToan = :ngayThanhToan " +
+            "AND h.trangThai = 1")
+    Double tinhTongDoanhThuTheoLoaiDon(@Param("loaiDon") Integer loaiDon,
+                                       @Param("ngayThanhToan") LocalDate ngayThanhToan);
 
 }

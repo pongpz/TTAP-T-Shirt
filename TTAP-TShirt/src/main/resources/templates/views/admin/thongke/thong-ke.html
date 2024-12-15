@@ -24,28 +24,33 @@
             <!-- Main Content -->
             <div id="content">
                 <!-- Form chọn ngày -->
-                <form action="#" method="get">
-                    <div class="form-group">
-                        <label for="day">Chọn ngày:</label>
-                        <input type="number" id="day" name="day" min="1" max="31" th:value="${day}">
-                    </div>
-                    <div class="form-group">
-                        <label for="month">Chọn tháng:</label>
-                        <input type="number" id="month" name="month" min="1" max="12" th:value="${month}">
-                    </div>
-                    <div class="form-group">
-                        <label for="year">Chọn năm:</label>
-                        <input type="number" id="year" name="year" th:value="${year}">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Lọc thống kê</button>
+                <form action="#" method="get" class="p-4 shadow-sm" style="background-color: #b2d7ff; border-radius: 15px;" id="filterForm">
+                    <div class="mb-3"><label for="date" class="form-label fw-bold text-primary">Chọn ngày:</label><input type="date" id="date" name="date" th:value="${#dates.format(#dates.create(year, month, day), 'yyyy-MM-dd')}" class="form-control border-primary"></div>
+                    <div class="text-start"><button type="submit" class="btn btn-outline-danger px-4"><i class="fas fa-filter"></i> Lọc thống kê</button></div>
                 </form>
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <!-- Content Row -->
-                    <div class="row">
+                <!-- JavaScript để tách ngày tháng năm -->
+                <script>
+                    document.getElementById('filterForm').addEventListener('submit', function(event) {
+                        event.preventDefault(); // Ngăn form submit mặc định
+                        const dateInput = document.getElementById('date').value; // Lấy giá trị từ input date
+                        if (dateInput) {
+                            const [year, month, day] = dateInput.split('-'); // Tách ngày, tháng, năm
+                            const url = `/admin/thong-ke?day=${day}&month=${month}&year=${year}`; // Tạo URL
+                            window.location.href = url; // Chuyển hướng đến URL mới
+                        }
+                    });
+                </script>
 
+
+                <br>
+
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid" style="background-color: #ffc487; border-radius: 15px;">
+<br>
+                <!-- Content Row -->
+                    <div class="row">
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-4 col-md-6 mb-4"     >
                             <div class="card border-left-primary shadow h-100 py-2">
@@ -53,8 +58,8 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Thu nhập (Hôm nay)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${tongTienHomNay}"></div>
+                                                Thu nhập (Ngày)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(tongTienHomNay)}|"></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -71,7 +76,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Thu nhập (Tháng này)</div>
+                                                Thu nhập (Tháng)</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(tienTheoThang)}|">vnđ</div>
                                         </div>
                                         <div class="col-auto">
@@ -89,7 +94,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Thu nhập (Năm nay)</div>
+                                                Thu nhập (Năm)</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(tienTheoNam)}|"></div>
                                         </div>
                                         <div class="col-auto">
@@ -108,7 +113,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Tổng hóa đơn đã thanh toán(hôm nay)</div>
+                                                Tổng hóa đơn đã thanh toán</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" th:each="entry : ${tongHoaDonTheoNgay}"> <span th:text="${entry.value}"></span></div>
                                         </div>
                                         <div class="col-auto">
@@ -124,27 +129,28 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Tổng tiền bán tại quầy</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(doanhThuOffline)}|"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                Tổng tiền bán tại quầy
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <span th:text="${doanhThuOffline != null ? #numbers.formatInteger(doanhThuOffline, 0, 'POINT') : '0'}"></span> VND
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Tổng tiền bán online</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(doanhThuOnline)}|"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                Tổng tiền bán online
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <span th:text="${doanhThuOnline != null ? #numbers.formatInteger(doanhThuOnline, 0, 'POINT') : '0'}"></span> VND
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -152,14 +158,17 @@
                         </div>
                     </div>
 
-                    <!-- Content Row -->
+                </div>
 
+<br>
+                        <!-- Content Row -->
+                <div>
                     <div class="row">
                         <!-- Biểu đồ doanh thu theo tháng -->
                         <div class="col-md-12">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Tổng Quan Doanh Thu Theo Tháng</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Biểu Đồ Tổng Quan Doanh Thu Theo Tháng</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-area">

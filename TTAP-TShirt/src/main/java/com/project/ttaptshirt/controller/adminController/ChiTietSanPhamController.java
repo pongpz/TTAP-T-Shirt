@@ -254,17 +254,6 @@ public class ChiTietSanPhamController {
         if (giaBan != null) {
             existingCTSP.setGiaBan(giaBan);
         }
-
-        if (existingCTSP.getSanPham().getTrangThai() == 1 && trangThai == 0){
-            model.addAttribute("errorStatus","Sản phẩm đang ở trạng thái ngừng bán");
-            System.out.println(1);
-            model.addAttribute("listSP", sanPhamService.findAll());
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            ChiTietSanPham chiTietSanPham = chiTietSanPhamService.findById(idCTSP);
-            model.addAttribute("ctsp",chiTietSanPham);
-            return "admin/sanpham/ctsp-view-update";
-        }
             // Lưu đối tượng cập nhật
             existingCTSP.setTrangThai(trangThai);
             chiTietSanPhamService.save(existingCTSP);
