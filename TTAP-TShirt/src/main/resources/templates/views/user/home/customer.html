@@ -69,14 +69,15 @@
       <div class="modal-body">
         <!-- Form nhập thông tin người dùng -->
         <form id="updateUserForm" th:action="@{/TTAP/user/detail/updateUser}" method="post" th:object="${userLogged}">
+          <!-- Thông tin cơ bản -->
           <div class="mb-3">
-            <label for="username" class="form-label"> Người Dùng</label>
+            <label for="username" class="form-label">Người Dùng</label>
             <input type="text" class="form-control" id="username" th:field="*{username}" required>
             <div class="invalid-feedback">Vui lòng nhập người dùng.</div>
           </div>
 
           <div class="mb-3">
-            <label for="username" class="form-label">Tên Người Dùng</label>
+            <label for="name" class="form-label">Tên Người Dùng</label>
             <input type="text" class="form-control" id="name" th:field="*{hoTen}" required>
             <div class="invalid-feedback">Vui lòng nhập tên người dùng.</div>
           </div>
@@ -92,73 +93,191 @@
             <input type="email" class="form-control" id="email" th:field="*{email}" required>
             <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>
           </div>
-
-          <div class="mb-3">
-            <label for="password" class="form-label">Mật Khẩu</label>
-            <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
-            <div class="invalid-feedback">Vui lòng nhập mật khẩu.</div>
-          </div>
-
           <input type="hidden" th:field="*{id}">
-
           <!-- Nút submit -->
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">Cập Nhật</button>
           </div>
         </form>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+          Đổi Mật Khẩu
+        </button>
+
       </div>
     </div>
   </div>
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changePasswordModalLabel">Đổi Mật Khẩu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="changePasswordForm" th:action="@{/TTAP/user/detail/changePassword}" method="post">
+            <!-- Mật khẩu hiện tại -->
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label">Mật Khẩu Hiện Tại</label>
+              <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+              <div class="invalid-feedback">Vui lòng nhập mật khẩu hiện tại.</div>
+            </div>
+
+            <!-- Mật khẩu mới -->
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">Mật Khẩu Mới</label>
+              <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+              <div class="invalid-feedback">Vui lòng nhập mật khẩu mới.</div>
+            </div>
+
+            <!-- Xác nhận mật khẩu mới -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Xác Nhận Mật Khẩu Mới</label>
+              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+              <div class="invalid-feedback">Vui lòng xác nhận mật khẩu mới.</div>
+            </div>
+
+            <!-- Nút hành động -->
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">Đổi Mật Khẩu</button>
+              <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Hủy</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 <script>
-  function validateAddressForm() {
-    const fields = ['soNha', 'tenDuong', 'tenQuanhuyen', 'tenThanhpho'];
-    let isValid = true;
+  document.addEventListener('DOMContentLoaded', function () {
+    // Lấy form và các trường input
+    const updateUserForm = document.getElementById('updateUserForm');
+    const usernameField = document.getElementById('username');
+    const nameField = document.getElementById('name');
+    const phoneNumberField = document.getElementById('phoneNumber');
+    const emailField = document.getElementById('email');
 
-    fields.forEach(field => {
-      const input = document.getElementById(field);
-      const value = input.value.trim(); // Loại bỏ khoảng trắng dư thừa
-
-      // Kiểm tra xem trường có để trống không
-      if (!value) {
-        isValid = false;
-        input.classList.add('is-invalid'); // Thêm lớp hiển thị lỗi
-        input.nextElementSibling.textContent = 'Trường này không được để trống.';
+    // Hàm kiểm tra username (không được rỗng)
+    function validateUsername() {
+      if (usernameField.value.trim() === '') {
+        usernameField.setCustomValidity('Vui lòng nhập người dùng.');
       } else {
-        input.classList.remove('is-invalid'); // Loại bỏ lớp lỗi nếu hợp lệ
-        input.nextElementSibling.textContent = '';
+        usernameField.setCustomValidity('');
       }
-    });
-
-    return isValid; // Ngăn submit nếu không hợp lệ
-  }
-
-  function validateCartSelection() {
-    // Lấy danh sách các checkbox sản phẩm
-    const checkboxes = document.querySelectorAll('.product-checkbox');
-    let isProductSelected = false;
-
-    // Kiểm tra xem có sản phẩm nào được chọn không
-    checkboxes.forEach(checkbox => {
-      if (checkbox.checked) {
-        isProductSelected = true;
-      }
-    });
-
-    // Nếu không có sản phẩm nào được chọn, hiển thị thông báo lỗi
-    if (!isProductSelected) {
-      alert("Vui lòng chọn ít nhất một sản phẩm để tiến hành đặt hàng.");
-      return false; // Ngăn chặn việc gửi form
+      usernameField.reportValidity();
     }
 
-    const selectedAddress = document.querySelector('input[name="diaChi"]');
-    if (!selectedAddress || selectedAddress.value.trim() === "") {
-      alert("Vui lòng chọn hoặc nhập địa chỉ giao hàng.");
-      return false; // Ngăn chặn việc gửi form
+    // Hàm kiểm tra tên người dùng
+    function validateName() {
+      if (nameField.value.trim() === '') {
+        nameField.setCustomValidity('Vui lòng nhập tên người dùng.');
+      } else {
+        nameField.setCustomValidity('');
+      }
+      nameField.reportValidity();
     }
 
-    return confirm('Bạn có chắc chắn muốn đặt hàng không?'); // Cho phép gửi form
-  }
+    // Hàm kiểm tra số điện thoại (chỉ số, từ 10-11 ký tự)
+    function validatePhoneNumber() {
+      const phoneRegex = /^[0-9]{10,11}$/;
+      if (!phoneRegex.test(phoneNumberField.value.trim())) {
+        phoneNumberField.setCustomValidity('Vui lòng nhập số điện thoại hợp lệ (10-11 số).');
+      } else {
+        phoneNumberField.setCustomValidity('');
+      }
+      phoneNumberField.reportValidity();
+    }
+
+    // Hàm kiểm tra email
+    function validateEmail() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Biểu thức kiểm tra email
+      if (!emailRegex.test(emailField.value.trim())) {
+        emailField.setCustomValidity('Vui lòng nhập email hợp lệ.');
+      } else {
+        emailField.setCustomValidity('');
+      }
+      emailField.reportValidity();
+    }
+
+    // Lắng nghe sự kiện input để kiểm tra khi người dùng nhập
+    usernameField.addEventListener('input', validateUsername);
+    nameField.addEventListener('input', validateName);
+    phoneNumberField.addEventListener('input', validatePhoneNumber);
+    emailField.addEventListener('input', validateEmail);
+
+    // Kiểm tra toàn bộ form khi submit
+    updateUserForm.addEventListener('submit', function (event) {
+      // Kiểm tra tất cả các trường
+      validateUsername();
+      validateName();
+      validatePhoneNumber();
+      validateEmail();
+
+      // Nếu có lỗi thì ngăn form submit
+      if (!updateUserForm.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('Form không hợp lệ!');
+      } else {
+        console.log('Form hợp lệ, đang gửi...');
+      }
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Kiểm tra nếu server trả về cờ để mở modal
+    const openModal = [[${openChangePasswordModal}]] ; // Giá trị từ server
+    if (openModal) {
+      const changePasswordModal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+      changePasswordModal.show(); // Hiển thị modal
+    }
+  });
+</script>
+<script>
+  // Validate form
+  document.getElementById('changePasswordForm').addEventListener('submit', function(event) {
+    // Lấy các phần tử input
+    var currentPassword = document.getElementById('currentPassword');
+    var newPassword = document.getElementById('newPassword');
+    var confirmPassword = document.getElementById('confirmPassword');
+
+    // Reset các trạng thái lỗi
+    currentPassword.classList.remove('is-invalid');
+    newPassword.classList.remove('is-invalid');
+    confirmPassword.classList.remove('is-invalid');
+
+    var isValid = true;
+
+    // Kiểm tra mật khẩu hiện tại
+    if (currentPassword.value.trim() === '') {
+      currentPassword.classList.add('is-invalid');
+      isValid = false;
+    }
+
+    // Kiểm tra mật khẩu mới
+    if (newPassword.value.trim() === '') {
+      newPassword.classList.add('is-invalid');
+      isValid = false;
+    }
+
+    // Kiểm tra xác nhận mật khẩu mới
+    if (confirmPassword.value.trim() === '') {
+      confirmPassword.classList.add('is-invalid');
+      isValid = false;
+    }
+
+    // Kiểm tra mật khẩu mới và xác nhận mật khẩu có trùng khớp không
+    if (newPassword.value !== confirmPassword.value) {
+      confirmPassword.classList.add('is-invalid');
+      isValid = false;
+    }
+
+    // Nếu form không hợp lệ, ngừng gửi form
+    if (!isValid) {
+      event.preventDefault();
+    }
+  });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -169,10 +288,10 @@
 <script src="/js/toastMessage.js"></script>
 <script th:inline="javascript">
   /*<![CDATA[*/
-  var removemessage = [[${removemessage}]];
-  console.log(removemessage);  // Debugging line to ensure the attribute is set
-  if (removemessage) {
-    toastSuccess('Thành Công!', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
+  var error = [[${error}]];
+  console.log(error);  // Debugging line to ensure the attribute is set
+  if (error) {
+    toastWarning('Lỗi!', error);
   }
   /*]]>*/
 </script>

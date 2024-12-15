@@ -41,7 +41,7 @@ public class CustomerController {
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(@ModelAttribute("userLogged") User updatedUser, @RequestParam("password") String passwordString,
+    public String updateUser(@ModelAttribute("userLogged") User updatedUser,
                              RedirectAttributes redirectAttributes, Authentication authentication) {
         try {
             // Lấy thông tin người dùng đã đăng nhập từ session hoặc authentication
@@ -49,14 +49,12 @@ public class CustomerController {
 
             if (user != null) {
                 // Mã hóa mật khẩu
-                String password = new BCryptPasswordEncoder().encode(passwordString);
-
                 // Cập nhật thông tin người dùng
                 user.setHoTen(updatedUser.getHoTen());
                 user.setUsername(updatedUser.getUsername());
                 user.setSoDienthoai(updatedUser.getSoDienthoai());
                 user.setEmail(updatedUser.getEmail());
-                user.setPassword(password); // Cập nhật mật khẩu đã mã hóa
+           // Cập nhật mật khẩu đã mã hóa
 
                 // Lấy thông tin khách hàng
                 KhachHang khachHang = user.getKhachHang();  // Giả sử có phương thức để lấy khách hàng từ User
@@ -95,4 +93,43 @@ public class CustomerController {
         // Điều hướng về trang chi tiết người dùng
         return "redirect:/TTAP/user/detail/view";
     }
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestParam("currentPassword") String currentPasswordInput,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmPassword") String confirmPassword,
+                                 Authentication authentication,
+                                 RedirectAttributes redirectAttributes) {
+        // Lấy thông tin người dùng hiện tại
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        User user = customUserDetail.getUser();
+
+        // Mật khẩu hiện tại từ database
+        String encryptedPasswordFromDb = user.getPassword();
+
+        // Kiểm tra mật khẩu hiện tại có khớp không
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(currentPasswordInput, encryptedPasswordFromDb)) {
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu hiện tại không đúng.");
+            redirectAttributes.addFlashAttribute("openChangePasswordModal", true);
+            return "redirect:/TTAP/user/detail/view";
+        }
+
+        // Kiểm tra mật khẩu mới và xác nhận mật khẩu có khớp không
+        if (!newPassword.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu mới và xác nhận mật khẩu không trùng khớp.");
+            redirectAttributes.addFlashAttribute("openChangePasswordModal", true);
+            return "redirect:/TTAP/user/detail/view";
+        }
+
+        // Mã hóa mật khẩu mới
+        String encryptedNewPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encryptedNewPassword);
+
+        // Lưu người dùng vào cơ sở dữ liệu
+        serUser.save(user);
+
+        redirectAttributes.addFlashAttribute("success", "Đổi mật khẩu thành công.");
+        return "redirect:/TTAP/user/detail/view";
+    }
+
 }
