@@ -102,7 +102,7 @@ public class SanPhamCustomerController {
 
         double minPrice = 0;
         double maxPrice = Double.MAX_VALUE;
-        if (priceRangerId >= 0 && priceRangerId < priceRangerList.size()) {
+        if (priceRangerId > 0 && priceRangerId < priceRangerList.size()) {
             minPrice = priceRangerList.get(priceRangerId).getMinValue();
             maxPrice = priceRangerList.get(priceRangerId).getMaxValue();
         }
@@ -120,7 +120,9 @@ public class SanPhamCustomerController {
             sanPhamPage = sanPhamRepository.pageSP(pageable);
         }
 
-
+        System.out.println("Price Ranger ID: " + priceRangerId);
+        System.out.println("Min Price: " + minPrice);
+        System.out.println("Max Price: " + maxPrice);
 //        Pageable pageable = PageRequest.of(page, 6);
 //        Page<SanPham> sanPhamPage = sanPhamRepository.findAll(pageable);
 

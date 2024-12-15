@@ -7,6 +7,7 @@ import com.project.ttaptshirt.repository.DiaChiRepo;
 import com.project.ttaptshirt.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,4 +50,14 @@ public class DiaChiService {
     public DiaChi findById(Long id) {
         return repoDc.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
     }
+
+    @Transactional
+    public void deleteAddress(Long addressId) {
+        // Cập nhật tất cả người dùng có địa chỉ này thành NULL
+        userRepo.updateAddressToNull(addressId);
+
+        // Sau đó xóa địa chỉ
+        repoDc.deleteById(addressId);
+    }
+
 }
