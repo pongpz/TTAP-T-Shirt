@@ -295,7 +295,22 @@ public class SanPhamController {
                     chiTietSanPhamRepository.save(ctsp);
                 }
             }
-//            System.out.println(ls);
+        }
+        if (existingSanPham.getTrangThai() == 0) {
+            List<ChiTietSanPham> ls = chiTietSanPhamRepository.getCTSPByIdSP(sanPham.getId());
+            if (ls != null) {
+                for (ChiTietSanPham ctsp : ls) {
+                    if (ctsp.getSoLuong() > 0) {
+                        // Chi tiết sản phẩm còn số lượng thì trạng thái chuyển về 0 (ngừng bán)
+                        ctsp.setTrangThai(0);
+                    } else {
+                        // Chi tiết sản phẩm hết số lượng thì trạng thái chuyển về 2
+                        ctsp.setTrangThai(2);
+                    }
+                    // Lưu lại từng chi tiết sản phẩm đã cập nhật
+                    chiTietSanPhamRepository.save(ctsp);
+                }
+            }
         }
         existingSanPham.setNsx(nsxRepository.findById(idNsx).orElse(null));
         existingSanPham.setChatLieu(chatLieuRepository.findById(idChatLieu).orElse(null));

@@ -217,8 +217,10 @@ public class GioHangService {
 
         // Tính toán phí vận chuyển
         double totalAmount = cart.getItems().stream()
+                .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId())) // Chỉ tính sản phẩm đã chọn
                 .mapToDouble(item -> item.getGia().doubleValue() * item.getSoLuong())
                 .sum();
+
 
         double shippingFee = 50000;
 

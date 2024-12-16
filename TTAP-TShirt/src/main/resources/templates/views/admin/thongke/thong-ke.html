@@ -132,7 +132,7 @@
                                                 Tổng tiền bán tại quầy
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <span th:text="${doanhThuOffline != null ? #numbers.formatInteger(doanhThuOffline, 0, 'POINT') : '0'}"></span> VND
+                                                <span th:text="${numberUtils.formatCurrency(doanhThuOffline)}"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -149,7 +149,7 @@
                                                 Tổng tiền bán online
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <span th:text="${doanhThuOnline != null ? #numbers.formatInteger(doanhThuOnline, 0, 'POINT') : '0'}"></span> VND
+                                                <span th:text="${numberUtils.formatCurrency(doanhThuOnline)}"></span>
                                             </div>
                                         </div>
                                     </div>

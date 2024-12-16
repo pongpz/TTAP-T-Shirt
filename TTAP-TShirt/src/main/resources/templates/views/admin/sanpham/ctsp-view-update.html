@@ -77,6 +77,10 @@
                                                         <label class="form-check-label" for="trangThaiDangBan">Đang bán</label>
                                                     </div>
                                                     <div class="form-check">
+                                                        <input type="radio" class="form-check-input" id="trangThaiDangBa1n" name="trangThai" value="0" th:checked="${ctsp.trangThai == 2}" required>
+                                                        <label class="form-check-label" for="trangThaiDangBan">Hết Hàng</label>
+                                                    </div>
+                                                    <div class="form-check">
                                                         <input type="radio" class="form-check-input" id="trangThaiHetHang" name="trangThai" value="1" th:checked="${ctsp.trangThai == 1}" required>
                                                         <label class="form-check-label" for="trangThaiHetHang">Ngừng bán</label>
                                                     </div>

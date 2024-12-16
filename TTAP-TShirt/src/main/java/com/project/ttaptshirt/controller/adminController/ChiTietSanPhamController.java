@@ -155,7 +155,7 @@ public class ChiTietSanPhamController {
             newChiTietSanPham.setKichCo(kichCo);
             newChiTietSanPham.setGiaBan(giaBan);
             newChiTietSanPham.setSoLuong(soLuong);
-
+            newChiTietSanPham.setTrangThai(0);
             chiTietSanPhamService.save(newChiTietSanPham);
         }
 
@@ -265,18 +265,18 @@ public class ChiTietSanPhamController {
             return "redirect:/admin/chi-tiet-san-pham/{id}";
     }
 
-    @Scheduled(fixedRate = 1000)
-    public void ChangeStatus(){
-        List<ChiTietSanPham> ls = chiTietSanPhamRepository.getSPCTHetHan();
-        if (ls.size()>0){
-            for (int i = 0 ; i < ls.size() ; i ++){
-                ChiTietSanPham ctsp = new ChiTietSanPham();
-                ctsp = ls.get(i);
-                ctsp.setTrangThai(1);
-                ctsp.setId(ls.get(i).getId());
-                chiTietSanPhamRepository.save(ctsp);
-            }
-        }
-    }
+//    @Scheduled(fixedRate = 1000)
+//    public void ChangeStatus(){
+//        List<ChiTietSanPham> ls = chiTietSanPhamRepository.getSPCTHetHan();
+//        if (ls.size()>0){
+//            for (int i = 0 ; i < ls.size() ; i ++){
+//                ChiTietSanPham ctsp = new ChiTietSanPham();
+//                ctsp = ls.get(i);
+//                ctsp.setTrangThai(1);
+//                ctsp.setId(ls.get(i).getId());
+//                chiTietSanPhamRepository.save(ctsp);
+//            }
+//        }
+//    }
 
 }
