@@ -389,7 +389,8 @@ public class SanPhamController {
     }
 
     @PostMapping("/add/thuong-hieu")
-    public String addThuongHieu(ThuongHieu th,Model model,RedirectAttributes redirectAttributes){
+    public String addThuongHieu(ThuongHieu th, Model model, RedirectAttributes redirectAttributes) {
+        // Lấy danh sách cần thiết để hiển thị lại trang
         List<NSX> listNsx = nsxRepository.findAll();
         model.addAttribute("listNsx", listNsx);
 
@@ -404,21 +405,26 @@ public class SanPhamController {
 
         List<HinhAnh> images = hinhAnhRepository.findBySanPhamIsNull(Sort.by(Sort.Direction.DESC, "id"));
         model.addAttribute("images", images);
+
+        // Kiểm tra điều kiện rỗng trước
+        if (th.getTen() == null || th.getTen().isEmpty()) {
+            model.addAttribute("errorTh", "Không được bỏ trống trường này!");
+            model.addAttribute("showModalTh", true);
+            return "admin/sanpham/them-san-pham";
+        }
+
+        // Kiểm tra sự tồn tại trong DB
         ThuongHieu ThCheck = thuongHieuRepository.getThuongHieuByTen(th.getTen());
-        if (ThCheck == null){
-            redirectAttributes.addFlashAttribute("addNSXSuccess",true);
-            thuongHieuRepository.save(th);
-            return "redirect:/admin/san-pham/them-san-pham";
-        }else if (th.getTen().isEmpty()){
-            model.addAttribute("errorTh","Không được bỏ trống trường này!");
-            model.addAttribute("showModalTh",true);
+        if (ThCheck != null) {
+            model.addAttribute("errorTh", "Thương hiệu này đã tồn tại!");
+            model.addAttribute("showModalTh", true);
             return "admin/sanpham/them-san-pham";
         }
-        else {
-            model.addAttribute("errorTh","Thương hiệu này đã tồn tại!");
-            model.addAttribute("showModalTh",true);
-            return "admin/sanpham/them-san-pham";
-        }
+
+        // Thêm mới thương hiệu thành công
+        thuongHieuRepository.save(th);
+        redirectAttributes.addFlashAttribute("addNSXSuccess", true);
+        return "redirect:/admin/san-pham/them-san-pham";
     }
 
     @PostMapping("/add/kieu-dang")

@@ -109,10 +109,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form th:action="@{/admin/san-pham/add/nsx}" th:object="${nhaSanXuat}" method="post">
+                <form th:action="@{/admin/san-pham/add/nsx}" th:object="${nhaSanXuat}" method="post" onsubmit="return validateForm1()">
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên nhà sản xuất</label>
-                        <input type="text" class="form-control" id="ten" name="ten" required>
+                        <input type="text" class="form-control" id="ten1" name="ten" required>
                     </div>
                     <span class="text-danger">[[${errorNSX}]]</span>
                     <button type="submit" class="btn btn-primary">Thêm</button>
@@ -138,10 +138,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form th:action="@{/admin/san-pham/add/chat-lieu}" th:object="${chatLieu}" method="post">
+                <form th:action="@{/admin/san-pham/add/chat-lieu}" th:object="${chatLieu}" method="post" onsubmit="return validateForm2()">
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên chất liệu</label>
-                        <input type="text" class="form-control" id="ten" name="ten" required>
+                        <input type="text" class="form-control" id="ten2" name="ten" required>
                         <span class="text-danger">[[${errorCl}]]</span>
                     </div>
                     <button type="submit" class="btn btn-primary">Thêm</button>
@@ -169,10 +169,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form th:action="@{/admin/san-pham/add/thuong-hieu}" th:object="${thuongHieu}" method="post">
+                <form th:action="@{/admin/san-pham/add/thuong-hieu}" th:object="${thuongHieu}" method="post" onsubmit="return validateForm3()">
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên thương hiệu</label>
-                        <input type="text" class="form-control" id="ten" name="ten" required>
+                        <input type="text" class="form-control" id="ten3" name="ten" required>
                         <span class="text-danger">[[${errorTh}]]</span>
                     </div>
                     <button type="submit" class="btn btn-primary">Thêm</button>
@@ -181,16 +181,17 @@
         </div>
     </div>
 </div>
-        <script>
+        <script th:inline="javascript">
             document.addEventListener('DOMContentLoaded', function () {
-                const showModal = [[${showModalth}]]; // Thymeleaf expression
-                if (showModal) {
+                const showModalTh = [[${showModalTh} ?: false]];
+                if (showModalTh) {
                     const modal = new bootstrap.Modal(document.getElementById('modalAddThuongHieu'));
                     modal.show();
                 }
             });
         </script>
-<div class="modal fade" th:id="modalAddKieuDang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal fade" th:id="modalAddKieuDang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-scrollbar-measure modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -198,10 +199,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form th:action="@{/admin/san-pham/add/kieu-dang}" th:object="${kieuDang}" method="post">
+                <form th:action="@{/admin/san-pham/add/kieu-dang}" th:object="${kieuDang}" method="post" onsubmit="return validateForm4()">
                     <div class="mb-3">
                         <label for="ten" class="form-label">Tên kiểu dáng</label>
-                        <input type="text" class="form-control" id="ten" name="ten" required>
+                        <input type="text" class="form-control" id="ten4" name="ten" required>
                         <span class="text-danger">[[${errorKd}]]</span>
                     </div>
                     <button type="submit" class="btn btn-primary">Thêm</button>
@@ -353,7 +354,52 @@
     });
 </script>
 
+<script>
+    function validateForm1() {
+        const inputField = document.getElementById('ten1');
+        const value = inputField.value.trim(); // Loại bỏ khoảng trắng thừa
 
+        if (value === '') {
+            toastWarning('Cảnh báo','Tên không được để trống!');
+            return false; // Ngăn form gửi đi
+        }
+
+        return true; // Cho phép form gửi đi
+    }
+    function validateForm2() {
+        const inputField = document.getElementById('ten2');
+        const value = inputField.value.trim(); // Loại bỏ khoảng trắng thừa
+
+        if (value === '') {
+            toastWarning('Cảnh báo','Tên không được để trống!');
+            return false; // Ngăn form gửi đi
+        }
+
+        return true; // Cho phép form gửi đi
+    }
+    function validateForm3() {
+        const inputField = document.getElementById('ten3');
+        const value = inputField.value.trim(); // Loại bỏ khoảng trắng thừa
+
+        if (value === '') {
+            toastWarning('Cảnh báo','Tên không được để trống!');
+            return false; // Ngăn form gửi đi
+        }
+
+        return true; // Cho phép form gửi đi
+    }
+    function validateForm4() {
+        const inputField = document.getElementById('ten4');
+        const value = inputField.value.trim(); // Loại bỏ khoảng trắng thừa
+
+        if (value === '') {
+            toastWarning('Cảnh báo','Tên không được để trống!');
+            return false; // Ngăn form gửi đi
+        }
+
+        return true; // Cho phép form gửi đi
+    }
+</script>
 
 </body>
 </html>
