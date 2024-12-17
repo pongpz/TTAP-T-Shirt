@@ -316,6 +316,15 @@
     }
     /*]]>*/x
 </script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var error = [[${error}]];
+    console.log(error);  // Debugging line to ensure the attribute is set
+    if (error) {
+        toastWarning('Lỗi', error);
+    }
+    /*]]>*/x
+</script>
 </body>
 
 </html>
