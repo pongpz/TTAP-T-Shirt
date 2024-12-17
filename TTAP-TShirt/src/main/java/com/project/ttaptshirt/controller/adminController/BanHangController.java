@@ -138,7 +138,6 @@ public class BanHangController {
         // Tìm hóa đơn dựa trên ID, nếu không có thì ném ra ngoại lệ
         HoaDon hoadon = hoaDonRepository.findById(idHoaDon)
                 .orElseThrow(() -> new ResourceNotFoundException("Hóa đơn không tồn tại với ID: " + idHoaDon));
-        model.addAttribute("hoadon", hoadon); // Thêm hóa đơn vào model
 
         // Lấy hóa đơn từ dịch vụ
         HoaDon hoaDon = hoaDonService.findById(idHoaDon);
@@ -154,7 +153,7 @@ public class BanHangController {
                 .sum(); // Tổng tiền
 
         hoaDon.setTongTien(totalMoneyBefore);
-        // Xử lý mã giảm giá
+        // Xử lý mã giảm giá (lấy tất cả những mã thỏa mãn giá trị tối thiểu)
         MaGiamGia voucher = hoaDon.getMaGiamGia();
 //        Double giaTriToiThieu = voucher.getGiaTriToiThieu();
         List<MaGiamGia> listMaGiamGiaValid = new ArrayList<>();
@@ -169,23 +168,30 @@ public class BanHangController {
         double discount = 0.0;
 
         if (voucher != null) {
-            // Nếu hình thức giảm giá là % (false)
-            if (voucher.getHinhThuc().equals(false)) {
-                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore; // Tính giảm giá theo %
-                if (discount > voucher.getGiaTriToiDa()) {
-                    discount = voucher.getGiaTriToiDa(); // Giới hạn mức giảm giá tối đa
+            if (voucher.getGiaTriToiThieu()>totalMoneyBefore){
+                hoadon.setSoTienGiamGia(0.0);
+                hoaDon.setMaGiamGia(null);
+            } else{
+                // Nếu hình thức giảm giá là % (false)
+                if (voucher.getHinhThuc().equals(false)) {
+                    discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore; // Tính giảm giá theo %
+                    if (discount > voucher.getGiaTriToiDa()) {
+                        discount = voucher.getGiaTriToiDa(); // Giới hạn mức giảm giá tối đa
+                    }
+                    // Nếu hình thức giảm giá là số tiền cụ thể (true)
+                } else if (voucher.getHinhThuc().equals(true)) {
+                    discount = voucher.getGiaTriGiam();
                 }
-                // Nếu hình thức giảm giá là số tiền cụ thể (true)
-            } else if (voucher.getHinhThuc().equals(true)) {
-                discount = voucher.getGiaTriGiam();
             }
         }
         hoaDon.setSoTienGiamGia(discount);
         // Tính tổng tiền sau khi áp dụng giảm giá
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0); // Đảm bảo tổng tiền không âm
+
         hoaDon.setTienThu(totalMoneyAfter);
         hoaDonService.save(hoaDon);
+        model.addAttribute("hoadon", hoadon); // Thêm hóa đơn vào model
 
         // Tạo link QR code thanh toán với thông tin từ hóa đơn
         model.addAttribute("linkqr",
@@ -990,66 +996,77 @@ public class BanHangController {
     public String updateSoLuongSua(@RequestParam("soLuongSua") Integer soLuongSua,
                                    @RequestParam("idHdctSua") Long idHdct,
                                    RedirectAttributes redirectAttributes) {
+        // Lấy chi tiết hóa đơn dựa vào idHdct
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietService.findById(idHdct);
-        Long idhd = hoaDonChiTiet.getHoaDon().getId();
-        Integer soLuongHienTai = hoaDonChiTiet.getSoLuong();
+        Long idhd = hoaDonChiTiet.getHoaDon().getId(); // Lấy ID hóa đơn từ chi tiết hóa đơn
+        Integer soLuongHienTai = hoaDonChiTiet.getSoLuong(); // Lấy số lượng hiện tại từ chi tiết hóa đơn
 
+        // Lấy chi tiết sản phẩm từ chi tiết hóa đơn
         ChiTietSanPham chiTietSanPham = hoaDonChiTiet.getChiTietSanPham();
-        Integer soLuongKhaDung = chiTietSanPham.getSoLuong()+soLuongHienTai;
-        if (soLuongSua > soLuongKhaDung) {
-            redirectAttributes.addFlashAttribute("QuantityUpdateError", true);
-            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+        Integer soLuongKhaDung = chiTietSanPham.getSoLuong() + soLuongHienTai; // Tính số lượng khả dụng
 
+        // Kiểm tra nếu số lượng sửa vượt quá số lượng khả dụng
+        if (soLuongSua > soLuongKhaDung) {
+            redirectAttributes.addFlashAttribute("QuantityUpdateError", true); // Thêm thông báo lỗi
+            return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd; // Quay lại trang chi tiết hóa đơn
         }
+
+        // Cập nhật số lượng trong chi tiết hóa đơn
         hoaDonChiTietService.updateSoLuongHdct(soLuongSua, idHdct);
 
+        // Tính chênh lệch số lượng và cập nhật số lượng kho
         Integer chenhLechSl = soLuongSua - soLuongHienTai;
         Integer soLuongKho = hoaDonChiTiet.getChiTietSanPham().getSoLuong() - chenhLechSl;
-
         chiTietSanPhamService.updateSoLuongCtsp(soLuongKho, hoaDonChiTiet.getChiTietSanPham().getId());
+        System.out.println(soLuongKho);
+        if (soLuongKho>0) {
+            chiTietSanPhamRepository.updateTrangThai(0,chiTietSanPham.getId());
+        }
 
+        // Tính tổng tiền của hóa đơn sau khi cập nhật
         List<HoaDonChiTiet> listHdct = hoaDonChiTietService.getListHdctByIdHd(idhd);
         Double tongTien = 0.0;
         for (HoaDonChiTiet hdct : listHdct) {
             tongTien += hdct.getChiTietSanPham().getGiaBan() * hdct.getSoLuong();
         }
-        hoaDonService.updateTongTien(idhd, tongTien);
-        HoaDon hoaDon = hoaDonService.findById(idhd);
+        hoaDonService.updateTongTien(idhd, tongTien); // Cập nhật tổng tiền cho hóa đơn
 
-        if (hoaDon.getMaGiamGia()!=null){
-            if (hoaDon.getMaGiamGia().getGiaTriToiThieu()>tongTien) {
+        // Xử lý mã giảm giá (nếu có)
+        HoaDon hoaDon = hoaDonService.findById(idhd);
+        if (hoaDon.getMaGiamGia() != null) {
+            if (hoaDon.getMaGiamGia().getGiaTriToiThieu() > tongTien) {
+                // Nếu không đủ điều kiện áp dụng mã giảm giá
                 hoaDon.setSoTienGiamGia(0.0);
                 hoaDon.setTienThu(tongTien);
-                hoaDon.setMaGiamGia(null);
+                hoaDon.setMaGiamGia(null); // Xóa mã giảm giá
                 hoaDonService.save(hoaDon);
             } else {
+                // Tính toán giảm giá
                 MaGiamGia voucher1 = hoaDon.getMaGiamGia();
                 double discount = 0.0;
-
-                // Nếu có mã giảm giá, tính số tiền giảm
-                if (voucher1 != null) {
-                    if (Boolean.FALSE.equals(voucher1.getHinhThuc())) { // Giảm giá theo phần trăm
-                        discount = (voucher1.getGiaTriGiam() / 100.0) * tongTien; // Tính phần trăm giảm giá
-                        if (discount > voucher1.getGiaTriToiDa()) {
-                            discount = voucher1.getGiaTriToiDa(); // Giới hạn giảm giá tối đa
-                        }
-                    } else { // Giảm giá cố định
-                        discount = voucher1.getGiaTriGiam();
+                if (Boolean.FALSE.equals(voucher1.getHinhThuc())) { // Giảm giá theo phần trăm
+                    discount = (voucher1.getGiaTriGiam() / 100.0) * tongTien;
+                    if (discount > voucher1.getGiaTriToiDa()) {
+                        discount = voucher1.getGiaTriToiDa(); // Giới hạn giảm giá tối đa
                     }
+                } else { // Giảm giá cố định
+                    discount = voucher1.getGiaTriGiam();
                 }
 
-                hoaDon.setTienThu(tongTien-discount);
-                hoaDon.setSoTienGiamGia(discount);
+                hoaDon.setTienThu(tongTien - discount); // Cập nhật tiền thu
+                hoaDon.setSoTienGiamGia(discount); // Cập nhật số tiền giảm giá
                 hoaDonService.save(hoaDon);
             }
         } else {
+            // Không có mã giảm giá, chỉ cập nhật tiền thu
             hoaDon.setTienThu(tongTien);
             hoaDonService.save(hoaDon);
         }
 
-        // Add flash attribute to indicate success
+        // Thêm thông báo thành công
         redirectAttributes.addFlashAttribute("updateSuccess", true);
-        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd;
+        return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idhd; // Quay lại trang chi tiết hóa đơn
     }
+
 
 }

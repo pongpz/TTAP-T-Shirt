@@ -57,7 +57,7 @@ public class HoaDonServiceImpl implements HoaDonService {
                 chiTietSanPhamRepository.save(chiTietSanPham);
 
                 // Xóa chi tiết hóa đơn
-                hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
+//                hoaDonChiTietService.deleteById(hoaDonChiTiet.getId());
             });
 
             // Cập nhật tổng tiền và trạng thái hóa đơn
@@ -67,6 +67,7 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         // Lưu những thay đổi
         hoaDonRepository.saveAll(hoaDons);
+        System.out.println("hoa don da bi huy !");
     }
 
 

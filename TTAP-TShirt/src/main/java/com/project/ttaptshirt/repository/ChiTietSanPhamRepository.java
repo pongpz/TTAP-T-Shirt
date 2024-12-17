@@ -35,6 +35,11 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,L
     List<ChiTietSanPham> findByTenSanPham(String ten);
 
 
+    @Transactional
+    @Modifying
+    @Query(value = "update chi_tiet_san_pham set trang_thai = ?1 where id = ?2",nativeQuery = true)
+    void  updateTrangThai(Integer trangThai,Long idCtsp);
+
     @Query("""
     SELECT spct FROM ChiTietSanPham spct WHERE 
     (:ten IS NULL OR spct.sanPham.ten LIKE %:ten%) AND
