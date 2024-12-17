@@ -137,7 +137,29 @@
                         ></button>
                     </div>
                 </div>
-                <div class="mt-3">
+            <br>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#imageModal">
+                Hướng dẫn chọn kích cỡ
+            </button>
+
+            <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl"> <!-- Thêm lớp modal-xl để mở rộng modal -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Hướng dẫn chọn kích cỡ
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <!-- Ảnh với kích thước cố định -->
+                            <img th:src="@{/images/snapedit_1734446055109.jpeg}" alt="Ảnh" class="img-fluid" style="width: 1000px; height: 500px; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mt-3">
                     <label><strong>Số lượng:</strong></label>
                     <input type="number" name="quantity" class="form-control" value="1" min="1" max="20" required>
                 </div>
