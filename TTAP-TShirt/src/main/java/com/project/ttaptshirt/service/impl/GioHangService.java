@@ -342,4 +342,9 @@ public class GioHangService {
         gioHangRepository.save(cart); // Lưu lại giỏ hàng đã được xóa hết sản phẩm
     }
 
+    @Transactional
+    public void updateGiaInDatHangChiTiet(Long idChiTietSanPham, Double newGiaBan) {
+        gioHangChiTietRepository.updateGiaInDatHangChiTiet(idChiTietSanPham, newGiaBan);
+    }
+
 }

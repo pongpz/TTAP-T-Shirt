@@ -19,6 +19,7 @@ import com.project.ttaptshirt.service.KichCoService;
 import com.project.ttaptshirt.service.MauSacService;
 import com.project.ttaptshirt.service.SanPhamService;
 import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
+import com.project.ttaptshirt.service.impl.GioHangService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -59,6 +60,8 @@ public class ChiTietSanPhamController {
     SanPhamRepository sanPhamRepository;
     @Autowired
     ChiTietSanPhamServiceImpl chiTietSanPhamServiceImpl;
+    @Autowired
+    GioHangService gioHangService;
 //    @Autowired
 //    HinhAnhService hinhAnhService;
 
@@ -257,6 +260,7 @@ public class ChiTietSanPhamController {
             // Lưu đối tượng cập nhật
             existingCTSP.setTrangThai(trangThai);
             chiTietSanPhamService.save(existingCTSP);
+            gioHangService.updateGiaInDatHangChiTiet(idCTSP,giaBan);
             // Thêm ID sản phẩm vào RedirectAttributes
             redirectAttributes.addAttribute("id", idSanPham);
 
