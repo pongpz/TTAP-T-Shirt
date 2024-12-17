@@ -363,8 +363,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="kh : ${listKh}">
-                                            <td th:text="${kh.id}"></td>
+                                        <tr th:each="kh, stat : ${listKh}">
+                                            <td th:text="${stat.index+1}"></td>
                                             <th scope="row" th:text="${kh.hoTen}"></th>
                                             <th scope="row" th:text="${kh.soDienThoai}"></th>
                                             <td>

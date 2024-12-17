@@ -539,13 +539,20 @@
         checkbox.addEventListener('change', calculateTotal);
     });
     function formatCurrency(value) {
-        // Sử dụng Intl.NumberFormat để định dạng theo kiểu Việt Nam
         const formatter = new Intl.NumberFormat('vi-VN', {
             style: 'decimal',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
-        return formatter.format(value) + " đ"; // Thêm "đ" vào cuối
+
+        // Lấy định dạng với dấu phân cách là "."
+        let formattedValue = formatter.format(value);
+
+        // Thay thế dấu "." bằng dấu ","
+        formattedValue = formattedValue.replace(/\./g, ',');
+
+        // Thêm "đ" vào cuối
+        return formattedValue + " đ";  // Thêm "đ" vào cuối
     }
 </script>
 
