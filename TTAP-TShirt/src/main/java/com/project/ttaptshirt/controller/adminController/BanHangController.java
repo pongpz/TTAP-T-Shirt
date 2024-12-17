@@ -169,21 +169,27 @@ public class BanHangController {
         double discount = 0.0;
 
         if (voucher != null) {
-            // Nếu hình thức giảm giá là % (false)
-            if (voucher.getHinhThuc().equals(false)) {
-                discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore; // Tính giảm giá theo %
-                if (discount > voucher.getGiaTriToiDa()) {
-                    discount = voucher.getGiaTriToiDa(); // Giới hạn mức giảm giá tối đa
+            if (voucher.getGiaTriToiThieu()<=totalMoneyBefore){
+                hoadon.setSoTienGiamGia(0.0);
+                hoaDon.setMaGiamGia(null);
+            } else{
+                // Nếu hình thức giảm giá là % (false)
+                if (voucher.getHinhThuc().equals(false)) {
+                    discount = (voucher.getGiaTriGiam() / 100.0) * totalMoneyBefore; // Tính giảm giá theo %
+                    if (discount > voucher.getGiaTriToiDa()) {
+                        discount = voucher.getGiaTriToiDa(); // Giới hạn mức giảm giá tối đa
+                    }
+                    // Nếu hình thức giảm giá là số tiền cụ thể (true)
+                } else if (voucher.getHinhThuc().equals(true)) {
+                    discount = voucher.getGiaTriGiam();
                 }
-                // Nếu hình thức giảm giá là số tiền cụ thể (true)
-            } else if (voucher.getHinhThuc().equals(true)) {
-                discount = voucher.getGiaTriGiam();
             }
         }
         hoaDon.setSoTienGiamGia(discount);
         // Tính tổng tiền sau khi áp dụng giảm giá
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0); // Đảm bảo tổng tiền không âm
+
         hoaDon.setTienThu(totalMoneyAfter);
         hoaDonService.save(hoaDon);
 
