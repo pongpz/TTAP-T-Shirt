@@ -102,7 +102,7 @@ public class SanPhamCustomerController {
 
         double minPrice = 0;
         double maxPrice = Double.MAX_VALUE;
-        if (priceRangerId > 0 && priceRangerId < priceRangerList.size()) {
+        if (priceRangerId >= 0 && priceRangerId < priceRangerList.size()) {
             minPrice = priceRangerList.get(priceRangerId).getMinValue();
             maxPrice = priceRangerList.get(priceRangerId).getMaxValue();
         }
@@ -111,11 +111,9 @@ public class SanPhamCustomerController {
 
         Page<SanPham> sanPhamPage;
         if (ten != null || nhaSanXuatId != null || thuongHieuId != null ||
-                kieuDangId != null || chatLieuId != null ) {
+                kieuDangId != null || chatLieuId != null || priceRangerId != 0) {
             sanPhamPage = sanPhamRepository.filterSanPham(
-                    ten, nhaSanXuatId, thuongHieuId, kieuDangId, chatLieuId,
-                    minPrice, maxPrice,pageable
-            );
+                    ten, nhaSanXuatId, thuongHieuId, kieuDangId, chatLieuId, minPrice, maxPrice, pageable);
         } else {
             sanPhamPage = sanPhamRepository.pageSP(pageable);
         }
