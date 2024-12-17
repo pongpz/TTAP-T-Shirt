@@ -71,8 +71,9 @@
             <span th:case="*" class="text-secondary">Không xác định</span>
 
     </span></h4>
+        <h5 class="mt-3" th:text="'Ghi chú: '+${hoaDon.ghiChu ?: 'Không có ghi chú'}"></h5>
         <!-- Hiển thị giỏ hàng -->
-        <div class="table-responsive">
+        <div class="table-responsive mt-3">
                 <table class="table table-bordered table-hover">
                     <thead class="table-primary">
                     <tr>
