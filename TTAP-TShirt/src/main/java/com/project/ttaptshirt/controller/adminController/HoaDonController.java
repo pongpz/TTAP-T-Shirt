@@ -275,7 +275,7 @@ public class HoaDonController {
         hoaDonLog.setHanhDong("Hủy đơn hàng");
         hoaDonLog.setThoiGian(LocalDateTime.now());
         hoaDonLog.setNguoiThucHien(user.getHoTen());
-        hoaDonLog.setGhiChu("Hủy đơn hàng (Lý do: +" + reason + " )");
+        hoaDonLog.setGhiChu("Hủy đơn hàng (Lý do: " + reason + " )");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
         hoaDonService.huyHoaDonOnline(idHD, reason);

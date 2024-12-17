@@ -100,6 +100,17 @@ public class BanHangController {
             User user = customUserDetail.getUser();
             model.addAttribute("userLogged", user); // Thêm thông tin người dùng vào model
         }
+
+//        // Cập nhật tổng tiền hóa đơn
+//        List<HoaDonChiTiet> listHdct = hoaDonChiTietService.getListHdctByIdHd(idHoaDon);
+//        Double tongTien = 0.0;
+//        for (HoaDonChiTiet hdct : listHdct) {
+//            tongTien += hdct.getChiTietSanPham().getGiaBan() * hdct.getSoLuong();
+//        }
+//        HoaDon hoaDon1 = hoaDonService.findById(idHoaDon);
+//        hoaDon1.setTongTien(tongTien);
+//        hoaDon1.setTienThu(tongTien);
+//        hoaDonService.save(hoaDon1);
         model.addAttribute("numberUtils", new NumberUtils());
         // Lấy danh sách tất cả các chi tiết sản phẩm
         List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.findByTenSanPham(tenSP);
@@ -142,6 +153,7 @@ public class BanHangController {
                 })
                 .sum(); // Tổng tiền
 
+        hoaDon.setTongTien(totalMoneyBefore);
         // Xử lý mã giảm giá
         MaGiamGia voucher = hoaDon.getMaGiamGia();
 //        Double giaTriToiThieu = voucher.getGiaTriToiThieu();
@@ -168,11 +180,12 @@ public class BanHangController {
                 discount = voucher.getGiaTriGiam();
             }
         }
-
+        hoaDon.setSoTienGiamGia(discount);
         // Tính tổng tiền sau khi áp dụng giảm giá
         double totalMoneyAfter = totalMoneyBefore - discount;
         totalMoneyAfter = Math.max(totalMoneyAfter, 0); // Đảm bảo tổng tiền không âm
-
+        hoaDon.setTienThu(totalMoneyAfter);
+        hoaDonService.save(hoaDon);
 
         // Tạo link QR code thanh toán với thông tin từ hóa đơn
         model.addAttribute("linkqr",
