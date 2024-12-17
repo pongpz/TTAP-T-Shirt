@@ -306,26 +306,26 @@
                 <hr/>
                 <div class="row">
                     <label class="col-6" style="font-size: 18px; font-weight: bold"
-                           th:text="'-ID Hoá đơn: '+${hoadon.id}"></label>
+                           th:text="'ID Hoá đơn: '+${hoadon.id}"></label>
                     <label class="col-6" style="font-size: 18px; font-weight: bold"
-                           th:text="'-Mã Hoá đơn: '+${hoadon.ma}"></label>
+                           th:text="'Mã Hoá đơn: '+${hoadon.ma}"></label>
                 </div>
                 <br/>
                 <div class="row">
-                    <label class="col-7" style="font-size: 18px; font-weight: bold"
+                    <label class="col-6" style="font-size: 18px; font-weight: bold"
                            th:text="${hoadon != null && hoadon.nhanVien != null ? 'Nhân Viên Tạo: ' + hoadon.nhanVien.hoTen : 'Nhân Viên: ADMIN'}">
                     </label>
 
-                    <label class="col-5" style="font-size: 18px; font-weight: bold"
-                           th:text="${hoadon != null ? '-Ngày Tạo: ' + hoadon.ngayTao : 'Chưa Có Ngày Tạo'}">
+                    <label class="col-6" style="font-size: 18px; font-weight: bold"
+                           th:text="${hoadon != null ? 'Ngày Tạo: ' + hoadon.ngayTao : 'Chưa Có Ngày Tạo'}">
                     </label>
                 </div>
                 <br/>
                 <div class="row">
-                    <label class="col-7" style="font-size: 18px; font-weight: bold"
+                    <label class="col-9" style="font-size: 18px; font-weight: bold"
                            th:text="${hoadon != null && hoadon.khachHang != null ? 'Khách Hàng: ' + hoadon.khachHang.hoTen : 'Khách Hàng: Vãng lai'}">
                     </label>
-                    <button class="col-4 btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCustomer">
+                    <button class="col-3 btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCustomer">
                         Chọn Khách Hàng
                     </button>
 
@@ -461,7 +461,7 @@
 
                 <br/>
                 <div class="row">
-                    <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher(nếu có):</label>
+                    <label class="col-5" style="font-size: 18px; font-weight: bold">Giảm giá voucher:</label>
                     <label class="col-4" style="font-size: 18px; font-weight: bold"
                            th:text="${hoadon.soTienGiamGia!=null?numberUtils.formatCurrency(hoadon.soTienGiamGia) :'chưa có '}"></label>
                     <button class="col-3 btn btn-primary"
