@@ -19,15 +19,15 @@ public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
 
     Page<SanPham> findAllByOrderByNgayTaoDesc(Pageable pageable);
 
-            @Query("SELECT sp FROM SanPham sp " +
-            "LEFT JOIN sp.chiTietSanPhamList ct " +  // Kết nối với bảng ChiTietSanPham
+    @Query("SELECT DISTINCT sp FROM SanPham sp " +
+            "LEFT JOIN sp.chiTietSanPhamList ct " +
             "WHERE (:ten IS NULL OR LOWER(sp.ten) LIKE LOWER(CONCAT('%', :ten, '%'))) " +
-            "AND (:nhaSanXuat IS NULL OR sp.nsx.id = :nhaSanXuat) " +  // Không dùng LOWER cho Long
-            "AND (:thuongHieu IS NULL OR sp.thuongHieu.id = :thuongHieu) " +  // Không dùng LOWER cho Long
-            "AND (:kieuDang IS NULL OR sp.kieuDang.id = :kieuDang) " +  // Không dùng LOWER cho Long
-            "AND (:chatLieu IS NULL OR sp.chatLieu.id = :chatLieu) " +  // Không dùng LOWER cho Long
-                    "AND (:minPrice = 0 OR ct.giaBan >= :minPrice) " +
-                    "AND (:maxPrice = :maxPrice OR ct.giaBan <= :maxPrice) " +
+            "AND (:nhaSanXuat IS NULL OR sp.nsx.id = :nhaSanXuat) " +
+            "AND (:thuongHieu IS NULL OR sp.thuongHieu.id = :thuongHieu) " +
+            "AND (:kieuDang IS NULL OR sp.kieuDang.id = :kieuDang) " +
+            "AND (:chatLieu IS NULL OR sp.chatLieu.id = :chatLieu) " +
+            "AND (:minPrice IS NULL OR (ct.giaBan IS NOT NULL AND ct.giaBan >= :minPrice)) " +
+            "AND (:maxPrice IS NULL OR (ct.giaBan IS NOT NULL AND ct.giaBan <= :maxPrice)) " +
             "AND sp.trangThai = 0")
     Page<SanPham> filterSanPham(
             @Param("ten") String ten,
@@ -39,6 +39,8 @@ public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
             @Param("maxPrice") Double maxPrice,
             Pageable pageable
     );
+
+
 
 //    @Query("select sp from SanPham sp where sp.trangThai = 0 order by sp.ngayTao desc ")
 //    Page<SanPham> pageSPMoi(Pageable pageable);
