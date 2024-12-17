@@ -265,18 +265,23 @@ public class ChiTietSanPhamController {
             return "redirect:/admin/chi-tiet-san-pham/{id}";
     }
 
-//    @Scheduled(fixedRate = 1000)
-//    public void ChangeStatus(){
-//        List<ChiTietSanPham> ls = chiTietSanPhamRepository.getSPCTHetHan();
-//        if (ls.size()>0){
-//            for (int i = 0 ; i < ls.size() ; i ++){
-//                ChiTietSanPham ctsp = new ChiTietSanPham();
-//                ctsp = ls.get(i);
-//                ctsp.setTrangThai(1);
-//                ctsp.setId(ls.get(i).getId());
-//                chiTietSanPhamRepository.save(ctsp);
-//            }
-//        }
-//    }
+    @Scheduled(fixedRate = 1000)
+    public void changeStatus() {
+        // Lấy danh sách sản phẩm hết hạn
+        List<ChiTietSanPham> expiredProducts = chiTietSanPhamRepository.getSPCTHetHan();
+
+        // Duyệt danh sách sản phẩm hết hạn
+        if (!expiredProducts.isEmpty()) {
+            expiredProducts.forEach(product -> {
+                // Nếu trạng thái = 0 và số lượng = 0, chuyển trạng thái thành 2
+                if (product.getTrangThai() == 0 && product.getSoLuong() == 0) {
+                    product.setTrangThai(2);
+                }
+            });
+            // Lưu tất cả sản phẩm đã cập nhật trạng thái
+            chiTietSanPhamRepository.saveAll(expiredProducts);
+        }
+    }
+
 
 }
