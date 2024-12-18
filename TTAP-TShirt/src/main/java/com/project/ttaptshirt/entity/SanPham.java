@@ -29,7 +29,7 @@ public class SanPham extends CreatedUpdatedAt{
     private String ten;
 
 
-    @Column(name = "mo_ta")
+    @Column(name = "mo_ta", columnDefinition = "NVARCHAR(255)")
     private String moTa;
 
     @ManyToOne

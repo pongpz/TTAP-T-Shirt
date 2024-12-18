@@ -103,7 +103,7 @@
                         </td>
                         <td>
                             <a th:href="@{/admin/ma-giam-gia/thay-doi-trang-thai/{id}(id=${vc.id})}"
-                               class="btn btn-warning mb-3">Tắt hoạt động</a>
+                               class="btn btn-warning mb-3" onclick="return confirmNgungMgg()">Tắt hoạt động</a>
                         </td>
                     </tr>
                     </tbody>
@@ -123,6 +123,11 @@
 </div>
 </body>
 
+<script>
+    function confirmNgungMgg(){
+        return window.confirm('Bạn có chắc muốn tạm dừng mã giảm giá này không?')
+    }
+</script>
 
 <script>
     function toastSuccess(title, message) {

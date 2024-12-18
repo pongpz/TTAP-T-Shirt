@@ -77,7 +77,7 @@
           <form id="updateForm" th:action="@{/admin/nhanvien/updateUser/{id}(id=${user.id})}" method="post" onsubmit="return validateForm()">
             <div class="mb-3">
               <label for="username" class="form-label">Tên Đăng Nhập</label>
-              <input type="text" id="username" name="username" class="form-control" th:field="*{user.username}"
+              <input readonly type="text" id="username" name="username" class="form-control" th:field="*{user.username}"
                      placeholder="Nhập tên đăng nhập" required minlength="4" maxlength="30" />
               <span class="text-danger" id="usernameError">[[${usernameIsInvalid}]]</span>
             </div>

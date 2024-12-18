@@ -89,8 +89,8 @@
                     <th scope="col">Tiền ban đầu</th>
                     <th scope="col">Tiền giảm</th>
                     <th scope="col">Tổng tiền</th>
-                    <th scope="col">Trạng thái</th>
                     <th scope="col">Mã giảm giá</th>
+                    <th scope="col">Trạng thái</th>
                     <th scope="col">Hành động</th>
                 </tr>
                 </thead>
@@ -111,7 +111,7 @@
                     <td th:text="${hd.tongTien != null?numberUtils.formatCurrency(hd.tongTien): 'Không có'}"></td>
                     <td th:text="${hd.soTienGiamGia != null?numberUtils.formatCurrency(hd.soTienGiamGia): 'Không có'}"></td>
                     <td th:text="${hd.tienThu != null?numberUtils.formatCurrency(hd.tienThu): 'Không có'}"></td>
-
+                    <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
                     <td>
     <span th:classappend="${hd.trangThai == 0 ? 'text-warning' :
                           hd.trangThai == 1 ? 'text-success' :
@@ -135,7 +135,6 @@
         </span>
     </span>
                     </td>
-                    <td th:text="${hd.maGiamGia != null ?numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%' ): 'Không có'}"></td>
                     <td>
                         <a th:if="${hd.loaiDon==1}" th:href="@{/admin/hoa-don/tim-kiem(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
                         <a th:if="${hd.loaiDon==0}" th:href="@{/admin/hoa-don/chi-tiet-hoa-don-online/{id}(id=${hd.id})}" class="btn btn-info">Chi tiết</a>
