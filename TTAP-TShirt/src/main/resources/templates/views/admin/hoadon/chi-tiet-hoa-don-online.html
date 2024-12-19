@@ -282,11 +282,11 @@
                     <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.kichCo.ten}">M
                     </td>
                     <td style="padding: 10px; border: 1px solid #ddd; color: red;"
-                        th:text="${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan)}">300,000 đ
+                        th:text="${numberUtils.formatCurrency(hdct.donGia)}">300,000 đ
                     </td>
                     <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.soLuong}">4</td>
                     <td style="padding: 10px; border: 1px solid #ddd; color: red; text-align: right;"
-                        th:text="${numberUtils.formatCurrency(hdct.chiTietSanPham.giaBan * hdct.soLuong)}">1,200,000 đ
+                        th:text="${numberUtils.formatCurrency(hdct.donGia * hdct.soLuong)}">1,200,000 đ
                     </td>
                 </tr>
                 </tbody>
