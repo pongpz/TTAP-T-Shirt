@@ -214,7 +214,7 @@
             </li>
 
             <!-- Page number links -->
-            <li th:each="i : ${#numbers.sequence(0, totalPages - 1 == 0 ? 0 : totalPages - 1)}">
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1 <= 0 ? 0 : totalPages - 1)}">
               <a th:href="@{/TTAP/san-pham(page=${i})}" th:text="${i + 1}"
                  th:classappend="${i == currentPage ? 'active' : ''}" title="Page [[${i + 1}]]"></a>
             </li>
