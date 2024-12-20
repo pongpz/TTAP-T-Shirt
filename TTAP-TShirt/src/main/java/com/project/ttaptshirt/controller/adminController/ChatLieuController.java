@@ -3,7 +3,7 @@ package com.project.ttaptshirt.controller.adminController;
 
 
 import com.project.ttaptshirt.entity.ChatLieu;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.repository.ChatLieuRepository;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -27,7 +26,7 @@ public class ChatLieuController {
     public String viewChatLieu(Model model, Authentication authentication){
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
         model.addAttribute("listChatLieu",cli.findAll());
@@ -59,7 +58,7 @@ public class ChatLieuController {
     public String detailChatLieu(@PathVariable("id") Long id, Model model,Authentication authentication ){
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
         ChatLieu chatLieu = cli.findById(id).orElse(null);

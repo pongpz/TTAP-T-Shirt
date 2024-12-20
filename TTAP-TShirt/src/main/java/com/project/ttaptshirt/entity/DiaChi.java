@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,6 +23,14 @@ public class DiaChi extends CreatedUpdatedAt{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @NotBlank(message = " không được phép trống")
+    @Column(name = "ho_ten", columnDefinition = "NVARCHAR(255)")
+    private String hoTen;
+
+    @NotBlank(message = " không được phép trống")
+    @Column(name = "so_dien_thoai")
+    private String soDienThoai;
 
     @NotBlank(message = " không được phép trống")
     @Column(name = "so_nha", columnDefinition = "NVARCHAR(255)")
@@ -48,6 +54,6 @@ public class DiaChi extends CreatedUpdatedAt{
     private String trangThai;
 
     @ManyToOne
-    @JoinColumn(name = "id_nguoi_dung", nullable = false)
-    private User user;
+    @JoinColumn(name = "id_tai_khoan", nullable = false)
+    private TaiKhoan taiKhoan;
 }

@@ -1,7 +1,7 @@
 package com.project.ttaptshirt.repository;
 
 
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,45 +11,39 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepo extends JpaRepository<User, Long> {
-    User findByUsername(String userName);
+public interface UserRepo extends JpaRepository<TaiKhoan, Long> {
+    TaiKhoan findByUsername(String userName);
 
-    @Modifying
-    @Transactional
-    @Query(value = "insert into user_role(user_id,role_id) values(?1,?2)",nativeQuery = true)
-    void insertUserRole(Long userId,Long roleId);
 
-    @Query("select us from User us where us.username =:username")
-            User findUserByUsername(String username);
 
-    @Query("select us from User us where us.email =:email")
-    User findUserByEmail(String email);
+    @Query("select us from TaiKhoan us where us.username =:username")
+    TaiKhoan findUserByUsername(String username);
 
-    @Query("select us from User us where us.username =:username and us.id <>:idUS")
-    User findUserByUsernameUpdate(String username, Long idUS);
 
-    @Query("select us from User us where us.email =:email and us.id <>:idUS")
-    User findUserByEmailUpdate(String email, Long idUS);
 
-    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleName = :roleName")
-    Page<User> findUsersByRoleName( String roleName, Pageable pageable);
+    @Query("select us from TaiKhoan us where us.username =:username and us.id <>:idUS")
+    TaiKhoan findUserByUsernameUpdate(String username, Long idUS);
+
+
+
+    @Query("SELECT u FROM TaiKhoan u  where u.role= :roleName")
+    Page<TaiKhoan> findUsersByRoleName(String roleName, Pageable pageable);
 
 //    Optional<User> findByEmail(String email);
 //
 //   List<User> findByCv_Ten(String cv);
 //
 //    List<User> findByHoTenContainingIgnoreCase(String name);
-    Optional<User> findBySoDienthoai(String sdt);
+//    Optional<TaiKhoan> findBySoDienthoai(String sdt);
 
-    Page<User> findBySoDienthoaiContaining(String phoneNumber, Pageable pageable);
+//    Page<TaiKhoan> findBySoDienthoaiContaining(String phoneNumber, Pageable pageable);
 
     // Repository cho User
     @Modifying
-    @Query("UPDATE User u SET u.defaultAddress = NULL WHERE u.defaultAddress.id = :addressId")
+    @Query("UPDATE TaiKhoan u SET u.defaultAddress = NULL WHERE u.defaultAddress.id = :addressId")
     void updateAddressToNull(@Param("addressId") Long addressId);
 
 }

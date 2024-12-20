@@ -1,30 +1,28 @@
 package com.project.ttaptshirt.service;
 
 import com.project.ttaptshirt.entity.DiaChi;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface UserService extends CommonService<User> {
+public interface UserService extends CommonService<TaiKhoan> {
 
-    Page<User> findAll(int page, int size);
+    Page<TaiKhoan> findAll(int page, int size);
 
-    Page<User> findAll(Pageable pageable);
+    Page<TaiKhoan> findAll(Pageable pageable);
 
-    Page<User> findAllNv(String rolename,Pageable pageable);
+    Page<TaiKhoan> findAllNv(String rolename, Pageable pageable);
 
-    User findUserByUsername(String userName);
+    TaiKhoan findUserByUsername(String userName);
 
-    void insertDefaultUserRole(Long userId);
 
-    void insertDefaultNvRole(Long userId);
 
-    User updateDiachi(Long userId, DiaChi diaChi);
+    TaiKhoan updateDiachi(Long userId, DiaChi diaChi);
 
-    Optional<User> findBySdt(String sdt);
+//    Optional<TaiKhoan> findBySdt(String sdt);
 
-    Page<User> searchByPhoneNumber(String phoneNumber, Pageable pageable);
+//    Page<TaiKhoan> searchByPhoneNumber(String phoneNumber, Pageable pageable);
 
 }

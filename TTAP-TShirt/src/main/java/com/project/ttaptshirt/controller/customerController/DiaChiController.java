@@ -2,7 +2,7 @@ package com.project.ttaptshirt.controller.customerController;
 
 
 import com.project.ttaptshirt.entity.DiaChi;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
 import jakarta.validation.Valid;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +56,7 @@ public class DiaChiController {
     public String getUserAddresses(Model model, Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
 
             List<DiaChi> addresses = serDc.findAddressesByUser(user.getId());
             model.addAttribute("addresses", addresses);
@@ -72,7 +71,8 @@ public class DiaChiController {
                                 RedirectAttributes redirectAttributes,Model model) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+
+            TaiKhoan user = customUserDetail.getUser();
             if (address.getSoNha() == null || address.getTenDuong().equals("0") || address.getTenQuanhuyen().equals("0") || address.getTenThanhpho().equals("0")){
                 redirectAttributes.addFlashAttribute("failAddress", true);
                 return "redirect:/TTAP/cart/view";
@@ -91,7 +91,7 @@ public class DiaChiController {
                                 Model model) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             DiaChi address = serDc.findById(id);
             model.addAttribute("address", address);
             model.addAttribute("userLogged", user);
@@ -114,7 +114,7 @@ public class DiaChiController {
         try {
             // Lấy thông tin người dùng hiện tại
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User currentUser = customUserDetail.getUser();
+            TaiKhoan currentUser = customUserDetail.getUser();
 
             // Tìm địa chỉ cần cập nhật
             Optional<DiaChi> optionalAddress = Optional.ofNullable(serDc.findById(id));

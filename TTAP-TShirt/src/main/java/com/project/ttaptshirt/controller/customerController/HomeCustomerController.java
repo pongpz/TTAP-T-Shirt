@@ -4,7 +4,7 @@ import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.ChiTietSanPham;
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
 import com.project.ttaptshirt.entity.SanPham;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.GioHangRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +96,7 @@ public class HomeCustomerController {
                                   Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
         model.addAttribute("requestURI", request.getRequestURI());
@@ -185,7 +184,7 @@ public class HomeCustomerController {
     public String detailSP(HttpServletRequest request, Model model, Authentication authentication, @PathVariable Long id){
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
         model.addAttribute("requestURI", request.getRequestURI());

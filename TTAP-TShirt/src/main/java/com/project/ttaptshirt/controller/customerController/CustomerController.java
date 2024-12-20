@@ -1,7 +1,7 @@
 package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.entity.KhachHang;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
@@ -33,7 +33,7 @@ public class CustomerController {
                 Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
             return "/user/home/customer";
         }return "redirect:/login";
@@ -41,27 +41,23 @@ public class CustomerController {
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(@ModelAttribute("userLogged") User updatedUser,
+    public String updateUser(@ModelAttribute("userLogged") TaiKhoan updatedUser,
                              RedirectAttributes redirectAttributes, Authentication authentication) {
         try {
             // Lấy thông tin người dùng đã đăng nhập từ session hoặc authentication
-            User user = serUser.findById(updatedUser.getId());
+            TaiKhoan user = serUser.findById(updatedUser.getId());
 
             if (user != null) {
                 // Mã hóa mật khẩu
                 // Cập nhật thông tin người dùng
-                user.setHoTen(updatedUser.getHoTen());
                 user.setUsername(updatedUser.getUsername());
-                user.setSoDienthoai(updatedUser.getSoDienthoai());
-                user.setEmail(updatedUser.getEmail());
            // Cập nhật mật khẩu đã mã hóa
 
                 // Lấy thông tin khách hàng
                 KhachHang khachHang = user.getKhachHang();  // Giả sử có phương thức để lấy khách hàng từ User
 
                 // Cập nhật thông tin khách hàng
-                khachHang.setHoTen(updatedUser.getHoTen());  // Cập nhật tên khách hàng
-                khachHang.setSoDienThoai(updatedUser.getSoDienthoai());  // Cập nhật số điện thoại khách hàng
+//                khachHang.setSoDienThoai(updatedUser.getSoDienthoai());  // Cập nhật số điện thoại khách hàng
 
                 // Cập nhật thời gian tạo nếu cần
                 khachHang.setNgayTao(LocalDate.now());  // Cập nhật ngày
@@ -101,7 +97,7 @@ public class CustomerController {
                                  RedirectAttributes redirectAttributes) {
         // Lấy thông tin người dùng hiện tại
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-        User user = customUserDetail.getUser();
+        TaiKhoan user = customUserDetail.getUser();
 
         // Mật khẩu hiện tại từ database
         String encryptedPasswordFromDb = user.getPassword();

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -51,7 +50,7 @@ public class HoaDon {
 
     @ManyToOne
     @JoinColumn(name = "id_nhan_vien")
-    private User nhanVien;
+    private NhanVien nhanVien;
 
     @Column(name = "dia_chi_giao_hang", columnDefinition = "NVARCHAR(255)")
     private String diaChiGiaoHang;
