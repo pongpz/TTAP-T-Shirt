@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8676785-309e-46b5-8c91-c21db6f8148d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/2024-11-12T222250.500.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,6 +70,7 @@
     &quot;HTTP Request.generated-requests | #64.executor&quot;: &quot;Run&quot;,
     &quot;HTTP Request.generated-requests | #65.executor&quot;: &quot;Run&quot;,
     &quot;HTTP Request.generated-requests | #7.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #71.executor&quot;: &quot;Run&quot;,
     &quot;HTTP Request.generated-requests | #8.executor&quot;: &quot;Run&quot;,
     &quot;JavaScript Debug.trangchu.html.executor&quot;: &quot;Run&quot;,
     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
@@ -78,7 +80,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Spring Boot.TtapTShirtApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dao-thanh&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging dao-thanh&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;F:/TTAP-T-Shirt/TTAP-TShirt/src/main/resources/templates/views/admin/nhanvien&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -108,9 +110,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.TtapTShirtApplication">
-    <configuration name="generated-requests | #48" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="48" requestIdentifier="#48" runType="Run single request">
-      <method v="2" />
-    </configuration>
     <configuration name="generated-requests | #51" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="51" requestIdentifier="#51" runType="Run single request">
       <method v="2" />
     </configuration>
@@ -123,6 +122,9 @@
     <configuration name="generated-requests | #65" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="65" requestIdentifier="#65" runType="Run single request">
       <method v="2" />
     </configuration>
+    <configuration name="generated-requests | #71" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="71" requestIdentifier="#71" runType="Run single request">
+      <method v="2" />
+    </configuration>
     <configuration name="TtapTShirtApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="TTAP-TShirt" />
@@ -133,11 +135,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="HTTP Request.generated-requests | #71" />
         <item itemvalue="HTTP Request.generated-requests | #65" />
         <item itemvalue="HTTP Request.generated-requests | #64" />
         <item itemvalue="HTTP Request.generated-requests | #63" />
         <item itemvalue="HTTP Request.generated-requests | #51" />
-        <item itemvalue="HTTP Request.generated-requests | #48" />
       </list>
     </recent_temporary>
   </component>
@@ -197,7 +199,16 @@
       <workItem from="1733621803146" duration="1631000" />
       <workItem from="1733749471900" duration="9216000" />
       <workItem from="1733764406165" duration="2670000" />
-      <workItem from="1733924207247" duration="1055000" />
+      <workItem from="1733924207247" duration="12476000" />
+      <workItem from="1734016796945" duration="20341000" />
+      <workItem from="1734139499316" duration="4213000" />
+      <workItem from="1734183236182" duration="12342000" />
+      <workItem from="1734238665612" duration="9038000" />
+      <workItem from="1734316649631" duration="2474000" />
+      <workItem from="1734340923719" duration="18014000" />
+      <workItem from="1734617647418" duration="1172000" />
+      <workItem from="1734702993749" duration="351000" />
+      <workItem from="1734703357865" duration="907000" />
     </task>
     <servers />
   </component>
@@ -220,7 +231,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/TTAP-TShirt/src/main/java/com/project/ttaptshirt/controller/adminController/ChiTietSanPhamController.java</url>
-          <line>38</line>
+          <line>39</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
