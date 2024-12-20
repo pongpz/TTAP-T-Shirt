@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -63,7 +60,7 @@ public class SanPhamController {
         System.out.println(authentication);
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
             System.out.println(user);
         }

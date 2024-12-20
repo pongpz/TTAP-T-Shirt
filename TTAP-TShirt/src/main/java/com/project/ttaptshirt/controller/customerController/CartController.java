@@ -1,11 +1,8 @@
 package com.project.ttaptshirt.controller.customerController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ttaptshirt.dto.CartDTO;
-import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.entity.HoaDon;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.CartService;
@@ -13,8 +10,6 @@ import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @SessionAttributes("cart")
@@ -58,7 +52,7 @@ public class CartController {
     public String viewCart(@ModelAttribute("cart") CartDTO cart, Model model, Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
         if (cart.getItems() != null && !cart.getItems().isEmpty()) {

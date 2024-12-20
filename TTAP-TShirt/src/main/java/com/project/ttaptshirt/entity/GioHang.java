@@ -24,7 +24,7 @@ public class GioHang {
 
     @OneToOne
     @JoinColumn(name = "id_customer")
-    private User user;
+    private TaiKhoan user;
 
     @Column(name = "ghi_chu", columnDefinition = "NVARCHAR(255)")
 

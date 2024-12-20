@@ -1,5 +1,6 @@
 package com.project.ttaptshirt.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,8 +25,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "khach_hang")
-public class KhachHang {
+@Table(name = "nhan_vien")
+public class NhanVien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +39,7 @@ public class KhachHang {
     @NotBlank(message = "SDT không được phép trống")
     @Pattern(regexp = "\\d+", message = "Phải là số")
     @Column(name = "so_dien_thoai")
-    private String soDienThoai;
+    private String soDienthoai;
 
     @Column(name = "email")
     private String email;
@@ -64,7 +65,7 @@ public class KhachHang {
         return "KhachHang{" +
                 "id=" + id +
                 ", hoTen='" + hoTen + '\'' +
-                ", soDienThoai='" + soDienThoai + '\'' +
+                ", soDienThoai='" + soDienthoai + '\'' +
                 '}';
     }
 

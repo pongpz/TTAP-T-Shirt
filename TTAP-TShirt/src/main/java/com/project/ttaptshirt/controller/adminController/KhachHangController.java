@@ -2,7 +2,7 @@ package com.project.ttaptshirt.controller.adminController;
 
 import com.project.ttaptshirt.entity.DiaChi;
 import com.project.ttaptshirt.entity.KhachHang;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.KhachHangService;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,17 +19,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -47,7 +41,7 @@ public class KhachHangController {
 
     @GetMapping("/home")
     public String home(Model mol) {
-        List<User> cusLst = serUser.findAll();
+        List<TaiKhoan> cusLst = serUser.findAll();
         System.out.println("danh sanh kh: " + cusLst);
         mol.addAttribute("cusLst", cusLst);
         return "user/khachhang/index";
@@ -57,18 +51,18 @@ public class KhachHangController {
     public String viewChatLieu(Model mol, Authentication authentication, @RequestParam("p") Optional<Integer> page) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             mol.addAttribute("userLogged", user);
         }
         Pageable pageable = PageRequest.of(page.orElse(0), 5);
-        Page<User> userPage = serUser.findAll(pageable);
+        Page<TaiKhoan> userPage = serUser.findAll(pageable);
         mol.addAttribute("cus", userPage);
         return "user/khachhang/index";
     }
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new TaiKhoan());
         return "user/khachhang/register";
     }
 
@@ -138,7 +132,7 @@ public class KhachHangController {
 
     // Xử lý việc đăng ký người dùng
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
+    public String registerUser(@ModelAttribute TaiKhoan user, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
         try {
             user.setPassword(new BCryptPasswordEncoder().encode(password));
             user.setEnable(true);
@@ -146,8 +140,8 @@ public class KhachHangController {
             serUser.save(user);
 
             // Gán vai trò mặc định cho người dùng
-            User newUser = serUser.findUserByUsername(user.getUsername());
-            serUser.insertDefaultUserRole(newUser.getId());
+            TaiKhoan newUser = serUser.findUserByUsername(user.getUsername());
+//            serUser.insertDefaultUserRole(newUser.getId());
 
             redirectAttributes.addFlashAttribute("success", "User registered successfully!");
             return "redirect:/admin/users/view";
@@ -161,7 +155,7 @@ public class KhachHangController {
     // Hiển thị thông tin người dùng theo ID
     @GetMapping("/detail/{id}")
     public String showUserDetails(@PathVariable("id") Long id, Model model) {
-        User user = serUser.findById(id);
+        TaiKhoan user = serUser.findById(id);
         if (user != null) {
             DiaChi diaChi = new DiaChi();
             model.addAttribute("user", user);
@@ -177,7 +171,7 @@ public class KhachHangController {
     @GetMapping("/deactivate/{id}")
     public String deactivateUser(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         try {
-            User user = serUser.findById(id);
+            TaiKhoan user = serUser.findById(id);
             if (user != null) {
                 user.setEnable(false); // Đặt trạng thái enable thành false để ngưng hoạt động
                 serUser.save(user); // Lưu lại người dùng với trạng thái mới
@@ -191,36 +185,35 @@ public class KhachHangController {
         return "redirect:/admin/users/view";
     }
 
-    @GetMapping("/search")
-    public String searchByPhoneNumber(@RequestParam("phoneNumber") String phoneNumber,
-                                      @RequestParam(defaultValue = "0") int page,
-                                      @RequestParam(defaultValue = "10") int size,
-                                      Model model) {
-        // Tạo Pageable với trang và kích thước
-        Pageable pageable = PageRequest.of(page, size);
-
-        // Lấy danh sách người dùng theo số điện thoại và phân trang
-        Page<User> userPage = userServiceImpl.searchByPhoneNumber(phoneNumber, pageable);
-
-        // Thêm vào model để hiển thị
-        model.addAttribute("cus", userPage);
-        model.addAttribute("phoneNumber", phoneNumber);
-
-        return "user/khachhang/index"; // Trả về trang danh sách người dùng
-    }
+//    @GetMapping("/search")
+//    public String searchByPhoneNumber(@RequestParam("phoneNumber") String phoneNumber,
+//                                      @RequestParam(defaultValue = "0") int page,
+//                                      @RequestParam(defaultValue = "10") int size,
+//                                      Model model) {
+//        // Tạo Pageable với trang và kích thước
+//        Pageable pageable = PageRequest.of(page, size);
+//
+//        // Lấy danh sách người dùng theo số điện thoại và phân trang
+//        Page<TaiKhoan> userPage = userServiceImpl.searchByPhoneNumber(phoneNumber, pageable);
+//
+//        // Thêm vào model để hiển thị
+//        model.addAttribute("cus", userPage);
+//        model.addAttribute("phoneNumber", phoneNumber);
+//
+//        return "user/khachhang/index"; // Trả về trang danh sách người dùng
+//    }
 
     @PostMapping("/updateUser")
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User updatedUser,@RequestParam("password") String passwordString,
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") TaiKhoan updatedUser, @RequestParam("password") String passwordString,
                              RedirectAttributes redirectAttributes) {
         try {
-            User user = serUser.findById(id);
+            TaiKhoan user = serUser.findById(id);
             if (user != null) {
                 String password = new BCryptPasswordEncoder().encode(passwordString);
                 // Cập nhật thông tin từ form
-                user.setHoTen(updatedUser.getHoTen());
+//                user.setHoTen(updatedUser.getHoTen());
                 user.setUsername(updatedUser.getUsername());
-                user.setSoDienthoai(updatedUser.getSoDienthoai());
-                user.setEmail(updatedUser.getEmail());
+//                user.setSoDienthoai(updatedUser.getSoDienthoai());
                 user.setPassword(password);
                 serUser.save(user); // Lưu lại thay đổi vào database
                 redirectAttributes.addFlashAttribute("success", "User updated successfully!");

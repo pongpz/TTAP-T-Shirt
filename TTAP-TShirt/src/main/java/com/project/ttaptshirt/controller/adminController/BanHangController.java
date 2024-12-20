@@ -23,7 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,10 +37,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/ban-hang")
@@ -83,7 +80,7 @@ public class BanHangController {
 
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
         List<HoaDon> listHoaDon = hoaDonService.getListHDChuaThanhToan();
@@ -97,7 +94,7 @@ public class BanHangController {
         if (authentication != null) {
             // Lấy thông tin người dùng đã đăng nhập
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user); // Thêm thông tin người dùng vào model
         }
 
@@ -221,7 +218,7 @@ public class BanHangController {
 
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user); // Gửi thông tin người dùng vào model
         }
 
@@ -343,7 +340,7 @@ public class BanHangController {
         // Kiểm tra người dùng đã đăng nhập hay chưa
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user); // Gửi thông tin người dùng vào model
         }
 
@@ -432,7 +429,7 @@ public class BanHangController {
                         .body("Người dùng chưa đăng nhập."); // Thông báo lỗi nếu chưa đăng nhập
             }
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
 
             // Tìm hóa đơn theo ID
             HoaDon hoaDon = hoaDonService.findById(idHD);
@@ -515,7 +512,7 @@ public class BanHangController {
     public String huyHD(@RequestParam("hoadonId") Long idhd, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
         List<HoaDonChiTiet> listHoaDonChiTiet = hoaDonChiTietService.getListHdctByIdHd(idhd);
@@ -537,7 +534,7 @@ public class BanHangController {
     public String xoaHD(@PathVariable("id") Long idhd, Model model, Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
         }
         List<HoaDon> listHoaDon = hoaDonService.getListHDDaThanhToan();
@@ -555,8 +552,8 @@ public class BanHangController {
         HoaDon hoaDon = new HoaDon();
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
-            hoaDon.setNhanVien(user);
+            TaiKhoan user = customUserDetail.getUser();
+            hoaDon.setNhanVien(user.getNhanVien());
         }
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
         hoaDon.setLoaiDon(1);

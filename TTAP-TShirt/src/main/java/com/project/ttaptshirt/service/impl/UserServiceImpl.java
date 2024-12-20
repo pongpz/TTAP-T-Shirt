@@ -1,7 +1,7 @@
 package com.project.ttaptshirt.service.impl;
 
 import com.project.ttaptshirt.entity.DiaChi;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.repository.DiaChiRepo;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.service.UserService;
@@ -24,12 +24,12 @@ public class UserServiceImpl implements UserService {
     DiaChiRepo diaChiRepo;
 
     @Override
-    public void save(User user) {
+    public void save(TaiKhoan user) {
         userRepo.save(user);
     }
 
     @Override
-    public User findById(Long id) {
+    public TaiKhoan findById(Long id) {
         return userRepo.findById(id).orElse(null);
 
     }
@@ -40,48 +40,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<TaiKhoan> findAll() {
         return userRepo.findAll();
     }
 
     @Override
-    public Page<User> findAll(int page, int size) {
+    public Page<TaiKhoan> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending()); // Sắp xếp theo `id` giảm dần
         return userRepo.findAll(pageable);
     }
 
     @Override
-    public Page<User> findAll(Pageable pageable){
+    public Page<TaiKhoan> findAll(Pageable pageable){
         return userRepo.findAll(pageable);
     }
 
     @Override
-    public Page<User> findAllNv(String rolename, Pageable pageable) {
+    public Page<TaiKhoan> findAllNv(String rolename, Pageable pageable) {
         return userRepo.findUsersByRoleName(rolename, pageable);
     }
 
 
     @Override
-    public User findUserByUsername(String userName) {
+    public TaiKhoan findUserByUsername(String userName) {
         return userRepo.findByUsername(userName) ;
     }
 
-    @Override
-    public void insertDefaultUserRole(Long userId) {
-        userRepo.insertUserRole(userId,Long.valueOf(2));
-    }
+
+
+
 
     @Override
-    public void insertDefaultNvRole(Long userId) {
-        userRepo.insertUserRole(userId,Long.valueOf(3));
-    }
-
-    @Override
-    public User updateDiachi(Long userId, DiaChi diaChi) {
+    public TaiKhoan updateDiachi(Long userId, DiaChi diaChi) {
         // Tìm người dùng theo ID
-        Optional<User> userOptional = userRepo.findById(userId);
+        Optional<TaiKhoan> userOptional = userRepo.findById(userId);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
+            TaiKhoan user = userOptional.get();
 
             // Thiết lập liên kết giữa DiaChi và User
             diaChi.setUser(user);
@@ -97,13 +91,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public Optional<User> findBySdt(String sdt) {
-        return userRepo.findBySoDienthoai(sdt);
-    }
+//    @Override
+//    public Optional<TaiKhoan> findBySdt(String sdt) {
+//        return userRepo.findBySoDienthoai(sdt);
+//    }
 
-    @Override
-    public Page<User> searchByPhoneNumber(String phoneNumber, Pageable pageable) {
-        return userRepo.findBySoDienthoaiContaining(phoneNumber, pageable);
-    }
+//    @Override
+//    public Page<TaiKhoan> searchByPhoneNumber(String phoneNumber, Pageable pageable) {
+//        return userRepo.findBySoDienthoaiContaining(phoneNumber, pageable);
+//    }
 }

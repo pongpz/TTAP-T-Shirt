@@ -2,7 +2,7 @@ package com.project.ttaptshirt.service;
 
 
 import com.project.ttaptshirt.entity.DiaChi;
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.repository.DiaChiRepo;
 import com.project.ttaptshirt.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DiaChiService {
@@ -38,7 +37,7 @@ public class DiaChiService {
     }
 
     public DiaChi taoDiaChi(DiaChi dc, Long userId) {
-       User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+       TaiKhoan user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         dc.setUser(user);
         return repoDc.save(dc);
     }

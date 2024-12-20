@@ -6,7 +6,6 @@ import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.HinhAnhRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
-import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
@@ -15,8 +14,6 @@ import com.project.ttaptshirt.service.HoaDonLogService;
 import com.project.ttaptshirt.service.impl.DiscountService;
 import com.project.ttaptshirt.service.impl.GioHangService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,7 +67,7 @@ public class GioHangController {
                            @ModelAttribute DiaChi address) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             GioHang cart = gioHangService.getOrCreateCart(user);
             model.addAttribute("cart", cart);
             model.addAttribute("userLogged", user);
@@ -137,7 +134,7 @@ public class GioHangController {
 
         // Cập nhật địa chỉ mặc định cho người dùng
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-        User user = customUserDetail.getUser();
+        TaiKhoan user = customUserDetail.getUser();
         user.setDefaultAddress(selectedAddress); // Giả sử bạn có phương thức để gán địa chỉ mặc định
         userRepo.save(user);  // Lưu người dùng với địa chỉ mặc định
         redirectAttributes.addAttribute("selectedAddressId", addressId);
@@ -149,7 +146,7 @@ public class GioHangController {
     public String clearCart(Authentication authentication, RedirectAttributes redirectAttributes) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
 
             // Lấy giỏ hàng hiện tại của người dùng
             GioHang cart = gioHangService.getOrCreateCart(user);
@@ -176,7 +173,7 @@ public class GioHangController {
                                      Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             gioHangService.removeProductFromCart(user, productId); // Xóa sản phẩm khỏi giỏ
         }
         redirectAttributes.addFlashAttribute("removemessage", true);
@@ -190,7 +187,7 @@ public class GioHangController {
                            List<Long> selectedProductIds, Authentication authentication, RedirectAttributes redirectAttributes) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
             try {
                 List<CartItemDTO> selectedItems = getSelectedItemsFromCart(user, selectedProductIds);
                 GioHang order = gioHangService.createOrderFromCart(user, selectedItems); // Tạo đơn hàng từ giỏ hàng
@@ -203,7 +200,7 @@ public class GioHangController {
         return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng nếu có lỗi
     }
 
-    private List<CartItemDTO> getSelectedItemsFromCart(User user, List<Long> selectedProductIds) {
+    private List<CartItemDTO> getSelectedItemsFromCart(TaiKhoan user, List<Long> selectedProductIds) {
         // Lấy giỏ hàng của user và lọc các sản phẩm được chọn
         GioHang cart = gioHangService.getOrCreateCart(user);
         return cart.getItems().stream()
@@ -222,7 +219,7 @@ public class GioHangController {
                                Model model) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
 
 
             try {
@@ -276,7 +273,7 @@ public class GioHangController {
                 hoaDonLog.setHoaDon(hoaDon);
                 hoaDonLog.setHanhDong("Đặt hàng");
                 hoaDonLog.setThoiGian(LocalDateTime.now());
-                hoaDonLog.setNguoiThucHien(user.getSoDienthoai());
+//                hoaDonLog.setNguoiThucHien(user.getSoDienthoai());
                 hoaDonLog.setGhiChu("đã thực hiện đặt hàng online");
                 hoaDonLog.setTrangThai(0);
                 hoaDonLogService.save(hoaDonLog);
@@ -304,7 +301,7 @@ public class GioHangController {
         }
 
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-        User user = customUserDetail.getUser();
+        TaiKhoan user = customUserDetail.getUser();
 
         if (sizeId == null) {
             redirectAttributes.addFlashAttribute("errorSize", "Vui lòng chọn kích thước.");
@@ -341,7 +338,7 @@ public class GioHangController {
     public String listHoaDon(Model model, Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
 
             List<HoaDon> hoaDonList = hoaDonService.getListDonHang(user.getKhachHang());
             if (hoaDonList != null) {
@@ -364,7 +361,7 @@ public class GioHangController {
     public String hienThi(@RequestParam Long id, Model model, Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
 
             HoaDon hoaDon = hoaDonService.getDonHang(id);
             model.addAttribute("hoaDon", hoaDon);
@@ -381,8 +378,8 @@ public class GioHangController {
     @PostMapping("/huy-hoa-don-online")
     public String huyHDOnline(@RequestParam("idHD") Long idHD,RedirectAttributes redirectAttributes,Authentication authentication){
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-        User user = customUserDetail.getUser();
-        hoaDonService.huyHoaDonOnline(idHD,user.getSoDienthoai()+" đã thực hiện hủy hóa đơn !");
+        TaiKhoan user = customUserDetail.getUser();
+//        hoaDonService.huyHoaDonOnline(idHD,user.getSoDienthoai()+" đã thực hiện hủy hóa đơn !");
         redirectAttributes.addFlashAttribute("cancelHoaDon", true);
         return "redirect:/TTAP/cart/hoa-don-chi-tiet/hien-thi?id=" + idHD;
     }
@@ -394,7 +391,7 @@ public class GioHangController {
                                                                      Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            User user = customUserDetail.getUser();
+            TaiKhoan user = customUserDetail.getUser();
 
             try {
                 // Lấy hoặc tạo giỏ hàng cho người dùng

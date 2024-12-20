@@ -52,21 +52,15 @@
                 <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
                     <div class="card-body p-4 p-md-5">
                         <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Tạo tài khoản</h3>
-                        <form th:action="@{/register}"  method="post">
+                        <form th:action="@{/register}" method="post" id="registerForm">
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <div data-mdb-input-init class="form-outline">
-                                        <input type="text" id="firstName" name="username" class="form-control form-control-lg" th:field="*{user.username}" />
+                                        <input type="text" id="firstName" name="username"
+                                               class="form-control form-control-lg" th:field="*{user.username}" />
                                         <label class="form-label" for="firstName">Tên Đăng Nhập</label>
                                         <span class="text-danger">[[${usernameIsInvalid}]]</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <input type="text" id="lastName" name="hoTen" class="form-control form-control-lg" th:field="*{user.hoTen}" />
-                                        <label class="form-label">Họ Tên</label>
-                                        <span class="text-danger">[[${nameError}]]</span>
                                     </div>
                                 </div>
                             </div>
@@ -74,59 +68,45 @@
                             <div class="row">
                                 <div class="col-md-6 mb-4 d-flex align-items-center">
                                     <div data-mdb-input-init class="form-outline datepicker w-100">
-                                        <input type="password" name="password" class="form-control form-control-lg"  th:field="*{user.password}"/>
-                                        <label  class="form-label">Mật khẩu</label>
+                                        <input type="password" name="password" id="password" class="form-control form-control-lg"
+                                               th:field="*{user.password}" />
+                                        <label class="form-label">Mật khẩu</label>
                                     </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <h6 class="mb-2 pb-1">Giới Tính: </h6>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" value="1" id="maleGender"  checked th:field="*{user.gioiTinh}"/>
-                                        <label class="form-check-label" for="maleGender">Nam</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="gioiTinh" value="0" id="femaleGender"  th:field="*{user.gioiTinh}" />
-
-                                    <label class="form-check-label" for="femaleGender">Nữ</label>
-                                </div>
                                 </div>
                             </div>
-
                             <div class="row">
-                                <div class="col-md-6 mb-4 pb-2">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <input type="email" id="emailAddress" name="email" class="form-control form-control-lg"  th:field="*{user.email}"/>
-                                        <label class="form-label" for="emailAddress">Email</label>
-                                        <span class="text-danger">[[${emailIsInvalid}]]</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4 pb-2">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <input type="tel" id="phoneNumber" name="soDienthoai" class="form-control form-control-lg"  th:field="*{user.soDienthoai}"/>
-                                        <label class="form-label" for="phoneNumber">Số Điện Thoại</label>
-                                        <span class="text-danger">[[${ErrorPhoneNumber}]]</span>
+                                <div class="col-md-6 mb-4 d-flex align-items-center">
+                                    <div data-mdb-input-init class="form-outline datepicker w-100">
+                                        <input type="password" name="rePassword" id="rePassword" class="form-control form-control-lg" />
+                                        <label class="form-label">Nhập Lại Mật khẩu</label>
                                     </div>
                                 </div>
                             </div>
 
-<!--                            <div class="row">-->
-<!--                                <div class="col-12">-->
-<!--                                    <select  class="select form-control-lg">-->
-<!--                                        <option value="" disabled>Choose option</option>-->
-<!--                                        <option value="Subject 1">Subject 1</option>-->
-<!--                                        <option value="Subject 2">Subject 2</option>-->
-<!--                                        <option value="Subject 3">Subject 3</option>-->
-<!--                                    </select>-->
-<!--                                    <label class="form-label select-label">Choose option</label>-->
-<!--                                </div>-->
-<!--                            </div>-->
 
                             <div class="mt-4 pt-2">
-                                <input data-mdb-ripple-init class="btn btn-primary btn-lg" type="submit" value="Đăng Kí" />
+                                <input data-mdb-ripple-init class="btn btn-primary btn-lg" type="submit"
+                                       value="Đăng Kí" />
+                                <span id="error-message" class="text-danger"></span>
                             </div>
 
                         </form>
+
+                        <script>
+                            document.getElementById("registerForm").addEventListener("submit", function (e) {
+                                const password = document.getElementById("password").value;
+                                const rePassword = document.getElementById("rePassword").value;
+                                const errorMessage = document.getElementById("error-message");
+
+                                if (password !== rePassword) {
+                                    e.preventDefault(); // Prevent form submission
+                                    toastError("Xảy ra lỗi!","Mật khẩu nhập lại không trùng khớp !")
+                                } else {
+                                    errorMessage.textContent = ""; // Clear the error message
+                                }
+                            });
+                        </script>
+
                     </div>
                 </div>
             </div>
@@ -144,7 +124,7 @@
 <script src="/js/toastMessage.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var success= [[${success}]];
+    var success = [[${success}]];
     if (success) {
         toastSuccess('Thành công', success);
     }

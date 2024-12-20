@@ -162,7 +162,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
 
-    public User getCurrentUser() {
+    public TaiKhoan getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetail) {
             return ((CustomUserDetail) principal).getUser();
@@ -189,7 +189,7 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
-        User user = getCurrentUser();
+        TaiKhoan user = getCurrentUser();
         KhachHang khachHang = user.getKhachHang();
         hoaDon.setKhachHang(khachHang);
         hoaDon.setTenNguoiNhan(fullName);

@@ -1,28 +1,28 @@
 package com.project.ttaptshirt.security;
 
-import com.project.ttaptshirt.entity.User;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 public class CustomUserDetail implements UserDetails {
-    private User user;
+    private TaiKhoan user;
     private   Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetail() {
        //constructor no parameter
     }
 
-    public CustomUserDetail(User user, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetail(TaiKhoan user, Collection<? extends GrantedAuthority> authorities) {
         this.user = user;
         this.authorities = authorities;
     }
-    public User getUser(){
+    public TaiKhoan getUser(){
         return this.user;
     }
 
-    public void setUser(User user) {
+    public void setUser(TaiKhoan user) {
         this.user = user; // Cập nhật thông tin người dùng
     }
 

@@ -34,7 +34,7 @@ public class GioHangService {
     private HoaDonChiTietRepository hoaDonChiTietRepository;
 
     public GioHang taoDon(String userName, List<CartItemDTO> cartItems ) {
-        User user = userRepo.findByUsername(userName);
+        TaiKhoan user = userRepo.findByUsername(userName);
 
         GioHang gioHang = new GioHang();
         gioHang.setUser(user);
@@ -61,7 +61,7 @@ public class GioHangService {
         return gioHang;
     }
 
-    public GioHang getOrCreateCart(User user) {
+    public GioHang getOrCreateCart(TaiKhoan user) {
         return gioHangRepository.findByUserAndStatus(user, true)
                 .orElseGet(() -> {
                     GioHang newCart = new GioHang();
@@ -92,7 +92,7 @@ public class GioHangService {
 
 
     // Thêm sản phẩm vào giỏ
-    public void addItemToCart(User user, Long productId, int quantity) {
+    public void addItemToCart(TaiKhoan user, Long productId, int quantity) {
         GioHang cart = getOrCreateCart(user);
 
         // Kiểm tra sản phẩm có trong giỏ chưa
@@ -131,7 +131,7 @@ public class GioHangService {
         cart.setTongTien(total.doubleValue());
     }
 
-    public GioHang createOrderFromCart(User user, List<CartItemDTO> selectedItems) {
+    public GioHang createOrderFromCart(TaiKhoan user, List<CartItemDTO> selectedItems) {
         if (selectedItems.isEmpty()) {
             throw new RuntimeException("Không có sản phẩm nào được chọn");
         }
@@ -170,7 +170,7 @@ public class GioHangService {
     }
 
     // Xóa sản phẩm khỏi giỏ hàng
-    public void removeProductFromCart(User user, Long productId) {
+    public void removeProductFromCart(TaiKhoan user, Long productId) {
         // Lấy giỏ hàng hiện tại
         GioHang cart = getOrCreateCart(user);
 
@@ -194,7 +194,7 @@ public class GioHangService {
     }
 
     @Transactional
-    public HoaDon checkoutCart(User user, List<Long> selectedProductIds,String diaChi) {
+    public HoaDon checkoutCart(TaiKhoan user, List<Long> selectedProductIds, String diaChi) {
         // Lấy giỏ hàng của người dùng
         GioHang cart = getOrCreateCart(user);
 
@@ -208,8 +208,8 @@ public class GioHangService {
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
         hoaDon.setKhachHang(user.getKhachHang());
         hoaDon.setNgayTao(LocalDateTime.now());
-        hoaDon.setTenNguoiNhan(user.getHoTen());
-        hoaDon.setSdtNguoiNhan(user.getSoDienthoai());
+//        hoaDon.setTenNguoiNhan(user.getHoTen());
+//        hoaDon.setSdtNguoiNhan(user.getSoDienthoai());
         hoaDon.setDiaChiGiaoHang(diaChi);
         hoaDon.setLoaiDon(0);
         hoaDon.setTrangThai(3); // Đặt trạng thái hóa đơn là chờ xử lý
@@ -264,7 +264,7 @@ public class GioHangService {
     }
 
     @Transactional
-    public void addToCart(User user, AddToCartRequest request) {
+    public void addToCart(TaiKhoan user, AddToCartRequest request) {
         // Tìm sản phẩm chi tiết
         ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository
                 .findChiTietSanPham(request.getProductId(), request.getSize(), request.getColor())
