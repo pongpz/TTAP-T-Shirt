@@ -68,11 +68,15 @@ public class DiaChiController {
 
     @PostMapping("/address")
     public String createAddress(@ModelAttribute DiaChi address, Authentication authentication,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes,Model model) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-            TaiKhoan user = customUserDetail.getUser();
 
+            TaiKhoan user = customUserDetail.getUser();
+            if (address.getSoNha() == null || address.getTenDuong().equals("0") || address.getTenQuanhuyen().equals("0") || address.getTenThanhpho().equals("0")){
+                redirectAttributes.addFlashAttribute("failAddress", true);
+                return "redirect:/TTAP/cart/view";
+            }
             address.setUser(user); // Gắn địa chỉ với người dùng hiện tại
             serDc.save(address); // Lưu địa chỉ vào cơ sở dữ liệu
 
