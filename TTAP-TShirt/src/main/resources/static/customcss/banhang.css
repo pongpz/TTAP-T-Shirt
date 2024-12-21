@@ -95,3 +95,16 @@
     text-overflow: ellipsis; /* Thêm dấu "..." khi nội dung bị cắt */
     max-width: 150px; /* Đặt chiều rộng tối đa cho ô */
 }
+.custom-btn {
+    background-color: #4CAF50; /* Change to your desired color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for better appearance */
+    font-size: 16px; /* Adjust font size */
+    transition: background-color 0.3s ease; /* Add hover effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Spacing between icon and text */
+}
