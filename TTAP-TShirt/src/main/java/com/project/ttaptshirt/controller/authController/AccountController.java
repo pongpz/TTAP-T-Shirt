@@ -78,7 +78,7 @@ public class AccountController {
             user.setEnable(true);
             user.setNgayTao(LocalDate.now());
             Role role = new Role();
-            role.setId(Long.parseLong("1"));
+            role.setId(Long.parseLong("2"));
             user.setRole(role);
             userService.save(user);
             redirectAttributes.addFlashAttribute("isRegisterSuccess", true);

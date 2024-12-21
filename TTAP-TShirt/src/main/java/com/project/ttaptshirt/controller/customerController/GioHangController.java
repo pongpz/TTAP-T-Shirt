@@ -214,6 +214,8 @@ public class GioHangController {
     @PostMapping("/checkout")
     public String checkoutCart(@RequestParam("selectedProductIds") String selectedProductIdsStr,
                                @RequestParam String diaChi,
+                               @RequestParam String nguoiNhan,
+                               @RequestParam String soDienThoai,
                                RedirectAttributes redirectAttributes,
                                Authentication authentication,
                                Model model) {
@@ -266,7 +268,7 @@ public class GioHangController {
                         return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
                     }
                 }
-                HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi);
+                HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi,nguoiNhan,soDienThoai);
                 redirectAttributes.addFlashAttribute("message", true);
 
                 HoaDonLog hoaDonLog = new HoaDonLog();

@@ -194,10 +194,16 @@ public class GioHangService {
     }
 
     @Transactional
-    public HoaDon checkoutCart(TaiKhoan user, List<Long> selectedProductIds, String diaChi) {
+    public HoaDon checkoutCart(TaiKhoan user, List<Long> selectedProductIds, String diaChi,
+                               String nguoiNhan, String soDienThoai) {
+
         // Lấy giỏ hàng của người dùng
         GioHang cart = getOrCreateCart(user);
 
+        KhachHang khachHang = user.getKhachHang();
+        if (khachHang == null) {
+            throw new RuntimeException("Tài khoản không được liên kết với khách hàng.");
+        }
         // Kiểm tra giỏ hàng có sản phẩm không
         if (cart.getItems().isEmpty()) {
             throw new RuntimeException("Giỏ hàng trống, không thể tạo hóa đơn.");
@@ -206,10 +212,10 @@ public class GioHangService {
         // Tạo hóa đơn mới
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
-        hoaDon.setKhachHang(user.getKhachHang());
+        hoaDon.setKhachHang(khachHang);
         hoaDon.setNgayTao(LocalDateTime.now());
-//        hoaDon.setTenNguoiNhan(user.getHoTen());
-//        hoaDon.setSdtNguoiNhan(user.getSoDienthoai());
+        hoaDon.setTenNguoiNhan(nguoiNhan);
+        hoaDon.setSdtNguoiNhan(soDienThoai);
         hoaDon.setDiaChiGiaoHang(diaChi);
         hoaDon.setLoaiDon(0);
         hoaDon.setTrangThai(3); // Đặt trạng thái hóa đơn là chờ xử lý
