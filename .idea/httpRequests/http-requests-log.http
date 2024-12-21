@@ -1,3 +1,15 @@
+GET http://localhost:8080/TTAP/user/detail/view
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=6B2468019ECA89FDCC7945CE749FCD0B
+cookie: JSESSIONID=6B2468019ECA89FDCC7945CE749FCD0B
+content-length: 0
+
+<> 2024-12-14T232142.404.json
+
+###
+
 GET http://localhost:8080/admin/user/vỉew?p=48
 User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
 Accept-Encoding: br, deflate, gzip, x-gzip
@@ -550,17 +562,6 @@ Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
 content-length: 0
 
 <> 2024-11-12T222400.500.json
-
-###
-
-GET http://localhost:8080/TTAP/trang-chu
-User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.4
-Accept-Encoding: br, deflate, gzip, x-gzip
-Accept: */*
-Cookie: JSESSIONID=03F030B8B55144AAF402A39C7E46B94D
-content-length: 0
-
-<> 2024-11-12T222250.500.json
 
 ###
 
