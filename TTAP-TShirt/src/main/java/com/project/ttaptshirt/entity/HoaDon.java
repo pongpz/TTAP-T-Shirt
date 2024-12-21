@@ -80,7 +80,6 @@ public class HoaDon {
     private Integer trangThai;
 
     @Column(name = "ten_nguoi_nhan", columnDefinition = "NVARCHAR(255)")
-
     private String tenNguoiNhan;
 
     @Column(name = "loai_don")

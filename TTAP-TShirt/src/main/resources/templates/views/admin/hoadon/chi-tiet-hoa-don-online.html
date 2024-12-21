@@ -237,6 +237,27 @@
     <br>
     <hr>
     <br>
+    <div style="flex-wrap: wrap; gap: 20px; font-family: Arial, sans-serif; margin: 40px;margin-left: 320px">
+        <!-- Danh sách sản phẩm -->
+        <div style="background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
+            <h3 style="margin: 0 0 20px; font-size: 25px;">Thông tin giao hàng</h3>
+            <hr>
+                <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                    <p style="margin: 0; font-size: 20px;">Tên người nhận:</p>
+                    <span style="margin: 0; font-size: 15px;" th:text="${hoaDon.tenNguoiNhan?:''}"></span>
+                </div>
+            <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                <p style="margin: 0; font-size: 20px;">Số điện thoại người nhận:</p>
+                <span style="margin: 0; font-size: 15px;" th:text="${hoaDon.sdtNguoiNhan?:''}"></span>
+            </div>
+            <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                <p style="margin: 0; font-size: 20px;">Địa chỉ giao hàng:</p>
+                <span style="margin: 0; font-size: 15px;" th:text="${hoaDon.diaChiGiaoHang?:''}"></span>
+            </div>
+        </div>
+        <hr>
+    <br>
+    </div>
 
     <div style="flex-wrap: wrap; gap: 20px; font-family: Arial, sans-serif; margin: 40px;margin-left: 320px">
         <!-- Danh sách sản phẩm -->
@@ -300,14 +321,14 @@
     <!-- Thông tin hóa đơn -->
     <div style="flex: 1; min-width: 300px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 20px;margin-left: 320px">
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-            <p style="margin: 0; font-size: 14px;">Mã giảm giá:</p>
-            <span style="font-size: 14px;"
-                  th:text="${hoaDon.soTienGiamGia!=null?numberUtils.formatCurrency(hoaDon.soTienGiamGia):'Không áp dụng'}"></span>
-        </div>
-        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
             <p style="margin: 0; font-size: 14px;">Tổng tiền hàng:</p>
             <span style="font-size: 14px;"
                   th:text="'Tổng tiền sản phẩm: '+${numberUtils.formatCurrency(hoaDon.tongTien)}"></span>
+        </div>
+        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+            <p style="margin: 0; font-size: 14px;">Mã giảm giá:</p>
+            <span style="font-size: 14px;"
+                  th:text="${hoaDon.maGiamGia!=null?hoaDon.maGiamGia.ma:'Không áp dụng'}"></span>
         </div>
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
             <p style="margin: 0; font-size: 14px;">Giảm giá:</p>
@@ -321,7 +342,7 @@
         <div style="margin-top: 20px; display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
             <p style="margin: 0;">Tổng tiền:</p>
             <label style="color: red;"
-                   th:text="'Tổng tiền thanh toán: '+${numberUtils.formatCurrency((hoaDon.tongTien)+50000)}"></label>
+                   th:text="'Tổng tiền thanh toán: '+${numberUtils.formatCurrency((hoaDon.tienThu))}"></label>
         </div>
     </div>
 </div>
