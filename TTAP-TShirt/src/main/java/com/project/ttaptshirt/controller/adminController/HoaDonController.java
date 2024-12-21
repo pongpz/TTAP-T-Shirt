@@ -88,6 +88,33 @@ public class HoaDonController {
 //        return "admin/hoadon/hoa-don-online";
 //    }
 
+    @GetMapping("/chi-tiet-hoa-don/{idhd}")
+    public String hienThiHDCT(@PathVariable("idhd") Long idhd, Model model) {
+        HoaDon hoaDon = hoaDonService.findById(idhd);
+        model.addAttribute("hoaDon", hoaDon);
+        List<HoaDonChiTiet> listSPOrder = hoaDonChiTietService.getListHdctByIdHd(idhd);
+        model.addAttribute("listSPOrder", listSPOrder);
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils", numberUtils);
+        List<HoaDonLog> listHoaDonLog = hoaDonLogService.getListHoaDonLogByIdHd(idhd);
+        for (HoaDonLog hdlog : listHoaDonLog) {
+            System.out.println(hdlog.getGhiChu());
+        }
+        model.addAttribute("listHoaDonLog", listHoaDonLog);
+        // Lấy hình ảnh đầu tiên cho mỗi sản phẩm
+        Map<Long, String> productImages = new HashMap<>();
+        for (HoaDonChiTiet hdct : listSPOrder) {
+            Long productId = hdct.getChiTietSanPham().getSanPham().getId();
+
+            // Lấy hình ảnh đầu tiên của sản phẩm
+            List<String> images = hinhAnhRepository.findBySanPhamId(productId);
+            String firstImage = images.isEmpty() ? "/default-image.jpg" : images.get(0);
+            productImages.put(productId, firstImage);
+        }
+        model.addAttribute("productImages", productImages);
+        return "admin/hoadon/chi-tiet-hoa-don-tai-quay";
+    }
+
     @GetMapping("/chi-tiet-hoa-don-online/{idhd}")
     public String hienThiHDCTOnline(@PathVariable("idhd") Long idhd, Model model) {
         HoaDon hoaDon = hoaDonService.findById(idhd);

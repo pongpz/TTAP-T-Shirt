@@ -5,6 +5,7 @@ import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.exception.ResourceNotFoundException;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
+import com.project.ttaptshirt.repository.HoaDonLogRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
 import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
@@ -52,6 +53,9 @@ public class BanHangController {
 
     @Autowired
     HoaDonService hoaDonService;
+
+    @Autowired
+    HoaDonLogRepository hoaDonLogRepo;
 
     @Autowired
     ChiTietSanPhamService chiTietSanPhamService;
@@ -215,10 +219,11 @@ public class BanHangController {
     @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/hoa-don/create-payment-link", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void checkout(HttpServletRequest request, HttpServletResponse httpServletResponse,@RequestParam("idhd") Long idHD,RedirectAttributes redirectAttributes,Model model,Authentication authentication) throws IOException, ServletException {
-
+        HoaDonLog hdlog = new HoaDonLog();
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
+            hdlog.setNguoiThucHien(user.getNhanVien() != null?user.getNhanVien().getHoTen():"");
             model.addAttribute("userLogged", user); // Gửi thông tin người dùng vào model
         }
 
@@ -318,6 +323,12 @@ public class BanHangController {
             CheckoutResponseData data = payOS.createPaymentLink(paymentData);
 
             String checkoutUrl = data.getCheckoutUrl();
+            hdlog.setHoaDon(hoaDonRepository.getReferenceById(idHD));
+            hdlog.setHanhDong("Tạo mã thanh toán");
+            hdlog.setTrangThai(0);
+            hdlog.setThoiGian(LocalDateTime.now());
+            hdlog.setGhiChu("Đã thực hiện tạo mã thanh toán");
+            hoaDonLogRepo.save(hdlog);
 
             httpServletResponse.setHeader("Location", checkoutUrl);
             httpServletResponse.setStatus(302);
@@ -327,7 +338,19 @@ public class BanHangController {
     }
 
     @GetMapping("/hoa-don/thanh-toan-that-bai")
-    public String thatBai(RedirectAttributes redirectAttributes,@RequestParam("hoadonId") Long idHD){
+    public String thatBai(RedirectAttributes redirectAttributes,@RequestParam("hoadonId") Long idHD, Authentication authentication){
+        HoaDonLog hdlog = new HoaDonLog();
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            hdlog.setNguoiThucHien(user.getNhanVien() != null?user.getNhanVien().getHoTen():"");
+        }
+        hdlog.setHoaDon(hoaDonRepository.getReferenceById(idHD));
+        hdlog.setHanhDong("Hủy thanh toán");
+        hdlog.setTrangThai(0);
+        hdlog.setThoiGian(LocalDateTime.now());
+        hdlog.setGhiChu("Đã thực hiện hủy thanh toán bằng phương thức chuyển khoản");
+        hoaDonLogRepo.save(hdlog);
         redirectAttributes.addFlashAttribute("checkoutFail", true);
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId="+idHD;
     }
@@ -336,11 +359,13 @@ public class BanHangController {
     @GetMapping("/hoa-don/xac-nhan-chuyen-khoan")
     public String xacNhanChuyenKhoan(
             @RequestParam("idhd") Long idHD, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
+        HoaDonLog hdlog = new HoaDonLog();
 
         // Kiểm tra người dùng đã đăng nhập hay chưa
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
+            hdlog.setNguoiThucHien(user.getNhanVien() != null?user.getNhanVien().getHoTen():"");
             model.addAttribute("userLogged", user); // Gửi thông tin người dùng vào model
         }
 
@@ -402,7 +427,12 @@ public class BanHangController {
         hoaDon.setTongTien((Double) totalMoneyBefore);
         hoaDon.setTrangThai(1); // Đặt trạng thái hóa đơn đã thanh toán
         hoaDonService.save(hoaDon);
-
+        hdlog.setHoaDon(hoaDon);
+        hdlog.setHanhDong("Thanh toán thành công");
+        hdlog.setTrangThai(0);
+        hdlog.setThoiGian(LocalDateTime.now());
+        hdlog.setGhiChu("Đã thực hiện thanh toán bằng phương thức chuyển khoản");
+        hoaDonLogRepo.save(hdlog);
         if (voucher!=null) {
             Integer soLuongVoucherCu = voucher.getSoLuong();
             voucher.setSoLuong(soLuongVoucherCu-1);
@@ -428,8 +458,10 @@ public class BanHangController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("Người dùng chưa đăng nhập."); // Thông báo lỗi nếu chưa đăng nhập
             }
+            HoaDonLog hdlog = new HoaDonLog();
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
+            hdlog.setNguoiThucHien(user.getNhanVien() != null?user.getNhanVien().getHoTen():"");
 
             // Tìm hóa đơn theo ID
             HoaDon hoaDon = hoaDonService.findById(idHD);
@@ -489,7 +521,12 @@ public class BanHangController {
             hoaDon.setTongTien(totalMoneyBefore);
             hoaDon.setTrangThai(1); // Đánh dấu hóa đơn đã thanh toán
             hoaDonService.save(hoaDon);
-
+            hdlog.setHoaDon(hoaDon);
+            hdlog.setHanhDong("Thanh toán thành công");
+            hdlog.setTrangThai(0);
+            hdlog.setThoiGian(LocalDateTime.now());
+            hdlog.setGhiChu("Đã thực hiện thanh toán bằng phương thức tiền mặt");
+            hoaDonLogRepo.save(hdlog);
             // Cập nhật số lượng mã giảm giá
             if (voucher != null) {
                 voucher.setSoLuong(voucher.getSoLuong() - 1);
@@ -505,14 +542,13 @@ public class BanHangController {
         }
     }
 
-
-
-
     @GetMapping("/huy-hoa-don-tai-quay")
     public String huyHD(@RequestParam("hoadonId") Long idhd, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
+        HoaDonLog hdlog = new HoaDonLog();
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
+            hdlog.setNguoiThucHien(user.getNhanVien() != null?user.getNhanVien().getHoTen():"");
             model.addAttribute("userLogged", user);
         }
         List<HoaDonChiTiet> listHoaDonChiTiet = hoaDonChiTietService.getListHdctByIdHd(idhd);
@@ -525,6 +561,12 @@ public class BanHangController {
             chiTietSanPhamRepository.save(chiTietSanPham);
         }
         hoaDonService.updateTrangThaiHD(2, idhd);
+        hdlog.setHoaDon(hoaDonRepository.getReferenceById(idhd));
+        hdlog.setHanhDong("Hủy hóa đơn");
+        hdlog.setTrangThai(0);
+        hdlog.setThoiGian(LocalDateTime.now());
+        hdlog.setGhiChu("Đã thực hiện hủy hóa đơn tại quầy");
+        hoaDonLogRepo.save(hdlog);
         redirectAttributes.addFlashAttribute("isCancelInvoice", true);
         return "redirect:/admin/ban-hang";
     }
@@ -550,16 +592,24 @@ public class BanHangController {
     @PostMapping("/newHoaDon")
     public String newHoaDon(Authentication authentication, RedirectAttributes redirectAttributes) {
         HoaDon hoaDon = new HoaDon();
+        HoaDonLog hdlog = new HoaDonLog();
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
             hoaDon.setNhanVien(user.getNhanVien());
+            hdlog.setNguoiThucHien(user.getNhanVien() != null?user.getNhanVien().getHoTen():"");
         }
         hoaDon.setMa("HD" + (int) (Math.random() * 1000000));
         hoaDon.setLoaiDon(1);
         hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(0);
         hoaDonService.save(hoaDon);
+        hdlog.setHoaDon(hoaDon);
+        hdlog.setHanhDong("Tạo hóa đơn mới");
+        hdlog.setTrangThai(0);
+        hdlog.setThoiGian(LocalDateTime.now());
+        hdlog.setGhiChu("Đã thực hiện tạo hóa đơn mới");
+        hoaDonLogRepo.save(hdlog);
 
         // Add flash attribute to indicate success
         redirectAttributes.addFlashAttribute("createSuccess", true);

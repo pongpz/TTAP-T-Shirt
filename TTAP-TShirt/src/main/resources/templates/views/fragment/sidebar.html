@@ -39,7 +39,7 @@
                     </a>
                 </li>
                 <div class="accordion accordion-flush" id="accordionFlushExample">
-                    <div class="accordion-item">
+                    <div>
                         <h2 class="accordion-header text-dark" style="margin-left: -3px; font-weight: normal;">
                             <button class="accordion-button collapsed nav-link" style="height: 8px;" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                                 <i style="margin-right: 4px" class="bi bi-box"></i> Quản lý sản phẩm
@@ -54,10 +54,10 @@
                                 <li style="margin-top: 2px;" class="nav-link"><a class="accordion-body link-dark" style="text-decoration: none;" href="/admin/thuong-hieu/view">Thương Hiệu</a></li>
                                 <li style="margin-top: 2px;" class="nav-link"><a class="accordion-body link-dark" style="text-decoration: none;" href="/admin/chat-lieu/view">Chất Liệu</a></li>
                                 <li style="margin-top: 2px;" class="nav-link"><a class="accordion-body link-dark" style="text-decoration: none;" href="/admin/kieu-dang/view">Kiểu Dáng</a></li>
+                                <hr class="text-dark">
                             </ul>
                         </div>
                     </div>
-                </div>
                 <li>
                     <a href="/admin/ma-giam-gia/hien-thi" class="nav-link link-dark" style="transition: background-color 0.3s;">
                         <i class="bi bi-percent"></i> Mã Giảm Giá
@@ -68,11 +68,21 @@
                         <i class="bi bi-receipt"></i> Quản lý hóa đơn
                     </a>
                 </li>
-                <li>
-                    <a href="/admin/nhanvien/view" class="nav-link link-dark" style="transition: background-color 0.3s;">
-                        <i class="bi bi-person-circle"></i> Nhân Viên
-                    </a>
-                </li>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header text-dark" style="margin-left: -3px; font-weight: normal;">
+                            <button class="accordion-button collapsed nav-link" style="height: 8px;" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                <i class="bi bi-person-circle" style="margin-right: 4px"></i> Quản lý tài khoản
+                            </button>
+                        </h2>
+                        <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" data-bs-target="#flush-collapseTwo">
+                            <ul class="nav nav-pills flex-column mb-auto" style="list-style: none; padding: 0;">
+                                <li style="margin-top: 2px;" class="nav-link"><a class="accordion-body link-dark" style="text-decoration: none;" href="/admin/nhanvien/view">Nhân viên</a></li>
+                                <li style="margin-top: 2px;" class="nav-link"><a class="accordion-body link-dark" style="text-decoration: none;" href="/admin/khach-hang/view">Khách hàng</a></li>
+                                <hr>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <li>
                     <a href="/admin/thong-ke" class="nav-link link-dark" style="transition: background-color 0.3s;">
                         <i class="bi bi-clipboard-data"></i> Thống kê

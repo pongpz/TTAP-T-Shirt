@@ -73,7 +73,7 @@
         </form>
         <div class="">
             <h1 class="text-center">Hóa đơn</h1>
-            <table class="table-sm table-hover">
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">STT</th>
@@ -82,11 +82,11 @@
                     <th scope="col">Khách hàng</th>
                     <th scope="col">SDT khách hàng</th>
                     <th scope="col">Loại đơn</th>
-                    <th scope="col">Phí vận chuyển</th>
                     <th scope="col">Ngày thanh toán</th>
-                    <th scope="col">SĐT người nhận</th>
-                    <th scope="col">Tên người nhận</th>
+<!--                    <th scope="col">SĐT người nhận</th>-->
+<!--                    <th scope="col">Tên người nhận</th>-->
                     <th scope="col">Tiền ban đầu</th>
+                    <th scope="col">Phí vận chuyển</th>
                     <th scope="col">Tiền giảm</th>
                     <th scope="col">Tổng tiền</th>
                     <th scope="col">Mã giảm giá</th>
@@ -104,11 +104,11 @@
                     <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
                         th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
                     </td>
-                    <td th:text="${hd.tienShip != null? numberUtils.formatCurrency(hd.tienShip) : 'Không có'}"></td>
                     <td th:text="${hd.ngayThanhToan ?: 'Không có'}"></td>
-                    <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>
-                    <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>
+<!--                    <td th:text="${hd.sdtNguoiNhan ?: 'Không có'}"></td>-->
+<!--                    <td th:text="${hd.tenNguoiNhan ?: 'Không có'}"></td>-->
                     <td th:text="${hd.tongTien != null?numberUtils.formatCurrency(hd.tongTien): 'Không có'}"></td>
+                    <td th:text="${hd.tienShip != null? numberUtils.formatCurrency(hd.tienShip) : 'Không có'}"></td>
                     <td th:text="${hd.soTienGiamGia != null?numberUtils.formatCurrency(hd.soTienGiamGia): 'Không có'}"></td>
                     <td th:text="${hd.tienThu != null?numberUtils.formatCurrency(hd.tienThu): 'Không có'}"></td>
                     <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
