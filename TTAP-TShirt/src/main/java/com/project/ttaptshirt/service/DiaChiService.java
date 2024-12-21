@@ -38,12 +38,12 @@ public class DiaChiService {
 
     public DiaChi taoDiaChi(DiaChi dc, Long userId) {
        TaiKhoan user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        dc.setUser(user);
+        dc.setTaiKhoan(user);
         return repoDc.save(dc);
     }
 
     public List<DiaChi> findAddressesByUser(Long userId) {
-        return repoDc.findByUserId(userId);
+        return repoDc.findByTaiKhoanId(userId);
     }
 
     public DiaChi findById(Long id) {

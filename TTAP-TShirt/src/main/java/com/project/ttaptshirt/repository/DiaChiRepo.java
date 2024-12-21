@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface DiaChiRepo extends JpaRepository<DiaChi, Long> {
-    List<DiaChi> findByUserId(Long userId);
+    List<DiaChi> findByTaiKhoanId(Long userId);
 
     Optional<DiaChi> findById(Long id);
 }

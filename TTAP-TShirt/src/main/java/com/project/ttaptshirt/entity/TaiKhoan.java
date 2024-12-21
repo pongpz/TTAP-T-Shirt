@@ -62,7 +62,7 @@ public class TaiKhoan {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "taiKhoan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiaChi> diaChiList = new ArrayList<>();
 
     @ManyToOne

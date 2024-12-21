@@ -72,12 +72,13 @@ public class DiaChiController {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
 
+
             TaiKhoan user = customUserDetail.getUser();
             if (address.getSoNha() == null || address.getTenDuong().equals("0") || address.getTenQuanhuyen().equals("0") || address.getTenThanhpho().equals("0")){
                 redirectAttributes.addFlashAttribute("failAddress", true);
                 return "redirect:/TTAP/cart/view";
             }
-            address.setUser(user); // Gắn địa chỉ với người dùng hiện tại
+           address.setTaiKhoan(user); // Gắn địa chỉ với người dùng hiện tại
             serDc.save(address); // Lưu địa chỉ vào cơ sở dữ liệu
 
             redirectAttributes.addFlashAttribute("successAddress", true);
@@ -127,7 +128,7 @@ public class DiaChiController {
             DiaChi existingAddress = optionalAddress.get();
 
             // Kiểm tra quyền: Địa chỉ này có thuộc về người dùng hiện tại không?
-            if (!existingAddress.getUser().getId().equals(currentUser.getId())) {
+            if (!existingAddress.getTaiKhoan().getId().equals(currentUser.getId())) {
                 redirectAttributes.addFlashAttribute("error", "You are not authorized to update this address.");
                 return "redirect:/TTAP/cart/view";
             }

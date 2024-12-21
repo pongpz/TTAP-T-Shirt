@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
             TaiKhoan user = userOptional.get();
 
             // Thiết lập liên kết giữa DiaChi và User
-            diaChi.setUser(user);
+            diaChi.setTaiKhoan(user);
             diaChiRepo.save(diaChi);
 
             // Thêm địa chỉ mới vào danh sách DiaChi của User
