@@ -39,7 +39,7 @@
       </div>
       <div class="modal-body">
         <!-- Registration Form -->
-        <form id="registerForm" th:action="@{/admin/nhanvien/register}" method="post" onsubmit="return validateForm()">
+        <form id="registerForm" th:action="@{/admin/nhanvien/register}" method="post"  onsubmit="return validateForm()">
           <!-- Tên Đăng Nhập -->
           <div class="mb-3">
             <label for="username" class="form-label">Tên Đăng Nhập</label>
@@ -51,7 +51,7 @@
           <!-- Họ Tên -->
           <div class="mb-3">
             <label for="hoTen" class="form-label">Họ Tên</label>
-            <input type="text" id="hoTen" name="hoTen" class="form-control" th:field="*{user.hoTen}"
+            <input type="text" id="hoTen" name="hoTen" class="form-control" th:field="*{nv.hoTen}"
                    placeholder="Nhập họ tên đầy đủ" required maxlength="100" />
             <span class="text-danger" id="hoTenError">[[${nameError}]]</span>
           </div>
@@ -69,11 +69,11 @@
             <label class="form-label">Giới Tính</label>
             <div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gioiTinh" value="true" id="maleGender" th:field="*{user.gioiTinh}" checked />
+                <input class="form-check-input" type="radio" name="gioiTinh" value="true" id="maleGender" th:field="*{nv.gioiTinh}" checked />
                 <label class="form-check-label" for="maleGender">Nam</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gioiTinh" value="false" id="femaleGender" th:field="*{user.gioiTinh}" />
+                <input class="form-check-input" type="radio" name="gioiTinh" value="false" id="femaleGender" th:field="*{nv.gioiTinh}" />
                 <label class="form-check-label" for="femaleGender">Nữ</label>
               </div>
             </div>
@@ -82,7 +82,7 @@
           <!-- Email -->
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" class="form-control" th:field="*{user.email}"
+            <input type="email" id="email" name="email" class="form-control" th:field="*{nv.email}"
                    placeholder="Nhập địa chỉ email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
             <span class="text-danger" id="emailError">[[${emailIsInvalid}]]</span>
           </div>
@@ -90,7 +90,7 @@
           <!-- Số Điện Thoại -->
           <div class="mb-3">
             <label for="soDienthoai" class="form-label">Số Điện Thoại</label>
-            <input type="tel" id="soDienthoai" name="soDienthoai" class="form-control" th:field="*{user.soDienthoai}"
+            <input type="tel" id="soDienthoai" name="soDienthoai" class="form-control" th:field="*{nv.soDienthoai}"
                    placeholder="Nhập số điện thoại" required pattern="[0-9]{10,11}" />
             <span class="text-danger" id="phoneError">[[${ErrorPhoneNumber}]]</span>
           </div>

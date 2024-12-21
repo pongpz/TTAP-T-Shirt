@@ -1,9 +1,13 @@
 package com.project.ttaptshirt.controller.adminController;
 
+import com.project.ttaptshirt.entity.NhanVien;
+import com.project.ttaptshirt.entity.Role;
 import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
+import com.project.ttaptshirt.service.NhanVienService;
 import com.project.ttaptshirt.service.UserService;
+import com.project.ttaptshirt.service.impl.NhanVienServicelmpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +26,9 @@ import java.util.Optional;
 @RequestMapping("/admin/nhanvien")
 public class NhanVienController {
     @Autowired
+    private NhanVienServicelmpl nhanVienServicelmpl;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -38,7 +45,7 @@ public class NhanVienController {
             model.addAttribute("userLogged", user);
         }
         Pageable pageable = PageRequest.of(page.orElse(0), 5);
-        Page<TaiKhoan> employeesPage = userService.findAllNv("ROLE_EMPLOYEE", pageable);
+        Page<NhanVien> employeesPage = nhanVienServicelmpl.findAll(pageable);
 
         model.addAttribute("emp", employeesPage);
         return "/admin/nhanvien/index";
@@ -52,12 +59,45 @@ public class NhanVienController {
             model.addAttribute("userLogged", user);
         }
         TaiKhoan user = new TaiKhoan();
+        NhanVien nv = new NhanVien();
         model.addAttribute("user", user);
+        model.addAttribute("nv", nv);
         return "/admin/nhanvien/register";
     }
 
+//    @PostMapping("/register")
+//    public String createNewUser(TaiKhoan user, @RequestParam("password") String passwordString,
+//                                RedirectAttributes redirectAttributes, Model model) {
+//
+//        if(userRepo.findUserByUsername(user.getUsername()) != null){
+//            model.addAttribute("usernameIsInvalid","Tài khoản đã tồn tại");
+//            model.addAttribute("user",user);
+//            return "user/register";
+//        }
+//
+////        else if (!user.getSoDienthoai().matches("\\d+")){
+////            model.addAttribute("ErrorPhoneNumber","Số điện thoại không hợp lệ");
+////            model.addAttribute("user",user);
+////            return "user/register";
+////        }
+//        else {
+//            String password = new BCryptPasswordEncoder().encode(passwordString);
+//            user.setPassword(password);
+//            user.setEnable(true);
+//            user.setNgayTao(LocalDate.now());
+//            Role role = new Role();
+//            role.setId(Long.parseLong("2"));
+//            user.setRole(role);
+//            userService.save(user);
+//            redirectAttributes.addFlashAttribute("isRegisterSuccess", true);
+//            return "redirect:/login";
+//        }
+//
+//    }
+
     @PostMapping("/register")
     public String createNewUser(@ModelAttribute("user") TaiKhoan user,
+                                @ModelAttribute("nv") NhanVien nv,
                                 @RequestParam("password") String passwordString,
                                 RedirectAttributes redirectAttributes,
                                 Model model) {
@@ -67,10 +107,6 @@ public class NhanVienController {
             model.addAttribute("usernameIsInvalid", "Tài khoản đã tồn tại");
             return "/admin/nhanvien/register"; // Đảm bảo trang không redirect mà giữ lại modal
         }
-
-
-
-
 
         // Kiểm tra số điện thoại có hợp lệ
 //        if (!user.getSoDienthoai().matches("\\d+")) {
@@ -96,9 +132,13 @@ public class NhanVienController {
         user.setPassword(encodedPassword);
         user.setEnable(true); // Kích hoạt tài khoản
         user.setNgayTao(LocalDate.now());
-
+        Role role = new Role();
+        role.setId(Long.parseLong("3"));
+        user.setRole(role);
+        nv.setTaiKhoan(user);
         // Lưu vào cơ sở dữ liệu
         userService.save(user);
+        nhanVienServicelmpl.save(nv);
 
         // Gán quyền mặc định (Role nhân viên)
 //        userService.insertDefaultNvRole(user.getId());
@@ -144,8 +184,10 @@ public class NhanVienController {
 
     @GetMapping("/detail/{id}")
     public String showUserDetails(@PathVariable("id") Long id, Model model) {
-        TaiKhoan user = userService.findById(id);
-        model.addAttribute("user", user);
+        NhanVien nhanVien = nhanVienServicelmpl.findById(id);
+        TaiKhoan tk = nhanVien.getTaiKhoan();
+        model.addAttribute("nv", nhanVien);
+        model.addAttribute("user", tk);
         return "/admin/nhanvien/update";
     }
 
@@ -165,63 +207,28 @@ public class NhanVienController {
 
 
     @PostMapping("/updateUser/{id}")
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") TaiKhoan updatedUser,
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("nv") NhanVien nv,
                              RedirectAttributes redirectAttributes, Authentication authentication, Model model) {
         try {
-            // Kiểm tra người dùng đã đăng nhập
-            if (authentication != null) {
-                CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-                TaiKhoan userLoggedIn = customUserDetail.getUser();
-                redirectAttributes.addFlashAttribute("userLogged", userLoggedIn); // Lưu vào RedirectAttributes
-            }
+            NhanVien existingNv = nhanVienServicelmpl.findById(id);
+            if (existingNv != null) {
 
-            // Lấy thông tin người dùng từ cơ sở dữ liệu
-            TaiKhoan user = userService.findById(id);
-            // Kiểm tra username đã tồn tại
-            if (userRepo.findUserByUsernameUpdate(updatedUser.getUsername(), id) != null) {
-                model.addAttribute("usernameIsInvalid", "Tài khoản đã tồn tại");
-                return "/admin/nhanvien/update"; // Đảm bảo trang không redirect mà giữ lại modal
-            }
+                // Cập nhật các thông tin còn lại
+                existingNv.setHoTen(nv.getHoTen());
+                existingNv.setEmail(nv.getEmail());
+                existingNv.setSoDienthoai(nv.getSoDienthoai());
+                existingNv.setGioiTinh(nv.getGioiTinh());
 
+                // Cập nhật người dùng
+                nhanVienServicelmpl.save(existingNv);
 
-
-
-
-            // Kiểm tra số điện thoại có hợp lệ
-//            if (!user.getSoDienthoai().matches("\\d+")) {
-//                model.addAttribute("ErrorPhoneNumber", "Số điện thoại không hợp lệ");
-//                return "/admin/nhanvien/update";
-//            }
-
-            // Kiểm tra trường trống trong controller
-            if (user.getUsername().trim().isEmpty()) {
-                model.addAttribute("usernameError", "Tên đăng nhập không được để trống");
-                return "/admin/nhanvien/update";
-            }
-
-
-//            if (user.getSoDienthoai().trim().isEmpty()) {
-//                model.addAttribute("ErrorPhoneNumber", "Số điện thoại không được để trống");
-//                return "/admin/nhanvien/update";
-//            }
-            if (user != null) {
-                // Cập nhật các trường từ form
-                user.setUsername(updatedUser.getUsername());
-//                user.setSoDienthoai(updatedUser.getSoDienthoai());
-                user.setUsername(updatedUser.getUsername()); // Kiểm tra username đã có chưa?
-
-                // Lưu lại thay đổi vào cơ sở dữ liệu
-                userService.save(user);
-
-                // Thêm thông báo thành công
-                redirectAttributes.addFlashAttribute("success", true);
+                redirectAttributes.addFlashAttribute("message", "Cập nhật thành công.");
+                return "redirect:/admin/nhanvien/view"; // Quay lại danh sách nhân viên
             } else {
-                // Nếu không tìm thấy người dùng
-                redirectAttributes.addFlashAttribute("error", "User not found.");
+                redirectAttributes.addFlashAttribute("error", "Không tìm thấy người dùng.");
             }
         } catch (Exception e) {
-            // Thông báo lỗi nếu có ngoại lệ xảy ra
-            redirectAttributes.addFlashAttribute("error", "Error updating user: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Cập nhật thất bại: " + e.getMessage());
         }
 
         // Chuyển hướng về danh sách người dùng sau khi cập nhật
