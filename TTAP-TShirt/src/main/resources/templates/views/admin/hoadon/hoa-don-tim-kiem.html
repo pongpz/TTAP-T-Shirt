@@ -136,78 +136,19 @@
     </span>
                     </td>
                     <td>
-                        <a th:if="${hd.loaiDon==1}" th:href="@{/admin/hoa-don/tim-kiem(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${hd.id})}" class="btn btn-info">Chi tiết</a>
+                        <a th:if="${hd.loaiDon==1}" th:href="@{/admin/hoa-don/chi-tiet-hoa-don/{id}(id=${hd.id})}" class="btn btn-info">Chi tiết</a>
                         <a th:if="${hd.loaiDon==0}" th:href="@{/admin/hoa-don/chi-tiet-hoa-don-online/{id}(id=${hd.id})}" class="btn btn-info">Chi tiết</a>
                     </td>
-
-
 
                 </tr>
                 </tbody>
             </table>
             <h5 class="text-center">[[${nullhd}]]</h5>
-<!--            Phân Trang-->
-            <div
-                    class="justify-content-center d-flex mb-5"
-                    style="display: flex; justify-content: center; align-items: center; gap: 1rem; font-family: Arial, sans-serif; padding: 15px; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-
-                <a
-                        th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}"
-                        class="btn btn-outline-primary"
-                        style="padding: 10px 20px; font-size: 14px; border: 2px solid #007bff; color: #007bff; border-radius: 5px; text-align: center; min-width: 100px; cursor: pointer; transition: all 0.3s ease;">
-                    Trang trước
-                </a>
-
-                <input
-                        type="text"
-                        class="form-control-sm text-center"
-                        th:value="${page+1}"
-                        onchange="changePage(this.value)"
-                        id="input-page"
-                        style="width: 60px; height: 35px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; text-align: center; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); outline: none; transition: border-color 0.3s ease;">
-
-                <a
-                        th:href="@{/admin/hoa-don/tim-kiem?(page=${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}"
-                        class="btn btn-outline-primary"
-                        style="padding: 10px 20px; font-size: 14px; border: 2px solid #007bff; color: #007bff; border-radius: 5px; text-align: center; min-width: 100px; cursor: pointer; transition: all 0.3s ease;">
-                    Trang sau
-                </a>
-
+            <div class="justify-content-center d-flex mb-5">
+                <a th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang trước</a>
+                <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
+                <a th:href="@{/admin/hoa-don/tim-kiem?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang sau</a>
             </div>
-
-            <h1 class="text-center">Hóa đơn chi tiết</h1>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Mã hóa đơn</th>
-                    <th scope="col">Mã sản phẩm</th>
-                    <th scope="col">Tên sản phẩm</th>
-                    <!--            <th scope="col">Giá sản phẩm</th>-->
-                    <th scope="col">Màu sắc</th>
-                    <th scope="col">Kích cỡ</th>
-                    <th scope="col">Đơn giá</th>
-                    <th scope="col">Số lượng</th>
-                    <th scope="col">Tổng</th>
-                    <!--            <th scope="col">Tên khuyến mãi</th>-->
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="hdct, stat: ${listHDCT}">
-                    <td th:text="${stat.index+1}"></td>
-                    <td th:text="${hdct.hoaDon.ma?: 'Không có'}"></td>
-                    <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.ma : 'Không có'}"></td>
-                    <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.ten : 'Không có'}"></td>
-                    <!--            <td th:text="${hdct.chiTietSanPham.sanPham != null ? hdct.chiTietSanPham.sanPham.gia : 'Không có'}"></td>-->
-                    <td th:text="${hdct.chiTietSanPham.mauSac != null  ? hdct.chiTietSanPham.mauSac.ten : 'Không có'}"></td>
-                    <td th:text="${hdct.chiTietSanPham.kichCo != null  ? hdct.chiTietSanPham.kichCo.ten : 'Không có'}"></td>
-                    <td th:text="${hdct.donGia != null ? numberUtils.formatCurrency(hdct.donGia) : 'Không có'}"></td>
-                    <td th:text="${hdct.soLuong != null ? hdct.soLuong : 'Không có'}"></td>
-                    <td th:text="${hdct.soLuong != null && hdct.donGia != null ? numberUtils.formatCurrency(hdct.soLuong*hdct.donGia) : 'Không có'}"></td>
-                    <!--            <td th:text="${hdct.hoaDon.maGiamGia != null ? hdct.hoaDon.maGiamGia.ten : 'Không có'}"></td>-->
-                </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
