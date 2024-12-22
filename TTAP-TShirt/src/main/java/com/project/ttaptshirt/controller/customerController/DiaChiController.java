@@ -74,7 +74,7 @@ public class DiaChiController {
 
 
             TaiKhoan user = customUserDetail.getUser();
-            if (address.getSoNha() == null || address.getTenDuong().equals("0") || address.getTenQuanhuyen().equals("0") || address.getTenThanhpho().equals("0")){
+            if (address.getSoNha() == null || address.getTenDuong().equals("0") || address.getTenQuanhuyen().equals("0") || address.getTenThanhpho().equals("0") || address.getHoTen() == null || address.getSoDienThoai() == null){
                 redirectAttributes.addFlashAttribute("failAddress", true);
                 return "redirect:/TTAP/cart/view";
             }
