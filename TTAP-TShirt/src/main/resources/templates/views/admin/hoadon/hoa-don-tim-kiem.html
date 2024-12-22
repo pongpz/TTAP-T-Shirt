@@ -146,11 +146,35 @@
                 </tbody>
             </table>
             <h5 class="text-center">[[${nullhd}]]</h5>
-            <div class="justify-content-center d-flex mb-5">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang trước</a>
-                <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang sau</a>
+<!--            Phân Trang-->
+            <div
+                    class="justify-content-center d-flex mb-5"
+                    style="display: flex; justify-content: center; align-items: center; gap: 1rem; font-family: Arial, sans-serif; padding: 15px; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+
+                <a
+                        th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}"
+                        class="btn btn-outline-primary"
+                        style="padding: 10px 20px; font-size: 14px; border: 2px solid #007bff; color: #007bff; border-radius: 5px; text-align: center; min-width: 100px; cursor: pointer; transition: all 0.3s ease;">
+                    Trang trước
+                </a>
+
+                <input
+                        type="text"
+                        class="form-control-sm text-center"
+                        th:value="${page+1}"
+                        onchange="changePage(this.value)"
+                        id="input-page"
+                        style="width: 60px; height: 35px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; text-align: center; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); outline: none; transition: border-color 0.3s ease;">
+
+                <a
+                        th:href="@{/admin/hoa-don/tim-kiem?(page=${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}"
+                        class="btn btn-outline-primary"
+                        style="padding: 10px 20px; font-size: 14px; border: 2px solid #007bff; color: #007bff; border-radius: 5px; text-align: center; min-width: 100px; cursor: pointer; transition: all 0.3s ease;">
+                    Trang sau
+                </a>
+
             </div>
+
             <h1 class="text-center">Hóa đơn chi tiết</h1>
             <table class="table">
                 <thead>
