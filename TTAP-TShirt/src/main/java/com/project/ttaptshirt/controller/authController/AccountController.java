@@ -31,7 +31,7 @@ public class AccountController {
     UserService userService;
 
     @Autowired
-    KhachHangService khachHangService;
+    KhachHangServiceImpl khachHangService;
     @Autowired
     UserRepo userRepo;
     @Autowired
@@ -58,7 +58,7 @@ public class AccountController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
     @PostMapping("/register")
-    public String createNewUser(TaiKhoan user, @RequestParam("password") String passwordString,
+    public String createNewUser(KhachHang khachHang ,TaiKhoan user, @RequestParam("password") String passwordString,
                                 RedirectAttributes redirectAttributes, Model model) {
 
         if(userRepo.findUserByUsername(user.getUsername()) != null){
@@ -80,7 +80,9 @@ public class AccountController {
             Role role = new Role();
             role.setId(Long.parseLong("2"));
             user.setRole(role);
+            khachHang.setTaiKhoan(user);
             userService.save(user);
+            khachHangService.save(khachHang);
             redirectAttributes.addFlashAttribute("isRegisterSuccess", true);
             return "redirect:/login";
         }

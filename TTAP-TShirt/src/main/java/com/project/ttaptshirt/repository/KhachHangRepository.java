@@ -15,5 +15,6 @@ public interface KhachHangRepository extends JpaRepository<KhachHang, Long> {
     @Query(value = "select * from khach_hang order by id desc", nativeQuery = true)
     List<KhachHang> findAllOrderByNgayTao();
 
+    KhachHang findByTaiKhoan_Id(Long userId);  // Tìm khách hàng theo id tài khoản
 
 }

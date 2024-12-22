@@ -27,6 +27,8 @@ public class CustomerController {
 
     @Autowired
     private KhachHangServiceImpl serKhachHang;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/view")
     String view(Model model, RedirectAttributes redirectAttributes,
@@ -35,57 +37,55 @@ public class CustomerController {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
+
+            KhachHang khachHang = serKhachHang.findById(user.getKhachHang().getId()); // Lấy lại từ DB
+            if (khachHang != null) {
+                model.addAttribute("khachHang", khachHang);
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Không tìm thấy khách hàng.");
+                return "redirect:/login"; // Redirect nếu không tìm thấy khách hàng
+            }
+
+
             return "/user/home/customer";
         }return "redirect:/login";
 
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(@ModelAttribute("userLogged") TaiKhoan updatedUser,
-                             RedirectAttributes redirectAttributes, Authentication authentication) {
+    public String updateUser(@ModelAttribute("khachHang") KhachHang khachHang,
+                             RedirectAttributes redirectAttributes, Authentication authentication, Model model) {
         try {
-            // Lấy thông tin người dùng đã đăng nhập từ session hoặc authentication
-            TaiKhoan user = serUser.findById(updatedUser.getId());
+            // Lấy thông tin KhachHang hiện tại từ cơ sở dữ liệu
+            KhachHang customer = serKhachHang.findById(khachHang.getId());
+            if (customer != null) {
+                // Cập nhật thông tin của KhachHang (chỉ cập nhật các trường khách hàng)
+                customer.setHoTen(khachHang.getHoTen());
+                customer.setSoDienThoai(khachHang.getSoDienThoai());
+                customer.setEmail(khachHang.getEmail());
+                customer.setGioiTinh(khachHang.getGioiTinh());
+                customer.setNgayTao(LocalDate.now());
+                System.out.println("sex" + khachHang.getGioiTinh());
+                // Lưu lại thông tin KhachHang đã cập nhật
+                serKhachHang.save(customer);
 
-            if (user != null) {
-                // Mã hóa mật khẩu
-                // Cập nhật thông tin người dùng
-                user.setUsername(updatedUser.getUsername());
-           // Cập nhật mật khẩu đã mã hóa
 
-                // Lấy thông tin khách hàng
-                KhachHang khachHang = user.getKhachHang();  // Giả sử có phương thức để lấy khách hàng từ User
-
-                // Cập nhật thông tin khách hàng
-//                khachHang.setSoDienThoai(updatedUser.getSoDienthoai());  // Cập nhật số điện thoại khách hàng
-
-                // Cập nhật thời gian tạo nếu cần
-                khachHang.setNgayTao(LocalDate.now());  // Cập nhật ngày
-
-                serKhachHang.save(khachHang);
-                serUser.save(user); // Lưu thông tin vào cơ sở dữ liệu
-
-                // Cập nhật lại thông tin người dùng trong session (sau khi thay đổi)
                 CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-                customUserDetail.setUser(user); // Cập nhật thông tin người dùng trong customUserDetail
+                TaiKhoan user = customUserDetail.getUser();
+                model.addAttribute("userLogged", user);
 
-                // Tạo lại đối tượng Authentication với thông tin người dùng đã thay đổi
-                UsernamePasswordAuthenticationToken updatedAuth = new UsernamePasswordAuthenticationToken(
-                        customUserDetail, authentication.getCredentials(), authentication.getAuthorities());
-
-                // Cập nhật lại Authentication trong SecurityContext
-                SecurityContextHolder.getContext().setAuthentication(updatedAuth);
+                KhachHang updatedKhachHang = user.getKhachHang();
+                model.addAttribute("khachHang", updatedKhachHang);
 
                 // Thêm thông báo thành công
-                redirectAttributes.addFlashAttribute("success", "User cập nhật thành công");
+                redirectAttributes.addFlashAttribute("success", "Khách hàng cập nhật thành công.");
             } else {
-                redirectAttributes.addFlashAttribute("error", "User không tìm thấy.");
+                redirectAttributes.addFlashAttribute("error", "Không tìm thấy khách hàng.");
             }
         } catch (Exception e) {
             // Xử lý lỗi nếu có
-            redirectAttributes.addFlashAttribute("error", "Error updating user: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật khách hàng: " + e.getMessage());
         }
-
         // Điều hướng về trang chi tiết người dùng
         return "redirect:/TTAP/user/detail/view";
     }

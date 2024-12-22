@@ -81,14 +81,25 @@ public class GioHangController {
                 address = new DiaChi(); // Tạo đối tượng mới nếu không có
             }
             // Lấy địa chỉ đã chọn hoặc địa chỉ đầu tiên mặc định
-            DiaChi selectedAddress = (selectedAddressId != null) ?
-                    addresses.stream()
-                            .filter(addr -> addr.getId().equals(selectedAddressId))
-                            .findFirst()
-                            .orElse(null)
-                    : user.getDefaultAddress();
+            DiaChi selectedAddress = null;
+
+            // Nếu có `selectedAddressId`, tìm địa chỉ đó trong danh sách
+            if (selectedAddressId != null) {
+                selectedAddress = addresses.stream()
+                        .filter(addr -> addr.getId().equals(selectedAddressId))
+                        .findFirst()
+                        .orElse(null);
+            }
+
+            // Nếu không có `selectedAddressId` hoặc địa chỉ được chọn không tồn tại
+            if (selectedAddress == null) {
+                // Kiểm tra địa chỉ mặc định của người dùng
+                selectedAddress = user.getDefaultAddress();
+            }
+
+            // Nếu địa chỉ mặc định bị xóa hoặc không tồn tại, chọn địa chỉ đầu tiên trong danh sách
             if (selectedAddress == null && !addresses.isEmpty()) {
-                selectedAddress = addresses.get(0); // Lấy địa chỉ đầu tiên làm mặc định
+                selectedAddress = addresses.get(0);
             }
             // Lấy địa chỉ từ redirectAttributes (nếu có)
             DiaChi flashSelectedAddress = (DiaChi) model.asMap().get("selectedAddress");
