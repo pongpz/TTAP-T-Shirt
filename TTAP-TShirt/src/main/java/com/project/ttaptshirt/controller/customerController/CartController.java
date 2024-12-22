@@ -2,8 +2,10 @@ package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.dto.CartDTO;
 import com.project.ttaptshirt.entity.HoaDon;
+import com.project.ttaptshirt.entity.HoaDonLog;
 import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
+import com.project.ttaptshirt.repository.HoaDonLogRepository;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.CartService;
 import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Controller
@@ -30,6 +33,9 @@ public class CartController {
 
     @Autowired
     HoaDonChiTietRepository hdctr;
+
+    @Autowired
+    HoaDonLogRepository hdlogr;
 
     public CartController(CartService cartService) {
         this.cartService = cartService;
@@ -128,10 +134,23 @@ public class CartController {
 
     @Transactional
     @GetMapping("/cancel-hoa-don/online/{idHD}")
-    public String cancelHD(@PathVariable("idHD") Long idHD){
+    public String cancelHD(@PathVariable("idHD") Long idHD, Authentication authentication,Model model){
+        HoaDonLog hdlog = new HoaDonLog();
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            hdlog.setNguoiThucHien(user.getNhanVien() != null?user.getNhanVien().getHoTen():"");
+            model.addAttribute("userLogged", user); // Gửi thông tin người dùng vào model
+        }
         HoaDon hd = hoaDonService.findById(idHD);
         hd.setTrangThai(2);
         hoaDonService.save(hd);
+        hdlog.setHoaDon(hd);
+        hdlog.setHanhDong("Hủy hóa đơn");
+        hdlog.setTrangThai(0);
+        hdlog.setThoiGian(LocalDateTime.now());
+        hdlog.setGhiChu("Đã thực hiện hủy đơn hàng");
+        hdlogr.save(hdlog);
         return "redirect:/TTAP/cart/hoa-don";
     }
 
