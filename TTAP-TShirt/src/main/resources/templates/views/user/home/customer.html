@@ -61,93 +61,185 @@
 <header th:replace="~{/fragment/header-customer :: header-customer}"></header>
 <div id="toast-root"></div>
 <section>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createAddressModalLabel">Cập Nhật Thông Tin Người Dùng</h5>
+  <div class="container mt-5">
+    <div class="row">
+      <!-- Cột Avatar và Tên người dùng -->
+      <div class="col-md-4 text-center">
+        <div class="mb-4">
+          <h4><span th:text="${khachHang.taiKhoan.username}"></span></h4>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a href="#">Đơn Mua</a>
+          </li>
+          <li class="list-group-item">
+            <a href="#">Địa chỉ</a>
+          </li>
+          <li class="list-group-item">
+            <a href="#">Mật khẩu</a>
+          </li>
+          <li class="list-group-item">
+            <a href="#">Mã giảm giá </a>
+          </li>
+        </ul>
       </div>
-      <div class="modal-body">
-        <!-- Form nhập thông tin người dùng -->
-        <form id="updateUserForm" th:action="@{/TTAP/user/detail/updateUser}" method="post" th:object="${userLogged}">
-          <!-- Thông tin cơ bản -->
-          <div class="mb-3">
-            <label for="username" class="form-label">Người Dùng</label>
-            <input type="text" class="form-control" id="username" th:field="*{username}" required>
-            <div class="invalid-feedback">Vui lòng nhập người dùng.</div>
-          </div>
 
-          <div class="mb-3">
-            <label for="name" class="form-label">Tên Người Dùng</label>
-            <input type="text" class="form-control" id="name" th:field="*{hoTen}" required>
-            <div class="invalid-feedback">Vui lòng nhập tên người dùng.</div>
-          </div>
-
-          <div class="mb-3">
-            <label for="phoneNumber" class="form-label">Số Điện Thoại</label>
-            <input type="text" class="form-control" id="phoneNumber" th:field="*{soDienthoai}" required>
-            <div class="invalid-feedback">Vui lòng nhập số điện thoại hợp lệ.</div>
-          </div>
-
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" th:field="*{email}" required>
-            <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>
-          </div>
-          <input type="hidden" th:field="*{id}">
-          <!-- Nút submit -->
-          <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">Cập Nhật</button>
-          </div>
+      <!-- Cột Thông tin hồ sơ -->
+      <div class="col-md-8">
+        <div class="mb-4 text-center">
+          <h1>Hồ sơ của tôi</h1>
+          <p class="text-muted">Quản lý thông tin hồ sơ để bảo mật tài khoản.</p>
+        </div>
+        <form id="updateUserForm" th:action="@{/TTAP/user/detail/updateUser}" method="post" th:object="${khachHang}">
+          <table class="table table-striped">
+            <tr>
+              <td><label for="username">Tên đăng nhập</label></td>
+              <td>
+                <input type="text" id="username" class="form-control" th:field="*{taiKhoan.username}"  readonly>
+                <small class="form-text text-muted">Tên đăng nhập không thể thay đổi .</small>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="name">Tên</label></td>
+              <td><input type="text" id="name" class="form-control" th:field="*{hoTen}"></td>
+            </tr>
+            <tr>
+              <td><label for="email">Email</label></td>
+              <td>
+                <div class="d-flex justify-content-between align-items-center">
+                  <input id="email" class="form-control" th:field="*{email}"></input>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="phoneNumber">Số điện thoại</label></td>
+              <td>
+                <div class="d-flex justify-content-between align-items-center">
+                  <input id="phoneNumber" class="form-control" th:field="*{soDienThoai}"></input>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label>Giới tính</label></td>
+              <td>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" th:field="*{gioiTinh}" value="true" id="male">
+                  <label class="form-check-label" for="male">Nam</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" th:field="*{gioiTinh}" value="false" id="female" >
+                  <label class="form-check-label" for="female">Nữ</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="hidden" th:field="*{id}" ></td>
+              <td>
+                <button type="submit" class="btn btn-primary btn-block"  >Lưu</button>
+              </td>
+            </tr>
+          </table>
         </form>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-          Đổi Mật Khẩu
-        </button>
-
       </div>
     </div>
   </div>
-  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="changePasswordModalLabel">Đổi Mật Khẩu</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="changePasswordForm" th:action="@{/TTAP/user/detail/changePassword}" method="post">
-            <!-- Mật khẩu hiện tại -->
-            <div class="mb-3">
-              <label for="currentPassword" class="form-label">Mật Khẩu Hiện Tại</label>
-              <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
-              <div class="invalid-feedback">Vui lòng nhập mật khẩu hiện tại.</div>
-            </div>
 
-            <!-- Mật khẩu mới -->
-            <div class="mb-3">
-              <label for="newPassword" class="form-label">Mật Khẩu Mới</label>
-              <input type="password" class="form-control" id="newPassword" name="newPassword" required>
-              <div class="invalid-feedback">Vui lòng nhập mật khẩu mới.</div>
-            </div>
+  <!--  <div class="modal-dialog">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <h5 class="modal-title" id="createAddressModalLabel">Cập Nhật Thông Tin Người Dùng</h5>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        &lt;!&ndash; Form nhập thông tin người dùng &ndash;&gt;-->
+<!--        <form id="updateUserForm" th:action="@{/TTAP/user/detail/updateUser}" method="post" th:object="${userLogged}">-->
+<!--          &lt;!&ndash; Thông tin cơ bản &ndash;&gt;-->
+<!--          <div class="mb-3">-->
+<!--            <label for="username" class="form-label">Người Dùng</label>-->
+<!--            <input type="text" class="form-control" id="username" th:field="*{username}" required>-->
+<!--            <div class="invalid-feedback">Vui lòng nhập người dùng.</div>-->
+<!--          </div>-->
 
-            <!-- Xác nhận mật khẩu mới -->
-            <div class="mb-3">
-              <label for="confirmPassword" class="form-label">Xác Nhận Mật Khẩu Mới</label>
-              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-              <div class="invalid-feedback">Vui lòng xác nhận mật khẩu mới.</div>
-            </div>
+<!--          <div class="mb-3">-->
+<!--            <label for="name" class="form-label">Tên Người Dùng</label>-->
+<!--            <input type="text" class="form-control" id="name" th:field="*{hoTen}" required>-->
+<!--            <div class="invalid-feedback">Vui lòng nhập tên người dùng.</div>-->
+<!--          </div>-->
 
-            <!-- Nút hành động -->
-            <div class="d-flex justify-content-end">
-              <button type="submit" class="btn btn-primary">Đổi Mật Khẩu</button>
-              <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Hủy</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+<!--          <div class="mb-3">-->
+<!--            <label for="phoneNumber" class="form-label">Số Điện Thoại</label>-->
+<!--            <input type="text" class="form-control" id="phoneNumber" th:field="*{soDienthoai}" required>-->
+<!--            <div class="invalid-feedback">Vui lòng nhập số điện thoại hợp lệ.</div>-->
+<!--          </div>-->
+
+<!--          <div class="mb-3">-->
+<!--            <label for="email" class="form-label">Email</label>-->
+<!--            <input type="email" class="form-control" id="email" th:field="*{email}" required>-->
+<!--            <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>-->
+<!--          </div>-->
+<!--          <input type="hidden" th:field="*{id}">-->
+<!--          &lt;!&ndash; Nút submit &ndash;&gt;-->
+<!--          <div class="d-flex justify-content-end">-->
+<!--            <button type="submit" class="btn btn-primary">Cập Nhật</button>-->
+<!--          </div>-->
+<!--        </form>-->
+<!--        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">-->
+<!--          Đổi Mật Khẩu-->
+<!--        </button>-->
+
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--      <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--          <h5 class="modal-title" id="changePasswordModalLabel">Đổi Mật Khẩu</h5>-->
+<!--          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--        </div>-->
+<!--        <div class="modal-body">-->
+<!--          <form id="changePasswordForm" th:action="@{/TTAP/user/detail/changePassword}" method="post">-->
+<!--            &lt;!&ndash; Mật khẩu hiện tại &ndash;&gt;-->
+<!--            <div class="mb-3">-->
+<!--              <label for="currentPassword" class="form-label">Mật Khẩu Hiện Tại</label>-->
+<!--              <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>-->
+<!--              <div class="invalid-feedback">Vui lòng nhập mật khẩu hiện tại.</div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Mật khẩu mới &ndash;&gt;-->
+<!--            <div class="mb-3">-->
+<!--              <label for="newPassword" class="form-label">Mật Khẩu Mới</label>-->
+<!--              <input type="password" class="form-control" id="newPassword" name="newPassword" required>-->
+<!--              <div class="invalid-feedback">Vui lòng nhập mật khẩu mới.</div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Xác nhận mật khẩu mới &ndash;&gt;-->
+<!--            <div class="mb-3">-->
+<!--              <label for="confirmPassword" class="form-label">Xác Nhận Mật Khẩu Mới</label>-->
+<!--              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>-->
+<!--              <div class="invalid-feedback">Vui lòng xác nhận mật khẩu mới.</div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Nút hành động &ndash;&gt;-->
+<!--            <div class="d-flex justify-content-end">-->
+<!--              <button type="submit" class="btn btn-primary">Đổi Mật Khẩu</button>-->
+<!--              <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Hủy</button>-->
+<!--            </div>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 
 </section>
+<script>
+  document.getElementById("updateUserForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent form submission
+    var confirmation = confirm("Bạn có chắc chắn muốn cập nhật thông tin không?");
+    if (confirmation) {
+      this.submit(); // Submit form if confirmed
+    }
+  });
+</script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     // Lấy form và các trường input
