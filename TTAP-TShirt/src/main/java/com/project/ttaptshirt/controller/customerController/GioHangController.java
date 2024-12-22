@@ -6,6 +6,7 @@ import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.HinhAnhRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
+import com.project.ttaptshirt.repository.HoaDonLogRepository;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
@@ -188,6 +189,7 @@ public class GioHangController {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
+
             try {
                 List<CartItemDTO> selectedItems = getSelectedItemsFromCart(user, selectedProductIds);
                 GioHang order = gioHangService.createOrderFromCart(user, selectedItems); // Tạo đơn hàng từ giỏ hàng
@@ -219,10 +221,12 @@ public class GioHangController {
                                RedirectAttributes redirectAttributes,
                                Authentication authentication,
                                Model model) {
+        HoaDonLog hdlog = new HoaDonLog();
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
-
+                hdlog.setNguoiThucHien(user.getKhachHang() != null?user.getKhachHang().getSoDienThoai():"");
+                model.addAttribute("userLogged", user); // Gửi thông tin người dùng vào model
 
             try {
                 // Nếu danh sách sản phẩm được chọn trống hoặc null
@@ -271,14 +275,13 @@ public class GioHangController {
                 HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi,nguoiNhan,soDienThoai);
                 redirectAttributes.addFlashAttribute("message", true);
 
-                HoaDonLog hoaDonLog = new HoaDonLog();
-                hoaDonLog.setHoaDon(hoaDon);
-                hoaDonLog.setHanhDong("Đặt hàng");
-                hoaDonLog.setThoiGian(LocalDateTime.now());
+                hdlog.setHoaDon(hoaDon);
+                hdlog.setHanhDong("Đặt hàng");
+                hdlog.setThoiGian(LocalDateTime.now());
 //                hoaDonLog.setNguoiThucHien(user.getSoDienthoai());
-                hoaDonLog.setGhiChu("đã thực hiện đặt hàng online");
-                hoaDonLog.setTrangThai(0);
-                hoaDonLogService.save(hoaDonLog);
+                hdlog.setGhiChu("Đã thực hiện đặt hàng online");
+                hdlog.setTrangThai(0);
+                hoaDonLogService.save(hdlog);
 
 
                 model.addAttribute("userLogged", user);
@@ -379,9 +382,22 @@ public class GioHangController {
 
     @PostMapping("/huy-hoa-don-online")
     public String huyHDOnline(@RequestParam("idHD") Long idHD,RedirectAttributes redirectAttributes,Authentication authentication){
-        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-        TaiKhoan user = customUserDetail.getUser();
-//        hoaDonService.huyHoaDonOnline(idHD,user.getSoDienthoai()+" đã thực hiện hủy hóa đơn !");
+        HoaDonLog hdlog = new HoaDonLog();
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+//            hoaDonService.huyHoaDonOnline(idHD,user.getKhachHang().getSoDienThoai()+" đã thực hiện hủy hóa đơn !");
+            hdlog.setNguoiThucHien(user.getKhachHang() != null ? user.getKhachHang().getSoDienThoai():"");
+            HoaDon hd = hoaDonService.getDonHang(idHD);
+            hd.setTrangThai(2);
+            hoaDonService.save(hd);
+            hdlog.setHoaDon(hoaDonService.getDonHang(idHD));
+            hdlog.setHanhDong("Hủy hóa đơn");
+            hdlog.setTrangThai(0);
+            hdlog.setThoiGian(LocalDateTime.now());
+            hdlog.setGhiChu("Đã thực hiện hủy đơn hàng");
+            hoaDonLogService.save(hdlog);
+        }
         redirectAttributes.addFlashAttribute("cancelHoaDon", true);
         return "redirect:/TTAP/cart/hoa-don-chi-tiet/hien-thi?id=" + idHD;
     }
