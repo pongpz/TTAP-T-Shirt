@@ -46,6 +46,10 @@ public class DiaChiService {
         return repoDc.findByTaiKhoanId(userId);
     }
 
+    public DiaChi getSelectedAddress(Long userId) {
+        return userRepo.findDefaultAddressByUserId(userId).orElse(null);
+    }
+
     public DiaChi findById(Long id) {
         return repoDc.findById(id).orElseThrow(() -> new RuntimeException("Address not found"));
     }
