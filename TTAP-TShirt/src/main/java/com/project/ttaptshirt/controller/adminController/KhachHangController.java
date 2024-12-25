@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -101,7 +102,7 @@ public class KhachHangController {
 
         List<KhachHang> listKH = khachHangService.findAll();
         for (KhachHang khachHang : listKH) {
-            if (khachHang.getSoDienThoai().equalsIgnoreCase(soDienThoai)) {
+            if (!ObjectUtils.isEmpty(khachHang.getSoDienThoai()) && khachHang.getSoDienThoai().equalsIgnoreCase(soDienThoai)) {
                 redirectAttributes.addFlashAttribute("addCustomerFailed", true);
                 redirectAttributes.addFlashAttribute("messageAddCustomer", "Số điện thoại đã tồn tại.");
                 return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;

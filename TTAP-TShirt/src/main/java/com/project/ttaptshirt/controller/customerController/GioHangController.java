@@ -289,7 +289,7 @@ public class GioHangController {
                 hdlog.setHoaDon(hoaDon);
                 hdlog.setHanhDong("Đặt hàng");
                 hdlog.setThoiGian(LocalDateTime.now());
-//                hoaDonLog.setNguoiThucHien(user.getSoDienthoai());
+                hdlog.setNguoiThucHien("KH: "+user.getUsername());
                 hdlog.setGhiChu("Đã thực hiện đặt hàng online");
                 hdlog.setTrangThai(0);
                 hoaDonLogService.save(hdlog);
