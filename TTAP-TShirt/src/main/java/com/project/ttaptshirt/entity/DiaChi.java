@@ -54,6 +54,6 @@ public class DiaChi extends CreatedUpdatedAt{
     private String trangThai;
 
     @ManyToOne
-    @JoinColumn(name = "id_tai_khoan", nullable = false)
+    @JoinColumn(name = "id_tai_khoan", nullable = true)
     private TaiKhoan taiKhoan;
 }

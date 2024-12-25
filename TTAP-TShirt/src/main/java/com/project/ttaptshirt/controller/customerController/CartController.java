@@ -85,7 +85,13 @@ public class CartController {
                            @RequestParam String address,
                            RedirectAttributes redirectAttributes,
                            HttpSession session,
-                           Model model) {
+                           Model model,
+                           Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            fullName = user.getUsername();
+        }
         try {
            HoaDon hoaDon = hoaDonService.createHoaDon(cart, fullName, phoneNumber, address);
 
