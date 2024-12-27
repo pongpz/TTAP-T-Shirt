@@ -467,16 +467,7 @@ public class GioHangController {
         }
     }
 
-    @GetMapping("/deleteAddress/{id}")
-    public String deleteAddress(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        try {
-            serDc.deleteAddress(id); // Xử lý xóa trong service
-            redirectAttributes.addFlashAttribute("successRemoveaddress", "Địa chỉ đã được xóa thành công.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorRemoveaddress", "Xóa địa chỉ thất bại. Vui lòng thử lại.");
-        }
-        return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
-    }
+         
 
 
 }
