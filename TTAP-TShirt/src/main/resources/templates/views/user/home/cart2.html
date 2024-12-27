@@ -318,19 +318,19 @@
                         </div>
                         <div class="mb-3">
                             <label>Tỉnh/Thành phố</label>
-                            <select class="form-select" id="tinh" name="tenThanhpho" title="Chọn Tỉnh Thành">
+                            <select class="form-select" id="tinh" name="tenThanhpho" title="Chọn Tỉnh Thành" th:field="*{tenThanhpho}">
                                 <option value="0">Tỉnh Thành</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="quan" class="form-label">Quận/Huyện</label>
-                            <select class="form-select" id="quan" name="tenQuanhuyen" title="Chọn Quận Huyện">
+                            <select class="form-select" id="quan" name="tenQuanhuyen" title="Chọn Quận Huyện" th:field="*{tenQuanhuyen}">
                                 <option value="0">Quận Huyện</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="phuong" class="form-label">Phường/Xã</label>
-                            <select class="form-select" id="phuong" name="tenDuong" title="Chọn Phường Xã">
+                            <select class="form-select" id="phuong" name="tenDuong" title="Chọn Phường Xã" th:field="*{tenDuong}">
                                 <option value="0">Phường Xã</option>
                             </select>
                         </div>
