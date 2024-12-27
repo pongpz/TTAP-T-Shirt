@@ -317,22 +317,22 @@
                             <input type="text" class="form-control" id="soNha" th:field="*{soNha}" required>
                         </div>
                         <div class="mb-3">
-                            <label for="tinh" class="form-label">Tỉnh/Thành phố</label>
+                            <label>Tỉnh/Thành phố</label>
                             <select class="form-select" id="tinh" name="tenThanhpho" title="Chọn Tỉnh Thành">
-                            <option value="0">Tỉnh Thành</option>
-                        </select>
+                                <option value="0">Tỉnh Thành</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="quan" class="form-label">Quận/Huyện</label>
-                        <select class="form-select" id="quan" th:field="*{tenQuanhuyen}" title="Chọn Quận Huyện">
-                            <option value="0">Quận Huyện</option>
-                        </select>
+                            <select class="form-select" id="quan" name="tenQuanhuyen" title="Chọn Quận Huyện">
+                                <option value="0">Quận Huyện</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="phuong" class="form-label">Phường/Xã</label>
-                                <select class="form-select" id="phuong" th:field="*{tenDuong}" title="Chọn Phường Xã">
-                                    <option value="0">Phường Xã</option>
-                                </select>
+                            <select class="form-select" id="phuong" name="tenDuong" title="Chọn Phường Xã">
+                                <option value="0">Phường Xã</option>
+                            </select>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Tạo Địa Chỉ</button>
@@ -405,6 +405,94 @@
     });
 </script>
 <script>
+    // Hàm xử lý khi chọn địa chỉ
+    function handleAddressSelection() {
+        const selectedAddressId = $('input[name="addressId"]:checked').val();
+        if (selectedAddressId) {
+            // Gọi API lấy thông tin địa chỉ
+            $.ajax({
+                url: `/shipping/api/address/${selectedAddressId}`, // Gửi ID chọn vào API
+                method: 'GET',
+                success: function(address) {
+                    console.log("Địa chỉ nhận được từ API:", address);
+                    if (address && address.id) {
+                        // Gọi API tính phí ship
+                        calculateShippingFee(address);
+                    } else {
+                        toastError('Lỗi', 'Dữ liệu địa chỉ không hợp lệ');
+                    }
+                },
+                error: function() {
+                    toastError('Lỗi', 'Không thể lấy thông tin địa chỉ');
+                }
+            });
+        } else {
+            toastError('Lỗi', 'Không có địa chỉ nào được chọn');
+        }
+    }
+
+
+    // Hàm tính phí ship
+    function calculateShippingFee(address) {
+        $.ajax({
+            url: '/shipping/api/shipping/calculate',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(address), // Gửi địa chỉ vào API tính phí ship
+            success: function(response) {
+                console.log("Phản hồi tính phí ship:", response);
+                if (response.status === 'success') {
+                    // Cập nhật UI với phí ship mới
+                    const shippingFee = response.shippingFee;
+                    $('#shippingFee').text(formatCurrency(shippingFee));
+
+                    // Tính lại tổng tiền
+                    const currentTotal = parseFloat($('#totalAmount').attr('data-amount') || 0);
+                    const finalAmount = currentTotal + shippingFee;
+                    $('#total-cart-payment').text(formatCurrency(finalAmount));
+                } else {
+                    toastError('Lỗi', response.message || 'Không thể tính phí ship');
+                }
+            },
+            error: function() {
+                toastError('Lỗi', 'Không thể tính phí ship');
+            }
+        });
+    }
+
+
+    // Thêm event listener cho radio button địa chỉ
+    $('input[name="addressId"]').change(handleAddressSelection);
+
+    // Sửa lại hàm calculateTotal
+    function calculateTotal() {
+        const checkboxes = $('.product-checkbox:checked');
+        let total = 0;
+
+        checkboxes.each(function() {
+            const productRow = $(this).closest('.js-item-row');
+            const priceElement = productRow.find('.product-amount');
+            const price = parseFloat(priceElement.attr('data-total') || 0);
+            total += price;
+        });
+
+        // Cập nhật tổng tiền sản phẩm
+        $('#totalAmount')
+            .text(formatCurrency(total))
+            .attr('data-amount', total);
+
+        // Tính lại phí ship nếu có địa chỉ được chọn
+        if (checkboxes.length > 0) {
+            const selectedAddressId = $('input[name="addressId"]:checked').val();
+            if (selectedAddressId) {
+                handleAddressSelection();
+            }
+        } else {
+            // Reset shipping fee và total payment
+            $('#shippingFee').text(formatCurrency(0));
+            $('#total-cart-payment').text(formatCurrency(total));
+        }
+    }
     function validateQuantity(input) {
         const currentQuantity = parseInt(input.value, 10);
         const maxQuantity = parseInt(input.getAttribute('data-max-quantity'), 10);
@@ -427,48 +515,6 @@
             checkbox.checked = selectAllCheckbox.checked;
         });
         calculateTotal(); // Cập nhật tổng tiền mỗi khi thay đổi trạng thái của "Select All"
-    }
-
-    function calculateTotal() {
-        const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-        let total = 0;
-        const shippingFee = 50000;
-        const selectedProductIds = [];
-
-        checkboxes.forEach(checkbox => {
-            const productRow = checkbox.closest('.js-item-row');
-            const priceElement = productRow.querySelector('.product-amount');
-
-            // Lấy giá trị từ data-total
-            const price = parseFloat(priceElement.getAttribute('data-total') || 0);
-
-            total += price;
-            selectedProductIds.push(checkbox.value);
-        });
-
-        // Cập nhật tổng tiền
-        const totalAmountElement = document.getElementById('totalAmount');
-        totalAmountElement.textContent = formatCurrency(total);
-
-        // Kiểm tra nếu có sản phẩm được chọn thì hiển thị phí vận chuyển và tính tổng tiền
-        const shippingFeeElement = document.getElementById('shippingFee');
-        const totalPaymentElement = document.getElementById('total-cart-payment');
-
-        if (checkboxes.length > 0) {
-            // Hiển thị phí vận chuyển
-            shippingFeeElement.textContent = formatCurrency(shippingFee);
-
-            // Cập nhật thành tiền (tổng tiền + phí vận chuyển)
-            const finalAmount = total + shippingFee;
-            totalPaymentElement.textContent = formatCurrency(finalAmount);
-        } else {
-            // Nếu không có sản phẩm nào được chọn, ẩn phí vận chuyển và tổng tiền
-            shippingFeeElement.textContent = formatCurrency(0);
-            totalPaymentElement.textContent = formatCurrency(0);
-        }
-
-        // Hiển thị danh sách ID sản phẩm đã chọn (nếu cần thiết)
-        console.log("Selected Product IDs:", selectedProductIds.join(','));
     }
 
     // Lắng nghe sự kiện thay đổi checkbox
@@ -677,39 +723,64 @@
 </style>
 <script>
     $(document).ready(function() {
-        //Lấy tỉnh thành
-        $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm',function(data_tinh){
-            if(data_tinh.error==0){
-                $.each(data_tinh.data, function (key_tinh,val_tinh) {
-                    $("#tinh").append('<option value="'+val_tinh.full_name+'" data-id="' + val_tinh.id + '">'+val_tinh.full_name+'</option>');
-                });
-                $("#tinh").change(function(e){
-                    var idtinh = $("#tinh option:selected").data('id');
-                    //Lấy quận huyện
-                    $.getJSON('https://esgoo.net/api-tinhthanh/2/'+idtinh+'.htm',function(data_quan){
-                        if(data_quan.error==0){
-                            $("#quan").html('<option value="0">Quận Huyện</option>');
-                            $("#phuong").html('<option value="0">Phường Xã</option>');
-                            $.each(data_quan.data, function (key_quan,val_quan) {
-                                $("#quan").append('<option value="'+val_quan.full_name+' "data-id="' + val_quan.id + '">'+val_quan.full_name+'</option>');
-                            });
-                            //Lấy phường xã
-                            $("#quan").change(function(e){
-                                var idquan = $("#quan option:selected").data('id');
-                                $.getJSON('https://esgoo.net/api-tinhthanh/3/'+idquan+'.htm',function(data_phuong){
-                                    if(data_phuong.error==0){
-                                        $("#phuong").html('<option value="0">Phường Xã</option>');
-                                        $.each(data_phuong.data, function (key_phuong,val_phuong) {
-                                            $("#phuong").append('<option value="'+val_phuong.full_name+'" data-id="' + val_phuong.id + '">'+val_phuong.full_name+'</option>');
-                                        });
-                                    }
-                                });
-                            });
-
-                        }
+        // Lấy tỉnh thành từ GHN
+        $.ajax({
+            url: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/province',
+            type: 'GET',
+            headers: {
+                'Token': '25145a88-c2a2-11ef-b247-3a89ee222ada' // Sử dụng token của bạn ở đây
+            },
+            success: function(data_tinh) {
+                if(data_tinh.code == 200) {
+                    $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                        $("#tinh").append('<option value="'+val_tinh.ProvinceName+'" data-id="' + val_tinh.ProvinceID + '">'+val_tinh.ProvinceName+'</option>');
                     });
-                });
-
+                    $("#tinh").change(function(e){
+                        var idtinh = $("#tinh option:selected").data('id');
+                        // Lấy quận huyện từ GHN
+                        $.ajax({
+                            url: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/district',
+                            type: 'GET',
+                            headers: {
+                                'Token': '25145a88-c2a2-11ef-b247-3a89ee222ada', // Sử dụng token của bạn ở đây
+                            },
+                            data: {
+                                'province_id': idtinh
+                            },
+                            success: function(data_quan) {
+                                if(data_quan.code == 200) {
+                                    $("#quan").html('<option value="0">Quận Huyện</option>');
+                                    $("#phuong").html('<option value="0">Phường Xã</option>');
+                                    $.each(data_quan.data, function (key_quan, val_quan) {
+                                        $("#quan").append('<option value="'+val_quan.DistrictName+'" data-id="' + val_quan.DistrictID + '">'+val_quan.DistrictName+'</option>');
+                                    });
+                                    // Lấy phường xã từ GHN
+                                    $("#quan").change(function(e){
+                                        var idquan = $("#quan option:selected").data('id');
+                                        $.ajax({
+                                            url: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/ward',
+                                            type: 'GET',
+                                            headers: {
+                                                'Token': '25145a88-c2a2-11ef-b247-3a89ee222ada', // Sử dụng token của bạn ở đây
+                                            },
+                                            data: {
+                                                'district_id': idquan
+                                            },
+                                            success: function(data_phuong) {
+                                                if(data_phuong.code == 200) {
+                                                    $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                    $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                        $("#phuong").append('<option value="'+val_phuong.WardName+'" data-id="' + val_phuong.WardID + '">'+val_phuong.WardName+'</option>');
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    });
+                                }
+                            }
+                        });
+                    });
+                }
             }
         });
     });

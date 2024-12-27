@@ -59,4 +59,16 @@ public class DiaChiService {
         repoDc.deleteById(addressId);
     }
 
+
+    @Autowired
+    private DiaChiRepo diaChiRepository;
+
+    public DiaChi getDiaChiByUserId(Long userId) {
+        List<DiaChi> diaChiList = diaChiRepository.findByTaiKhoanId(userId);
+        if (diaChiList != null && !diaChiList.isEmpty()) {
+            return diaChiList.get(0); // Lấy địa chỉ đầu tiên, có thể thay đổi nếu cần
+        }
+        return null; // Trả về null nếu không có địa chỉ
+    }
+
 }
