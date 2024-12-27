@@ -87,11 +87,10 @@
                                 <a th:href="@{/TTAP/user/detail/deleteAddress/{id}(id=${address.id})}" class="text-danger ms-3" onclick="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')" title="Xóa địa chỉ">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
-                                <!--                                    <a th:href="@{/TTAP/user/address/update/{id}(id=${address.id})}" class="text-primary ms-3"-->
-                                <!--                                       title="Chi tiết địa chỉ">-->
-                                <!--                                        <i class="fas fa-info-circle"></i>-->
-                                <!--                                    </a>-->
-
+                                <a th:href="@{/TTAP/user/address/update/{id}(id=${address.id})}" class="text-primary ms-3"
+                                                                       title="Chi tiết địa chỉ">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </a>
                             </div>
                         </div>
                         <!-- Nút chọn địa chỉ -->

@@ -61,46 +61,72 @@
 <header th:replace="~{/fragment/header-customer :: header-customer}"></header>
 <div id="toast-root"></div>
 <section>
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
+  <div class="container mt-5">
+    <div class="row">
+      <div th:replace="~{/fragment/aside-customer :: aside-customer}"></div>
+
+      <!-- Cột Thông tin hồ sơ -->
+      <div class="col-md-8">
+        <div class="mb-4 text-center">
           <h5 class="modal-title" id="createAddressModalLabel">Cập Nhật Địa Chỉ</h5>
         </div>
-        <div class="modal-body">
-          <!-- Form nhập địa chỉ -->
-          <form th:action="@{/TTAP/user/address/update/{id}(id=${address.id})}" method="post" th:object="${address}" onsubmit="return validateAddressForm()">
-            <div class="mb-3">
-              <label for="soNha" class="form-label">Số nhà</label>
-              <input type="text" class="form-control" id="soNha" th:field="*{soNha}" required>
-              <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
+        <!-- Form nhập địa chỉ -->
+        <form th:action="@{/TTAP/user/detail/update/{id}(id=${address.id})}"
+              method="post"
+              th:object="${address}"
+              onsubmit="return validateAddressForm()">
+          <div class="row mb-3">
+            <div class="col-md-6 form-group">
+              <label for="fullName" class="form-label">Họ và tên</label>
+              <input type="text" class="form-control" id="fullName"
+                     placeholder="Họ và tên" th:field="*{hoTen}"
+                     maxlength="64" autocomplete="name">
             </div>
-
-            <div class="mb-3">
-              <label for="tenDuong" class="form-label">Tên đường</label>
-              <input type="text" class="form-control" id="tenDuong" th:field="*{tenDuong}" required>
-              <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
+            <div class="col-md-6 form-group">
+              <label for="phoneNumber" class="form-label">Số điện thoại</label>
+              <input type="text" class="form-control" id="phoneNumber"
+                     placeholder="Số điện thoại" th:field="*{soDienThoai}"
+                     autocomplete="user-address-phone">
             </div>
-
-            <div class="mb-3">
-              <label for="tenQuanhuyen" class="form-label">Tên quận/huyện</label>
-              <input type="text" class="form-control" id="tenQuanhuyen" th:field="*{tenQuanhuyen}" required>
-              <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
+          </div>
+          <div class="mb-3">
+            <label for="soNha" class="form-label">Số nhà</label>
+            <input type="text" class="form-control" id="soNha"
+                   placeholder="Số nhà" th:field="*{soNha}" required>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4 form-group">
+              <label for="tinh" class="form-label">Tỉnh/Thành phố</label>
+              <select class="form-select" id="tinh" name="tenThanhpho"
+                      title="Chọn Tỉnh Thành">
+                <option value="0">Tỉnh Thành</option>
+              </select>
             </div>
-
-            <div class="mb-3">
-              <label for="tenThanhpho" class="form-label">Tên thành phố</label>
-              <input type="text" class="form-control" id="tenThanhpho" th:field="*{tenThanhpho}" required>
-              <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
+            <div class="col-md-4 form-group">
+              <label for="quan" class="form-label">Quận/Huyện</label>
+              <select class="form-select" id="quan"
+                      th:field="*{tenQuanhuyen}"
+                      title="Chọn Quận Huyện">
+                <option value="0">Quận Huyện</option>
+              </select>
             </div>
-
-            <input type="hidden" th:field="*{id}">
-
-            <button type="submit" class="btn btn-primary">Cập nhật Địa Chỉ</button>
-          </form>
-
-        </div>
+            <div class="col-md-4 form-group">
+              <label for="phuong" class="form-label">Phường/Xã</label>
+              <select class="form-select" id="phuong"
+                      th:field="*{tenDuong}"
+                      title="Chọn Phường Xã">
+                <option value="0">Phường Xã</option>
+              </select>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary" >Cập Nhật Địa Chỉ</button>
+          </div>
+        </form>
       </div>
+
     </div>
+  </div>
 </section>
 
 
@@ -126,16 +152,6 @@
 
     return isValid; // Ngăn submit nếu không hợp lệ
   }
-</script>
-<script>
-  // Khi modal "createAddressModal" đóng lại
-  const createAddressModal = document.getElementById('createAddressModal');
-  const selectAddressModal = new bootstrap.Modal(document.getElementById('selectAddressModal'));
-
-  createAddressModal.addEventListener('hidden.bs.modal', function () {
-    // Tự động mở lại modal "selectAddressModal"
-    selectAddressModal.show();
-  });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -206,6 +222,45 @@
     toastSuccess('Thành công', successRemoveaddress);
   }
   /*]]>*/
+</script>
+<script>
+  $(document).ready(function() {
+    //Lấy tỉnh thành
+    $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm',function(data_tinh){
+      if(data_tinh.error==0){
+        $.each(data_tinh.data, function (key_tinh,val_tinh) {
+          $("#tinh").append('<option value="'+val_tinh.full_name+'" data-id="' + val_tinh.id + '">'+val_tinh.full_name+'</option>');
+        });
+        $("#tinh").change(function(e){
+          var idtinh = $("#tinh option:selected").data('id');
+          //Lấy quận huyện
+          $.getJSON('https://esgoo.net/api-tinhthanh/2/'+idtinh+'.htm',function(data_quan){
+            if(data_quan.error==0){
+              $("#quan").html('<option value="0">Quận Huyện</option>');
+              $("#phuong").html('<option value="0">Phường Xã</option>');
+              $.each(data_quan.data, function (key_quan,val_quan) {
+                $("#quan").append('<option value="'+val_quan.full_name+' "data-id="' + val_quan.id + '">'+val_quan.full_name+'</option>');
+              });
+              //Lấy phường xã
+              $("#quan").change(function(e){
+                var idquan = $("#quan option:selected").data('id');
+                $.getJSON('https://esgoo.net/api-tinhthanh/3/'+idquan+'.htm',function(data_phuong){
+                  if(data_phuong.error==0){
+                    $("#phuong").html('<option value="0">Phường Xã</option>');
+                    $.each(data_phuong.data, function (key_phuong,val_phuong) {
+                      $("#phuong").append('<option value="'+val_phuong.full_name+'" data-id="' + val_phuong.id + '">'+val_phuong.full_name+'</option>');
+                    });
+                  }
+                });
+              });
+
+            }
+          });
+        });
+
+      }
+    });
+  });
 </script>
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
   <p>&copy; 2024 TTAP T-SHIRT. All rights reserved.</p>
