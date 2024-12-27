@@ -245,7 +245,7 @@ public class CustomerController {
 
             if (optionalAddress.isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Address not found.");
-                return "redirect:/TTAP/cart/view";
+                return "redirect:/TTAP/user/detail/viewDiachi";
             }
 
             DiaChi existingAddress = optionalAddress.get();
@@ -253,13 +253,13 @@ public class CustomerController {
             // Kiểm tra quyền: Địa chỉ này có thuộc về người dùng hiện tại không?
             if (!existingAddress.getTaiKhoan().getId().equals(currentUser.getId())) {
                 redirectAttributes.addFlashAttribute("error", "You are not authorized to update this address.");
-                return "redirect:/TTAP/cart/view";
+                return "redirect:/TTAP/user/detail/viewDiachi";
             }
 
             // Kiểm tra validate dữ liệu
             if (bindingResult.hasErrors()) {
                 redirectAttributes.addFlashAttribute("error", "Invalid address data. Please check your input.");
-                return "redirect:/TTAP/cart/view";
+                return "redirect:/TTAP/user/detail/viewDiachi";
             }
 
             // Cập nhật thông tin địa chỉ
