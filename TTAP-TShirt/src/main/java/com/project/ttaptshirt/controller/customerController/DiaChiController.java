@@ -68,24 +68,46 @@ public class DiaChiController {
 
     @PostMapping("/address")
     public String createAddress(@ModelAttribute DiaChi address, Authentication authentication,
-                                RedirectAttributes redirectAttributes,Model model) {
-        if (authentication != null) {
-            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-
-
-            TaiKhoan user = customUserDetail.getUser();
-            if (address.getSoNha() == null || address.getTenDuong().equals("0") || address.getTenQuanhuyen().equals("0") || address.getTenThanhpho().equals("0") || address.getHoTen() == null || address.getSoDienThoai() == null){
-                redirectAttributes.addFlashAttribute("failAddress", true);
-                return "redirect:/TTAP/cart/view";
-            }
-           address.setTaiKhoan(user); // Gắn địa chỉ với người dùng hiện tại
-            serDc.save(address); // Lưu địa chỉ vào cơ sở dữ liệu
-
-            redirectAttributes.addFlashAttribute("successAddress", true);
-            return "redirect:/TTAP/cart/view"; // Sau khi lưu, chuyển hướng đến danh sách địa chỉ
+                                RedirectAttributes redirectAttributes, Model model) {
+        if (authentication == null) {
+            return "redirect:/login"; // If not logged in, redirect to login
         }
-        return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
+
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        TaiKhoan user = customUserDetail.getUser();
+
+        if (user == null || user.getId() == null) {
+            redirectAttributes.addFlashAttribute("failAddress", true);
+            System.out.println("log ra user failed !");
+            return "redirect:/TTAP/cart/view";
+        }
+
+        System.out.println("User ID: " + user.getId());
+
+        if (address.getSoNha() == null || "0".equals(address.getTenDuong()) ||
+                "0".equals(address.getTenQuanhuyen()) || "0".equals(address.getTenThanhpho()) ||
+                address.getHoTen() == null || address.getSoDienThoai() == null) {
+            redirectAttributes.addFlashAttribute("failAddress", true);
+            System.out.println("log ra user failed2 !");
+
+            return "redirect:/TTAP/cart/view";
+        }
+
+        address.setTaiKhoan(user); // Associate the address with the current user
+        try {
+
+            serDc.save(address); // Save the address to the database
+            redirectAttributes.addFlashAttribute("successAddress", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("failAddress", true);
+            System.out.println("log ra user failed3 !");
+
+        }
+
+        return "redirect:/TTAP/cart/view"; // Redirect to the address list after saving
     }
+
 
     @GetMapping("/address/update/{id}")
     public String addressUpdate(@PathVariable Long id,Authentication authentication,

@@ -250,7 +250,7 @@
                                                th:checked="${selectedAddress != null and selectedAddress.id == address.id}">
                                         <label class="form-check-label w-100" th:for="'address' + ${iterStat.index}">
                                             <p class="fw-bold mb-1" th:text="${address.hoTen}"></p>
-                                            <p class="fw-bold mb-1" th:text="${selectedAddress.soDienThoai}"></p>
+                                            <p class="fw-bold mb-1" th:text="${address.soDienThoai}"></p>
                                             <span  th:text="${address.soNha} + ', ' + ${address.tenDuong} + ', ' + ${address.tenQuanhuyen} + ', ' + ${address.tenThanhpho}" ></span>
                                         </label>
                                     </div>

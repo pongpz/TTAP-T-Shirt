@@ -156,7 +156,7 @@ public class HoaDonController {
                 hoaDonLog.setHoaDon(hdct.getHoaDon());
                 hoaDonLog.setHanhDong("Xác nhận");
                 hoaDonLog.setThoiGian(LocalDateTime.now());
-//                hoaDonLog.setNguoiThucHien(user.getHoTen());
+                hoaDonLog.setNguoiThucHien(user.getUsername());
                 if (chiTietSanPham.getSoLuong() < hdct.getSoLuong()) {
                     hoaDonLog.setGhiChu("xác nhận(số lượng sản phẩm không đủ)");
                 } else {
@@ -176,7 +176,8 @@ public class HoaDonController {
         hoaDonLog.setHoaDon(hoaDon2);
         hoaDonLog.setHanhDong("Xác nhận");
         hoaDonLog.setThoiGian(LocalDateTime.now());
-//        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setNguoiThucHien(user.getUsername());
+
         hoaDonLog.setGhiChu("đã thực hiện xác nhận đơn hàng online");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
@@ -199,7 +200,8 @@ public class HoaDonController {
         hoaDonLog.setHoaDon(hoaDon);
         hoaDonLog.setHanhDong("Chuẩn bị hàng");
         hoaDonLog.setThoiGian(LocalDateTime.now());
-//        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setNguoiThucHien(user.getUsername());
+
         hoaDonLog.setGhiChu("Đã xác nhận chuẩn bị hàng để gửi cho khách hàng");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
@@ -220,7 +222,8 @@ public class HoaDonController {
         hoaDonLog.setHoaDon(hoaDon);
         hoaDonLog.setHanhDong("Chờ giao hàng");
         hoaDonLog.setThoiGian(LocalDateTime.now());
-//        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setNguoiThucHien(user.getUsername());
+
         hoaDonLog.setGhiChu("đã thực hiện đóng gói đơn hàng và chờ đơn vị vận chuyển");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
@@ -238,7 +241,8 @@ public class HoaDonController {
         hoaDonLog.setHoaDon(hoaDon);
         hoaDonLog.setHanhDong("Đang giao hàng");
         hoaDonLog.setThoiGian(LocalDateTime.now());
-//        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setNguoiThucHien(user.getUsername());
+
         hoaDonLog.setGhiChu("đã giao đơn hàng cho đơn vị vận chuyển");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
@@ -261,7 +265,8 @@ public class HoaDonController {
         hoaDonLog.setHoaDon(hoaDon);
         hoaDonLog.setHanhDong("Đã giao hàng");
         hoaDonLog.setThoiGian(LocalDateTime.now());
-//        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setNguoiThucHien(user.getUsername());
+
         hoaDonLog.setGhiChu("Đơn hàng đã được giao thành công đến khách hàng");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
@@ -279,7 +284,8 @@ public class HoaDonController {
         hoaDonLog.setHoaDon(hoaDon);
         hoaDonLog.setHanhDong("Hoàn Thành đơn hàng");
         hoaDonLog.setThoiGian(LocalDateTime.now());
-//        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setNguoiThucHien(user.getUsername());
+
         hoaDonLog.setGhiChu("đã giao đơn hàng cho khách và nhận được tiền hàng");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
@@ -299,7 +305,8 @@ public class HoaDonController {
         hoaDonLog.setHoaDon(hoaDon);
         hoaDonLog.setHanhDong("Hủy đơn hàng");
         hoaDonLog.setThoiGian(LocalDateTime.now());
-//        hoaDonLog.setNguoiThucHien(user.getHoTen());
+        hoaDonLog.setNguoiThucHien(user.getUsername());
+
         hoaDonLog.setGhiChu("Hủy đơn hàng (Lý do: " + reason + " )");
         hoaDonLog.setTrangThai(0);
         hoaDonLogService.save(hoaDonLog);
@@ -334,12 +341,8 @@ public class HoaDonController {
         model.addAttribute("listSPOrder", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
         NumberUtils numberUtils = new NumberUtils();
         model.addAttribute("numberUtils", numberUtils);
-//        System.out.println(lsSearch);
         model.addAttribute("listHD", lsSearch);
         model.addAttribute("ma", ma);
-//        model.addAttribute("tennv", tennv);
-//        model.addAttribute("tenkh", tenkh);
-//        model.addAttribute("sdt", sdt);
         model.addAttribute("keyword", keyword.trim());
         model.addAttribute("id", id);
         model.addAttribute("ngayThanhToan", ngayThanhToan);

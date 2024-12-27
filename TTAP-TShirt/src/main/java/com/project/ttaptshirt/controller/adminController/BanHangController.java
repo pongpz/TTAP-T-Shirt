@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/ban-hang")
@@ -127,7 +128,15 @@ public class BanHangController {
         List<MaGiamGia> listKM = maGiamGiaRepo.getMaGiamGiaByTrangThaiKeyword(true,mgg);
         // Lấy danh sách khách hàng sắp xếp theo ngày tạo
         List<KhachHang> listkh = khachHangService.findAllOrderByNgayTao();
-        model.addAttribute("listKh", listkh); // Thêm danh sách khách hàng vào model
+
+// Filter the list to remove items where hoTen or sdt is null
+        List<KhachHang> filteredListkh = listkh.stream()
+                .filter(kh -> kh.getHoTen() != null && kh.getSoDienThoai() != null)
+                .collect(Collectors.toList());
+
+// Add the filtered list to the model
+        model.addAttribute("listKh", filteredListkh);
+
         model.addAttribute("listCTSP", listCTSP); // Thêm danh sách chi tiết sản phẩm vào model
 
         // Lấy danh sách chi tiết hóa đơn dựa trên ID hóa đơn

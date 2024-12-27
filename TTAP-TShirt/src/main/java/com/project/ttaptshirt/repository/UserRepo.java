@@ -1,6 +1,7 @@
 package com.project.ttaptshirt.repository;
 
 
+import com.project.ttaptshirt.entity.DiaChi;
 import com.project.ttaptshirt.entity.TaiKhoan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,8 @@ public interface UserRepo extends JpaRepository<TaiKhoan, Long> {
     @Query("select us from TaiKhoan us where us.username =:username and us.id <>:idUS")
     TaiKhoan findUserByUsernameUpdate(String username, Long idUS);
 
+    @Query("SELECT t.defaultAddress FROM TaiKhoan t WHERE t.id = :userId")
+    Optional<DiaChi> findDefaultAddressByUserId(@Param("userId") Long userId);
 
 
     @Query("SELECT u FROM TaiKhoan u  where u.role= :roleName")

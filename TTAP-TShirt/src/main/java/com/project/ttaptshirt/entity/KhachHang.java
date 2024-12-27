@@ -24,12 +24,8 @@ public class KhachHang {
     private Long id;
 
     @Column(name = "ho_ten", columnDefinition = "NVARCHAR(255)")
-    @NotBlank(message = "Họ tên không được phép trống")
-    @Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]+$", message = "Họ tên chỉ được chứa các ký tự chữ và dấu cách")
     private String hoTen;
 
-    @NotBlank(message = "SDT không được phép trống")
-    @Pattern(regexp = "\\d+", message = "Phải là số")
     @Column(name = "so_dien_thoai")
     private String soDienThoai;
 
