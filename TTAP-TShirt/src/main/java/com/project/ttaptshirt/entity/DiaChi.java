@@ -37,7 +37,7 @@ public class DiaChi extends CreatedUpdatedAt{
     private String soNha;
 
     @NotBlank(message = " không được phép trống")
-    @Column(name = "ten_duong", columnDefinition = "NVARCHAR(255)")
+    @Column(name = "ten_phuong_xa", columnDefinition = "NVARCHAR(255)")
     private String tenDuong;
 
     @NotBlank(message = " không được phép trống")
