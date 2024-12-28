@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
 <body>
 <!DOCTYPE html>
@@ -93,6 +93,15 @@
             <input type="tel" id="soDienthoai" name="soDienthoai" class="form-control" th:field="*{nv.soDienthoai}"
                    placeholder="Nhập số điện thoại" required pattern="[0-9]{10,11}" />
             <span class="text-danger" id="phoneError">[[${ErrorPhoneNumber}]]</span>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="chucVu" class="form-label">Chức vụ</label>
+            <select class="form-select" aria-label="Default select example" id="chucVu" name="idChucVu">
+              <option value="3">Nhân viên</option>
+              <option value="1">Quản lý</option>
+            </select>
           </div>
 
           <!-- Nút Đăng Kí -->

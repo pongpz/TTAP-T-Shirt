@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
 <body>
 <!DOCTYPE html>
@@ -67,170 +67,178 @@
 
 
   <!-- Employee Management Section -->
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="registerModalLabel">Chi tiết tài khoản</h5>
-        </div>
-        <div class="modal-body">
-          <!-- Registration Form -->
-          <form id="updateForm" th:action="@{/admin/nhanvien/updateUser/{id}(id=${nv.id})}" method="post" onsubmit="return validateForm()">
-            <div class="mb-3">
-              <label for="username" class="form-label">Tên Đăng Nhập</label>
-              <input readonly type="text" id="username" name="username" class="form-control" th:field="*{nv.taiKhoan.username}"
-                     placeholder="Nhập tên đăng nhập" required minlength="4" maxlength="30" />
-              <span class="text-danger" id="usernameError">[[${usernameIsInvalid}]]</span>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">Chi tiết tài khoản</h5>
+      </div>
+      <div class="modal-body">
+        <!-- Registration Form -->
+        <form id="updateForm" th:action="@{/admin/nhanvien/updateUser/{id}(id=${nv.id})}" method="post" onsubmit="return validateForm()">
+          <div class="mb-3">
+            <label for="username" class="form-label">Tên Đăng Nhập</label>
+            <input readonly type="text" id="username" name="username" class="form-control" th:field="*{nv.taiKhoan.username}"
+                   placeholder="Nhập tên đăng nhập" required minlength="4" maxlength="30" />
+            <span class="text-danger" id="usernameError">[[${usernameIsInvalid}]]</span>
+          </div>
 
-            <!-- Họ Tên -->
-            <div class="mb-3">
-              <label for="hoTen" class="form-label">Họ Tên</label>
-              <input type="text" id="hoTen" name="hoTen" class="form-control" th:field="*{nv.hoTen}"
-                     placeholder="Nhập họ tên đầy đủ" required maxlength="100" />
-              <span class="text-danger" id="hoTenError">[[${nameError}]]</span>
-            </div>
+          <!-- Họ Tên -->
+          <div class="mb-3">
+            <label for="hoTen" class="form-label">Họ Tên</label>
+            <input type="text" id="hoTen" name="hoTen" class="form-control" th:field="*{nv.hoTen}"
+                   placeholder="Nhập họ tên đầy đủ" required maxlength="100" />
+            <span class="text-danger" id="hoTenError">[[${nameError}]]</span>
+          </div>
 
-<!--            &lt;!&ndash; Mật Khẩu &ndash;&gt;-->
-<!--            <div class="mb-3">-->
-<!--              <label for="password" class="form-label">Mật khẩu</label>-->
-<!--              <input type="password" id="password" name="password" class="form-control" th:field="*{nv.taiKhoan.password}"-->
-<!--                     placeholder="Nhập mật khẩu" required minlength="6" />-->
-<!--              <span class="text-danger" id="passwordError"></span>-->
-<!--            </div>-->
+          <!--            &lt;!&ndash; Mật Khẩu &ndash;&gt;-->
+          <!--            <div class="mb-3">-->
+          <!--              <label for="password" class="form-label">Mật khẩu</label>-->
+          <!--              <input type="password" id="password" name="password" class="form-control" th:field="*{nv.taiKhoan.password}"-->
+          <!--                     placeholder="Nhập mật khẩu" required minlength="6" />-->
+          <!--              <span class="text-danger" id="passwordError"></span>-->
+          <!--            </div>-->
 
-            <!-- Giới Tính -->
-            <div class="mb-3">
-              <label class="form-label">Giới Tính</label>
-              <div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="gioiTinh" value="true" id="maleGender" th:field="*{nv.gioiTinh}" checked />
-                  <label class="form-check-label" for="maleGender">Nam</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="gioiTinh" value="false" id="femaleGender" th:field="*{nv.gioiTinh}" />
-                  <label class="form-check-label" for="femaleGender">Nữ</label>
-                </div>
+          <!-- Giới Tính -->
+          <div class="mb-3">
+            <label class="form-label">Giới Tính</label>
+            <div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gioiTinh" value="true" id="maleGender" th:field="*{nv.gioiTinh}" checked />
+                <label class="form-check-label" for="maleGender">Nam</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gioiTinh" value="false" id="femaleGender" th:field="*{nv.gioiTinh}" />
+                <label class="form-check-label" for="femaleGender">Nữ</label>
               </div>
             </div>
+          </div>
 
-            <!-- Email -->
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" id="email" name="email" class="form-control" th:field="*{nv.email}"
-                     placeholder="Nhập địa chỉ email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
-              <span class="text-danger" id="emailError">[[${emailIsInvalid}]]</span>
-            </div>
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-control" th:field="*{nv.email}"
+                   placeholder="Nhập địa chỉ email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
+            <span class="text-danger" id="emailError">[[${emailIsInvalid}]]</span>
+          </div>
 
-            <!-- Số Điện Thoại -->
-            <div class="mb-3">
-              <label for="soDienthoai" class="form-label">Số Điện Thoại</label>
-              <input type="tel" id="soDienthoai" name="soDienthoai" class="form-control" th:field="*{nv.soDienthoai}"
-                     placeholder="Nhập số điện thoại" required pattern="[0-9]{10,11}" />
-              <span class="text-danger" id="phoneError">[[${ErrorPhoneNumber}]]</span>
-            </div>
+          <!-- Số Điện Thoại -->
+          <div class="mb-3">
+            <label for="soDienthoai" class="form-label">Số Điện Thoại</label>
+            <input type="tel" id="soDienthoai" name="soDienthoai" class="form-control" th:field="*{nv.soDienthoai}"
+                   placeholder="Nhập số điện thoại" required pattern="[0-9]{10,11}" />
+            <span class="text-danger" id="phoneError">[[${ErrorPhoneNumber}]]</span>
+          </div>
 
-            <!-- Trường ẩn để gửi ID người dùng -->
-            <input type="hidden" name="id" th:value="${nv.taiKhoan.id}" />
+          <div class="mb-3">
+            <label for="chucVu" class="form-label">Chức vụ</label>
+            <select class="form-select" aria-label="Default select example" id="chucVu" name="idChucVu">
+              <option th:selected="${nv.taiKhoan.role.id == 3}" value="3">Nhân viên</option>
+              <option th:selected="${nv.taiKhoan.role.id == 1}" value="1">Quản lý</option>
+            </select>
+          </div>
 
-            <button type="submit" class="btn btn-primary" onclick="return confirmForm()">Cập Nhật</button>
-          </form>
+          <!-- Trường ẩn để gửi ID người dùng -->
+          <input type="hidden" name="id" th:value="${nv.taiKhoan.id}" />
 
-        </div>
+          <button type="submit" class="btn btn-primary" onclick="return confirmForm()">Cập Nhật</button>
+        </form>
+
       </div>
-</div>
+    </div>
+  </div>
 
 
 
   <!-- Scripts -->
-<script>
-//reset mat khau
-  document.getElementById("submitResetPassword").addEventListener("click", () => {
-    // Trigger form submission
-    const form = document.getElementById("resetPasswordForm");
+  <script>
+    //reset mat khau
+    document.getElementById("submitResetPassword").addEventListener("click", () => {
+      // Trigger form submission
+      const form = document.getElementById("resetPasswordForm");
 
-    // Check if password is valid
-    const newPassword = document.getElementById("newPassword").value;
-    if (!newPassword) {
-      alert("Please enter a new password.");
-      return;
+      // Check if password is valid
+      const newPassword = document.getElementById("newPassword").value;
+      if (!newPassword) {
+        alert("Please enter a new password.");
+        return;
+      }
+
+      // Submit the form
+      form.submit();
+
+      // Close the modal
+      const modalElement = document.getElementById("resetPasswordModal");
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    });
+
+
+    function validateForm() {
+      // Reset all error messages
+      document.getElementById("usernameError").innerText = "";
+      document.getElementById("hoTenError").innerText = "";
+      document.getElementById("passwordError").innerText = "";
+      document.getElementById("emailError").innerText = "";
+      document.getElementById("phoneError").innerText = "";
+
+      // Lấy các giá trị từ form
+      var username = document.getElementById("username").value.trim();
+      var hoTen = document.getElementById("hoTen").value.trim();
+      var password = document.getElementById("password").value.trim();
+      var email = document.getElementById("email").value.trim();
+      var soDienthoai = document.getElementById("soDienthoai").value.trim();
+
+      // Kiểm tra trống
+      if (username === "") {
+        document.getElementById("usernameError").innerText = "Tên đăng nhập không được để trống";
+        return false;
+      }
+      if (hoTen === "") {
+        document.getElementById("hoTenError").innerText = "Họ tên không được để trống";
+        return false;
+      }
+      if (password === "") {
+        document.getElementById("passwordError").innerText = "Mật khẩu không được để trống";
+        return false;
+      }
+      if (email === "") {
+        document.getElementById("emailError").innerText = "Email không được để trống";
+        return false;
+      }
+      if (soDienthoai === "") {
+        document.getElementById("phoneError").innerText = "Số điện thoại không được để trống";
+        return false;
+      }
+
+      // Kiểm tra định dạng email
+      var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById("emailError").innerText = "Email không hợp lệ";
+        return false;
+      }
+
+      // Kiểm tra định dạng số điện thoại (chỉ chứa số)
+      var phonePattern = /^[0-9]+$/;
+      if (!phonePattern.test(soDienthoai)) {
+        document.getElementById("phoneError").innerText = "Số điện thoại không hợp lệ";
+        return false;
+      }
+
+      return true; // Nếu tất cả hợp lệ, form sẽ được gửi đi
     }
-
-    // Submit the form
-    form.submit();
-
-    // Close the modal
-    const modalElement = document.getElementById("resetPasswordModal");
-    const modal = bootstrap.Modal.getInstance(modalElement);
-    if (modal) {
-      modal.hide();
-    }
-  });
-
-
-  function validateForm() {
-    // Reset all error messages
-    document.getElementById("usernameError").innerText = "";
-    document.getElementById("hoTenError").innerText = "";
-    document.getElementById("passwordError").innerText = "";
-    document.getElementById("emailError").innerText = "";
-    document.getElementById("phoneError").innerText = "";
-
-    // Lấy các giá trị từ form
-    var username = document.getElementById("username").value.trim();
-    var hoTen = document.getElementById("hoTen").value.trim();
-    var password = document.getElementById("password").value.trim();
-    var email = document.getElementById("email").value.trim();
-    var soDienthoai = document.getElementById("soDienthoai").value.trim();
-
-    // Kiểm tra trống
-    if (username === "") {
-      document.getElementById("usernameError").innerText = "Tên đăng nhập không được để trống";
-      return false;
-    }
-    if (hoTen === "") {
-      document.getElementById("hoTenError").innerText = "Họ tên không được để trống";
-      return false;
-    }
-    if (password === "") {
-      document.getElementById("passwordError").innerText = "Mật khẩu không được để trống";
-      return false;
-    }
-    if (email === "") {
-      document.getElementById("emailError").innerText = "Email không được để trống";
-      return false;
-    }
-    if (soDienthoai === "") {
-      document.getElementById("phoneError").innerText = "Số điện thoại không được để trống";
-      return false;
-    }
-
-    // Kiểm tra định dạng email
-    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      document.getElementById("emailError").innerText = "Email không hợp lệ";
-      return false;
-    }
-
-    // Kiểm tra định dạng số điện thoại (chỉ chứa số)
-    var phonePattern = /^[0-9]+$/;
-    if (!phonePattern.test(soDienthoai)) {
-      document.getElementById("phoneError").innerText = "Số điện thoại không hợp lệ";
-      return false;
-    }
-
-    return true; // Nếu tất cả hợp lệ, form sẽ được gửi đi
-  }
-</script>
+  </script>
   <script>
     function confirmForm(){
       return confirm("Bạn có chắc muốn sửa nhân viên này không?")
     }
   </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script th:src="@{/js/banhang.js}"></script>
-<script src="/js/toastMessage.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/banhang.js}"></script>
+  <script src="/js/toastMessage.js"></script>
 </body>
 
 </html>

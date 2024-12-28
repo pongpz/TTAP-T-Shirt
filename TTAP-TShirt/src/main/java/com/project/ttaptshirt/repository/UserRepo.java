@@ -18,7 +18,8 @@ import java.util.Optional;
 public interface UserRepo extends JpaRepository<TaiKhoan, Long> {
     TaiKhoan findByUsername(String userName);
 
-
+    @Query("select us from TaiKhoan us where us.nhanVien.id =:id")
+    TaiKhoan findByNhanVienId(Long id);
 
     @Query("select us from TaiKhoan us where us.username =:username")
     TaiKhoan findUserByUsername(String username);
