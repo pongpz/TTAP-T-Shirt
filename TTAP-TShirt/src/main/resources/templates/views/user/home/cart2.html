@@ -87,10 +87,10 @@
                                         <input type="hidden" name="nguoiNhan" th:value="${selectedAddress.hoTen}">
                                         <p class="fw-bold mb-1" th:text="${selectedAddress.soDienThoai}"></p>
                                         <input type="hidden" name="soDienThoai" th:value="${selectedAddress.soDienThoai}">
-                                        <p class="mb-1" th:text="${selectedAddress.soNha} + ' ' + ${selectedAddress.tenDuong}
-                                + ', ' + ${selectedAddress.tenQuanhuyen} + ', ' + ${selectedAddress.tenThanhpho}"></p>
-                                        <input type="hidden" name="diaChi" th:value="${selectedAddress.soNha} + ' '
-                                + ${selectedAddress.tenDuong} + ', ' + ${selectedAddress.tenQuanhuyen} + ', ' + ${selectedAddress.tenThanhpho}">
+                                        <p class="mb-1" th:text="${selectedAddress.soNha} + ' - ' + ${selectedAddress.tenDuong}
+                                + ' - ' + ${selectedAddress.tenQuanhuyen} + ' - ' + ${selectedAddress.tenThanhpho}"></p>
+                                        <input type="hidden" name="diaChi" th:value="${selectedAddress.soNha} + ' - '
+                                + ${selectedAddress.tenDuong} + ' - ' + ${selectedAddress.tenQuanhuyen} + ' - ' + ${selectedAddress.tenThanhpho}">
                                     </div>
 
 

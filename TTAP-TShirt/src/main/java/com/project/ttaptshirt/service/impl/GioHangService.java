@@ -4,6 +4,7 @@ import com.project.ttaptshirt.dto.AddToCartRequest;
 import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.*;
+import com.project.ttaptshirt.service.GHNService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,8 @@ public class GioHangService {
     private HoaDonRepository hoaDonRepository;
     @Autowired
     private HoaDonChiTietRepository hoaDonChiTietRepository;
+    @Autowired
+    private GHNService ghnService;
 
     public GioHang taoDon(String userName, List<CartItemDTO> cartItems ) {
         TaiKhoan user = userRepo.findByUsername(userName);
@@ -228,7 +231,7 @@ public class GioHangService {
                 .sum();
 
 
-        double shippingFee = 50000;
+        double shippingFee = ghnService.calculateShippingFee(diaChi)  ;
 
         hoaDon.setTienShip(shippingFee); // Lưu phí vận chuyển vào hóa đơn
 
