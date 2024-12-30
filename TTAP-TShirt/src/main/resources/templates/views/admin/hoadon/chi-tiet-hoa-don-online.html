@@ -337,7 +337,8 @@
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <p style="margin: 0; font-size: 14px;">Phí vận chuyển:</p>
             <span type="text"
-                  style="padding: 5px; font-size: 14px; width: 80px; text-align: right; border: 1px solid #ddd; border-radius: 4px;">50000</span>
+                  style="padding: 5px; font-size: 14px; width: 80px; text-align: right; border: 1px solid #ddd; border-radius: 4px;"
+                  th:text="+${numberUtils.formatCurrency(hoaDon.tienShip)}"></span>
         </div>
         <div style="margin-top: 20px; display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
             <p style="margin: 0;">Tổng tiền:</p>

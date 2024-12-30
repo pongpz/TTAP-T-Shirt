@@ -101,8 +101,8 @@
                     <td th:text="${stat.index+1}"></td>
                     <td th:text="${hd.ma}"></td>
                     <!--            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>-->
-                    <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Vãng lai'}"></td>
-                    <td th:text="${hd.khachHang != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
+                    <td th:text="${hd.khachHang != null ? hd.khachHang.taiKhoan.username :'Vãng lai'}"></td>
+                    <td th:text="${hd.khachHang != null && hd.khachHang.soDienThoai != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
                     <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
                         th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
                     </td>

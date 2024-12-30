@@ -10,6 +10,7 @@ import com.project.ttaptshirt.repository.HoaDonLogRepository;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
+import com.project.ttaptshirt.service.GHNService;
 import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
 import com.project.ttaptshirt.service.HoaDonLogService;
 import com.project.ttaptshirt.service.impl.DiscountService;
@@ -58,6 +59,9 @@ public class GioHangController {
 
     @Autowired
     private HoaDonLogService hoaDonLogService;
+
+    @Autowired
+    private GHNService gHNService;
 
 
 
