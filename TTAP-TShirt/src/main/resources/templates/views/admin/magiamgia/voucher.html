@@ -20,96 +20,96 @@
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
 
     <div class="main-content content flex-grow-1 p-4">
-            <h1 class="text-center mt-5">Mã giảm giá</h1>
-            <hr>
-            <div class="d-flex">
-                <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Mã giảm giá</a>
+        <h1 class="text-center mt-5">Mã giảm giá</h1>
+        <hr>
+        <div class="d-flex">
+            <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Mã giảm giá</a>
+        </div>
+        <form th:action="@{/admin/ma-giam-gia/tim-kiem}" method="get"
+              style="border: #a52a2a solid 1px; border-radius: 1ch" class="row justify-content-center d-flex">
+            <h6>Tìm kiếm/Lọc</h6>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="tenSearch" class="form-label">Tên giảm giá</label>
+                    <input type="text" class="form-control" id="tenSearch" th:value="${tenSearch}" name="tenSearch">
+                </div>
+                <div class="mb-3">
+                    <label for="maSearch" class="form-label">Mã giảm giá</label>
+                    <input type="text" class="form-control" id="maSearch" th:value="${maSearch}" name="maSearch">
+                </div>
             </div>
-            <form th:action="@{/admin/ma-giam-gia/tim-kiem}" method="get"
-                  style="border: #a52a2a solid 1px; border-radius: 1ch" class="row justify-content-center d-flex">
-                <h6>Tìm kiếm/Lọc</h6>
-                <div class="col-4">
-                    <div class="mb-3">
-                        <label for="tenSearch" class="form-label">Tên giảm giá</label>
-                        <input type="text" class="form-control" id="tenSearch" th:value="${tenSearch}" name="tenSearch">
-                    </div>
-                    <div class="mb-3">
-                        <label for="maSearch" class="form-label">Mã giảm giá</label>
-                        <input type="text" class="form-control" id="maSearch" th:value="${maSearch}" name="maSearch">
-                    </div>
-                </div>
-                <div class="mb-3 col-4">
-                    <label class="form-label">Hình thức giảm giá</label>
-                    <select class="form-select mb-3" aria-label="Default select example" name="hinhThucSearch">
-                        <option th:value="tat-ca" th:selected="${hinhThucSearch =='tat-ca'}">Tất cả</option>
-                        <option th:value="VND" th:selected="${hinhThucSearch =='VND'}">VND</option>
-                        <option th:value="phan-tram" th:selected="${hinhThucSearch =='phan-tram'}">%</option>
-                    </select>
-                    <label class="form-label">Thời hạn</label>
-                    <select class="form-select mb-3" aria-label="Default select example" name="thoiHanSearch">
-                        <option th:value="tat-ca" th:selected="${thoiHanSearch=='tat-ca'}">Tất cả</option>
-                        <option th:value="con-han" th:selected="${thoiHanSearch == 'con-han'}">Còn hạn</option>
-                        <option th:value="het-han" th:selected="${thoiHanSearch == 'het-han'}">Hết hạn</option>
-                    </select>
-                </div>
-                <div class="mb-3 col-4">
-                    <label class="form-label">Số lượng</label>
-                    <select class="form-select mb-3" aria-label="Default select example" name="soLuongSearch">
-                        <option th:value="tat-ca" th:selected="${soLuongSearch == 'tat-ca'}">Tất cả</option>
-                        <option th:value="con-hang" th:selected="${soLuongSearch == 'con-hang'}">Còn hàng</option>
-                        <option th:value="het-hang" th:selected="${soLuongSearch == 'het-hang'}">Hết hàng</option>
-                    </select>
-                </div>
-                <button type="submit" class="mb-3 btn btn-primary col-2">Tìm kiếm</button>
-            </form>
-            <a th:href="@{/admin/ma-giam-gia/form-add}" style="position: absolute;left: 350px;top:460px;height: 40px"
-               class="btn btn-success">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                     class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
-                    <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5M11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
-                    <path d="M2.354.646a.5.5 0 0 0-.801.13l-.5 1A.5.5 0 0 0 1 2v13H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H15V2a.5.5 0 0 0-.053-.224l-.5-1a.5.5 0 0 0-.8-.13L13 1.293l-.646-.647a.5.5 0 0 0-.708 0L11 1.293l-.646-.647a.5.5 0 0 0-.708 0L9 1.293 8.354.646a.5.5 0 0 0-.708 0L7 1.293 6.354.646a.5.5 0 0 0-.708 0L5 1.293 4.354.646a.5.5 0 0 0-.708 0L3 1.293zm-.217 1.198.51.51a.5.5 0 0 0 .707 0L4 1.707l.646.647a.5.5 0 0 0 .708 0L6 1.707l.646.647a.5.5 0 0 0 .708 0L8 1.707l.646.647a.5.5 0 0 0 .708 0L10 1.707l.646.647a.5.5 0 0 0 .708 0L12 1.707l.646.647a.5.5 0 0 0 .708 0l.509-.51.137.274V15H2V2.118z"/>
-                </svg>
-                Tạo mã giảm giá mới
-            </a>
-            <h1 class="text-center">Danh sách mã giảm giá</h1>
-            <div class="row d-flex justify-content-center">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Mã giảm giá</th>
-                        <th scope="col">Tên mã giảm giá</th>
-                        <th scope="col">Ngày kết thúc</th>
-                        <th scope="col">Giá trị giảm</th>
-                        <th scope="col">Hình thức giảm</th>
-                        <th scope="col">Số lượng</th>
-                        <th scope="col">Trạng thái</th>
-                        <th scope="col">Hành động</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="vc, stat : ${ListMGG}">
-                        <td>[[${stat.index+1}]]</td>
-                        <td>[[${vc.ma}]]</td>
-                        <td>[[${vc.ten}]]</td>
-                        <td th:text="${@dateTimeUtil.formatLocalDateTime(vc.ngayKetThuc, 'HH:mm:ss dd-MM-yyyy')}"></td>
-                        <td>[[${numberUtils.formatCurrency2(vc.giaTriGiam)}]]</td>
-                        <td>[[${vc.hinhThuc?'VND':'%'}]]</td>
-                        <td>[[${vc.soLuong}]]</td>
-                        <td>[[${vc.trangThai?'Còn hạn':'Hết hạn'}]]</td>
-                        <td>
-                            <a th:href="@{/admin/ma-giam-gia/detail/{id}(id=${vc.id})}" class="btn btn-primary mb-3">Xem
-                                chi tiết</a>
-                        </td>
-                        <td>
-                            <a th:href="@{/admin/ma-giam-gia/thay-doi-trang-thai/{id}(id=${vc.id})}"
-                               class="btn btn-warning mb-3" onclick="return confirmNgungMgg()">Tắt hoạt động</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <h5 class="text-center">[[${nullmgg}]]</h5>
+            <div class="mb-3 col-4">
+                <label class="form-label">Hình thức giảm giá</label>
+                <select class="form-select mb-3" aria-label="Default select example" name="hinhThucSearch">
+                    <option th:value="tat-ca" th:selected="${hinhThucSearch =='tat-ca'}">Tất cả</option>
+                    <option th:value="VND" th:selected="${hinhThucSearch =='VND'}">VND</option>
+                    <option th:value="phan-tram" th:selected="${hinhThucSearch =='phan-tram'}">%</option>
+                </select>
+                <label class="form-label">Thời hạn</label>
+                <select class="form-select mb-3" aria-label="Default select example" name="thoiHanSearch">
+                    <option th:value="tat-ca" th:selected="${thoiHanSearch=='tat-ca'}">Tất cả</option>
+                    <option th:value="con-han" th:selected="${thoiHanSearch == 'con-han'}">Còn hạn</option>
+                    <option th:value="het-han" th:selected="${thoiHanSearch == 'het-han'}">Hết hạn</option>
+                </select>
             </div>
+            <div class="mb-3 col-4">
+                <label class="form-label">Số lượng</label>
+                <select class="form-select mb-3" aria-label="Default select example" name="soLuongSearch">
+                    <option th:value="tat-ca" th:selected="${soLuongSearch == 'tat-ca'}">Tất cả</option>
+                    <option th:value="con-hang" th:selected="${soLuongSearch == 'con-hang'}">Còn hàng</option>
+                    <option th:value="het-hang" th:selected="${soLuongSearch == 'het-hang'}">Hết hàng</option>
+                </select>
+            </div>
+            <button type="submit" class="mb-3 btn btn-primary col-2">Tìm kiếm</button>
+        </form>
+        <a th:href="@{/admin/ma-giam-gia/form-add}" style="position: absolute;left: 350px;top:460px;height: 40px"
+           class="btn btn-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
+                <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5M11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
+                <path d="M2.354.646a.5.5 0 0 0-.801.13l-.5 1A.5.5 0 0 0 1 2v13H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H15V2a.5.5 0 0 0-.053-.224l-.5-1a.5.5 0 0 0-.8-.13L13 1.293l-.646-.647a.5.5 0 0 0-.708 0L11 1.293l-.646-.647a.5.5 0 0 0-.708 0L9 1.293 8.354.646a.5.5 0 0 0-.708 0L7 1.293 6.354.646a.5.5 0 0 0-.708 0L5 1.293 4.354.646a.5.5 0 0 0-.708 0L3 1.293zm-.217 1.198.51.51a.5.5 0 0 0 .707 0L4 1.707l.646.647a.5.5 0 0 0 .708 0L6 1.707l.646.647a.5.5 0 0 0 .708 0L8 1.707l.646.647a.5.5 0 0 0 .708 0L10 1.707l.646.647a.5.5 0 0 0 .708 0L12 1.707l.646.647a.5.5 0 0 0 .708 0l.509-.51.137.274V15H2V2.118z"/>
+            </svg>
+            Tạo mã giảm giá mới
+        </a>
+        <h1 class="text-center">Danh sách mã giảm giá</h1>
+        <div class="row d-flex justify-content-center">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Mã giảm giá</th>
+                    <th scope="col">Tên mã giảm giá</th>
+                    <th scope="col">Ngày kết thúc</th>
+                    <th scope="col">Giá trị giảm</th>
+                    <th scope="col">Hình thức giảm</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="vc, stat : ${ListMGG}">
+                    <td>[[${stat.index+1}]]</td>
+                    <td>[[${vc.ma}]]</td>
+                    <td>[[${vc.ten}]]</td>
+                    <td th:text="${@dateTimeUtil.formatLocalDateTime(vc.ngayKetThuc, 'HH:mm:ss dd-MM-yyyy')}"></td>
+                    <td>[[${numberUtils.formatCurrency2(vc.giaTriGiam)}]]</td>
+                    <td>[[${vc.hinhThuc?'VND':'%'}]]</td>
+                    <td>[[${vc.soLuong}]]</td>
+                    <td>[[${vc.trangThai?'Còn hạn':'Hết hạn'}]]</td>
+                    <td>
+                        <a th:href="@{/admin/ma-giam-gia/detail/{id}(id=${vc.id})}" class="btn btn-primary mb-3">Xem
+                            chi tiết</a>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/ma-giam-gia/thay-doi-trang-thai/{id}(id=${vc.id})}"
+                           class="btn btn-warning mb-3" onclick="return confirmNgungMgg()">Tắt hoạt động</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <h5 class="text-center">[[${nullmgg}]]</h5>
+        </div>
         <div
                 class="justify-content-center d-flex mb-5"
                 style="display: flex; justify-content: center; align-items: center; gap: 1rem; font-family: Arial, sans-serif; padding: 15px; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
@@ -139,12 +139,12 @@
         </div>
 
     </div>
-    </div>
+</div>
 </div>
 </body>
 
 <script>
-    function confirmNgungMgg(){
+    function confirmNgungMgg() {
         return window.confirm('Bạn có chắc muốn tạm dừng mã giảm giá này không?')
     }
 </script>
@@ -179,9 +179,9 @@
 
 </script>
 <script th:if="${addSuccess}">
-    toastSuccess("Success","Thêm mới voucher thành công !");
+    toastSuccess("Success", "Thêm mới voucher thành công !");
 </script>
 <script th:if="${updateSuccess}">
-    toastSuccess("Success","sửa thông tin voucher thành công !");
+    toastSuccess("Success", "sửa thông tin voucher thành công !");
 </script>
 </html>

@@ -99,7 +99,7 @@
                     <td th:text="${stat.index+1}"></td>
                     <td th:text="${hd.ma}"></td>
                     <!--            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>-->
-                    <td th:text="${hd.khachHang != null ? hd.khachHang.taiKhoan.username :'Vãng lai'}"></td>
+                    <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Vãng lai'}"></td>
                     <td th:text="${hd.khachHang != null && hd.khachHang.soDienThoai != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
                     <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
                         th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
@@ -116,6 +116,7 @@
     <span th:classappend="${hd.trangThai == 0 ? 'text-warning' :
                           hd.trangThai == 1 ? 'text-success' :
                           hd.trangThai == 2 ? 'text-danger' :
+                          hd.trangThai == -1 ? 'text-danger' :
                           hd.trangThai == 3 ? 'text-primary' :
                           hd.trangThai == 6 ? 'text-primary' :
                           hd.trangThai == 7 ? 'text-primary' :
@@ -125,6 +126,7 @@
         <span th:text="${hd.trangThai == 0 ? 'Chưa thanh toán' :
                         hd.trangThai == 1 ? 'Đã thanh toán' :
                         hd.trangThai == 2 ? 'Đã hủy' :
+                        hd.trangThai == -1 ? 'Khách từ chối nhận' :
                         hd.trangThai == 3 ? 'Chờ xác nhận' :
                         hd.trangThai == 6 ? 'Đã xác nhận' :
                         hd.trangThai == 7 ? 'Chuẩn bị hàng' :
@@ -144,11 +146,18 @@
                 </tbody>
             </table>
             <h5 class="text-center">[[${nullhd}]]</h5>
-            <div class="justify-content-center d-flex mb-5">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang trước</a>
-                <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang sau</a>
+            <div class="justify-content-center d-flex mb-5"
+                 style="display: flex; justify-content: center; align-items: center; gap: 1rem; font-family: Arial, sans-serif; padding: 10px; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
+                <a style="padding: 8px 16px; font-size: 14px; border: 2px solid #007bff; color: #007bff; border-radius: 5px; transition: background-color 0.3s, color 0.3s; text-align: center; min-width: 100px;" th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang trước</a>
+                <input type="text"
+                       style="max-width: 60px; height: 35px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; text-align: center; transition: border-color 0.3s; outline: none;"
+                       class="form-control-sm text-center"
+                       th:value="${page+1}"
+                       onchange="changePage(this.value)"
+                       id="input-page">
+                <a style="padding: 8px 16px; font-size: 14px; border: 2px solid #007bff; color: #007bff; border-radius: 5px; transition: background-color 0.3s, color 0.3s; text-align: center; min-width: 100px;" th:href="@{/admin/hoa-don/tim-kiem?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang sau</a>
             </div>
+
         </div>
     </div>
 </div>
