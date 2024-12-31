@@ -101,7 +101,7 @@
                     <td th:text="${stat.index+1}"></td>
                     <td th:text="${hd.ma}"></td>
                     <!--            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>-->
-                    <td th:text="${hd.khachHang != null ? hd.khachHang.taiKhoan.username :'Vãng lai'}"></td>
+                    <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Vãng lai'}"></td>
                     <td th:text="${hd.khachHang != null && hd.khachHang.soDienThoai != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
                     <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
                         th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
@@ -118,6 +118,7 @@
     <span th:classappend="${hd.trangThai == 0 ? 'text-warning' :
                           hd.trangThai == 1 ? 'text-success' :
                           hd.trangThai == 2 ? 'text-danger' :
+                          hd.trangThai == -1 ? 'text-danger' :
                           hd.trangThai == 3 ? 'text-primary' :
                           hd.trangThai == 6 ? 'text-primary' :
                           hd.trangThai == 7 ? 'text-primary' :
@@ -127,6 +128,7 @@
         <span th:text="${hd.trangThai == 0 ? 'Chưa thanh toán' :
                         hd.trangThai == 1 ? 'Đã thanh toán' :
                         hd.trangThai == 2 ? 'Đã hủy' :
+                        hd.trangThai == -1 ? 'Khách từ chối nhận' :
                         hd.trangThai == 3 ? 'Chờ xác nhận' :
                         hd.trangThai == 6 ? 'Đã xác nhận' :
                         hd.trangThai == 7 ? 'Chuẩn bị hàng' :
