@@ -367,7 +367,7 @@ public class HoaDonController {
         if (keyword.trim().isEmpty()) {
             lsSearch = hr.search2(ma.trim(), trangThai, ngayThanhToan, loaiDon, pageab);
         } else {
-//            lsSearch = hr.search(ma.trim(), keyword.trim(), trangThai, ngayThanhToan, loaiDon, pageab);
+            lsSearch = hr.search(ma.trim(), keyword.trim(), trangThai, ngayThanhToan, loaiDon, pageab);
         }
         model.addAttribute("listHDCT", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
         model.addAttribute("listSPOrder", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
@@ -378,7 +378,7 @@ public class HoaDonController {
         model.addAttribute("keyword", keyword.trim());
         model.addAttribute("id", id);
         model.addAttribute("ngayThanhToan", ngayThanhToan);
-//        model.addAttribute("loaiDon", loaiDon);
+        model.addAttribute("loaiDon", loaiDon);
         model.addAttribute("trangThai", trangThai);
         model.addAttribute("page", page);
         if (lsSearch.size() == 0) {

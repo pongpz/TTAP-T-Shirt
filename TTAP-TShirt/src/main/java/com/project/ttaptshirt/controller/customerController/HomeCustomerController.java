@@ -235,4 +235,8 @@ public class HomeCustomerController {
     public String hinhThucThanhToan(){
         return "user/chinhsach/hinh-thuc-thanh-toan";
     }
+    @GetMapping("/lien-he")
+    public String lienHe(){
+        return "user/chinhsach/lien-he";
+    }
 }
