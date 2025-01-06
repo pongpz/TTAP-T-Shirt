@@ -28,6 +28,7 @@ public class DiaChi extends CreatedUpdatedAt{
     @Column(name = "ho_ten", columnDefinition = "NVARCHAR(255)")
     private String hoTen;
 
+
     @NotBlank(message = " không được phép trống")
     @Column(name = "so_dien_thoai")
     private String soDienThoai;
