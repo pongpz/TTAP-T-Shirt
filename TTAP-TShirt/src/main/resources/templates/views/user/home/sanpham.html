@@ -72,7 +72,7 @@
       <div class="col-lg-3 col-md-5">
         <!-- Input for searching product by name -->
         <form th:action="@{/TTAP/san-pham}" method="get">
-          <input style="width: 100%; text-align: center;"
+          <input style="width: 200px; text-align: center;"
                  type="text"
                  class="next-input"
                  th:value="${ten}"
@@ -82,7 +82,7 @@
 
           <div class="row">
             <div class="sidebar__item" style="margin-top: -20px;">
-              <h5>Chọn khoảng giá:</h5>
+              <span>Chọn khoảng giá:</span>
               <!-- Select for price range -->
               <select style="width: 200px;"
                       id="price-range"
@@ -101,7 +101,7 @@
 
           <div class="row">
             <div class="sidebar__item" style="margin-top: -20px;">
-              <h5 >Chọn thương hiệu:</h5>
+              <span >Chọn thương hiệu:</span>
               <select style="width: 200px;"
                       id="thuonghieu"
                       class="form-select"
@@ -119,8 +119,8 @@
           <br>
 
           <div class="row">
-            <div class="sidebar__item" style="margin-top: -20px;">
-              <h5 >Chọn kiểu dáng:</h5>
+            <div class="sidebar__item" style="margin-top: -40px;">
+              <span >Chọn kiểu dáng:</span>
               <select style="width: 200px;"
                       id="kieudang"
                       class="form-select"
@@ -139,8 +139,8 @@
 
 
           <div class="row">
-            <div class="sidebar__item" style="margin-top: -20px;">
-              <h5 >Chọn nhà sản xuất:</h5>
+            <div class="sidebar__item" style="margin-top: -40px;">
+              <span >Chọn nhà sản xuất:</span>
               <select style="width: 200px;"
                       id="nsx"
                       class="form-select"
@@ -158,8 +158,8 @@
           <br>
 
           <div class="row">
-            <div class="sidebar__item" style="margin-top: -20px;">
-              <h5 >Chọn chất liệu:</h5>
+            <div class="sidebar__item" style="margin-top: -40px;">
+              <span >Chọn chất liệu:</span>
               <select style="width: 200px;"
                       id="chatlieu"
                       class="form-select"

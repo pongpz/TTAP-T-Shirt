@@ -14,7 +14,7 @@
 <div class="d-flex">
 
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
-    <div class="main-content content flex-grow-1 p-4">
+    <div class="main-content content flex-grow-1 p-4" style="width: 80%">
         <div class="d-flex">
             <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Hoá đơn</a>
         </div>
@@ -23,7 +23,7 @@
             <input type="hidden" th:value="${id}" name="id">
             <div class="mb-3 col-4">
                 <label for="ma" class="form-label">Mã hóa đơn</label>
-                <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}">
+                <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}" placeholder="Mã hóa đơn">
             </div>
 <!--            <div class="mb-3 col-4">-->
 <!--                <label for="keyword" class="form-label">Tìm kiếm</label>-->
@@ -31,7 +31,7 @@
 <!--            </div>-->
             <div class="mb-3 col-4">
                 <label for="keyword" class="form-label">Khách hàng</label>
-                <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}" placeholder="Tên, SDT, Email">
+                <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}" placeholder="Tên, SĐT, Email">
             </div>
 <!--            <div class="mb-3 col-4">-->
 <!--                <label for="tennv" class="form-label">Tên nhân viên</label>-->
@@ -73,25 +73,25 @@
         </form>
         <div class="">
             <h1 class="text-center">Hóa đơn</h1>
-            <table class="table table-hover">
+            <table class="table table-sm table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Mã hóa đơn</th>
+                    <th>STT</th>
+                    <th>Mã</th>
                     <!--            <th scope="col">Nhân viên</th>-->
-                    <th scope="col">Khách hàng</th>
-                    <th scope="col">SDT khách hàng</th>
-                    <th scope="col">Loại đơn</th>
-                    <th scope="col">Ngày thanh toán</th>
-<!--                    <th scope="col">SĐT người nhận</th>-->
-<!--                    <th scope="col">Tên người nhận</th>-->
-                    <th scope="col">Tiền ban đầu</th>
-                    <th scope="col">Phí vận chuyển</th>
-                    <th scope="col">Tiền giảm</th>
-                    <th scope="col">Tổng tiền</th>
-                    <th scope="col">Mã giảm giá</th>
-                    <th scope="col">Trạng thái</th>
-                    <th scope="col">Hành động</th>
+                    <th>Khách hàng</th>
+                    <th>SĐT</th>
+                    <th>Loại đơn</th>
+                    <th>Ngày thanh toán</th>
+                    <!--                    <th scope="col">SĐT người nhận</th>-->
+                    <!--                    <th scope="col">Tên người nhận</th>-->
+                    <th>Tiền ban đầu</th>
+                    <th>Phí vận chuyển</th>
+                    <th>Tiền giảm</th>
+                    <th>Tổng tiền</th>
+<!--                    <th>Mã giảm giá</th>-->
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -111,7 +111,7 @@
                     <td th:text="${hd.tienShip != null? numberUtils.formatCurrency(hd.tienShip) : 'Không có'}"></td>
                     <td th:text="${hd.soTienGiamGia != null?numberUtils.formatCurrency(hd.soTienGiamGia): 'Không có'}"></td>
                     <td th:text="${hd.tienThu != null?numberUtils.formatCurrency(hd.tienThu): 'Không có'}"></td>
-                    <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
+<!--                    <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>-->
                     <td>
     <span th:classappend="${hd.trangThai == 0 ? 'text-warning' :
                           hd.trangThai == 1 ? 'text-success' :
