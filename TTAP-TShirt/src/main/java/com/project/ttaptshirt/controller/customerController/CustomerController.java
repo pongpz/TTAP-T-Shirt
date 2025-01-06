@@ -1,11 +1,12 @@
 package com.project.ttaptshirt.controller.customerController;
 
-import com.project.ttaptshirt.entity.DiaChi;
-import com.project.ttaptshirt.entity.KhachHang;
-import com.project.ttaptshirt.entity.TaiKhoan;
+import com.project.ttaptshirt.dto.NumberUtils;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
 import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
+import com.project.ttaptshirt.service.impl.KhachHangVoucherServicelmpl;
+import com.project.ttaptshirt.service.impl.MaGiamGiaServicelmpl;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,10 @@ public class CustomerController {
     private KhachHangServiceImpl serKhachHang;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
+    @Autowired
+    private KhachHangVoucherServicelmpl khachHangVoucherServicelmpl;
 
     @GetMapping("/view")
     String view(Model model, RedirectAttributes redirectAttributes,
@@ -79,6 +84,31 @@ public class CustomerController {
             return "/user/khachhang/password";
         }return "redirect:/login";
 
+    }
+
+        @GetMapping("/viewVocher")
+        public String viewVocher(Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
+            if (authentication != null) {
+                CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+                TaiKhoan user = customUserDetail.getUser();
+                model.addAttribute("userLogged", user);
+                KhachHang khachHang = serKhachHang.findById(user.getKhachHang().getId()); // Lấy lại từ DB
+                if (khachHang != null) {
+                    model.addAttribute("khachHang", khachHang);
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Không tìm thấy khách hàng.");
+                return "redirect:/login"; // Redirect nếu không tìm thấy khách hàng
+            }
+            // Lấy danh sách mã giảm giá của người dùng
+            List<KhachHangVoucher> danhSachMaGiamGia = khachHangVoucherServicelmpl.getMaGiamGia(user.getKhachHang().getId());
+            model.addAttribute("danhSachMaGiamGia", danhSachMaGiamGia);
+
+            NumberUtils numberUtils = new NumberUtils();
+            model.addAttribute("numberUtils", numberUtils);
+
+            return "/user/home/magiamgaicustomer";
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/viewDiachi")

@@ -1,11 +1,6 @@
 package com.project.ttaptshirt.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,6 +11,9 @@ import lombok.ToString;
 
 import java.time.LocalDate; 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -77,6 +75,10 @@ public class MaGiamGia {
         @Column(name = "so_luong")
         private Integer soLuong;
 
+        @OneToMany(mappedBy = "maGiamGia", cascade = CascadeType.ALL, orphanRemoval = true)
+        private List<KhachHangVoucher> danhSachKhachHangVoucher = new ArrayList<>();
+
+
         // Method to check if the voucher is started
         public boolean isStart() {
                 return LocalDateTime.now().isAfter(ngayBatDau);
@@ -90,6 +92,13 @@ public class MaGiamGia {
         // Optional: Method to check if the voucher is valid (active and within the valid date range)
         public boolean isValid() {
                 return isStart() && !isExpired() && trangThai != null && trangThai && soLuong>0;
+        }
+        public String getThoiGianHieuLuc() {
+                if (ngayBatDau != null && ngayKetThuc != null) {
+                        long days = ChronoUnit.DAYS.between(ngayBatDau, ngayKetThuc);
+                        return days + " ngày";
+                }
+                return "Không xác định";
         }
 }
 

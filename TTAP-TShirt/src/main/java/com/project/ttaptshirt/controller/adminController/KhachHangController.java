@@ -1,10 +1,10 @@
 package com.project.ttaptshirt.controller.adminController;
 
-import com.project.ttaptshirt.entity.DiaChi;
-import com.project.ttaptshirt.entity.KhachHang;
-import com.project.ttaptshirt.entity.TaiKhoan;
+import com.project.ttaptshirt.dto.KhachHangDTO;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.KhachHangService;
+import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,17 +16,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/khach-hang")
@@ -38,26 +34,34 @@ public class KhachHangController {
     private UserServiceImpl serUser;
     @Autowired
     private UserServiceImpl userServiceImpl;
+    @Autowired
+    private KhachHangServiceImpl khachHangServiceImpl;
 
 
-    @GetMapping("/home")
-    public String home(Model mol) {
-        List<TaiKhoan> cusLst = serUser.findAll();
-        System.out.println("danh sanh kh: " + cusLst);
-        mol.addAttribute("cusLst", cusLst);
-        return "user/khachhang/index";
+
+    @GetMapping("/data")
+    @ResponseBody
+    public List<KhachHangDTO> getAllCustomers() {
+        List<KhachHang> khachHangs = khachHangServiceImpl.findAll();
+        return khachHangs.stream()
+                .map(khachHang -> new KhachHangDTO(khachHang.getId(), khachHang.getHoTen(), khachHang.getEmail(), khachHang.getSoDienThoai()))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/view")
-    public String viewChatLieu(Model mol, Authentication authentication, @RequestParam("p") Optional<Integer> page) {
+    public String getEmployees(
+            Authentication authentication, @RequestParam("p") Optional<Integer> page,
+            Model model) {
+
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
-            mol.addAttribute("userLogged", user);
+            model.addAttribute("userLogged", user);
         }
         Pageable pageable = PageRequest.of(page.orElse(0), 5);
-        Page<TaiKhoan> userPage = serUser.findAll(pageable);
-        mol.addAttribute("cus", userPage);
+        Page<KhachHang> customsPage = khachHangServiceImpl.findAll(pageable);
+
+        model.addAttribute("cus", customsPage);
         return "user/khachhang/index";
     }
 
@@ -109,12 +113,31 @@ public class KhachHangController {
             }
         }
         try {
+            String password = "pass" + (int) (Math.random() * 10000); // Sinh password ngẫu nhiên
+            String username = soDienThoai;
+            String validPhoneNumber = "+84" + soDienThoai.substring(1);
+            // Mã hóa mật khẩu
+            String encodedPassword = new BCryptPasswordEncoder().encode(password);
+
+            TaiKhoan taiKhoan = new TaiKhoan();
+            taiKhoan.setUsername(username);
+            taiKhoan.setPassword(encodedPassword);
+            Role role = new Role();
+            role.setId(Long.parseLong("2"));
+            taiKhoan.setRole(role);
+
             // Save customer logic
             KhachHang khachHang = new KhachHang();
             khachHang.setHoTen(hoTen);
             khachHang.setSoDienThoai(soDienThoai);
             khachHang.setNgayTao(LocalDate.now());
+            khachHang.setTaiKhoan(taiKhoan);
+
+            userServiceImpl.save(taiKhoan);
             khachHangService.save(khachHang);
+
+
+
             redirectAttributes.addFlashAttribute("addCustomerSuccess", true);
             redirectAttributes.addFlashAttribute("messageAddCustomer", "Thêm khách hàng thành công!");
         } catch (Exception e) {
@@ -123,6 +146,7 @@ public class KhachHangController {
         }
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
     }
+
 
 
     @GetMapping("/searchByPhoneNumber")
@@ -225,23 +249,6 @@ public class KhachHangController {
             redirectAttributes.addFlashAttribute("error", "Error updating user: " + e.getMessage());
         }
         return "redirect:/TTAP/user/detail/view"; // Điều hướng về danh sách người dùng sau khi cập nhật
-    }
-
-    @PostMapping("/update/{id}/DiaChi")
-    public String updateDiaChi(@PathVariable("id") Long id,
-                               @ModelAttribute("diaChi") DiaChi diaChi,
-                               RedirectAttributes redirectAttributes) {
-        try {
-            // Gọi service để cập nhật địa chỉ
-            serUser.updateDiachi(id, diaChi);
-            // Gửi thông báo thành công
-            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật địa chỉ thành công!");
-        } catch (Exception e) {
-            // Gửi thông báo lỗi nếu có ngoại lệ
-            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật địa chỉ thất bại: " + e.getMessage());
-        }
-        // Chuyển hướng về trang chi tiết của user
-        return "redirect:/admin/users/detail/" + id;
     }
 
 }
