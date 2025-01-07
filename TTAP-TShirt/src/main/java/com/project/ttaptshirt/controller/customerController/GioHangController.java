@@ -2,6 +2,7 @@ package com.project.ttaptshirt.controller.customerController;
 
 import com.project.ttaptshirt.dto.AddToCartRequest;
 import com.project.ttaptshirt.dto.CartItemDTO;
+import com.project.ttaptshirt.dto.DiscountResponse;
 import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.HinhAnhRepository;
@@ -11,11 +12,8 @@ import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
 import com.project.ttaptshirt.service.GHNService;
-import com.project.ttaptshirt.service.impl.ChiTietSanPhamServiceImpl;
+import com.project.ttaptshirt.service.impl.*;
 import com.project.ttaptshirt.service.HoaDonLogService;
-import com.project.ttaptshirt.service.impl.DiscountService;
-import com.project.ttaptshirt.service.impl.GioHangService;
-import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +61,10 @@ public class GioHangController {
     @Autowired
     private GHNService gHNService;
 
+    @Autowired
+    private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
+    @Autowired
+    private KhachHangVoucherServicelmpl khachHangVoucherServicelmpl;
 
 
     // Xem giỏ hàng
@@ -134,6 +136,9 @@ public class GioHangController {
             model.addAttribute("productStockQuantities", productStockQuantities); // Thêm số lượng vào mô hình
 
 
+            List<KhachHangVoucher> danhSachMaGiamGia = khachHangVoucherServicelmpl.getMaGiamGia(user.getKhachHang().getId());
+            model.addAttribute("danhSachMaGiamGia", danhSachMaGiamGia);
+
             // Tiện ích số học
             NumberUtils numberUtils = new NumberUtils();
             model.addAttribute("numberUtils", numberUtils);
@@ -181,6 +186,15 @@ public class GioHangController {
         return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
     }
 
+    @GetMapping("/dsVocher")
+    @ResponseBody
+    public List<MaGiamGia> getVoucherList(Authentication authentication) {
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        TaiKhoan user = customUserDetail.getUser();
+        // Lấy danh sách mã giảm giá của khách hàng từ service
+        List<MaGiamGia> danhSachVoucher = maGiamGiaServicelmpl.getMaGiamGia(user.getKhachHang().getId());  // Giả sử phương thức này sẽ lấy mã giảm giá của khách hàng
+        return danhSachVoucher;  // Trả về danh sách mã giảm giá dưới dạng JSON
+    }
 
 
     // Xóa sản phẩm khỏi giỏ hàng
@@ -233,6 +247,7 @@ public class GioHangController {
                                @RequestParam String diaChi,
                                @RequestParam String nguoiNhan,
                                @RequestParam String soDienThoai,
+                               @RequestParam Long idGiamgia,
                                RedirectAttributes redirectAttributes,
                                Authentication authentication,
                                Model model) {
@@ -287,7 +302,7 @@ public class GioHangController {
                         return "redirect:/TTAP/cart/view"; // Quay lại trang giỏ hàng
                     }
                 }
-                HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi,nguoiNhan,soDienThoai);
+                HoaDon hoaDon = gioHangService.checkoutCart(user, selectedProductIds, diaChi,nguoiNhan,soDienThoai,idGiamgia);
                 redirectAttributes.addFlashAttribute("message", true);
 
                 hdlog.setHoaDon(hoaDon);
@@ -454,24 +469,62 @@ public class GioHangController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "User not authenticated"));
     }
 
-    @PostMapping("/getdiscount")
+
+    @PostMapping("/apply-discount")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> applyDiscount(@RequestParam String code) {
-        // Lấy mã giảm giá từ service
-        MaGiamGia discount = discountService.getMaGiamGia(code);
+    public ResponseEntity<Map<String, Object>> applyDiscount(@RequestParam("discount_code") Long voucherId) {
+        // Giả sử bạn có một dịch vụ để tìm mã giảm giá từ voucherId
+        MaGiamGia voucher = maGiamGiaServicelmpl.findById(voucherId);
+
         Map<String, Object> response = new HashMap<>();
-        // Kiểm tra nếu mã giảm giá hợp lệ
-        if (discount != null) {
-            response.put("discount", Map.of("discountPercentage", discount.getGiaTriGiam()));
-            response.put("message", "Mã giảm giá hợp lệ");
-            return ResponseEntity.ok(response);
+        if (voucher != null) {
+            // Lấy thông tin từ mã giảm giá
+            String discountCode = voucher.getMa();
+            double discountAmount = voucher.getGiaTriGiam();
+            String expirationDate = voucher.getNgayKetThuc().toString();
+            boolean isUsed = voucher.isStart();
+            Double condition = voucher.getGiaTriToiThieu();
+
+            // Thêm các giá trị vào phản hồi
+            response.put("discountCode", discountCode);
+            response.put("discountAmount", discountAmount);
+            response.put("expirationDate", expirationDate);
+            response.put("isUsed", isUsed);
+            response.put("condition", condition);
+
+            // Kiểm tra mã giảm giá còn hiệu lực
+            if (voucher.getNgayKetThuc().isBefore(LocalDateTime.now()) || isUsed) {
+                response.put("status", "expired or already used");
+            } else {
+                response.put("status", "valid");
+            }
         } else {
-            response.put("message", "Mã giảm giá không hợp lệ hoặc đã hết hạn");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            // Xử lý trường hợp mã giảm giá không tồn tại
+            response.put("status", "not found");
         }
+
+        return ResponseEntity.ok(response);
     }
 
-         
+
+//    @PostMapping("/apply-discount")
+//    @ResponseBody
+//    public ResponseEntity<?> applyDiscount(@RequestParam Long discount_code) {
+//        try {
+//            // Lấy thông tin mã giảm giá từ ID đã nhận được
+//            MaGiamGia discount =maGiamGiaServicelmpl.findById(discount_code);
+//
+//            if (discount == null) {
+//                return ResponseEntity.badRequest().body("Mã giảm giá không hợp lệ.");
+//            }
+//
+//            // Áp dụng mã giảm giá vào tổng tiền
+//            double discountAmount = discount.getGiaTriGiam(); // Giả sử discount có field amount là phần trăm giảm giá
+//            return ResponseEntity.ok(new DiscountResponse(discountAmount)); // Trả về phần trăm giảm giá cho frontend
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống");
+//        }
+//    }
 
 
 }

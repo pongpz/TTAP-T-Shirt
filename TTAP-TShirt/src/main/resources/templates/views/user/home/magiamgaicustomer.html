@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>TTAP T-SHIRT</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+    <link rel="shortcut icon" type="image/png"
+          th:href="@{/images/logo2tap.jpg}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link th:href="@{/customercss/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/elegant-icons.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/nice-select.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/jquery-ui.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/owl.carousel.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/slicknav.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/style.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/style-customer.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/customercss/cart-hover.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/customcss/toastMessage.css ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+          type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+        }
+
+    </style>
+</head>
+<body>
+<header th:replace="~{/fragment/header-customer :: header-customer}"></header>
+<div id="toast-root"></div>
+<section>
+    <div class="container mt-5">
+        <div class="row">
+            <div th:replace="~{/fragment/aside-customer :: aside-customer}"></div>
+            <!-- Cột Thông tin hồ sơ -->
+            <div class="col-md-8">
+                <div class="mb-4 text-center">
+                    <h5 class="modal-title" id="createAddressModalLabel">Danh sách mã giảm giá</h5>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm border-0" style="border-radius: 10px;" th:each="voucher : ${danhSachMaGiamGia}" >
+                        <div class="card-body p-3">
+                            <!-- Tên chương trình -->
+                            <h6 class="card-title fw-bold mb-2" style="color: #EE4D2D;" th:text="${voucher.maGiamGia.ten}">
+                                Tên chương trình
+                            </h6>
+                            <!-- Thông tin giảm giá -->
+                            <p class="card-text text-muted mb-1" style="font-size: 0.9rem;">
+                                Giảm <span th:text="${voucher.maGiamGia.giaTriGiam + '%'}" style="color: #EE4D2D;"></span>, giảm tối đa
+                                <span th:text="${numberUtils.formatCurrency(voucher.maGiamGia.giaTriToiDa)}"></span>
+                            </p>
+                            <!-- Đơn hàng tối thiểu -->
+                            <p class="card-text text-muted mb-1" style="font-size: 0.9rem;">
+                                <strong>Đơn tối thiểu:</strong>
+                                <span th:text="${numberUtils.formatCurrency(voucher.maGiamGia.giaTriToiThieu)}"></span>
+                            </p>
+                            <!-- Ngày có hiệu lực -->
+                            <p class="card-text text-muted mb-2" style="font-size: 0.9rem;">
+                                <strong>Có hiệu lực trong:</strong>
+                                <span th:text="${voucher.maGiamGia.thoiGianHieuLuc}">Số ngày</span>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- Nút Điều kiện -->
+                                <a href="/voucher/details" class="btn btn-sm btn-outline-danger">Điều kiện</a>
+                                <!-- Badge số lượng -->
+                                <span class="badge bg-danger rounded-pill px-2 py-1" th:text="${voucher.soLuong}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/banhang.js}"></script>
+<script src="/js/toastMessage.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var removemessage = [[${removemessage}]];
+    console.log(removemessage);  // Debugging line to ensure the attribute is set
+    if (removemessage) {
+        toastSuccess('Thành Công!', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
+    }
+    /*]]>*/
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var message = [[${message}]];
+    console.log(message);  // Debugging line to ensure the attribute is set
+    if (message) {
+        toastSuccess('Thành Công!', 'Đơn hàng đã đặt thành công');
+    }
+    /*]]>*/
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    /* Check if the deleteSuccess attribute is present in the model */
+    var addressNullError = [[${addressNullError}]];
+    if (addressNullError) {
+        toastError('Lỗi !', 'Địa chỉ của bạn không hợp lệ!');
+    }
+    /*]]>*/
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    /* Check if the deleteSuccess attribute is present in the model */
+    var successDcMessage = [[${successDcMessage}]];
+    if (successDcMessage) {
+        toastSuccess('Thành công', 'Địa chỉ của bạn đã được chọn');
+    }
+    /*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    /* Check if the deleteSuccess attribute is present in the model */
+    var successAddress= [[${successAddress}]];
+    if (successAddress) {
+        toastSuccess('Thành công', 'Địa chỉ của bạn đã được thêm ');
+    }
+    /*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var errorMessage = [[${error}]];
+    if (errorMessage) {
+        toastError('Lỗi', errorMessage);
+    }
+    /*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var successRemoveaddress= [[${successRemoveaddress}]];
+    if (successRemoveaddress) {
+        toastSuccess('Thành công', successRemoveaddress);
+    }
+    /*]]>*/
+</script>
+
+
+<footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
+    <p>&copy; 2024 TTAP T-SHIRT. All rights reserved.</p>
+</footer>
+</body>
+</html>
