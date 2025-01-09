@@ -1,8 +1,13 @@
 package com.project.ttaptshirt.controller.adminController;
 
+import com.project.ttaptshirt.dto.AssignVoucherRequest;
+import com.project.ttaptshirt.dto.CustomerVoucherData;
 import com.project.ttaptshirt.dto.NumberUtils;
+import com.project.ttaptshirt.entity.KhachHang;
 import com.project.ttaptshirt.entity.MaGiamGia;
 import com.project.ttaptshirt.repository.MaGiamGiaRepo;
+import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
+import com.project.ttaptshirt.service.impl.MaGiamGiaServicelmpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -11,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +25,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.project.ttaptshirt.dto.ApiResponse;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -33,6 +37,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/ma-giam-gia")
@@ -40,6 +45,11 @@ public class MaGiamGiaController {
 
     @Autowired
     MaGiamGiaRepo mggr;
+
+    @Autowired
+    private KhachHangServiceImpl khachHangService;
+    @Autowired
+    private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
 
     @GetMapping("/hien-thi")
     public String hienthi (Model model, @RequestParam(value = "page",defaultValue = "0") Integer page){
@@ -49,6 +59,8 @@ public class MaGiamGiaController {
             model.addAttribute("nullmgg","Không có mã giảm giá nào");
         }
         NumberUtils numberUtils = new NumberUtils();
+        List<KhachHang> khachHangList = khachHangService.findAll();
+        model.addAttribute("cus", khachHangList);
         model.addAttribute("numberUtils",numberUtils);
         model.addAttribute("ListMGG",p);
         model.addAttribute("page",page);
@@ -289,6 +301,28 @@ public class MaGiamGiaController {
             return "redirect:/admin/ma-giam-gia/hien-thi";
         }
     }
+
+    @PostMapping("/api/assign-voucher")
+    @ResponseBody
+    public ResponseEntity<?> assignVoucher(@RequestBody AssignVoucherRequest request) {
+        try {
+            // Lặp qua danh sách khách hàng để gán mã giảm giá
+            for (CustomerVoucherData customerData : request.getCustomerData()) {
+                // Gọi service để thực hiện logic gán mã giảm giá
+               maGiamGiaServicelmpl.themVoucherChoKhachHang(request.getVoucherId(), customerData.getCustomerId(), customerData.getQuantity());
+            }
+
+            // Trả về phản hồi thành công nếu không có lỗi
+            return ResponseEntity.ok(new ApiResponse(true, "Mã giảm giá đã được gán thành công!"));
+        } catch (RuntimeException e) {
+            // Xử lý lỗi nếu xảy ra vấn đề với việc gán voucher (ví dụ: không đủ mã giảm giá, khách hàng không tồn tại)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(false, "Đã xảy ra lỗi: " + e.getMessage()));
+        } catch (Exception e) {
+            // Xử lý các lỗi chung
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, "Đã xảy ra lỗi hệ thống"));
+        }
+    }
+
 
     @GetMapping("/form-add")
     public String formAdd(MaGiamGia mgg, Model model){

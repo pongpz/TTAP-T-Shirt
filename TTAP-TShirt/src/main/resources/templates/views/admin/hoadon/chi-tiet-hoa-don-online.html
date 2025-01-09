@@ -171,6 +171,29 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalKhachHangKhongNhan" tabindex="-1" aria-labelledby="modalKhachHangKhongNhan" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lableKhachHangKhongNhan">Giao hàng thất bại</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/admin/hoa-don/giao-hang-that-bai/{id}(id=${hoaDon.id})}" method="get">
+                            <span>Lý do: </span>
+                        <select class="form-select mt-1" aria-label="Default select example" name="lyDo">
+                            <option value="1">Khách từ chối nhận hàng</option>
+                            <option value="2">Sản phẩm có lỗi</option>
+                        </select>
+                        <button class="btn btn-primary align-items-center justify-content-center mt-3">Xác nhận</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row" style="margin-left: 520px">
 
@@ -228,6 +251,14 @@
                 style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; background-color: white; color: #dc3545; border: 1px solid #dc3545;"
                 th:onclick="|confirmWithReason('/admin/hoa-don/huy-hoa-don-online/' + ${hoaDon.id})|">
             Hủy đơn hàng
+        </button>
+
+        <button
+                th:if="${hoaDon.trangThai == 9}"
+                style="border-radius: 12px; width: 140px; height: 40px; margin: 0 10px; background-color: white; color: #dc3545; border: 1px solid #dc3545;"
+                data-bs-toggle="modal" data-bs-target="#modalKhachHangKhongNhan"
+        >
+            Giao thất bại
         </button>
 
     </div>
@@ -337,7 +368,8 @@
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <p style="margin: 0; font-size: 14px;">Phí vận chuyển:</p>
             <span type="text"
-                  style="padding: 5px; font-size: 14px; width: 80px; text-align: right; border: 1px solid #ddd; border-radius: 4px;">50000</span>
+                  style="padding: 5px; font-size: 14px; width: 80px; text-align: right; border: 1px solid #ddd; border-radius: 4px;"
+                  th:text="${numberUtils.formatCurrency(hoaDon.tienShip)}"></span>
         </div>
         <div style="margin-top: 20px; display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
             <p style="margin: 0;">Tổng tiền:</p>

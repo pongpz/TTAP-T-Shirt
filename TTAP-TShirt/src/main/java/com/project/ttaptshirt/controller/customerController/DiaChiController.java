@@ -2,9 +2,11 @@ package com.project.ttaptshirt.controller.customerController;
 
 
 import com.project.ttaptshirt.entity.DiaChi;
+import com.project.ttaptshirt.entity.KhachHang;
 import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
+import com.project.ttaptshirt.service.KhachHangService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,6 +30,9 @@ public class DiaChiController {
 
     @Autowired
     private DiaChiService serDc;
+
+    @Autowired
+    private KhachHangService khachHangService;
 
     @GetMapping("home")
     public String home(Model mol){
@@ -111,10 +116,17 @@ public class DiaChiController {
 
     @GetMapping("/address/update/{id}")
     public String addressUpdate(@PathVariable Long id,Authentication authentication,
-                                Model model) {
+                                Model model,RedirectAttributes redirectAttributes) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
+            KhachHang khachHang = khachHangService.findById(user.getKhachHang().getId()); // Lấy lại từ DB
+            if (khachHang != null) {
+                model.addAttribute("khachHang", khachHang);
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Không tìm thấy khách hàng.");
+                return "redirect:/login"; // Redirect nếu không tìm thấy khách hàng
+            }
             DiaChi address = serDc.findById(id);
             model.addAttribute("address", address);
             model.addAttribute("userLogged", user);

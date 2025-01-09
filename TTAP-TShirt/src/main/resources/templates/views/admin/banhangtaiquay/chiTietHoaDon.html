@@ -21,7 +21,7 @@
     <!-- Sidebar using Thymeleaf fragment -->
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
 
-    <div class="main-content content flex-grow-1 p-4">
+    <div class="main-content content flex-grow-1 p-4" style="width: 80%">
         <h2 class="text-center" style="font-size: 2rem; font-weight: 700; color: #2c3e50; margin-bottom: 1rem;">Bán Hàng Tại Quầy</h2>
         <hr style="border: 1px solid #ddd; margin-bottom: 1.5rem;">
 
@@ -50,7 +50,7 @@
                     <h4 style="margin-top:12px" class="col-7">Danh sách sản phẩm mua:</h4>
                     <button class="col-2 btn btn-info" id="btn-select-products" style="padding-right: 20px"
                             data-bs-toggle="modal"
-                            data-bs-target="#modalAddSP">Thêm Sản Phẩm
+                            data-bs-target="#modalAddSP">Thêm sản phẩm
                         <i class="fa-solid fa-cart-shopping"></i>
                     </button>
 
@@ -58,9 +58,8 @@
                     <!-- Modal Sản Phẩm -->
                     <div class="modal fade" th:id="'modalAddSP'" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl modal-dialog-centered"
-                             id="modal-dialog"
-                             style="max-width: 90%;">
+                        <div class="modal-dialog modal-fullscreen"
+                             id="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Chọn sản phẩm muốn mua vào hóa
@@ -73,8 +72,8 @@
                                         <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get"
                                               id="form-search-product">
                                             <input class="col-7" type="text" name="tenSP" th:value="${tenSP}">
-                                            <input class="col-7" type="hidden" name="hoadonId" th:value="${hoadon.id}">
-                                            <button class="col-1 btn btn-info" type="submit">Tìm kiếm
+                                            <input type="hidden" name="hoadonId" th:value="${hoadon.id}">
+                                            <button class="col-2 btn btn-info" style="margin-left: 20px" type="submit">Tìm kiếm
                                             </button>
                                         </form>
                                     </div>
@@ -82,31 +81,31 @@
                                         <thead>
                                         <tr>
                                             <th scope="col">STT</th>
-                                            <th scope="col">Ma San Pham</th>
-                                            <th scope="col">Ten San Pham</th>
-                                            <th scope="col">Thuong Hieu</th>
+                                            <th scope="col">Mã SP</th>
+                                            <th scope="col">Tên SP</th>
+                                            <th scope="col">Thương hiệu</th>
                                             <th scope="col">NSX</th>
-                                            <th scope="col">Chat Lieu</th>
-                                            <th scope="col">Kich Co</th>
-                                            <th scope="col">Mau Sac</th>
-                                            <th scope="col">Số Lượng Tồn</th>
+                                            <th scope="col">Chất liệu</th>
+                                            <th scope="col">Kích cỡ</th>
+                                            <th scope="col">Màu sắc</th>
+                                            <th scope="col">Số lượng tồn</th>
                                             <th scope="col">Giá bán</th>
-                                            <th scope="col">Số lượng mua</th>
-                                            <th scope="col">Hành động</th>
+                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Thao tác</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="ctsp, stat : ${listCTSP}">
-                                            <td th:text="${stat.index+1}"></td>
+                                            <td scope="row" th:text="${stat.index+1}"></td>
                                             <th scope="row" th:text="${ctsp.sanPham.ma}"></th>
-                                            <td th:text="${ctsp.sanPham.ten}"></td>
-                                            <td th:text="${ctsp.sanPham.thuongHieu.ten}"></td>
-                                            <td th:text="${ctsp.sanPham.nsx.ten}"></td>
-                                            <td th:text="${ctsp.sanPham.chatLieu.ten}"></td>
-                                            <td th:text="${ctsp.kichCo.ten}"></td>
-                                            <td th:text="${ctsp.mauSac.ten}"></td>
-                                            <td th:text="${ctsp.soLuong}"></td>
-                                            <td th:text="${ctsp.giaBan != null ? numberUtils.formatCurrency(ctsp.giaBan) : 'N/A'}"></td>
+                                            <td scope="row" th:text="${ctsp.sanPham.ten}"></td>
+                                            <td scope="row" th:text="${ctsp.sanPham.thuongHieu.ten}"></td>
+                                            <td scope="row" th:text="${ctsp.sanPham.nsx.ten}"></td>
+                                            <td scope="row" th:text="${ctsp.sanPham.chatLieu.ten}"></td>
+                                            <td scope="row" th:text="${ctsp.kichCo.ten}"></td>
+                                            <td scope="row" th:text="${ctsp.mauSac.ten}"></td>
+                                            <td scope="row" th:text="${ctsp.soLuong}"></td>
+                                            <td scope="row" th:text="${ctsp.giaBan != null ? numberUtils.formatCurrency(ctsp.giaBan) : 'N/A'}"></td>
                                             <form class="d-flex align-items-center"
                                                   th:action="@{/admin/ban-hang/add-ctsp-to-hoadon}"
                                                   method="post"
@@ -183,7 +182,7 @@
                     <form class="col-3" th:action="@{/admin/ban-hang/hoa-don/xoa-het-ctsp/{id}(id=${hoadon.id})}" method="POST">
                         <button  class="col-8 btn btn-danger" type="submit" style="height: 60px"
                                 onclick="return confirm('Bạn Có chắc chắn xóa hết sản phẩm khỏi hóa đơn không ?');">
-                            Xóa Hết Sản Phẩm
+                            Xóa hết sản phẩm
                             <i class="fa-regular fa-trash-can"></i>
                         </button>
                     </form>
@@ -246,7 +245,7 @@
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalUpdateQuantity"
                                 th:onclick="'openModal(' + ${hdct.id} + ',' + ${hdct.soLuong} + ',' + ${hdct.chiTietSanPham.soLuong+hdct.soLuong} + ');'">
-                            Sửa Số Lượng
+                            Sửa số lượng
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                         <script>
@@ -306,16 +305,16 @@
             <br>
             <hr>
             <div class="invoiceInfomation col-4 bg-light text-dark"
-                 style="height: 820px; margin-left: 800px">
+                 style="height: 700px; margin-left: 750px">
                 <h3>Thông tin hóa đơn</h3>
                 <hr/>
+<!--                <div class="row" style="margin-bottom: 1rem;">-->
+<!--                    <label class="col-6" style="font-size: 1rem; font-weight: 600; color: #333;" th:text="'ID Hoá đơn: '+${hoadon.id}"></label>-->
+<!--                    <label class="col-6" style="font-size: 1rem; font-weight: 600; color: #333;" th:text="'Mã Hoá đơn: '+${hoadon.ma}"></label>-->
+<!--                </div>-->
+<!--                <br/>-->
                 <div class="row" style="margin-bottom: 1rem;">
-                    <label class="col-6" style="font-size: 1rem; font-weight: 600; color: #333;" th:text="'ID Hoá đơn: '+${hoadon.id}"></label>
-                    <label class="col-6" style="font-size: 1rem; font-weight: 600; color: #333;" th:text="'Mã Hoá đơn: '+${hoadon.ma}"></label>
-                </div>
-                <br/>
-                <div class="row" style="margin-bottom: 1rem;">
-                    <label class="col-6" style="font-size: 1rem; font-weight: 600; color: #333;" th:text="${hoadon != null && hoadon.nhanVien != null ? 'Nhân Viên Tạo: ' + hoadon.nhanVien.hoTen : 'Nhân Viên: ADMIN'}"></label>
+                    <label class="col-6" style="font-size: 1rem; font-weight: 600; color: #333;" th:text="${hoadon != null && hoadon.nhanVien != null ? 'Nhân viên: ' + hoadon.nhanVien.hoTen : 'Nhân Viên: ADMIN'}"></label>
                     <label class="col-6" style="font-size: 1rem; font-weight: 600; color: #333;" th:text="${hoadon != null ? 'Ngày Tạo: ' + hoadon.ngayTao : 'Chưa Có Ngày Tạo'}"></label>
                 </div>
                 <br/>
@@ -323,8 +322,8 @@
                     <label class="col-9" style="font-size: 1rem; font-weight: 600; "
                            th:text="${hoadon != null && hoadon.khachHang != null ? 'Khách Hàng: ' + hoadon.khachHang.hoTen : 'Khách Hàng: Vãng lai'}">
                     </label>
-                    <button class="col-3 btn btn-info" data-bs-toggle="modal" data-bs-target="#modalAddCustomer">
-                        Chọn Khách Hàng
+                    <button class="col-3 btn btn-sm btn btn-info" style="margin-left: 250px; margin-top: -30px" data-bs-toggle="modal" data-bs-target="#modalAddCustomer">
+                        Khách hàng
                     </button>
 
 
@@ -340,17 +339,17 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <input placeholder="Tìm kiếm theo số điện thoại khách hàng"
-                                               style="width: 620px;height: 60px" class="col-7" type="number"
+                                        <input placeholder="Số điện thoại khách hàng"
+                                               class="form-control" style="width: 250px" type="number"
                                                name="soDienThoaiKH">
-                                        <a class="col-4 btn btn-info"
-                                           style="width: 120px;height: 60px;margin-right: 30px"
+                                        <a class="btn btn-sm btn btn-info"
+                                           style="width: 150px;height: 40px;margin-left: 30px"
                                            th:href="@{/admin/ban-hang/huy-khach-hang?hoadonId={idHd}(idHd=${hoadon.id})}"
                                            onclick="return confirmCancelKH()">Khách vãng lai</a>
-                                        <button class="btn btn-info"
-                                                style="width: 120px;height: 60px;margin-right: 30px;"
+                                        <button class="btn btn-sm btn btn-info"
+                                                style="width: 150px;height: 40px;margin-left: 30px"
                                                 data-bs-toggle="modal" data-bs-target="#modalAddNewCustomer">
-                                            Thêm Mới Khách Hàng
+                                            Thêm khách hàng
                                         </button>
                                     </div>
                                     <table class="table">
@@ -359,7 +358,7 @@
                                             <th scope="col">STT</th>
                                             <th scope="col">Họ tên</th>
                                             <th scope="col">Số điện thoại</th>
-                                            <th scope="col">Hành động</th>
+                                            <th scope="col">Thao tác</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -381,7 +380,7 @@
                                                             class="btn btn-info col-4"
                                                             onclick="return confirm('Bạn Có muốn thêm khách hàng này?');"
                                                     >
-                                                        Thêm khách hàng
+                                                        Chọn
                                                     </button>
 
                                                 </form>
@@ -407,7 +406,7 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel2">Thêm Mới Khách Hàng</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel2">Thêm mới khách hàng</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -452,7 +451,7 @@
 
                 <hr/>
                 <div class="row">
-                    <label class="col-5" style="font-size: 1rem; font-weight: 600;">Tổng Tiền:</label>
+                    <label class="col-6" style="font-size: 1rem; font-weight: 600;">Tổng Tiền:</label>
                     <label class="col-4" style="font-size: 1rem; font-weight: 600;"
                            th:text="${hoadon != null && hoadon.tongTien != null ? numberUtils.formatCurrency(hoadon.tongTien): 'Chưa có dữ liệu'}">
                     </label>
@@ -461,13 +460,13 @@
 
                 <br/>
                 <div class="row">
-                    <label class="col-5" style="font-size: 1rem; font-weight: 600;">Giảm giá voucher:</label>
+                    <label class="col-6" style="font-size: 1rem; font-weight: 600;">Giảm giá voucher:</label>
                     <label class="col-4" style="font-size: 1rem; font-weight: 600;"
                            th:text="${hoadon.soTienGiamGia!=null?numberUtils.formatCurrency(hoadon.soTienGiamGia) :'chưa có '}"></label>
-                    <button class="col-3 btn btn-info"
+                    <button class="col-3 btn btn-sm btn btn-info" style="margin-left: 250px; margin-top: -30px"
                             data-bs-toggle="modal" data-bs-target="#modalAddVoucher"
                     >
-                        Chọn Voucher
+                        Mã giảm giá
                     </button>
                     <!-- Modal voucher -->
                     <div class="modal fade" id="modalAddVoucher" tabindex="-1" aria-labelledby="modalAddVoucherLabel"
@@ -475,17 +474,17 @@
                         <div class="modal-dialog modal-dialog-centered modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="modalAddVoucherLabel">Danh Sách Voucher Hợp Lệ</h5>
+                                    <h5 class="modal-title" id="modalAddVoucherLabel">Danh sách mã giảm giá hợp lệ</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
                                 <div>
                                     <form class="row" th:action="@{/admin/ban-hang/hoa-don/chi-tiet}" method="get"
                                           id="form-search-voucher">
-                                        <input class="col-7" type="text" name="mgg" th:value="${mgg}">
-                                        <input class="col-7" type="hidden" name="hoadonId" th:value="${hoadon.id}">
-                                        <button class="col-1 btn btn-info" type="submit">Tìm kiếm</button>
-                                        <a class="col-1 btn btn-info"
+                                        <input class="form-control" style="width: 250px" type="text" name="mgg" th:value="${mgg}">
+                                        <input type="hidden" name="hoadonId" th:value="${hoadon.id}">
+                                        <button class="btn btn-sm btn-info" style="width: 150px;height: 40px;margin-left: 30px" type="submit">Tìm kiếm</button>
+                                        <a class="btn btn-sm btn-info" style="width: 150px;height: 40px;margin-left: 30px"
                                            th:href="@{/admin/ban-hang/huy-ma-giam-gia?hoadonId={idHd}(idHd=${hoadon.id})}"
                                            onclick="return confirmCancelMGG()">Bỏ chọn</a>
                                     </form>
@@ -495,15 +494,15 @@
                                     <table class="table table-bordered table-striped">
                                         <thead class="table-light">
                                         <tr>
-                                            <th>#</th>
+                                            <th>STT</th>
                                             <th>Mã</th>
                                             <th>Tên</th>
-                                            <th>Giá Trị Giảm</th>
-                                            <th>Hình Thức</th>
+                                            <th>Giá trị giảm</th>
+                                            <th>Hình thức</th>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                             <th>Số lượng</th>
-                                            <th>Thao Tác</th>
+                                            <th>Thao tác</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -555,16 +554,16 @@
 
                 <hr/>
                 <div class="row">
-                    <label class="col-5" style="font-size: 1rem; font-weight: 600;">Số Tiền Thanh toán:</label>
+                    <label class="col-6" style="font-size: 1rem; font-weight: 600;">Số tiền thanh toán:</label>
                     <label class="col-4" style="font-size: 1rem; font-weight: 600;"
 
                            th:text="${hoadon != null && hoadon.tienThu != null ? numberUtils.formatCurrency(hoadon.tienThu) : 'Chưa có dữ liệu'}"
                            id="tongTienLabel"></label>
                 </div>
                 <br/>
-                <div class="row">
+                <div class="row d-flex">
                     <label class="col-5" style="font-size: 1rem; font-weight: 600;">Tiền khách trả:</label>
-                    <input style="width: 280px;height: 40px;border-radius: 10px;" type="number"
+                    <input style="margin-left: 10px; height: 40px;border-radius: 10px;" type="number" class="col-6"
                            placeholder="Nhập tiền khách trả..." id="tienKhachTraInput" oninput="calculateTienThua()">
                 </div>
                 <br/>
@@ -598,19 +597,19 @@
 
                 <label for="note" style="font-size: 1rem; font-weight: 600;">Ghi Chú</label>
                 <br/>
-                <textarea id="note" style="width: 400px; height: 80px"></textarea>
+                <textarea id="note" style="width: 350px; height: 80px"></textarea>
                 <br/><br/>
 
                 <div class="paying d-flex">
-                    <button class="col-4 btn btn-info" style="height: 50px;margin-left: 15px;margin-right: 100px"
+                    <button class="col-4 btn btn-sm btn-outline-success" style="height: 40px;margin-left: 15px;margin-right: 100px"
                             onclick="confirmCheckout()">Thanh Toán
                         <!-- Hidden input field to hold the HoaDon ID -->
                         <input type="hidden" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
                     </button>
                     <form th:action="@{/admin/ban-hang/hoa-don/create-payment-link?idhd={idhd}(idhd=${hoadon.id})}"
                           method="post" class="col-4" id="formThanhToanOnline">
-                        <button class="btn btn-info col-12" onclick="return confirmCheckoutOnline(event)"
-                                style="height: 50px">Chuyển khoản
+                        <button class="btn btn-sm btn-outline-success col-12" onclick="return confirmCheckoutOnline(event)"
+                                style="height: 40px">Chuyển khoản
                         </button>
                     </form>
                 </div>
@@ -624,7 +623,7 @@
                         console.log(lengthlistHDCT)
                         // Check if the list is empty
                         if (lengthlistHDCT === 0) {
-                            toastWarning('Cảnh báo!', 'Hóa đơn trống. Không thể thực hiện thanh toán!');
+                            toastWarning('Cảnh báo!', 'Hóa đơn trống. Không thể thực hiện !');
                             return false; // Prevent the checkout if the list is empty
                         }
 

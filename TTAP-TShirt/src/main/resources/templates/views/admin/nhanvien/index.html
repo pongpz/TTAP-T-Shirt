@@ -41,6 +41,7 @@
         <th>Số điện thoại</th>
         <th>Email</th>
         <th>Tài khoản</th>
+        <th>Chức vụ</th>
         <th>Trạng thái</th>
         <th>Thao tác</th>
       </tr>
@@ -58,6 +59,7 @@
         <td th:text="${user.soDienthoai}"></td>
         <td th:text="${user.email}"></td>
         <td th:text="${user.taiKhoan.username}"></td>
+        <td th:text="${user.taiKhoan.role.id == 1 ? 'Quản lý' : 'Nhân viên'}"></td>
         <td th:text="${user.taiKhoan.enable} ? 'Kích hoạt' : 'Khóa'"></td>
         <td>
           <a class="btn btn-danger btn-sm" th:href="@{/admin/nhanvien/deactivate/{id}(id = ${user.taiKhoan.id})}" onclick="return confirmHuyNV()" th:if="${user.taiKhoan.enable == true}">
@@ -169,8 +171,8 @@
 </script>
 
 <script>
-    function confirmKichHoatNV(){
-        return confirm("Bạn có chắc muốn cho nhân viên này hoạt động không?")
-    }
+  function confirmKichHoatNV(){
+    return confirm("Bạn có chắc muốn cho nhân viên này hoạt động không?")
+  }
 </script>
 </html>

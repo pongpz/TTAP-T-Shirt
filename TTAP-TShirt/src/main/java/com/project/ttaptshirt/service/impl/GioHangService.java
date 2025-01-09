@@ -4,6 +4,7 @@ import com.project.ttaptshirt.dto.AddToCartRequest;
 import com.project.ttaptshirt.dto.CartItemDTO;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.*;
+import com.project.ttaptshirt.service.GHNService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,12 @@ public class GioHangService {
     private HoaDonRepository hoaDonRepository;
     @Autowired
     private HoaDonChiTietRepository hoaDonChiTietRepository;
+    @Autowired
+    private GHNService ghnService;
+    @Autowired
+    private MaGiamGiaServicelmpl giamGiaServicelmpl;
+    @Autowired
+    private KhachHangVoucherRepository khachHangVoucherRepository;
 
     public GioHang taoDon(String userName, List<CartItemDTO> cartItems ) {
         TaiKhoan user = userRepo.findByUsername(userName);
@@ -120,6 +127,18 @@ public class GioHangService {
         updateTotalPrice(cart);
     }
 
+    public double calculateSubtotal(GioHang cart) {
+        if (cart == null || cart.getItems() == null || cart.getItems().isEmpty()) {
+            return 0.0;
+        }
+
+        double subtotal = cart.getItems().stream()
+                .mapToDouble(item -> item.getGia() * item.getSoLuong())
+                .sum();
+
+        return subtotal;
+    }
+
     // Cập nhật tổng giá trị giỏ hàng
     private void updateTotalPrice(GioHang cart) {
         BigDecimal total = cart.getItems() != null
@@ -193,18 +212,23 @@ public class GioHangService {
         });
     }
 
+    public void updateDiscount(GioHang cart, double discount) {
+        if (cart == null) {
+            throw new IllegalArgumentException("Cart không được null");
+        }
+        cart.setGiamGia(discount); // Cập nhật giá trị giảm giá
+        gioHangRepository.save(cart); // Lưu giỏ hàng
+    }
+
     @Transactional
     public HoaDon checkoutCart(TaiKhoan user, List<Long> selectedProductIds, String diaChi,
-                               String nguoiNhan, String soDienThoai) {
+                               String nguoiNhan, String soDienThoai, Long discountId) {
 
-        // Lấy giỏ hàng của người dùng
         GioHang cart = getOrCreateCart(user);
-
         KhachHang khachHang = user.getKhachHang();
         if (khachHang == null) {
             throw new RuntimeException("Tài khoản không được liên kết với khách hàng.");
         }
-        // Kiểm tra giỏ hàng có sản phẩm không
         if (cart.getItems().isEmpty()) {
             throw new RuntimeException("Giỏ hàng trống, không thể tạo hóa đơn.");
         }
@@ -218,50 +242,66 @@ public class GioHangService {
         hoaDon.setSdtNguoiNhan(soDienThoai);
         hoaDon.setDiaChiGiaoHang(diaChi);
         hoaDon.setLoaiDon(0);
-        hoaDon.setTrangThai(3); // Đặt trạng thái hóa đơn là chờ xử lý
+        hoaDon.setTrangThai(3);
         hoaDonRepository.save(hoaDon);
 
-        // Tính toán phí vận chuyển
+        // Tính tổng tiền sản phẩm
         double totalAmount = cart.getItems().stream()
-                .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId())) // Chỉ tính sản phẩm đã chọn
+                .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId()))
                 .mapToDouble(item -> item.getGia().doubleValue() * item.getSoLuong())
                 .sum();
 
+        double discountAmount = 0.0;
+        if (discountId != null && discountId > 0) {
+            MaGiamGia discountVoucher = giamGiaServicelmpl.findById(discountId);
+            if (discountVoucher != null) {
+                discountAmount = (discountVoucher.getGiaTriGiam() / 100) * totalAmount;
+                if (discountAmount > totalAmount) {
+                    discountAmount = totalAmount; // Giới hạn giảm giá không vượt quá tổng tiền
+                }
+                hoaDon.setSoTienGiamGia(discountAmount);
+                KhachHangVoucher khachHangVoucher = khachHangVoucherRepository.findByKhachHangAndMaGiamGia(khachHang, discountVoucher);
+                if (khachHangVoucher != null && khachHangVoucher.getSoLuong() > 0) {
+                    khachHangVoucher.setSoLuong(khachHangVoucher.getSoLuong() - 1); // Giảm số lượng
+                    khachHangVoucherRepository.save(khachHangVoucher); // Lưu lại thay đổi
+                } else {
+                    throw new RuntimeException("Mã giảm giá đã hết lượt sử dụng.");
+                }
+            } else {
+                throw new RuntimeException("Mã giảm giá không hợp lệ.");
+            }
+        }
 
-        double shippingFee = 50000;
+        // Tính phí vận chuyển
+        double shippingFee = ghnService.calculateShippingFee(diaChi);
+        hoaDon.setTienShip(shippingFee);
 
-        hoaDon.setTienShip(shippingFee); // Lưu phí vận chuyển vào hóa đơn
-
+        // Tính tổng tiền cuối cùng
+        double finalAmount = totalAmount + shippingFee - discountAmount;
+        hoaDon.setTongTien(totalAmount); // Tổng tiền trước khi áp dụng giảm giá
+        hoaDon.setTienThu(finalAmount); // Tổng tiền sau giảm giá và phí ship
         hoaDonRepository.save(hoaDon);
-        // Duyệt qua danh sách sản phẩm được chọn trong giỏ hàng
+
+        // Xử lý sản phẩm đã chọn
         List<GioHangChiTiet> itemsToMove = cart.getItems().stream()
-                .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId())) // Chỉ chọn sản phẩm có ID được truyền
+                .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId()))
                 .collect(Collectors.toList());
 
         if (itemsToMove.isEmpty()) {
             throw new RuntimeException("Không có sản phẩm nào được chọn để chuyển sang hóa đơn.");
         }
 
-        // Tạo danh sách chi tiết hóa đơn
-        List<HoaDonChiTiet> hoaDonChiTietList = new ArrayList<>();
-        for (GioHangChiTiet gioHangChiTiet : itemsToMove) {
+        List<HoaDonChiTiet> hoaDonChiTietList = itemsToMove.stream().map(gioHangChiTiet -> {
             HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
             hoaDonChiTiet.setHoaDon(hoaDon);
             hoaDonChiTiet.setChiTietSanPham(gioHangChiTiet.getChiTietSanPham());
             hoaDonChiTiet.setSoLuong(gioHangChiTiet.getSoLuong());
             hoaDonChiTiet.setDonGia(gioHangChiTiet.getGia().floatValue());
-            hoaDonChiTietList.add(hoaDonChiTiet);
-        }
+            return hoaDonChiTiet;
+        }).collect(Collectors.toList());
         hoaDonChiTietRepository.saveAll(hoaDonChiTietList);
 
-        // Cập nhật tổng tiền hóa đơn
-
-        hoaDon.setTongTien(totalAmount);
-        hoaDon.setTienThu(totalAmount+shippingFee);
-        // Tìm hiểu chức năng check nếu có khuyến mại => tiền thu = tổng tiền - tiền giảm(nhớ save cả tiền giảm vào db)
-        hoaDonRepository.save(hoaDon);
-
-        // Xóa các sản phẩm đã chọn khỏi giỏ hàng
+        // Xóa sản phẩm khỏi giỏ hàng
         cart.getItems().removeAll(itemsToMove);
         gioHangChiTietRepository.deleteAll(itemsToMove);
         updateTotalPrice(cart);

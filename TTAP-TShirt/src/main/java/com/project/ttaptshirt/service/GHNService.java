@@ -84,6 +84,71 @@ public class GHNService {
         return 0;
     }
 
+    public Integer calculateShippingFee(String diaChi) {
+        try {
+            // Tách thông tin từ chuỗi diaChi (giả sử định dạng: "Phường/Xã - Quận/Huyện - Thành phố")
+            String[] parts = diaChi.split(" - ");
+            if (parts.length < 3) {
+                log.error("Địa chỉ không hợp lệ: {}", diaChi);
+                return 0;
+            }
+
+            String tenDuong = parts[1].trim(); // Phường/Xã
+            String tenQuanHuyen = parts[2].trim(); // Quận/Huyện
+            String tenThanhPho = parts[3].trim(); // Thành phố
+
+            // Tạo headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("token", "25145a88-c2a2-11ef-b247-3a89ee222ada");
+
+            // Lấy district_id
+            Integer districtId = getDistrictId(tenQuanHuyen, tenThanhPho);
+            if (districtId == null) {
+                log.error("Không tìm thấy district_id cho địa chỉ: {}", diaChi);
+                return 0;
+            }
+            log.info("District ID: {}", districtId);
+
+            // Lấy ward_code
+            String wardCode = getWardCode(districtId, tenDuong);
+            if (wardCode == null) {
+                log.error("Không tìm thấy ward_code cho địa chỉ: {}", diaChi);
+                return 0;
+            }
+
+            // Tạo request body
+            GHNShippingDTO requestBody = new GHNShippingDTO();
+            requestBody.setService_type_id(2);
+            requestBody.setInsurance_value(500000);
+            requestBody.setFrom_district_id(1493);
+            requestBody.setTo_district_id(districtId);
+            requestBody.setTo_ward_code(wardCode);
+            requestBody.setHeight(15);
+            requestBody.setLength(15);
+            requestBody.setWeight(1000);
+            requestBody.setWidth(15);
+
+            HttpEntity<GHNShippingDTO> entity = new HttpEntity<>(requestBody, headers);
+
+            // Gửi yêu cầu tính phí vận chuyển tới GHN API
+            ResponseEntity<GHNShippingResponse> response = restTemplate.exchange(
+                    GHN_API_URL,
+                    HttpMethod.POST,
+                    entity,
+                    GHNShippingResponse.class
+            );
+
+            // Kiểm tra kết quả phản hồi và trả về phí vận chuyển
+            if (response.getBody() != null && response.getBody().getData() != null) {
+                return response.getBody().getData().getTotal();
+            }
+        } catch (Exception e) {
+            log.error("Lỗi khi tính toán phí vận chuyển: ", e);
+        }
+
+        return 0;
+    }
 
 
     private Integer getDistrictId(String districtName, String provinceName) {

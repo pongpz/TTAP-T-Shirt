@@ -3,11 +3,13 @@ package com.project.ttaptshirt.controller.adminController;
 import com.project.ttaptshirt.entity.NhanVien;
 import com.project.ttaptshirt.entity.Role;
 import com.project.ttaptshirt.entity.TaiKhoan;
+import com.project.ttaptshirt.repository.ChucVuRepo;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.NhanVienService;
 import com.project.ttaptshirt.service.UserService;
 import com.project.ttaptshirt.service.impl.NhanVienServicelmpl;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +35,9 @@ public class NhanVienController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private ChucVuRepo roleRepo;
 
     @GetMapping("/view")
     public String getEmployees(
@@ -98,6 +103,7 @@ public class NhanVienController {
     @PostMapping("/register")
     public String createNewUser(@ModelAttribute("user") TaiKhoan user,
                                 @ModelAttribute("nv") NhanVien nv,
+                                @ModelAttribute("idChucVu") Long idCV,
                                 @RequestParam("password") String passwordString,
                                 RedirectAttributes redirectAttributes,
                                 Model model) {
@@ -133,7 +139,7 @@ public class NhanVienController {
         user.setEnable(true); // Kích hoạt tài khoản
         user.setNgayTao(LocalDate.now());
         Role role = new Role();
-        role.setId(Long.parseLong("3"));
+        role.setId(idCV);
         user.setRole(role);
         nv.setTaiKhoan(user);
         // Lưu vào cơ sở dữ liệu
@@ -206,8 +212,9 @@ public class NhanVienController {
     }
 
 
+    @Transactional
     @PostMapping("/updateUser/{id}")
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("nv") NhanVien nv,
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("nv") NhanVien nv,@ModelAttribute("idChucVu") Long idCV,
                              RedirectAttributes redirectAttributes, Authentication authentication, Model model) {
         try {
             NhanVien existingNv = nhanVienServicelmpl.findById(id);
@@ -218,7 +225,10 @@ public class NhanVienController {
                 existingNv.setEmail(nv.getEmail());
                 existingNv.setSoDienthoai(nv.getSoDienthoai());
                 existingNv.setGioiTinh(nv.getGioiTinh());
-
+                Role role = roleRepo.getReferenceById(idCV);
+                TaiKhoan taiKhoan = userRepo.findByNhanVienId(id);
+                taiKhoan.setRole(role);
+                userRepo.save(taiKhoan);
                 // Cập nhật người dùng
                 nhanVienServicelmpl.save(existingNv);
 

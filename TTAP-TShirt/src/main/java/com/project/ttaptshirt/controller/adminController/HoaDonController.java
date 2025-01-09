@@ -315,6 +315,38 @@ public class HoaDonController {
         return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
     }
 
+    @GetMapping("/giao-hang-that-bai/{idHD}")
+    public String giaoHangThatBai(@PathVariable("idHD") Long idHD, RedirectAttributes redirectAttributes
+            , Authentication authentication, @RequestParam("lyDo") Integer lyDo) {
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        TaiKhoan user = customUserDetail.getUser();
+        HoaDon hoaDon = hoaDonService.findById(idHD);
+        HoaDonLog hoaDonLog = new HoaDonLog();
+        hoaDonLog.setHoaDon(hoaDon);
+        hoaDonLog.setHanhDong("Giao hàng thất bại");
+        hoaDonLog.setThoiGian(LocalDateTime.now());
+        hoaDonLog.setNguoiThucHien(user.getUsername());
+        if (lyDo == 1){
+            hoaDonLog.setGhiChu("Giao hàng Thất bại(Lý do: Khách từ chối nhận hàng)");
+            List<HoaDonChiTiet> listSanPham = hoaDonChiTietService.getListHdctByIdHd(idHD);
+            for (HoaDonChiTiet hdct : listSanPham) {
+                ChiTietSanPham chiTietSanPham = hdct.getChiTietSanPham();
+                chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + hdct.getSoLuong());
+                chiTietSanPham.setTrangThai(0);
+                chiTietSanPhamService.save(chiTietSanPham);
+            }
+            hoaDon.setGhiChu("Khách từ chối nhận hàng");
+        }else {
+            hoaDonLog.setGhiChu("Giao hàng Thất bại(Lý do: Sản phẩm có lỗi)");
+            hoaDon.setGhiChu("Sản phẩm có lỗi");
+        }
+        hoaDonLog.setTrangThai(0);
+        hoaDon.setTrangThai(-1);
+        hoaDonLogService.save(hoaDonLog);
+        hoaDonService.save(hoaDon);
+        redirectAttributes.addFlashAttribute("successMessage", "Xác nhận thành công!");
+        return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
+    }
 
     @GetMapping("/tim-kiem")
     public String timKiem(
@@ -335,7 +367,7 @@ public class HoaDonController {
         if (keyword.trim().isEmpty()) {
             lsSearch = hr.search2(ma.trim(), trangThai, ngayThanhToan, loaiDon, pageab);
         } else {
-//            lsSearch = hr.search(ma.trim(), keyword.trim(), trangThai, ngayThanhToan, loaiDon, pageab);
+            lsSearch = hr.search(ma.trim(), keyword.trim(), trangThai, ngayThanhToan, loaiDon, pageab);
         }
         model.addAttribute("listHDCT", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
         model.addAttribute("listSPOrder", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
@@ -346,7 +378,7 @@ public class HoaDonController {
         model.addAttribute("keyword", keyword.trim());
         model.addAttribute("id", id);
         model.addAttribute("ngayThanhToan", ngayThanhToan);
-//        model.addAttribute("loaiDon", loaiDon);
+        model.addAttribute("loaiDon", loaiDon);
         model.addAttribute("trangThai", trangThai);
         model.addAttribute("page", page);
         if (lsSearch.size() == 0) {

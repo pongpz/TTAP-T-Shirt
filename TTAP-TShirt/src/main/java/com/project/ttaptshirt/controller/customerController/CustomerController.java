@@ -1,12 +1,14 @@
 package com.project.ttaptshirt.controller.customerController;
 
-import com.project.ttaptshirt.entity.DiaChi;
-import com.project.ttaptshirt.entity.KhachHang;
-import com.project.ttaptshirt.entity.TaiKhoan;
+import com.project.ttaptshirt.dto.NumberUtils;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.DiaChiService;
 import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
+import com.project.ttaptshirt.service.impl.KhachHangVoucherServicelmpl;
+import com.project.ttaptshirt.service.impl.MaGiamGiaServicelmpl;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,11 +16,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/TTAP/user/detail")
@@ -33,6 +37,10 @@ public class CustomerController {
     private KhachHangServiceImpl serKhachHang;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
+    @Autowired
+    private KhachHangVoucherServicelmpl khachHangVoucherServicelmpl;
 
     @GetMapping("/view")
     String view(Model model, RedirectAttributes redirectAttributes,
@@ -54,6 +62,53 @@ public class CustomerController {
             return "/user/home/customer";
         }return "redirect:/login";
 
+    }
+
+    @GetMapping("/viewChangePass")
+    String viewChangepass(Model model, RedirectAttributes redirectAttributes,
+                Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+
+            KhachHang khachHang = serKhachHang.findById(user.getKhachHang().getId()); // Lấy lại từ DB
+            if (khachHang != null) {
+                model.addAttribute("khachHang", khachHang);
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Không tìm thấy khách hàng.");
+                return "redirect:/login"; // Redirect nếu không tìm thấy khách hàng
+            }
+
+
+            return "/user/khachhang/password";
+        }return "redirect:/login";
+
+    }
+
+        @GetMapping("/viewVocher")
+        public String viewVocher(Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
+            if (authentication != null) {
+                CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+                TaiKhoan user = customUserDetail.getUser();
+                model.addAttribute("userLogged", user);
+                KhachHang khachHang = serKhachHang.findById(user.getKhachHang().getId()); // Lấy lại từ DB
+                if (khachHang != null) {
+                    model.addAttribute("khachHang", khachHang);
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Không tìm thấy khách hàng.");
+                return "redirect:/login"; // Redirect nếu không tìm thấy khách hàng
+            }
+            // Lấy danh sách mã giảm giá của người dùng
+            List<KhachHangVoucher> danhSachMaGiamGia = khachHangVoucherServicelmpl.getMaGiamGia(user.getKhachHang().getId());
+            model.addAttribute("danhSachMaGiamGia", danhSachMaGiamGia);
+
+            NumberUtils numberUtils = new NumberUtils();
+            model.addAttribute("numberUtils", numberUtils);
+
+            return "/user/home/magiamgaicustomer";
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/viewDiachi")
@@ -198,5 +253,61 @@ public class CustomerController {
         }
         return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
     }
+
+    @PostMapping("/address/update/{id}")
+    public String updateAddress(@PathVariable Long id,
+                                @ModelAttribute @Valid DiaChi updatedAddress,
+                                BindingResult bindingResult,
+                                Authentication authentication,
+                                RedirectAttributes redirectAttributes,
+                                Model model) {
+        if (authentication == null) {
+            return "redirect:/login"; // Nếu chưa đăng nhập, chuyển hướng đến trang login
+        }
+
+        try {
+            // Lấy thông tin người dùng hiện tại
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan currentUser = customUserDetail.getUser();
+
+            // Tìm địa chỉ cần cập nhật
+            Optional<DiaChi> optionalAddress = Optional.ofNullable(diaChiService.findById(id));
+
+            if (optionalAddress.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Address not found.");
+                return "redirect:/TTAP/user/detail/viewDiachi";
+            }
+
+            DiaChi existingAddress = optionalAddress.get();
+
+            // Kiểm tra quyền: Địa chỉ này có thuộc về người dùng hiện tại không?
+            if (!existingAddress.getTaiKhoan().getId().equals(currentUser.getId())) {
+                redirectAttributes.addFlashAttribute("error", "You are not authorized to update this address.");
+                return "redirect:/TTAP/user/detail/viewDiachi";
+            }
+
+            // Kiểm tra validate dữ liệu
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("error", "Invalid address data. Please check your input.");
+                return "redirect:/TTAP/user/detail/viewDiachi";
+            }
+
+            // Cập nhật thông tin địa chỉ
+            existingAddress.setSoNha(updatedAddress.getSoNha());
+            existingAddress.setTenDuong(updatedAddress.getTenDuong());
+            existingAddress.setTenQuanhuyen(updatedAddress.getTenQuanhuyen());
+            existingAddress.setTenThanhpho(updatedAddress.getTenThanhpho());
+
+
+            diaChiService.save(existingAddress); // Lưu địa chỉ sau khi cập nhật
+            redirectAttributes.addFlashAttribute("selectedAddress", existingAddress);
+            redirectAttributes.addFlashAttribute("success", "Địa chỉ đã sửa thành công");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Sửa địa chỉ lỗi");
+        }
+
+        return "redirect:/TTAP/user/detail/viewDiachi";
+    }
+
 
 }

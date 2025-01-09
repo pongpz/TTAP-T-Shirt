@@ -61,81 +61,107 @@
 <header th:replace="~{/fragment/header-customer :: header-customer}"></header>
 <div id="toast-root"></div>
 <section>
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
+  <div class="container mt-5">
+    <div class="row">
+      <div th:replace="~{/fragment/aside-customer :: aside-customer}"></div>
+
+      <!-- Cột Thông tin hồ sơ -->
+      <div class="col-md-8">
+        <div class="mb-4 text-center">
           <h5 class="modal-title" id="createAddressModalLabel">Cập Nhật Địa Chỉ</h5>
         </div>
-        <div class="modal-body">
-          <!-- Form nhập địa chỉ -->
-          <form th:action="@{/TTAP/user/address/update/{id}(id=${address.id})}" method="post" th:object="${address}" onsubmit="return validateAddressForm()">
-            <div class="mb-3">
-              <label for="soNha" class="form-label">Số nhà</label>
-              <input type="text" class="form-control" id="soNha" th:field="*{soNha}" required>
-              <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
+        <!-- Form nhập địa chỉ -->
+        <form th:action="@{/TTAP/user/detail/address/update/{id}(id=${address.id})}"
+              method="post"
+              th:object="${address}"
+              onsubmit="return validateAddressForm()">
+          <div class="row mb-3">
+            <div class="col-md-6 form-group">
+              <label for="fullName" class="form-label">Họ và tên</label>
+              <input type="text" class="form-control" id="fullName"
+                     placeholder="Họ và tên" th:field="*{hoTen}"
+                     maxlength="64" autocomplete="name">
             </div>
-
-            <div class="mb-3">
-              <label for="tenDuong" class="form-label">Tên đường</label>
-              <input type="text" class="form-control" id="tenDuong" th:field="*{tenDuong}" required>
-              <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
+            <div class="col-md-6 form-group">
+              <label for="phoneNumber" class="form-label">Số điện thoại</label>
+              <input type="text" class="form-control" id="phoneNumber"
+                     placeholder="Số điện thoại" th:field="*{soDienThoai}"
+                     autocomplete="user-address-phone">
             </div>
-
-            <div class="mb-3">
-              <label for="tenQuanhuyen" class="form-label">Tên quận/huyện</label>
-              <input type="text" class="form-control" id="tenQuanhuyen" th:field="*{tenQuanhuyen}" required>
-              <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
+          </div>
+          <div class="mb-3">
+            <label for="soNha" class="form-label">Số nhà</label>
+            <input type="text" class="form-control" id="soNha"
+                   placeholder="Số nhà" th:field="*{soNha}" required>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4 form-group">
+              <label for="tinh" class="form-label">Tỉnh/Thành phố</label>
+              <input type="hidden" th:value="*{tenThanhpho}" id="hidden-tinh">
+              <select class="form-select" id="tinh" name="tenThanhpho"
+                      th:field="*{tenThanhpho}"
+                      title="Chọn Tỉnh Thành">
+                <option value="0">Tỉnh Thành</option>
+                <div class="invalid-feedback">Vui lòng chọn Tỉnh/Thành phố.</div>
+              </select>
             </div>
-
-            <div class="mb-3">
-              <label for="tenThanhpho" class="form-label">Tên thành phố</label>
-              <input type="text" class="form-control" id="tenThanhpho" th:field="*{tenThanhpho}" required>
-              <div class="invalid-feedback"></div> <!-- Hiển thị lỗi -->
+            <div class="col-md-4 form-group">
+              <label for="quan" class="form-label">Quận/Huyện</label>
+              <input type="hidden" th:value="*{tenQuanhuyen}" id="hidden-quan">
+              <select class="form-select" id="quan"
+                      th:field="*{tenQuanhuyen}"
+                      title="Chọn Quận Huyện">
+                <option value="0">Quận Huyện</option>
+                <div class="invalid-feedback">Vui lòng chọn Quận/Huyện.</div>
+              </select>
             </div>
-
-            <input type="hidden" th:field="*{id}">
-
-            <button type="submit" class="btn btn-primary">Cập nhật Địa Chỉ</button>
-          </form>
-
-        </div>
+            <div class="col-md-4 form-group">
+              <label for="phuong" class="form-label">Phường/Xã</label>
+              <input type="hidden" th:value="*{tenDuong}" id="hidden-phuong">
+              <select class="form-select" id="phuong"
+                      th:field="*{tenDuong}"
+                      title="Chọn Phường Xã">
+                <option value="0">Phường Xã</option>
+                <div class="invalid-feedback">Vui lòng chọn Phường/Xã.</div>
+              </select>
+            </div>
+          </div>
+          <input type="hidden" th:field="*{id}">
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary" >Cập Nhật Địa Chỉ</button>
+          </div>
+        </form>
       </div>
+
     </div>
+  </div>
 </section>
 
 
 <script>
   function validateAddressForm() {
-    const fields = ['soNha', 'tenDuong', 'tenQuanhuyen', 'tenThanhpho'];
+    const fields = ['soNha', 'tinh', 'quan', 'phuong'];
     let isValid = true;
 
     fields.forEach(field => {
       const input = document.getElementById(field);
       const value = input.value.trim(); // Loại bỏ khoảng trắng dư thừa
+      const feedback = input.nextElementSibling; // Phần tử hiển thị lỗi
 
       // Kiểm tra xem trường có để trống không
-      if (!value) {
+      if (!value || value === '0') {
         isValid = false;
         input.classList.add('is-invalid'); // Thêm lớp hiển thị lỗi
-        input.nextElementSibling.textContent = 'Trường này không được để trống.';
+        feedback.textContent = 'Trường này không được để trống.';
       } else {
         input.classList.remove('is-invalid'); // Loại bỏ lớp lỗi nếu hợp lệ
-        input.nextElementSibling.textContent = '';
+        feedback.textContent = '';
       }
     });
 
     return isValid; // Ngăn submit nếu không hợp lệ
   }
-</script>
-<script>
-  // Khi modal "createAddressModal" đóng lại
-  const createAddressModal = document.getElementById('createAddressModal');
-  const selectAddressModal = new bootstrap.Modal(document.getElementById('selectAddressModal'));
 
-  createAddressModal.addEventListener('hidden.bs.modal', function () {
-    // Tự động mở lại modal "selectAddressModal"
-    selectAddressModal.show();
-  });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -207,6 +233,245 @@
   }
   /*]]>*/
 </script>
+<script>
+  // $(document).ready(function () {
+  //   // Lấy giá trị từ các input hidden
+  //   var selectedTinh = $("#hidden-tinh").val();
+  //   var selectedQuan = $("#hidden-quan").val();
+  //   var selectedPhuong = $("#hidden-phuong").val();
+  //
+  //   console.log("Selected Tỉnh:", selectedTinh);
+  //   console.log("Selected Quận:", selectedQuan);
+  //   console.log("Selected Phường:", selectedPhuong);
+  //
+  //   // Lấy danh sách tỉnh/thành
+  //   $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+  //     if (data_tinh.error === 0) {
+  //       $.each(data_tinh.data, function (index, tinh) {
+  //         var selected = (selectedTinh && tinh.full_name.trim() === selectedTinh.trim()) ? 'selected' : '';
+  //         $("#tinh").append('<option value="' + tinh.full_name + '" data-id="' + tinh.id + '" ' + selected + '>' + tinh.full_name + '</option>');
+  //       });
+  //
+  //       // Nếu đã chọn tỉnh, load quận/huyện
+  //       var idTinh = $("#tinh option:selected").data('id');
+  //       console.log("ID Tỉnh:", idTinh);
+  //       if (idTinh) {
+  //         loadQuanHuyen(idTinh, selectedQuan, selectedPhuong);
+  //       }
+  //     } else {
+  //       console.error("Lỗi khi tải danh sách tỉnh:", data_tinh.message);
+  //     }
+  //   });
+  //
+  //   // Khi thay đổi tỉnh, load quận/huyện
+  //   $("#tinh").change(function () {
+  //     var idTinh = $("#tinh option:selected").data('id');
+  //     console.log("Tỉnh đã chọn, ID:", idTinh);
+  //
+  //     // Xóa quận và phường cũ khi thay đổi tỉnh
+  //     $("#quan").html('<option value="0">Quận Huyện</option>');
+  //     $("#phuong").html('<option value="0">Phường Xã</option>');
+  //
+  //     if (idTinh) {
+  //       loadQuanHuyen(idTinh, null, null);  // Không truyền selectedQuan và selectedPhuong khi thay đổi tỉnh
+  //     }
+  //   });
+  //
+  //   // Hàm load quận/huyện
+  //   function loadQuanHuyen(idTinh, selectedQuan, selectedPhuong) {
+  //     $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idTinh + '.htm', function (data_quan) {
+  //       if (data_quan.error === 0) {
+  //         // Xóa quận cũ mỗi khi load lại
+  //         $("#quan").html('<option value="0">Quận Huyện</option>');
+  //
+  //         $.each(data_quan.data, function (index, quan) {
+  //           console.log("Quan full_name: ", quan.full_name);  // Kiểm tra giá trị full_name của quận
+  //           var selected = (selectedQuan && quan.full_name.trim() === selectedQuan.trim()) ? 'selected' : '';  // Kiểm tra xem selectedQuan có hợp lệ không
+  //           $("#quan").append('<option value="' + quan.full_name + '" data-id="' + quan.id + '" ' + selected + '>' + quan.full_name + '</option>');
+  //           // $("#quan").append('<option value="' + quan.id + '" ' + selected + '>' + quan.full_name + '</option>');
+  //         });
+  //
+  //         // Nếu đã chọn quận, load phường/xã
+  //         var idQuan = $("#quan option:selected").data("id"); // Lấy ID của quận sau khi load
+  //         console.log("ID Quận (sau khi load):", idQuan);
+  //
+  //         if (idQuan && idQuan !== "0") {
+  //           loadPhuongXa(idQuan, selectedPhuong);
+  //         }
+  //       } else {
+  //         console.error("Lỗi khi tải danh sách quận:", data_quan.message);
+  //       }
+  //     });
+  //   }
+  //
+  //   $("#quan").change(function () {
+  //     var idQuan = $("#quan option:selected").data("id");  // Lấy ID của quận từ thuộc tính data-id
+  //     console.log("ID Quận đã chọn: ", idQuan);
+  //
+  //     // Xóa phường cũ khi thay đổi quận
+  //     $("#phuong").html('<option value="0">Phường Xã</option>');
+  //
+  //     // Kiểm tra xem quận có được chọn hợp lệ không
+  //     if (idQuan && idQuan !== "0") {
+  //       loadPhuongXa(idQuan, selectedPhuong);  // Gọi lại hàm loadPhuongXa với ID quận đã chọn
+  //     } else {
+  //       console.log("Chưa chọn quận hoặc quận không hợp lệ.");
+  //     }
+  //   });
+  //
+  //   // Hàm load phường/xã
+  //   function loadPhuongXa(idQuan, selectedPhuong) {
+  //     $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idQuan + '.htm', function (data_phuong) {
+  //       console.log(data_phuong); // Kiểm tra dữ liệu API trả về
+  //       if (data_phuong.error === 0) {
+  //         // Xóa phường cũ mỗi khi load lại
+  //         $("#phuong").html('<option value="0">Phường Xã</option>');
+  //
+  //         if (data_phuong.data && data_phuong.data.length > 0) {
+  //           $.each(data_phuong.data, function (index, phuong) {
+  //             console.log("Phường/Xã full_name: ", phuong.full_name); // Kiểm tra giá trị phường/xã
+  //             var selectedP = (selectedPhuong && phuong.full_name.trim() === selectedPhuong.trim()) ? 'selected' : '';  // Kiểm tra xem selectedPhuong có hợp lệ không
+  //             $("#phuong").append('<option value="' + phuong.full_name + '" ' + selectedP + '>' + phuong.full_name + '</option>');
+  //           });
+  //         } else {
+  //           console.log("Không có dữ liệu phường xã.");
+  //         }
+  //       } else {
+  //         console.error("Lỗi khi tải danh sách phường:", data_phuong.message);
+  //       }
+  //     });
+  //   }
+  //
+  // });
+  $(document).ready(function() {
+    // Lấy giá trị từ các input hidden
+    var selectedTinh = $("#hidden-tinh").val();
+    var selectedQuan = $("#hidden-quan").val();
+    var selectedPhuong = $("#hidden-phuong").val();
+
+    console.log("Selected Tỉnh:", selectedTinh);
+    console.log("Selected Quận:", selectedQuan);
+    console.log("Selected Phường:", selectedPhuong);
+
+    // Lấy tỉnh thành từ GHN
+    $.ajax({
+      url: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/province',
+      type: 'GET',
+      headers: {
+        'Token': '25145a88-c2a2-11ef-b247-3a89ee222ada'
+      },
+      success: function(data_tinh) {
+        console.log('Provinces:', data_tinh);  // Log để kiểm tra dữ liệu trả về
+        if (data_tinh.code == 200) {
+          // Thêm các tỉnh vào dropdown
+          data_tinh.data.forEach(function(val_tinh) {
+            var selected = (selectedTinh && val_tinh.ProvinceName.trim() === selectedTinh.trim()) ? 'selected' : '';
+            $("#tinh").append(`<option value="${val_tinh.ProvinceName}" data-id="${val_tinh.ProvinceID}" ${selected}>${val_tinh.ProvinceName}</option>`);
+          });
+
+          // Nếu có tỉnh đã chọn, tự động gọi API để lấy quận huyện
+          if (selectedTinh) {
+            var idtinh = $("#tinh option:selected").data('id');
+            loadDistricts(idtinh);
+          }
+
+          // Khi chọn tỉnh, gọi API lấy quận huyện
+          $("#tinh").change(function() {
+            var idtinh = $("#tinh option:selected").data('id');
+            console.log("Selected Province ID:", idtinh);  // Log ID tỉnh đã chọn
+
+            // Xóa các lựa chọn cũ của quận và phường
+            $("#quan").html('<option value="0">Chọn Quận Huyện</option>');
+            $("#phuong").html('<option value="0">Chọn Phường Xã</option>');
+
+            loadDistricts(idtinh);  // Gọi hàm để tải lại quận
+          });
+        } else {
+          console.error('Error fetching provinces:', data_tinh);  // Log lỗi tỉnh thành
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error('Request failed for provinces:', error);  // Log lỗi khi gọi API tỉnh thành
+      }
+    });
+
+    // Hàm tải quận
+    function loadDistricts(provinceId) {
+      $.ajax({
+        url: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/district',
+        type: 'GET',
+        headers: {
+          'Token': '25145a88-c2a2-11ef-b247-3a89ee222ada',
+        },
+        data: { 'province_id': provinceId },
+        success: function(data_quan) {
+          console.log('Districts:', data_quan);  // Log để kiểm tra dữ liệu trả về
+          if (data_quan.code == 200) {
+            // Thêm các quận vào dropdown
+            data_quan.data.forEach(function(val_quan) {
+              var selected = (selectedQuan && val_quan.DistrictName.trim() === selectedQuan.trim()) ? 'selected' : '';
+              $("#quan").append(`<option value="${val_quan.DistrictName}" data-id="${val_quan.DistrictID}" ${selected}>${val_quan.DistrictName}</option>`);
+            });
+
+            // Nếu có tỉnh đã chọn, tự động gọi API để lấy quận huyện
+            if (selectedQuan) {
+              var idquan = $("#quan option:selected").data('id');
+              loadWards(idquan);
+            }
+
+            // Khi chọn quận, gọi API lấy phường xã
+            $("#quan").change(function() {
+              var idquan = $("#quan option:selected").data('id');
+              console.log("Selected District ID:", idquan);  // Log ID quận đã chọn
+
+              // Xóa các lựa chọn cũ của phường
+              $("#phuong").html('<option value="0">Chọn Phường Xã</option>');
+
+              loadWards(idquan);  // Gọi hàm để tải lại phường
+            });
+          } else {
+            console.error('Error fetching districts:', data_quan);  // Log lỗi quận
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Request failed for districts:', error);  // Log lỗi khi gọi API quận
+        }
+      });
+    }
+
+    // Hàm tải phường
+    function loadWards(districtId) {
+      $.ajax({
+        url: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/ward',
+        type: 'GET',
+        headers: {
+          'Token': '25145a88-c2a2-11ef-b247-3a89ee222ada',
+        },
+        data: { 'district_id': districtId },
+        success: function(data_phuong) {
+          console.log('Wards:', data_phuong);  // Kiểm tra dữ liệu trả về
+          if (data_phuong.code == 200 && data_phuong.data.length > 0) {
+            // Nếu có dữ liệu, thêm vào dropdown
+            $.each(data_phuong.data, function (key_phuong, val_phuong) {
+              var selected = (selectedPhuong && val_phuong.WardName.trim() === selectedPhuong.trim()) ? 'selected' : '';
+              $("#phuong").append(`<option value="${val_phuong.WardName}" data-id="${val_phuong.WardID}" ${selected}>${val_phuong.WardName}</option>`);
+            });
+          } else {
+            console.error('Không có dữ liệu phường xã:', data_phuong);  // Nếu không có dữ liệu
+            $("#phuong").html('<option value="0">Không có phường xã</option>');  // Hiển thị thông báo
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Request failed for wards:', error);  // Kiểm tra lỗi khi gọi API phường xã
+        }
+      });
+    }
+  });
+
+
+
+</script>
+
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
   <p>&copy; 2024 TTAP T-SHIRT. All rights reserved.</p>
 </footer>

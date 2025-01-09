@@ -14,7 +14,7 @@
 <div class="d-flex">
 
     <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
-    <div class="main-content content flex-grow-1 p-4">
+    <div class="main-content content flex-grow-1 p-4" style="width: 80%">
         <div class="d-flex">
             <a href="" class="fw-bolder fs-5 text-black" style="text-decoration:none">Hoá đơn</a>
         </div>
@@ -23,7 +23,7 @@
             <input type="hidden" th:value="${id}" name="id">
             <div class="mb-3 col-4">
                 <label for="ma" class="form-label">Mã hóa đơn</label>
-                <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}">
+                <input type="text" class="form-control" id="ma" name="ma" th:value="${ma}" placeholder="Mã hóa đơn">
             </div>
 <!--            <div class="mb-3 col-4">-->
 <!--                <label for="keyword" class="form-label">Tìm kiếm</label>-->
@@ -31,7 +31,7 @@
 <!--            </div>-->
             <div class="mb-3 col-4">
                 <label for="keyword" class="form-label">Khách hàng</label>
-                <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}" placeholder="Tên, SDT, Email">
+                <input type="text" class="form-control" id="keyword" name="keyword" th:value="${keyword}" placeholder="Tên, SĐT, Email">
             </div>
 <!--            <div class="mb-3 col-4">-->
 <!--                <label for="tennv" class="form-label">Tên nhân viên</label>-->
@@ -73,25 +73,25 @@
         </form>
         <div class="">
             <h1 class="text-center">Hóa đơn</h1>
-            <table class="table table-hover">
+            <table class="table table-sm table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Mã hóa đơn</th>
+                    <th>STT</th>
+                    <th>Mã</th>
                     <!--            <th scope="col">Nhân viên</th>-->
-                    <th scope="col">Khách hàng</th>
-                    <th scope="col">SDT khách hàng</th>
-                    <th scope="col">Loại đơn</th>
-                    <th scope="col">Ngày thanh toán</th>
-<!--                    <th scope="col">SĐT người nhận</th>-->
-<!--                    <th scope="col">Tên người nhận</th>-->
-                    <th scope="col">Tiền ban đầu</th>
-                    <th scope="col">Phí vận chuyển</th>
-                    <th scope="col">Tiền giảm</th>
-                    <th scope="col">Tổng tiền</th>
-                    <th scope="col">Mã giảm giá</th>
-                    <th scope="col">Trạng thái</th>
-                    <th scope="col">Hành động</th>
+                    <th>Khách hàng</th>
+                    <th>SĐT</th>
+                    <th>Loại đơn</th>
+                    <th>Ngày thanh toán</th>
+                    <!--                    <th scope="col">SĐT người nhận</th>-->
+                    <!--                    <th scope="col">Tên người nhận</th>-->
+                    <th>Tiền ban đầu</th>
+                    <th>Phí vận chuyển</th>
+                    <th>Tiền giảm</th>
+                    <th>Tổng tiền</th>
+<!--                    <th>Mã giảm giá</th>-->
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -100,7 +100,7 @@
                     <td th:text="${hd.ma}"></td>
                     <!--            <td th:text="${hd.nhanVien != null ? hd.nhanVien.hoTen : 'Không có'}"></td>-->
                     <td th:text="${hd.khachHang != null ? hd.khachHang.hoTen :'Vãng lai'}"></td>
-                    <td th:text="${hd.khachHang != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
+                    <td th:text="${hd.khachHang != null && hd.khachHang.soDienThoai != null ? hd.khachHang.soDienThoai :'Không có'}"></td>
                     <td th:text="${hd.loaiDon == 1 ? 'Tại quầy' : 'Online'}"
                         th:class="${hd.loaiDon == 1 ? 'text-primary' : 'text-success'}">
                     </td>
@@ -111,11 +111,12 @@
                     <td th:text="${hd.tienShip != null? numberUtils.formatCurrency(hd.tienShip) : 'Không có'}"></td>
                     <td th:text="${hd.soTienGiamGia != null?numberUtils.formatCurrency(hd.soTienGiamGia): 'Không có'}"></td>
                     <td th:text="${hd.tienThu != null?numberUtils.formatCurrency(hd.tienThu): 'Không có'}"></td>
-                    <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>
+<!--                    <td th:text="${hd.maGiamGia != null ? numberUtils.formatCurrency2(hd.maGiamGia.giaTriGiam) + (hd.maGiamGia.hinhThuc?'VND':'%') : 'Không có'}"></td>-->
                     <td>
     <span th:classappend="${hd.trangThai == 0 ? 'text-warning' :
                           hd.trangThai == 1 ? 'text-success' :
                           hd.trangThai == 2 ? 'text-danger' :
+                          hd.trangThai == -1 ? 'text-danger' :
                           hd.trangThai == 3 ? 'text-primary' :
                           hd.trangThai == 6 ? 'text-primary' :
                           hd.trangThai == 7 ? 'text-primary' :
@@ -125,6 +126,7 @@
         <span th:text="${hd.trangThai == 0 ? 'Chưa thanh toán' :
                         hd.trangThai == 1 ? 'Đã thanh toán' :
                         hd.trangThai == 2 ? 'Đã hủy' :
+                        hd.trangThai == -1 ? 'Khách từ chối nhận' :
                         hd.trangThai == 3 ? 'Chờ xác nhận' :
                         hd.trangThai == 6 ? 'Đã xác nhận' :
                         hd.trangThai == 7 ? 'Chuẩn bị hàng' :
@@ -144,11 +146,18 @@
                 </tbody>
             </table>
             <h5 class="text-center">[[${nullhd}]]</h5>
-            <div class="justify-content-center d-flex mb-5">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang trước</a>
-                <input type="text" class="form-control-sm text-center" th:value="${page+1}" onchange="changePage(this.value)" id="input-page">
-                <a th:href="@{/admin/hoa-don/tim-kiem?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang sau</a>
+            <div class="justify-content-center d-flex mb-5"
+                 style="display: flex; justify-content: center; align-items: center; gap: 1rem; font-family: Arial, sans-serif; padding: 10px; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
+                <a style="padding: 8px 16px; font-size: 14px; border: 2px solid #007bff; color: #007bff; border-radius: 5px; transition: background-color 0.3s, color 0.3s; text-align: center; min-width: 100px;" th:href="@{/admin/hoa-don/tim-kiem?(page=${page <= 0 ? 0 : page - 1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang trước</a>
+                <input type="text"
+                       style="max-width: 60px; height: 35px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; text-align: center; transition: border-color 0.3s; outline: none;"
+                       class="form-control-sm text-center"
+                       th:value="${page+1}"
+                       onchange="changePage(this.value)"
+                       id="input-page">
+                <a style="padding: 8px 16px; font-size: 14px; border: 2px solid #007bff; color: #007bff; border-radius: 5px; transition: background-color 0.3s, color 0.3s; text-align: center; min-width: 100px;" th:href="@{/admin/hoa-don/tim-kiem?(page = ${page+1},ma=${ma},tenkh=${tenkh},tennv=${tennv},sdt=${sdt},ngayThanhToan=${ngayThanhToan},trangThai=${trangThai},keyword=${keyword},loaiDon=${loaiDon},id=${id})}" class="btn btn-outline-primary">Trang sau</a>
             </div>
+
         </div>
     </div>
 </div>

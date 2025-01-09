@@ -2,12 +2,14 @@ package com.project.ttaptshirt.controller.authController;
 
 
 import com.project.ttaptshirt.entity.KhachHang;
+import com.project.ttaptshirt.entity.NhanVien;
 import com.project.ttaptshirt.entity.Role;
 import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.service.KhachHangService;
 import com.project.ttaptshirt.repository.UserRepo;
 import com.project.ttaptshirt.service.UserService;
 import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
+import com.project.ttaptshirt.service.impl.NhanVienServicelmpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,6 +38,8 @@ public class AccountController {
     UserRepo userRepo;
     @Autowired
     private KhachHangServiceImpl khachHangServiceImpl;
+    @Autowired
+    private NhanVienServicelmpl nhanVienServicelmpl;
 
 
     @GetMapping("/login")
@@ -83,6 +87,38 @@ public class AccountController {
             khachHang.setTaiKhoan(user);
             userService.save(user);
             khachHangService.save(khachHang);
+            redirectAttributes.addFlashAttribute("isRegisterSuccess", true);
+            return "redirect:/login";
+        }
+
+    }
+
+    @PostMapping("/registerNv")
+    public String createNewUserNv(NhanVien nhanVien, TaiKhoan user, @RequestParam("password") String passwordString,
+                                  RedirectAttributes redirectAttributes, Model model) {
+
+        if(userRepo.findUserByUsername(user.getUsername()) != null){
+            model.addAttribute("usernameIsInvalid","Tài khoản đã tồn tại");
+            model.addAttribute("user",user);
+            return "user/register";
+        }
+
+//        else if (!user.getSoDienthoai().matches("\\d+")){
+//            model.addAttribute("ErrorPhoneNumber","Số điện thoại không hợp lệ");
+//            model.addAttribute("user",user);
+//            return "user/register";
+//        }
+        else {
+            String password = new BCryptPasswordEncoder().encode(passwordString);
+            user.setPassword(password);
+            user.setEnable(true);
+            user.setNgayTao(LocalDate.now());
+            Role role = new Role();
+            role.setId(Long.parseLong("1"));
+            user.setRole(role);
+            nhanVien.setTaiKhoan(user);
+            userService.save(user);
+            nhanVienServicelmpl.save(nhanVien);
             redirectAttributes.addFlashAttribute("isRegisterSuccess", true);
             return "redirect:/login";
         }
