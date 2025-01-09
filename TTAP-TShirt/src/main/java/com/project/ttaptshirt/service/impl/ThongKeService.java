@@ -159,18 +159,26 @@ public class ThongKeService {
     public Map<Integer, Double> thongKeDoanhThuTheoThang(List<HoaDon> hoaDons) {
         Map<Integer, Double> doanhThuTheoThang = new HashMap<>();
         for (HoaDon hoaDon : hoaDons) {
-            if (hoaDon.getNgayThanhToan() != null) {
+            // Kiểm tra trạng thái hóa đơn
+            if (hoaDon.getTrangThai() == 1 && hoaDon.getNgayThanhToan() != null) {
                 int monthValue = hoaDon.getNgayThanhToan().getMonthValue();
+
+                // Lấy danh sách chi tiết hóa đơn
                 List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
+
+                // Tính doanh thu của từng hóa đơn
                 double doanhThu = hoaDonChiTiets.stream()
                         .filter(chiTiet -> chiTiet.getDonGia() != null && chiTiet.getSoLuong() != null)
                         .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
                         .sum();
+
+                // Cập nhật tổng doanh thu theo tháng
                 doanhThuTheoThang.put(monthValue, doanhThuTheoThang.getOrDefault(monthValue, 0.0) + doanhThu);
             }
         }
         return doanhThuTheoThang;
     }
+
 
 
 }
