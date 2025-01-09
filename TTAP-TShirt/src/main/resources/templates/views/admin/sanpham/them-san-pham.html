@@ -14,6 +14,76 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <meta name="vie wport" content="width=device-width, initial-scale=1">
+    <style>.btn-close {
+        opacity: 0.8;
+        padding: 5px;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-close:hover {
+        opacity: 1;
+        background-color: #dc3545 !important;
+        color: white;
+    }
+
+    .card:hover .btn-close {
+        opacity: 1;
+    }
+
+    .card input[type="checkbox"] {
+        display: none;
+    }
+
+    .card {
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card input[type="checkbox"] {
+        display: none;
+    }
+
+    .card {
+        transition: all 0.3s ease;
+        margin-bottom: 15px;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Loại bỏ padding mặc định của card-body */
+    .card-body {
+        padding: 0 !important;
+        display: none; /* Ẩn hoàn toàn card-body vì chúng ta không cần nó nữa */
+    }
+
+    /* Điều chỉnh style cho ảnh */
+    .card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block; /* Loại bỏ khoảng trống dưới ảnh */
+    }
+
+    /* Thêm style cho grid layout */
+    #imageList {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .image-card {
+        padding: 0 8px;
+    }
+
+    </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
@@ -94,7 +164,9 @@
             <div class="mb-3">
                 <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#imageModal">Chọn ảnh</button>
                 <input type="hidden" id="selectedImages" name="selectedImages">
+                <div id="selectedImagesPreview" class="mt-3 row"></div>
             </div>
+
             <span class="text-danger">[[${sanPhamEmpty}]]</span>
                 <br>
             <button type="submit" class="btn btn-primary" onclick="return handleAddProduct()">Thêm sản phẩm</button>
@@ -122,12 +194,84 @@
     </div>
 </div>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const showModal = [[${showModalnsx}]]; // Thymeleaf expression
-                if (showModal) {
-                    const modal = new bootstrap.Modal(document.getElementById('modalAddNSX'));
-                    modal.show();
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('imageModal');
+                const previewContainer = document.getElementById('selectedImagesPreview');
+
+                // Thêm style cho container
+                previewContainer.style.display = 'flex';
+                previewContainer.style.flexWrap = 'wrap';
+                previewContainer.style.gap = '10px';
+
+                // Thêm style và xử lý sự kiện cho tất cả card ảnh
+                const imageCards = modal.querySelectorAll('.card');
+                imageCards.forEach(card => {
+                    // Thêm style để hiển thị con trỏ pointer khi hover
+                    card.style.cursor = 'pointer';
+
+                    // Thêm class để đánh dấu trạng thái được chọn
+                    card.addEventListener('click', function() {
+                        const checkbox = this.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                        this.classList.toggle('selected');
+
+                        // Thêm style khi ảnh được chọn
+                        if (checkbox.checked) {
+                            this.style.border = '3px solid #0d6efd';
+                        } else {
+                            this.style.border = 'none';
+                        }
+
+                        updatePreview();
+                    });
+
+                    // Ngăn chặn sự kiện click trực tiếp trên checkbox
+                    const checkbox = card.querySelector('input[type="checkbox"]');
+                    checkbox.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                    });
+                });
+
+                function updatePreview() {
+                    previewContainer.innerHTML = '';
+                    const selectedCheckboxes = modal.querySelectorAll('input[type="checkbox"]:checked');
+
+                    selectedCheckboxes.forEach(checkbox => {
+                        const card = checkbox.closest('.card');
+                        const img = card.querySelector('img');
+
+                        const previewDiv = document.createElement('div');
+                        previewDiv.style.position = 'relative';
+                        previewDiv.style.width = '140px';
+                        previewDiv.innerHTML = `
+                <img src="${img.src}" alt="Selected Image" style="width: 140px; height: 180px; object-fit: cover;">
+                <button type="button" class="btn-close position-absolute"
+                    style="padding: 0.25rem; transform: scale(0.7); top: 2px; background-color: rgba(255, 255, 255, 0.8);"
+                    data-image-id="${checkbox.value}">
+                </button>
+            `;
+
+                        const closeBtn = previewDiv.querySelector('.btn-close');
+                        closeBtn.addEventListener('click', function() {
+                            const imageId = this.getAttribute('data-image-id');
+                            const checkbox = modal.querySelector(`input[type="checkbox"][value="${imageId}"]`);
+                            if (checkbox) {
+                                checkbox.checked = false;
+                                checkbox.closest('.card').style.border = 'none';
+                            }
+                            updatePreview();
+                        });
+
+                        previewContainer.appendChild(previewDiv);
+                    });
+
+                    const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+                    document.getElementById('selectedImages').value = selectedIds.join(',');
                 }
+
+                modal.addEventListener('hidden.bs.modal', function() {
+                    updatePreview();
+                });
             });
         </script>
 <div class="modal fade" th:id="modalAddChatLieu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -239,13 +383,10 @@
                         <!-- Form chọn ảnh -->
                         <form id="imageSelectionForm">
                             <div class="row mt-3" id="imageList">
-                                <!-- Loop qua danh sách ảnh -->
-                                <div class="col-md-3 image-card" th:each="image : ${images}">
+                                <div class="image-card" th:each="image : ${images}">
                                     <div class="card">
-                                        <img style="width: 158px; height: 180px;" th:src="${image.path}" class="card-img-top" alt="Ảnh">
-                                        <div class="card-body">
-                                            <input type="checkbox" name="selectedImages" th:value="${image.id}">
-                                        </div>
+                                        <img th:src="${image.path}" class="card-img-top" alt="Ảnh">
+                                        <input type="checkbox" name="selectedImages" th:value="${image.id}">
                                     </div>
                                 </div>
                             </div>
@@ -399,6 +540,66 @@
 
         return true; // Cho phép form gửi đi
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('imageModal');
+        const checkboxes = modal.querySelectorAll('input[type="checkbox"]');
+        const previewContainer = document.getElementById('selectedImagesPreview');
+
+        // Thêm style cho container
+        previewContainer.style.display = 'flex';
+        previewContainer.style.flexWrap = 'wrap';
+        previewContainer.style.gap = '10px';
+
+        function updatePreview() {
+            previewContainer.innerHTML = '';
+
+            const selectedCheckboxes = modal.querySelectorAll('input[type="checkbox"]:checked');
+
+            selectedCheckboxes.forEach(checkbox => {
+                const card = checkbox.closest('.card');
+                const img = card.querySelector('img');
+
+                const previewDiv = document.createElement('div');
+                previewDiv.style.position = 'relative';
+                previewDiv.style.width = '140px';
+                previewDiv.innerHTML = `
+                <img src="${img.src}" alt="Selected Image" style="width: 140px; height: 180px; object-fit: cover;">
+                <button type="button" class="btn-close position-absolute"
+                    style="padding: 0.25rem; transform: scale(0.7); top: 2px; background-color: rgba(255, 255, 255, 0.8);"
+                    data-image-id="${checkbox.value}">
+                </button>
+            `;
+
+                const closeBtn = previewDiv.querySelector('.btn-close');
+                closeBtn.addEventListener('click', function() {
+                    const imageId = this.getAttribute('data-image-id');
+                    const checkbox = modal.querySelector(`input[type="checkbox"][value="${imageId}"]`);
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+                    updatePreview();
+                });
+
+                previewContainer.appendChild(previewDiv);
+            });
+
+            const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+            document.getElementById('selectedImages').value = selectedIds.join(',');
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updatePreview();
+            });
+        });
+
+        modal.addEventListener('hidden.bs.modal', function() {
+            updatePreview();
+        });
+    });
 </script>
 
 </body>
