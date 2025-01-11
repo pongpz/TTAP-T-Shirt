@@ -247,7 +247,7 @@ public class GioHangController {
                                @RequestParam String diaChi,
                                @RequestParam String nguoiNhan,
                                @RequestParam String soDienThoai,
-                               @RequestParam Long idGiamgia,
+                               @RequestParam(name = "idGiamgia", required = false) Long idGiamgia,
                                RedirectAttributes redirectAttributes,
                                Authentication authentication,
                                Model model) {
