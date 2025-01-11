@@ -255,4 +255,9 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDonRepository.huyHoaDonOnline(idHoaDon);
     }
 
+    @Override
+    public List<HoaDon> getHoaDonByKhachHangId(Long khachHangId) {
+        return hoaDonRepository.findAllByKhachHangId(khachHangId);
+    }
+
 }

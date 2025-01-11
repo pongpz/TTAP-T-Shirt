@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TTAP</title>
+  <link rel="stylesheet" href="/customcss/banhang.css">
+  <link rel="stylesheet" href="/customcss/toastMessage.css ">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+        type="text/css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <meta name="vie wport" content="width=device-width, initial-scale=1">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="main-content content flex-grow-1 p-4">
+  <!-- Sidebar -->
+  <div th:replace="~{/fragment/sidebar :: sidebar}"></div>
+
+  <!-- Toast Notification -->
+  <div id="toast-root"></div>
+
+  <!-- Employee Management Section -->
+  <section class="mt-4">
+    <h1 class="mb-4">Chi Tiết Khách Hàng</h1>
+
+    <!-- Thông tin cá nhân -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5>Thông tin cá nhân</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Họ và tên:</strong> <span th:text="${customer.hoTen}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${customer.email}"></span></p>
+            <p><strong>Số điện thoại:</strong> <span th:text="${customer.soDienThoai}"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Ngày tạo tài khoản:</strong> <span th:text="${customer.taiKhoan.ngayTao}"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hoạt động mua sắm -->
+    <div class="card">
+      <div class="card-header bg-success text-white">
+        <h5>Hoạt động mua sắm</h5>
+      </div>
+      <div class="card-body">
+        <!-- Lịch sử đơn hàng -->
+        <table class="table table-bordered">
+          <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Mã đơn hàng</th>
+            <th>Ngày đặt</th>
+            <th>Tổng giá trị</th>
+            <th>Trạng thái</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="order, indexStat : ${hoaDonList}">
+            <td th:text="${indexStat.count}"></td>
+            <td th:text="${order.ma}"></td>
+            <td th:text="${order.ngayTao}"></td>
+            <td th:text="${numberUtils.formatCurrency(order.tienThu)}"></td>
+            <td th:switch="${order.trangThai}">
+              <span th:case="0">Chờ thanh toán</span>
+              <span th:case="1">Thành Công</span>
+              <span th:case="2">Đã hủy</span>
+              <span th:case="-1">Giao hàng thất bại</span>
+              <span th:case="3">Chờ xác nhận</span>
+              <span th:case="6">Đã Xác nhận</span>
+              <span th:case="7">Người gửi đang chuẩn bị hàng</span>
+              <span th:case="8">Đang chờ đơn vị vận chuyển lấy hàng</span>
+              <span th:case="9">Đang giao hàng</span>
+              <span th:case="10">Đã giao hàng</span>
+              <span th:case="*" class="text-secondary">Không xác định</span>
+            </td>
+          </tr>
+          <!-- Nếu không có đơn hàng -->
+          <tr th:if="${#lists.isEmpty(hoaDonList)}">
+            <td colspan="5" class="text-center">Không có đơn hàng nào.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Register Modal -->
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/banhang.js}"></script>
+<script src="/js/toastMessage.js"></script>
+</body>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var isRegisterSuccess = [[${isRegisterSuccess}]];
+  console.log("checkoutSuccess:", isRegisterSuccess); // Log the value to check
+  if (isRegisterSuccess) {
+    toastSuccess('Thành Công !', 'Thêm nhân viên thành công!');
+  }
+  /*]]>*/
+</script>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var isResetPasswordSuccess = [[${isResetPasswordSuccess}]];
+  if (isResetPasswordSuccess) {
+    toastSuccess('Thành Công !', ' Cập nhật mật khẩu thành công!');
+  }
+  /*]]>*/
+</script>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var success = [[${success}]];
+  console.log("checkoutSuccess:", success); // Log the value to check
+  if (success) {
+    toastSuccess('Thành Công !', 'Sửa nhân viên thành công!');
+  }
+  /*]]>*/
+</script>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var message = [[${message}]];
+  if (message) {
+    toastSuccess('Thành Công !', message);
+  }
+  /*]]>*/
+</script>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var errorMessage = [[${error}]];
+  if (errorMessage) {
+    toastError('Lỗi', errorMessage);
+  }
+  /*]]>*/
+</script>
+
+</body>
+</html>
+
+

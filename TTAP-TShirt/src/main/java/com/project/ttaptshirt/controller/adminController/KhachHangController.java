@@ -1,10 +1,12 @@
 package com.project.ttaptshirt.controller.adminController;
 
-import com.project.ttaptshirt.dto.KhachHangDTO;
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.KhachHangService;
+import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
+import com.project.ttaptshirt.service.impl.MaGiamGiaServicelmpl;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,17 +38,11 @@ public class KhachHangController {
     private UserServiceImpl userServiceImpl;
     @Autowired
     private KhachHangServiceImpl khachHangServiceImpl;
+    @Autowired
+    private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
+    @Autowired
+    private HoaDonServiceImpl hoaDonServiceImpl;
 
-
-
-    @GetMapping("/data")
-    @ResponseBody
-    public List<KhachHangDTO> getAllCustomers() {
-        List<KhachHang> khachHangs = khachHangServiceImpl.findAll();
-        return khachHangs.stream()
-                .map(khachHang -> new KhachHangDTO(khachHang.getId(), khachHang.getHoTen(), khachHang.getEmail(), khachHang.getSoDienThoai()))
-                .collect(Collectors.toList());
-    }
 
     @GetMapping("/view")
     public String getEmployees(
@@ -147,6 +143,22 @@ public class KhachHangController {
         return "redirect:/admin/ban-hang/hoa-don/chi-tiet?hoadonId=" + idHD;
     }
 
+
+    @GetMapping("/{customerId}/details")
+    public String getKhachHangDetails(@PathVariable Long customerId, Model model,Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
+        KhachHang khachHang = khachHangService.findById(customerId);
+        model.addAttribute("customer", khachHang);
+        List<HoaDon> hoaDonList = hoaDonServiceImpl.getHoaDonByKhachHangId(customerId);
+        model.addAttribute("hoaDonList", hoaDonList);
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils", numberUtils);
+        return "/user/khachhang/detail";
+    }
 
 
     @GetMapping("/searchByPhoneNumber")

@@ -37,8 +37,6 @@ public class GioHangService {
     private GHNService ghnService;
     @Autowired
     private MaGiamGiaServicelmpl giamGiaServicelmpl;
-    @Autowired
-    private KhachHangVoucherRepository khachHangVoucherRepository;
 
     public GioHang taoDon(String userName, List<CartItemDTO> cartItems ) {
         TaiKhoan user = userRepo.findByUsername(userName);
@@ -245,69 +243,41 @@ public class GioHangService {
         hoaDon.setTrangThai(3);
         hoaDonRepository.save(hoaDon);
 
-        // Tính tổng tiền sản phẩm
         double totalAmount = cart.getItems().stream()
                 .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId()))
                 .mapToDouble(item -> item.getGia().doubleValue() * item.getSoLuong())
                 .sum();
-
-        double discountAmount = 0.0;
-        if (discountId != null && discountId > 0) {
-            MaGiamGia discountVoucher = giamGiaServicelmpl.findById(discountId);
-            if (discountVoucher != null) {
-                discountAmount = (discountVoucher.getGiaTriGiam() / 100) * totalAmount;
-                if (discountAmount > totalAmount) {
-                    discountAmount = totalAmount; // Giới hạn giảm giá không vượt quá tổng tiền
-                }
-                hoaDon.setSoTienGiamGia(discountAmount);
-                KhachHangVoucher khachHangVoucher = khachHangVoucherRepository.findByKhachHangAndMaGiamGia(khachHang, discountVoucher);
-                if (khachHangVoucher != null && khachHangVoucher.getSoLuong() > 0) {
-                    khachHangVoucher.setSoLuong(khachHangVoucher.getSoLuong() - 1); // Giảm số lượng
-                    khachHangVoucherRepository.save(khachHangVoucher); // Lưu lại thay đổi
-                } else {
-                    throw new RuntimeException("Mã giảm giá đã hết lượt sử dụng.");
-                }
-            } else {
-                throw new RuntimeException("Mã giảm giá không hợp lệ.");
-            }
-        }
-
-        // Tính phí vận chuyển
         double shippingFee = ghnService.calculateShippingFee(diaChi);
-        hoaDon.setTienShip(shippingFee);
 
-        // Tính tổng tiền cuối cùng
-        double finalAmount = totalAmount + shippingFee - discountAmount;
-        hoaDon.setTongTien(totalAmount); // Tổng tiền trước khi áp dụng giảm giá
-        hoaDon.setTienThu(finalAmount); // Tổng tiền sau giảm giá và phí ship
+        hoaDon.setTongTien(totalAmount);
+        hoaDon.setTienThu(totalAmount + shippingFee);
+        hoaDon.setTienShip(shippingFee);
         hoaDonRepository.save(hoaDon);
 
-        // Xử lý sản phẩm đã chọn
         List<GioHangChiTiet> itemsToMove = cart.getItems().stream()
                 .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId()))
                 .collect(Collectors.toList());
-
         if (itemsToMove.isEmpty()) {
-            throw new RuntimeException("Không có sản phẩm nào được chọn để chuyển sang hóa đơn.");
+            throw new RuntimeException("Không có sản phẩm được chọn.");
         }
 
-        List<HoaDonChiTiet> hoaDonChiTietList = itemsToMove.stream().map(gioHangChiTiet -> {
-            HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-            hoaDonChiTiet.setHoaDon(hoaDon);
-            hoaDonChiTiet.setChiTietSanPham(gioHangChiTiet.getChiTietSanPham());
-            hoaDonChiTiet.setSoLuong(gioHangChiTiet.getSoLuong());
-            hoaDonChiTiet.setDonGia(gioHangChiTiet.getGia().floatValue());
-            return hoaDonChiTiet;
+        List<HoaDonChiTiet> hoaDonChiTietList = itemsToMove.stream().map(item -> {
+            HoaDonChiTiet chiTiet = new HoaDonChiTiet();
+            chiTiet.setHoaDon(hoaDon);
+            chiTiet.setChiTietSanPham(item.getChiTietSanPham());
+            chiTiet.setSoLuong(item.getSoLuong());
+            chiTiet.setDonGia(item.getGia().floatValue());
+            return chiTiet;
         }).collect(Collectors.toList());
         hoaDonChiTietRepository.saveAll(hoaDonChiTietList);
 
-        // Xóa sản phẩm khỏi giỏ hàng
         cart.getItems().removeAll(itemsToMove);
         gioHangChiTietRepository.deleteAll(itemsToMove);
         updateTotalPrice(cart);
 
         return hoaDon;
     }
+
 
     @Transactional
     public void addToCart(TaiKhoan user, AddToCartRequest request) {

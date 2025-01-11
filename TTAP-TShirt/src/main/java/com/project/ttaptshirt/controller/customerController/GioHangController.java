@@ -63,8 +63,7 @@ public class GioHangController {
 
     @Autowired
     private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
-    @Autowired
-    private KhachHangVoucherServicelmpl khachHangVoucherServicelmpl;
+
 
 
     // Xem giỏ hàng
@@ -75,6 +74,11 @@ public class GioHangController {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
+            // Kiểm tra thông tin cá nhân của khách hàng
+            if (user.getKhachHang() == null || !isCustomerInfoComplete(user.getKhachHang())) {
+                // Nếu thông tin cá nhân chưa đầy đủ, yêu cầu cập nhật thông tin
+                return "redirect:/TTAP/user/detail/view";
+            }
             GioHang cart = gioHangService.getOrCreateCart(user);
             model.addAttribute("cart", cart);
             model.addAttribute("userLogged", user);
@@ -134,10 +138,6 @@ public class GioHangController {
             }
             model.addAttribute("productImages", productImages);
             model.addAttribute("productStockQuantities", productStockQuantities); // Thêm số lượng vào mô hình
-
-
-            List<KhachHangVoucher> danhSachMaGiamGia = khachHangVoucherServicelmpl.getMaGiamGia(user.getKhachHang().getId());
-            model.addAttribute("danhSachMaGiamGia", danhSachMaGiamGia);
 
             // Tiện ích số học
             NumberUtils numberUtils = new NumberUtils();
@@ -247,7 +247,7 @@ public class GioHangController {
                                @RequestParam String diaChi,
                                @RequestParam String nguoiNhan,
                                @RequestParam String soDienThoai,
-                               @RequestParam Long idGiamgia,
+                               @RequestParam(name = "idGiamgia", required = false) Long idGiamgia,
                                RedirectAttributes redirectAttributes,
                                Authentication authentication,
                                Model model) {
@@ -484,6 +484,7 @@ public class GioHangController {
             String expirationDate = voucher.getNgayKetThuc().toString();
             boolean isUsed = voucher.isStart();
             Double condition = voucher.getGiaTriToiThieu();
+            Boolean typeDiscount = voucher.getHinhThuc();
 
             // Thêm các giá trị vào phản hồi
             response.put("discountCode", discountCode);
@@ -491,6 +492,7 @@ public class GioHangController {
             response.put("expirationDate", expirationDate);
             response.put("isUsed", isUsed);
             response.put("condition", condition);
+            response.put("typeDiscount", typeDiscount);
 
             // Kiểm tra mã giảm giá còn hiệu lực
             if (voucher.getNgayKetThuc().isBefore(LocalDateTime.now()) || isUsed) {
@@ -507,24 +509,10 @@ public class GioHangController {
     }
 
 
-//    @PostMapping("/apply-discount")
-//    @ResponseBody
-//    public ResponseEntity<?> applyDiscount(@RequestParam Long discount_code) {
-//        try {
-//            // Lấy thông tin mã giảm giá từ ID đã nhận được
-//            MaGiamGia discount =maGiamGiaServicelmpl.findById(discount_code);
-//
-//            if (discount == null) {
-//                return ResponseEntity.badRequest().body("Mã giảm giá không hợp lệ.");
-//            }
-//
-//            // Áp dụng mã giảm giá vào tổng tiền
-//            double discountAmount = discount.getGiaTriGiam(); // Giả sử discount có field amount là phần trăm giảm giá
-//            return ResponseEntity.ok(new DiscountResponse(discountAmount)); // Trả về phần trăm giảm giá cho frontend
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống");
-//        }
-//    }
-
+    private boolean isCustomerInfoComplete(KhachHang khachHang) {
+        return khachHang.getHoTen() != null && !khachHang.getHoTen().isEmpty() &&
+                khachHang.getSoDienThoai() != null && !khachHang.getSoDienThoai().isEmpty() &&
+                khachHang.getEmail() != null && !khachHang.getEmail().isEmpty();
+    }
 
 }
