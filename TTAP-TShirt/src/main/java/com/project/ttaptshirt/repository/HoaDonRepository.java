@@ -102,10 +102,11 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
             "GROUP BY h.ngayThanhToan")
     List<Object[]> countHoaDonTheoNgay(@Param("filterDate") LocalDate filterDate);
 
-    @Query("SELECT SUM(h.tongTien) FROM HoaDon h " +
+    @Query("SELECT SUM(h.tongTien - COALESCE(h.soTienGiamGia, 0)) FROM HoaDon h " +
             "WHERE h.loaiDon = :loaiDon AND h.ngayThanhToan = :ngayThanhToan " +
             "AND h.trangThai = 1")
     Double tinhTongDoanhThuTheoLoaiDon(@Param("loaiDon") Integer loaiDon,
                                        @Param("ngayThanhToan") LocalDate ngayThanhToan);
+
 
 }
