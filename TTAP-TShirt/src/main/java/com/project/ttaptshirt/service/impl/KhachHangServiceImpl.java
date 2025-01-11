@@ -3,13 +3,13 @@ package com.project.ttaptshirt.service.impl;
 import com.project.ttaptshirt.entity.KhachHang;
 import com.project.ttaptshirt.entity.MaGiamGia;
 import com.project.ttaptshirt.repository.KhachHangRepository;
+import com.project.ttaptshirt.repository.MaGiamGiaRepo;
 import com.project.ttaptshirt.service.KhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +18,8 @@ public class KhachHangServiceImpl implements KhachHangService {
 
     @Autowired
     KhachHangRepository khachHangRepository;
+    @Autowired
+    MaGiamGiaRepo maGiamGiaRepo;
     @Override
     public void save(KhachHang khachHang) {
         khachHangRepository.save(khachHang);
@@ -71,5 +73,6 @@ public class KhachHangServiceImpl implements KhachHangService {
             throw new RuntimeException("Không tìm thấy khách hàng với ID: " + idKhachHang);
         }
     }
+
 
 }

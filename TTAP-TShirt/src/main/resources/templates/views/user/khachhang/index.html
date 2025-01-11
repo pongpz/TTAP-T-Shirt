@@ -58,9 +58,9 @@
                 <td th:text="${user.email != null ? user.email : 'Khách hàng chưa cập nhật'}"></td>
                 <td th:text="${user.taiKhoan.username}"></td>
                 <td>
-                    <a class="btn btn-primary" href="#">
+                    <a class="btn btn-primary" th:href="@{/admin/khach-hang/{customerId}/details(customerId=${user.id})}">
                         <i class="fas fa-info-circle"></i>
-                        chi tiết
+                        Chi tiết
                     </a>
                 </td>
             </tr>

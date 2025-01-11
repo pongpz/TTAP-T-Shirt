@@ -63,8 +63,7 @@ public class GioHangController {
 
     @Autowired
     private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
-    @Autowired
-    private KhachHangVoucherServicelmpl khachHangVoucherServicelmpl;
+
 
 
     // Xem giỏ hàng
@@ -134,10 +133,6 @@ public class GioHangController {
             }
             model.addAttribute("productImages", productImages);
             model.addAttribute("productStockQuantities", productStockQuantities); // Thêm số lượng vào mô hình
-
-
-            List<KhachHangVoucher> danhSachMaGiamGia = khachHangVoucherServicelmpl.getMaGiamGia(user.getKhachHang().getId());
-            model.addAttribute("danhSachMaGiamGia", danhSachMaGiamGia);
 
             // Tiện ích số học
             NumberUtils numberUtils = new NumberUtils();
@@ -484,6 +479,7 @@ public class GioHangController {
             String expirationDate = voucher.getNgayKetThuc().toString();
             boolean isUsed = voucher.isStart();
             Double condition = voucher.getGiaTriToiThieu();
+            Boolean typeDiscount = voucher.getHinhThuc();
 
             // Thêm các giá trị vào phản hồi
             response.put("discountCode", discountCode);
@@ -491,6 +487,7 @@ public class GioHangController {
             response.put("expirationDate", expirationDate);
             response.put("isUsed", isUsed);
             response.put("condition", condition);
+            response.put("typeDiscount", typeDiscount);
 
             // Kiểm tra mã giảm giá còn hiệu lực
             if (voucher.getNgayKetThuc().isBefore(LocalDateTime.now()) || isUsed) {
