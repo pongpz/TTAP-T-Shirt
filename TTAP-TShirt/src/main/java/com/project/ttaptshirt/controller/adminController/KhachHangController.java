@@ -1,8 +1,10 @@
 package com.project.ttaptshirt.controller.adminController;
 
+import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.KhachHangService;
+import com.project.ttaptshirt.service.impl.HoaDonServiceImpl;
 import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
 import com.project.ttaptshirt.service.impl.MaGiamGiaServicelmpl;
 import com.project.ttaptshirt.service.impl.UserServiceImpl;
@@ -38,17 +40,9 @@ public class KhachHangController {
     private KhachHangServiceImpl khachHangServiceImpl;
     @Autowired
     private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
+    @Autowired
+    private HoaDonServiceImpl hoaDonServiceImpl;
 
-
-
-    @GetMapping("/data")
-    @ResponseBody
-    public List<KhachHangDTO> getAllCustomers() {
-        List<KhachHang> khachHangs = khachHangServiceImpl.findAll();
-        return khachHangs.stream()
-                .map(khachHang -> new KhachHangDTO(khachHang.getId(), khachHang.getHoTen(), khachHang.getEmail(), khachHang.getSoDienThoai(),null))
-                .collect(Collectors.toList());
-    }
 
     @GetMapping("/view")
     public String getEmployees(
@@ -151,43 +145,19 @@ public class KhachHangController {
 
 
     @GetMapping("/{customerId}/details")
-    public String getCustomerDetails(@PathVariable("customerId") Long customerId, Model model, Authentication authentication) {
-        // Kiểm tra nếu người dùng đã đăng nhập
+    public String getKhachHangDetails(@PathVariable Long customerId, Model model,Authentication authentication) {
         if (authentication != null) {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
             model.addAttribute("userLogged", user);
-        } else {
-            // Nếu không có người dùng đăng nhập, có thể điều hướng đến trang đăng nhập
-            return "redirect:/login";
         }
-        KhachHangDTO customerDetails = khachHangServiceImpl.getCustomerDetails(customerId);
-        model.addAttribute("customerDetails", customerDetails);
-
-        // Lấy danh sách tất cả mã giảm giá
-        List<MaGiamGia> allVouchers = maGiamGiaServicelmpl.findAll();
-        model.addAttribute("allVouchers", allVouchers);
-
-        return "/user/khachhang/detail"; // Trang Thymeleaf hiển thị thông tin chi tiết khách hàng
-    }
-
-    // Thêm mã giảm giá vào khách hàng
-    @PostMapping("/{customerId}/add-voucher")
-    public String addVoucherToCustomer(@PathVariable Long customerId,
-                                       @RequestParam Long voucherId,
-                                       @RequestParam Integer quantity,
-                                       Model model) {
-        khachHangServiceImpl.addVoucherToCustomer(customerId, voucherId, quantity);
-        return "redirect:/admin/khach-hang/" + customerId + "/details"; // Điều hướng lại đến trang chi tiết khách hàng
-    }
-
-    // Xóa mã giảm giá của khách hàng
-    @PostMapping("/{customerId}/remove-voucher")
-    public String removeVoucherFromCustomer(@PathVariable Long customerId,
-                                            @RequestParam Long voucherId,
-                                            Model model) {
-        khachHangServiceImpl.removeVoucherFromCustomer(customerId, voucherId);
-        return "redirect:/admin/khach-hang/" + customerId + "/details"; // Điều hướng lại đến trang chi tiết khách hàng
+        KhachHang khachHang = khachHangService.findById(customerId);
+        model.addAttribute("customer", khachHang);
+        List<HoaDon> hoaDonList = hoaDonServiceImpl.getHoaDonByKhachHangId(customerId);
+        model.addAttribute("hoaDonList", hoaDonList);
+        NumberUtils numberUtils = new NumberUtils();
+        model.addAttribute("numberUtils", numberUtils);
+        return "/user/khachhang/detail";
     }
 
 

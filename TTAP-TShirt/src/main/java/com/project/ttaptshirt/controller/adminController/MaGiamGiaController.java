@@ -302,28 +302,6 @@ public class MaGiamGiaController {
         }
     }
 
-    @PostMapping("/api/assign-voucher")
-    @ResponseBody
-    public ResponseEntity<?> assignVoucher(@RequestBody AssignVoucherRequest request) {
-        try {
-            // Lặp qua danh sách khách hàng để gán mã giảm giá
-            for (CustomerVoucherData customerData : request.getCustomerData()) {
-                // Gọi service để thực hiện logic gán mã giảm giá
-               maGiamGiaServicelmpl.themVoucherChoKhachHang(request.getVoucherId(), customerData.getCustomerId(), customerData.getQuantity());
-            }
-
-            // Trả về phản hồi thành công nếu không có lỗi
-            return ResponseEntity.ok(new ApiResponse(true, "Mã giảm giá đã được gán thành công!"));
-        } catch (RuntimeException e) {
-            // Xử lý lỗi nếu xảy ra vấn đề với việc gán voucher (ví dụ: không đủ mã giảm giá, khách hàng không tồn tại)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(false, "Đã xảy ra lỗi: " + e.getMessage()));
-        } catch (Exception e) {
-            // Xử lý các lỗi chung
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, "Đã xảy ra lỗi hệ thống"));
-        }
-    }
-
-
     @GetMapping("/form-add")
     public String formAdd(MaGiamGia mgg, Model model){
         model.addAttribute("mgg",mgg);

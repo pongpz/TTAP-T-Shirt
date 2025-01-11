@@ -108,4 +108,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     Double tinhTongDoanhThuTheoLoaiDon(@Param("loaiDon") Integer loaiDon,
                                        @Param("ngayThanhToan") LocalDate ngayThanhToan);
 
+    // Truy vấn danh sách hóa đơn theo mã khách hàng
+    @Query("SELECT h FROM HoaDon h WHERE h.khachHang.id = :khachHangId")
+    List<HoaDon> findAllByKhachHangId(Long khachHangId);
 }
