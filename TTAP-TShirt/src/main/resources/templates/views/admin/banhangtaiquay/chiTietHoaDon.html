@@ -304,8 +304,8 @@
             <br>
             <br>
             <hr>
-            <div class="invoiceInfomation col-4 bg-light text-dark"
-                 style="height: 700px; margin-left: 750px">
+            <div class="invoiceInfomation col-5 bg-light text-dark"
+                 style="height: 700px; margin-left: 450px">
                 <h3>Thông tin hóa đơn</h3>
                 <hr/>
 <!--                <div class="row" style="margin-bottom: 1rem;">-->
@@ -322,7 +322,7 @@
                     <label class="col-9" style="font-size: 1rem; font-weight: 600; "
                            th:text="${hoadon != null && hoadon.khachHang != null ? 'Khách Hàng: ' + hoadon.khachHang.hoTen : 'Khách Hàng: Vãng lai'}">
                     </label>
-                    <button class="col-3 btn btn-sm btn btn-info" style="margin-left: 250px; margin-top: -30px" data-bs-toggle="modal" data-bs-target="#modalAddCustomer">
+                    <button class="col-3 btn btn-sm btn btn-info" style="margin-left: 350px; margin-top: -30px" data-bs-toggle="modal" data-bs-target="#modalAddCustomer">
                         Khách hàng
                     </button>
 
@@ -463,7 +463,7 @@
                     <label class="col-6" style="font-size: 1rem; font-weight: 600;">Giảm giá voucher:</label>
                     <label class="col-4" style="font-size: 1rem; font-weight: 600;"
                            th:text="${hoadon.soTienGiamGia!=null?numberUtils.formatCurrency(hoadon.soTienGiamGia) :'chưa có '}"></label>
-                    <button class="col-3 btn btn-sm btn btn-info" style="margin-left: 250px; margin-top: -30px"
+                    <button class="col-3 btn btn-sm btn btn-info" style="margin-left: 350px; margin-top: -30px"
                             data-bs-toggle="modal" data-bs-target="#modalAddVoucher"
                     >
                         Mã giảm giá
@@ -563,7 +563,7 @@
                 <br/>
                 <div class="row d-flex">
                     <label class="col-5" style="font-size: 1rem; font-weight: 600;">Tiền khách trả:</label>
-                    <input style="margin-left: 10px; height: 40px;border-radius: 10px;" type="number" class="col-6"
+                    <input style="margin-left: 10px; height: 40px;border-radius: 10px; margin-top: -5px" type="number" class="col-6"
                            placeholder="Nhập tiền khách trả..." id="tienKhachTraInput" oninput="calculateTienThua()">
                 </div>
                 <br/>
@@ -595,20 +595,20 @@
 
                 <br/>
 
-                <label for="note" style="font-size: 1rem; font-weight: 600;">Ghi Chú</label>
+                <label for="note" style="font-size: 1rem; font-weight: 600;">Ghi chú:</label>
                 <br/>
-                <textarea id="note" style="width: 350px; height: 80px"></textarea>
+                <textarea id="note" style="width: 350px; height: 80px ;margin-top: -20px; margin-left: 70px"></textarea>
                 <br/><br/>
 
                 <div class="paying d-flex">
-                    <button class="col-4 btn btn-sm btn-outline-success" style="height: 40px;margin-left: 15px;margin-right: 100px"
+                    <button class="col-4 btn btn-sm btn-info" style="height: 40px;margin-left: 15px;margin-right: 100px"
                             onclick="confirmCheckout()">Thanh Toán
                         <!-- Hidden input field to hold the HoaDon ID -->
                         <input type="hidden" id="hoaDonIdCheckOut" th:value="${hoadon.id}">
                     </button>
                     <form th:action="@{/admin/ban-hang/hoa-don/create-payment-link?idhd={idhd}(idhd=${hoadon.id})}"
                           method="post" class="col-4" id="formThanhToanOnline">
-                        <button class="btn btn-sm btn-outline-success col-12" onclick="return confirmCheckoutOnline(event)"
+                        <button class="btn btn-sm btn-info col-12" onclick="return confirmCheckoutOnline(event)"
                                 style="height: 40px">Chuyển khoản
                         </button>
                     </form>
