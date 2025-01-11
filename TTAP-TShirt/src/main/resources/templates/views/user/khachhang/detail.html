@@ -27,46 +27,69 @@
   <section class="mt-4">
     <h1 class="mb-4">Chi Tiết Khách Hàng</h1>
 
-    <div class="mb-4">
-      <h2 th:text="${customerDetails.hoTen}"></h2>
-      <p><strong>Số điện thoại:</strong> <span th:text="${customerDetails.soDienThoai}"></span></p>
-      <p><strong>Email:</strong> <span th:text="${customerDetails.email}"></span></p>
+    <!-- Thông tin cá nhân -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5>Thông tin cá nhân</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Họ và tên:</strong> <span th:text="${customer.hoTen}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${customer.email}"></span></p>
+            <p><strong>Số điện thoại:</strong> <span th:text="${customer.soDienThoai}"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Ngày tạo tài khoản:</strong> <span th:text="${customer.taiKhoan.ngayTao}"></span></p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="mb-4">
-      <h3>Mã Giảm Giá Đã Sử Dụng:</h3>
-      <ul class="list-group">
-        <th:block th:each="voucher : ${customerDetails.danhSachKhachHangVoucher}">
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span>Voucher ID: <span th:text="${voucher.voucherId}"></span>, Số lượng: <span th:text="${voucher.soLuong}"></span></span>
-            <form th:action="@{/admin/khach-hang/{customerId}/remove-voucher(customerId=${customerDetails.id})}" method="post" class="mb-0">
-              <input type="hidden" name="voucherId" th:value="${voucher.voucherId}"/>
-              <button type="submit" class="btn btn-danger btn-sm">Xóa Mã Giảm Giá</button>
-            </form>
-          </li>
-        </th:block>
-      </ul>
-    </div>
-
-    <div class="mt-4">
-      <h3>Chọn Mã Giảm Giá Để Thêm:</h3>
-      <form th:action="@{/admin/khach-hang/{customerId}/add-voucher(customerId=${customerDetails.id})}" method="post">
-        <div class="form-group mb-3">
-          <label for="voucherId">Chọn Mã Giảm Giá:</label>
-          <select name="voucherId" class="form-control" required>
-            <th:block th:each="voucher : ${allVouchers}">
-              <option th:value="${voucher.id}" th:text="${voucher.ten}"></option>
-            </th:block>
-          </select>
-        </div>
-
-        <div class="form-group mb-3">
-          <label for="quantity">Số Lượng:</label>
-          <input type="number" name="quantity" min="1" required class="form-control"/>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Thêm Mã Giảm Giá</button>
-      </form>
+    <!-- Hoạt động mua sắm -->
+    <div class="card">
+      <div class="card-header bg-success text-white">
+        <h5>Hoạt động mua sắm</h5>
+      </div>
+      <div class="card-body">
+        <!-- Lịch sử đơn hàng -->
+        <table class="table table-bordered">
+          <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Mã đơn hàng</th>
+            <th>Ngày đặt</th>
+            <th>Tổng giá trị</th>
+            <th>Trạng thái</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="order, indexStat : ${hoaDonList}">
+            <td th:text="${indexStat.count}"></td>
+            <td th:text="${order.ma}"></td>
+            <td th:text="${order.ngayTao}"></td>
+            <td th:text="${numberUtils.formatCurrency(order.tienThu)}"></td>
+            <td th:switch="${order.trangThai}">
+              <span th:case="0">Chờ thanh toán</span>
+              <span th:case="1">Thành Công</span>
+              <span th:case="2">Đã hủy</span>
+              <span th:case="-1">Giao hàng thất bại</span>
+              <span th:case="3">Chờ xác nhận</span>
+              <span th:case="6">Đã Xác nhận</span>
+              <span th:case="7">Người gửi đang chuẩn bị hàng</span>
+              <span th:case="8">Đang chờ đơn vị vận chuyển lấy hàng</span>
+              <span th:case="9">Đang giao hàng</span>
+              <span th:case="10">Đã giao hàng</span>
+              <span th:case="*" class="text-secondary">Không xác định</span>
+            </td>
+          </tr>
+          <!-- Nếu không có đơn hàng -->
+          <tr th:if="${#lists.isEmpty(hoaDonList)}">
+            <td colspan="5" class="text-center">Không có đơn hàng nào.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
