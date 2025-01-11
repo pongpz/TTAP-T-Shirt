@@ -98,16 +98,15 @@
                     <td>[[${vc.soLuong}]]</td>
                     <td>[[${vc.trangThai?'Còn hạn':'Hết hạn'}]]</td>
                     <td>
-                        <a th:href="@{/admin/ma-giam-gia/detail/{id}(id=${vc.id})}" class="btn btn-primary mb-3">Xem
-                            chi tiết</a>
+                        <a th:href="@{/admin/ma-giam-gia/detail/{id}(id=${vc.id})}" class="btn btn-primary mb-3">Chi tiết</a>
                     </td>
-                    <td>
-                        <button class="btn btn-primary" data-bs-toggle="modal"
-                                th:attr="data-voucher-id=${vc.id}"
-                                onclick="openCustomerModal(this)">
-                            Thêm khách hàng
-                        </button>
-                    </td>
+<!--                    <td>-->
+<!--                        <button class="btn btn-primary" data-bs-toggle="modal"-->
+<!--                                th:attr="data-voucher-id=${vc.id}"-->
+<!--                                onclick="openCustomerModal(this)">-->
+<!--                            Thêm khách hàng-->
+<!--                        </button>-->
+<!--                    </td>-->
                     <td>
                         <a th:href="@{/admin/ma-giam-gia/thay-doi-trang-thai/{id}(id=${vc.id})}"
                            class="btn btn-warning mb-3" onclick="return confirmNgungMgg()">Tắt hoạt động</a>
@@ -117,39 +116,39 @@
             </table>
             <h5 class="text-center">[[${nullmgg}]]</h5>
         </div>
-        <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Danh sách khách hàng</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" id="voucherIdForAssign">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Chọn</th>
-                                <th>#</th>
-                                <th>Họ tên</th>
-                                <th>Email</th>
-                                <th>Số điện thoại</th>
-                                <th>Số lượng</th>
-                            </tr>
-                            </thead>
-                            <tbody id="customerTableBody">
-                            <!-- Danh sách khách hàng sẽ được thêm tại đây -->
-                            </tbody>
-                        </table>
-                        <!-- Nội dung modal -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-success" onclick="assignVoucher()">Gán mã giảm giá</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--        <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">-->
+<!--            <div class="modal-dialog modal-lg">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="modalLabel">Danh sách khách hàng</h5>-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <input type="hidden" id="voucherIdForAssign">-->
+<!--                        <table class="table">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th>Chọn</th>-->
+<!--                                <th>#</th>-->
+<!--                                <th>Họ tên</th>-->
+<!--                                <th>Email</th>-->
+<!--                                <th>Số điện thoại</th>-->
+<!--                                <th>Số lượng</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody id="customerTableBody">-->
+<!--                            &lt;!&ndash; Danh sách khách hàng sẽ được thêm tại đây &ndash;&gt;-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                        &lt;!&ndash; Nội dung modal &ndash;&gt;-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>-->
+<!--                        <button type="button" class="btn btn-success" onclick="assignVoucher()">Gán mã giảm giá</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div
                 class="justify-content-center d-flex mb-5"
