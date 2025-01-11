@@ -42,9 +42,6 @@ public class KhachHang {
     @Column(name = "ngay_tao")
     private LocalDate ngayTao;
 
-    @OneToMany(mappedBy = "khachHang", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<KhachHangVoucher> danhSachKhachHangVoucher = new ArrayList<>();
-
     @OneToOne
     @JoinColumn(name = "id_tai_khoan")
     @JsonIgnore

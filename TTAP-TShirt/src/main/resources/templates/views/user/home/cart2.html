@@ -228,25 +228,10 @@
                         <!-- Cart Summary Section -->
                         <div class="col-md-3">
                             <div class="p-3 border rounded">
-                                <div class="mb-3">
-                                    <label for="discount_code" class="form-label">Mã giảm giá</label>
-                                    <div class="input-group">
-                                        <input type="text" id="discount_code" class="form-control" placeholder="Chưa chọn mã giảm giá" disabled>
-                                    </div>
-                                    <button type="button" class="btn btn-info mt-3" data-bs-toggle="modal" data-bs-target="#discountModal">
-                                        Chọn Mã Giảm Giá
-                                    </button>
-                                    <small id="js-voucher-message" class="text-danger"></small>
-                                </div>
                                 <div class="border-top pt-3">
                                     <p class="d-flex justify-content-between mb-2">
                                         <span>Tạm tính</span>
                                         <span class="total-cart-price" id="totalAmount">0₫</span>
-                                    </p>
-                                    <p class="d-flex justify-content-between mb-2">
-                                        <span>Giảm giá</span>
-                                        <span id="price-discount">0₫</span>
-                                        <input type="hidden" name="idGiamgia" id="idGiamgia">
                                     </p>
                                     <p class="d-flex justify-content-between mb-2">
                                         <span>Phí vận chuyển</span>
@@ -271,66 +256,6 @@
     </div>
     <div class="alert alert-danger text-center" role="alert" th:if="${cart.items == null or cart.items.isEmpty()}">
         <p>Giỏ hàng của bạn đang trống.</p>
-    </div>
-    <!-- Modal Chọn Mã Giảm Giá -->
-    <div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="discountModalLabel">Chọn Mã Giảm Giá</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Thông báo nếu chưa chọn sản phẩm -->
-                    <div id="noProductSelectedWarning" class="alert alert-warning" style="display: none;">
-                        <strong>Thông báo:</strong> Bạn cần chọn ít nhất một sản phẩm trước khi áp dụng mã giảm giá.
-                    </div>
-
-                    <form id="discountForm">
-                        <div class="row">
-                            <!-- Lặp qua danh sách mã giảm giá -->
-                            <div class="col-md-6 mb-4" th:each="voucher : ${danhSachMaGiamGia}" >
-                                <div class="card border-info shadow-sm" style="border-radius: 12px;">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <!-- Radio input -->
-                                            <input class="form-check-input me-3" type="radio" name="discount"
-                                                   th:id="'voucher-' + ${voucher.maGiamGia.id}" th:value="${voucher.maGiamGia.id}" style="transform: scale(1.3);">
-                                            <!-- Nội dung mã giảm giá -->
-                                            <div>
-                                                <h6 class="card-title fw-bold mb-1 text-primary" th:text="${voucher.maGiamGia.ten}"></h6>
-                                                <p class="mb-1 text-muted" style="font-size: 0.9rem;">
-                                                    Giảm <span th:text="${voucher.maGiamGia.giaTriGiam + '%'}" class="text-danger"></span>, tối đa
-                                                    <span th:text="${numberUtils.formatCurrency(voucher.maGiamGia.giaTriToiDa)}"></span>
-                                                </p>
-                                                <p class="mb-1 text-muted" style="font-size: 0.9rem;">
-                                                    <strong>Đơn tối thiểu:</strong>
-                                                    <span th:text="${numberUtils.formatCurrency(voucher.maGiamGia.giaTriToiThieu)}"></span>
-                                                </p>
-                                                <p class="mb-0 text-muted" style="font-size: 0.9rem;">
-                                                    <strong>Hiệu lực:</strong>
-                                                    <span th:text="${voucher.maGiamGia.thoiGianHieuLuc}"></span>
-                                                </p>
-                                                <p class="mb-0 text-muted" style="font-size: 0.9rem;">
-                                                    <span class="badge bg-danger rounded-pill px-2 py-1" th:text="${voucher.soLuong}"></span>
-                                                </p>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-warning text-white" id="applyDiscountBtn" onclick="applyDiscount()">
-                        Áp dụng mã giảm giá
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="modal fade" id="selectAddressModal" tabindex="-1" aria-labelledby="selectAddressModalLabel" aria-hidden="true">
@@ -533,76 +458,6 @@
     });
 </script>
 <script>
-    function applyDiscount() {
-        // Kiểm tra xem có sản phẩm nào được chọn không
-        const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-        if (checkboxes.length === 0) {
-            alert('Vui lòng chọn ít nhất một sản phẩm!');
-            return; // Nếu không có sản phẩm nào được chọn, không làm gì cả
-        }
-
-        // Kiểm tra xem mã giảm giá nào đã được chọn
-        const selectedVoucherId = document.querySelector('input[name="discount"]:checked')?.value;
-        if (!selectedVoucherId) {
-            alert('Vui lòng chọn một mã giảm giá!');
-            return; // Nếu không có mã giảm giá nào được chọn, không làm gì cả
-        }
-
-        // Gán giá trị selectedVoucherId vào trường hidden idGiamgia
-        document.getElementById('idGiamgia').value = selectedVoucherId;
-
-        // Lấy tổng tiền trước khi áp dụng giảm giá
-        const totalMoneyBefore = parseFloat(document.getElementById('totalAmount').innerText.replace('₫', '').trim()) || 0;
-        console.log("Tổng tiền tạm tính:", totalMoneyBefore);
-
-        // Gửi yêu cầu AJAX để áp dụng mã giảm giá
-        fetch(`/TTAP/cart/apply-discount?discount_code=${selectedVoucherId}`, {
-            method: 'POST',
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Không thể áp dụng mã giảm giá. Vui lòng thử lại sau.');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Dữ liệu từ API:", data);
-
-                // Kiểm tra điều kiện áp dụng mã giảm giá (đơn tối thiểu)
-                const minOrderValue = formatCurrency(data.condition);
-                console.log("don min;",minOrderValue)// Đơn tối thiểu từ API
-                if (totalMoneyBefore < minOrderValue) {
-                    const additionalAmount = minOrderValue - totalMoneyBefore;
-                    throw new Error(`Không thể áp dụng mã giảm giá. Cần mua thêm ${formatCurrencyVc(additionalAmount)} để áp dụng mã.`);
-                }
-
-                // Nếu có giá trị giảm giá, áp dụng vào giao diện
-                if (data.discountAmount !== undefined) {
-                    const discount = (data.discountAmount / 100.0) * totalMoneyBefore;
-                    console.log("Giảm giá:", discount);
-
-                    // Cập nhật giảm giá vào giao diện
-                    document.getElementById('price-discount').innerText = formatCurrencyVc(discount);
-                    document.getElementById('discount_code').innerText = data.discountCode;
-
-                    // Lấy phí vận chuyển
-                    const shippingFee = parseFloat(document.getElementById('shippingFee').innerText.replace('₫', '').trim()) || 0;
-                    console.log("Phí vận chuyển:", shippingFee);
-
-                    // Tính tổng tiền sau khi áp dụng giảm giá và phí vận chuyển
-                    const finalAmount = totalMoneyBefore - discount + shippingFee;
-                    document.getElementById('total-cart-payment').innerText = formatCurrencyVc(finalAmount);
-
-                    alert('Áp dụng mã giảm giá thành công!');
-                } else {
-                    alert('Mã giảm giá không hợp lệ hoặc không có thông tin giảm giá.');
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi khi áp dụng mã giảm giá:', error);
-                alert(error.message); // Hiển thị thông báo lỗi cho người dùng
-            });
-    }
     // Hàm xử lý khi chọn địa chỉ
     function handleAddressSelection() {
         const selectedAddressId = $('input[name="addressId"]:checked').val();
@@ -688,8 +543,10 @@
             $('#shippingFee').text(formatCurrency(0));
             $('#total-cart-payment').text(formatCurrency(total));
         }
-        // Gọi lại hàm áp dụng mã giảm giá nếu có
-        applyDiscount();
+        const selectedVoucherId = document.querySelector('input[name="discount"]:checked')?.value;
+        if (selectedVoucherId) {
+            applyDiscount();
+        }
     }
 
     function validateQuantity(input) {

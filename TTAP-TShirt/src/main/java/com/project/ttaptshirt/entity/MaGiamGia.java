@@ -75,10 +75,6 @@ public class MaGiamGia {
         @Column(name = "so_luong")
         private Integer soLuong;
 
-        @OneToMany(mappedBy = "maGiamGia", cascade = CascadeType.ALL, orphanRemoval = true)
-        private List<KhachHangVoucher> danhSachKhachHangVoucher = new ArrayList<>();
-
-
         // Method to check if the voucher is started
         public boolean isStart() {
                 return LocalDateTime.now().isAfter(ngayBatDau);
