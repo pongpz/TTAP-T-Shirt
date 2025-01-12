@@ -35,9 +35,10 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-6">
-            <p><strong>Họ và tên:</strong> <span th:text="${customer.hoTen}"></span></p>
-            <p><strong>Email:</strong> <span th:text="${customer.email}"></span></p>
-            <p><strong>Số điện thoại:</strong> <span th:text="${customer.soDienThoai}"></span></p>
+            <p><strong>Tài Khoản:</strong> <span th:text="${customer.taiKhoan.username}"></span></p>
+            <p><strong>Họ và tên:</strong> <span th:text="${customer.hoTen != null ? customer.hoTen : 'Khách hàng chưa cập nhật'}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${customer.email != null ? customer.email : 'Khách hàng chưa cập nhật'}"></span></p>
+            <p><strong>Số điện thoại:</strong> <span th:text="${customer.soDienThoai != null ? customer.soDienThoai : 'Khách hàng chưa cập nhật'}"></span></p>
           </div>
           <div class="col-md-6">
             <p><strong>Ngày tạo tài khoản:</strong> <span th:text="${customer.taiKhoan.ngayTao}"></span></p>

@@ -108,6 +108,8 @@
                 <div class="text-end mt-3">
                     <h4>Tạm tính: <span th:text="${numberUtils.formatCurrency2(hoaDon.tongTien)}"></span> VND</h4>
                     <br>
+                    <h4>Giảm giá: <span th:text="${hoaDon.tienShip != null ? numberUtils.formatCurrency2(hoaDon.soTienGiamGia) :''}"></span> VND</h4>
+                    <br>
                     <h4>Phí vận chuyển: <span th:text="${hoaDon.tienShip != null ? numberUtils.formatCurrency2(hoaDon.tienShip) :''}"></span> VND</h4>
                     <br>
                     <h4>Tổng tiền: <span th:text="${numberUtils.formatCurrency2(hoaDon.tienThu)}"></span> VND</h4>

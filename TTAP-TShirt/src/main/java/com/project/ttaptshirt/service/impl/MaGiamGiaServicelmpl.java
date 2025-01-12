@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MaGiamGiaServicelmpl implements MaGiamGiaService {
@@ -27,6 +28,13 @@ public class MaGiamGiaServicelmpl implements MaGiamGiaService {
     public List<MaGiamGia> getMaGiamGia(Long idKh) {
         return null;
     }
+
+    public List<MaGiamGia> getAvailableVouchers(Double totalAmount) {
+        return maGiamGiaRepo.findAll().stream()
+                .filter(voucher -> voucher.isValid() && totalAmount >= voucher.getGiaTriToiThieu())
+                .collect(Collectors.toList());
+    }
+
 
 //    public DiscountResponse applyDiscount(Long discountCode, GioHang cart, Long customerId)  {
 //        // Kiểm tra mã giảm giá có tồn tại không
@@ -63,7 +71,7 @@ public class MaGiamGiaServicelmpl implements MaGiamGiaService {
 
     @Override
     public void save(MaGiamGia maGiamGia) {
-
+     maGiamGiaRepo.save(maGiamGia);
     }
 
     @Override
