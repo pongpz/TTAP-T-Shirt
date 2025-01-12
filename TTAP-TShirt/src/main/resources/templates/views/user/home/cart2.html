@@ -224,10 +224,24 @@
                         <!-- Cart Summary Section -->
                         <div class="col-md-3">
                             <div class="p-3 border rounded">
+                                <div class="mb-3">
+                                    <label for="voucherSelect" class="form-label">Mã giảm giá</label>
+                                    <div class="input-group">
+                                        <select id="voucherSelect" class="form-select" onchange="applyVoucher()">
+                                            <option value="">-- Chọn mã giảm giá --</option>
+                                        </select>
+                                        <input type="hidden" name="idGiamgia" id="idGiamgia">
+                                    </div>
+                                    <small id="js-voucher-message" class="text-danger"></small>
+                                </div>
                                 <div class="border-top pt-3">
                                     <p class="d-flex justify-content-between mb-2">
                                         <span>Tạm tính</span>
                                         <span class="total-cart-price" id="totalAmount">0₫</span>
+                                    </p>
+                                    <p class="d-flex justify-content-between mb-2">
+                                        <span>Giảm giá</span>
+                                        <span id="price-discount">0₫</span>
                                     </p>
                                     <p class="d-flex justify-content-between mb-2">
                                         <span>Phí vận chuyển</span>
@@ -454,6 +468,93 @@
     });
 </script>
 <script>
+    function loadVouchers() {
+        const totalAmount=parseFloat($('#totalAmount').attr('data-amount') || 0);
+        $.ajax({
+            url: `/TTAP/cart/vouchers/available?totalAmount=${totalAmount}`,
+            method: 'GET',
+            success: function (vouchers) {
+                const voucherSelect = $('#voucherSelect');
+                voucherSelect.empty(); // Xóa danh sách cũ
+                voucherSelect.append('<option value="">-- Chọn mã giảm giá --</option>');
+
+                vouchers.forEach(voucher => {
+                    voucherSelect.append(
+                        `<option value="${voucher.id}">
+                        ${voucher.ten} - Giảm ${voucher.hinhThuc ? voucher.giaTriGiam + 'đ' : voucher.giaTriGiam + ' %'}
+                        (Tối thiểu: ${formatCurrency(voucher.giaTriToiThieu)})
+                    </option>`
+                    );
+                });
+            },
+            error: function () {
+                toastError('Lỗi', 'Không thể tải danh sách mã giảm giá.');
+            }
+        });
+    }
+    $(document).ready(function () {
+        loadVouchers(); // Tự động tải danh sách mã giảm giá
+        // Reset giá trị giảm giá về 0 khi trang được tải
+
+    });
+    // Hàm này sẽ được gọi khi người dùng thay đổi giá trị trong dropdown
+    function applyVoucher() {
+        const voucherId = document.getElementById('voucherSelect').value; // Lấy ID mã giảm giá đã chọn
+        const totalAmount = parseFloat(document.getElementById('totalAmount').getAttribute('data-amount') || 0); // Lấy tổng tiền hiện tại
+
+        document.getElementById('idGiamgia').value = voucherId;
+
+        if (voucherId && totalAmount > 0) {
+            // Gửi yêu cầu API
+            fetch(`/TTAP/cart/apply-voucher?discount_code=${voucherId}`, {
+                method: 'POST',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Không thể áp dụng mã giảm giá. Vui lòng thử lại sau.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Kiểm tra điều kiện áp dụng mã giảm giá
+                    const maxOrderValue = parseFloat(data.condition) || 0;
+                    let discount = 0;
+                    if (data.typeDiscount) {
+                        discount = Math.min(data.discountAmount, totalAmount);
+                    } else {
+                        discount = (data.discountAmount / 100.0) * totalAmount;
+                    }
+
+                    if (discount > maxOrderValue) {
+                        discount = maxOrderValue;
+                    }
+
+                    const shippingFeeElement = document.getElementById('shippingFee');
+                    const shippingFeeText = shippingFeeElement.textContent || shippingFeeElement.innerText;  // Lấy nội dung văn bản
+                    const shippingFee = parseFloat(shippingFeeText.replace(/[^\d.-]/g, '').trim()) || 0
+                    console.log(shippingFee);
+
+                    const finalAmount = totalAmount - discount + shippingFee;
+
+                    // Kiểm tra xem giá trị giảm giá đã thay đổi chưa, nếu có mới cập nhật
+                    const priceDiscountElement = document.getElementById('price-discount');
+                    const currentDiscount = parseFloat(priceDiscountElement.innerText.replace(/[^\d.-]/g, '').trim()) || 0;
+                    if (currentDiscount !== discount) {
+                        priceDiscountElement.innerText = formatCurrency(discount);
+                    }
+
+                    document.getElementById('total-cart-payment').innerText = formatCurrency(finalAmount);
+
+                    alert('Áp dụng mã giảm giá thành công!');
+                })
+                .catch(error => {
+                    console.error('Lỗi khi áp dụng mã giảm giá:', error);
+                    alert(error.message);
+                });
+        } else {
+            toastError('Lỗi', 'Vui lòng chọn mã giảm giá hợp lệ');
+        }
+    }
     // Hàm xử lý khi chọn địa chỉ
     function handleAddressSelection() {
         const selectedAddressId = $('input[name="addressId"]:checked').val();
@@ -539,10 +640,8 @@
             $('#shippingFee').text(formatCurrency(0));
             $('#total-cart-payment').text(formatCurrency(total));
         }
-        const selectedVoucherId = document.querySelector('input[name="discount"]:checked')?.value;
-        if (selectedVoucherId) {
-            applyDiscount();
-        }
+        loadVouchers();
+        $('#price-discount').text('0₫');
     }
 
     function validateQuantity(input) {

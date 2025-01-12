@@ -75,10 +75,7 @@ public class GioHangController {
             CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
             TaiKhoan user = customUserDetail.getUser();
             // Kiểm tra thông tin cá nhân của khách hàng
-            if (user.getKhachHang() == null || !isCustomerInfoComplete(user.getKhachHang())) {
-                // Nếu thông tin cá nhân chưa đầy đủ, yêu cầu cập nhật thông tin
-                return "redirect:/TTAP/user/detail/view";
-            }
+
             GioHang cart = gioHangService.getOrCreateCart(user);
             model.addAttribute("cart", cart);
             model.addAttribute("userLogged", user);
@@ -470,12 +467,17 @@ public class GioHangController {
     }
 
 
-    @PostMapping("/apply-discount")
+    @GetMapping("/vouchers/available")
+    @ResponseBody
+    public ResponseEntity<List<MaGiamGia>> getAvailableVouchers(@RequestParam Double totalAmount) {
+        List<MaGiamGia> availableVouchers = maGiamGiaServicelmpl.getAvailableVouchers(totalAmount);
+        return ResponseEntity.ok(availableVouchers);
+    }
+
+    @PostMapping("/apply-voucher")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> applyDiscount(@RequestParam("discount_code") Long voucherId) {
-        // Giả sử bạn có một dịch vụ để tìm mã giảm giá từ voucherId
         MaGiamGia voucher = maGiamGiaServicelmpl.findById(voucherId);
-
         Map<String, Object> response = new HashMap<>();
         if (voucher != null) {
             // Lấy thông tin từ mã giảm giá
@@ -483,17 +485,14 @@ public class GioHangController {
             double discountAmount = voucher.getGiaTriGiam();
             String expirationDate = voucher.getNgayKetThuc().toString();
             boolean isUsed = voucher.isStart();
-            Double condition = voucher.getGiaTriToiThieu();
-            Boolean typeDiscount = voucher.getHinhThuc();
-
+            Double condition = voucher.getGiaTriToiDa();
+            boolean typeDiscount = voucher.getHinhThuc();
             // Thêm các giá trị vào phản hồi
             response.put("discountCode", discountCode);
             response.put("discountAmount", discountAmount);
             response.put("expirationDate", expirationDate);
-            response.put("isUsed", isUsed);
-            response.put("condition", condition);
             response.put("typeDiscount", typeDiscount);
-
+            response.put("condition", condition);
             // Kiểm tra mã giảm giá còn hiệu lực
             if (voucher.getNgayKetThuc().isBefore(LocalDateTime.now()) || isUsed) {
                 response.put("status", "expired or already used");
@@ -504,7 +503,6 @@ public class GioHangController {
             // Xử lý trường hợp mã giảm giá không tồn tại
             response.put("status", "not found");
         }
-
         return ResponseEntity.ok(response);
     }
 

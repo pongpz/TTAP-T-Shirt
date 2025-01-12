@@ -1,11 +1,7 @@
 package com.project.ttaptshirt.controller.adminController;
 
 import com.project.ttaptshirt.dto.NumberUtils;
-import com.project.ttaptshirt.entity.ChiTietSanPham;
-import com.project.ttaptshirt.entity.HoaDon;
-import com.project.ttaptshirt.entity.HoaDonChiTiet;
-import com.project.ttaptshirt.entity.HoaDonLog;
-import com.project.ttaptshirt.entity.TaiKhoan;
+import com.project.ttaptshirt.entity.*;
 import com.project.ttaptshirt.repository.ChiTietSanPhamRepository;
 import com.project.ttaptshirt.repository.HinhAnhRepository;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
@@ -15,6 +11,7 @@ import com.project.ttaptshirt.service.ChiTietSanPhamService;
 import com.project.ttaptshirt.service.HoaDonChiTietService;
 import com.project.ttaptshirt.service.HoaDonLogService;
 import com.project.ttaptshirt.service.HoaDonService;
+import com.project.ttaptshirt.service.impl.MaGiamGiaServicelmpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,6 +60,8 @@ public class HoaDonController {
 
     @Autowired
     private HinhAnhRepository hinhAnhRepository;
+    @Autowired
+    private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
 
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page, @RequestParam(required = false, value = "id") Long id) {
@@ -176,6 +175,12 @@ public class HoaDonController {
 
             chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - hdct.getSoLuong());
             chiTietSanPhamService.save(chiTietSanPham);
+
+            MaGiamGia maGiamGia = hdct.getHoaDon().getMaGiamGia();
+            if (maGiamGia != null) {
+                maGiamGia.setSoLuong(maGiamGia.getSoLuong() - 1);
+                maGiamGiaServicelmpl.save(maGiamGia);
+            }
         }
         HoaDonLog hoaDonLog = new HoaDonLog();
         HoaDon hoaDon2 = hoaDonService.findById(idHD);

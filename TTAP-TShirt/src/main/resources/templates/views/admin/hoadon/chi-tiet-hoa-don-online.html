@@ -549,7 +549,8 @@
         </div>
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
             <p style="margin: 0; font-size: 14px;">Giảm giá:</p>
-            <span style="font-size: 14px;">Không áp dụng</span>
+            <span style="font-size: 14px;"
+                  th:text="${numberUtils.formatCurrency(hoaDon.soTienGiamGia)!=null?numberUtils.formatCurrency(hoaDon.soTienGiamGia):'Không áp dụng'}"></span>
         </div>
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <p style="margin: 0; font-size: 14px;">Phí vận chuyển:</p>

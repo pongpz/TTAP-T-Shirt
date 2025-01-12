@@ -247,11 +247,38 @@ public class GioHangService {
                 .filter(item -> selectedProductIds.contains(item.getChiTietSanPham().getId()))
                 .mapToDouble(item -> item.getGia().doubleValue() * item.getSoLuong())
                 .sum();
-        double shippingFee = ghnService.calculateShippingFee(diaChi);
+        double discountAmount = 0.0;
+        if (discountId != null && discountId > 0) {
+            MaGiamGia discountVoucher = giamGiaServicelmpl.findById(discountId);
+            if (discountVoucher != null) {
+                if (discountVoucher.getHinhThuc()) {
+                    // Giảm giá theo phần trăm
+                    discountAmount = discountVoucher.getGiaTriGiam();
+                } else {
+                    // Giảm giá theo giá trị cố định
+                    // Giảm giá theo phần trăm
+                    discountAmount = (discountVoucher.getGiaTriGiam() / 100.0) * totalAmount;
 
-        hoaDon.setTongTien(totalAmount);
-        hoaDon.setTienThu(totalAmount + shippingFee);
+                }
+
+                // Đảm bảo giảm giá không vượt quá tổng tiền
+                if (discountAmount > discountVoucher.getGiaTriToiDa()) {
+                    discountAmount = discountVoucher.getGiaTriToiDa(); // Giới hạn giảm giá không vượt quá tổng tiền
+                }
+                hoaDon.setSoTienGiamGia(discountAmount);
+                hoaDon.setMaGiamGia(discountVoucher);
+            } else {
+                throw new RuntimeException("Mã giảm giá không hợp lệ.");
+            }
+        }
+        // Tính phí vận chuyển
+        double shippingFee = ghnService.calculateShippingFee(diaChi);
         hoaDon.setTienShip(shippingFee);
+
+        // Tính tổng tiền cuối cùng
+        double finalAmount = totalAmount + shippingFee - discountAmount;
+        hoaDon.setTongTien(totalAmount); // Tổng tiền trước khi áp dụng giảm giá
+        hoaDon.setTienThu(finalAmount); // Tổng tiền sau giảm giá và phí ship
         hoaDonRepository.save(hoaDon);
 
         List<GioHangChiTiet> itemsToMove = cart.getItems().stream()
