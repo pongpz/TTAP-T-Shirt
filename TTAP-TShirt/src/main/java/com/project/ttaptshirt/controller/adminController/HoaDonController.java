@@ -330,8 +330,11 @@ public class HoaDonController {
     public String giaoHangThatBai(@PathVariable("idHD") Long idHD,
                                   @RequestParam(value = "ctspLoiId",required = false) String idSPCTLoi,
                                   @RequestParam(value = "soLuongHoan",required = false) String soLuongHoan,
-                                  RedirectAttributes redirectAttributes, Model model
-            , Authentication authentication, @RequestParam("lyDo") Integer lyDo) {
+                                  @RequestParam(value = "lyDo",required = false) String lyDo,
+                                  RedirectAttributes redirectAttributes, Model model,
+                                  Authentication authentication
+//                                  @RequestParam("lyDo") Integer lyDo
+    ) {
         CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
         TaiKhoan user = customUserDetail.getUser();
         HoaDon hoaDon = hoaDonService.findById(idHD);
@@ -340,8 +343,8 @@ public class HoaDonController {
         hoaDonLog.setHanhDong("Giao hàng thất bại");
         hoaDonLog.setThoiGian(LocalDateTime.now());
         hoaDonLog.setNguoiThucHien(user.getUsername());
-        if (lyDo == 1){
-            hoaDonLog.setGhiChu("Giao hàng Thất bại(Lý do: Khách từ chối nhận hàng)");
+//        if (lyDo == 1){
+            hoaDonLog.setGhiChu("Giao hàng thất bại(Lý do: "+lyDo+" )");
             List<HoaDonChiTiet> listSanPham = hoaDonChiTietService.getListHdctByIdHd(idHD);
             for (HoaDonChiTiet hdct : listSanPham) {
                 ChiTietSanPham chiTietSanPham = hdct.getChiTietSanPham();
@@ -349,59 +352,59 @@ public class HoaDonController {
                 chiTietSanPham.setTrangThai(0);
                 chiTietSanPhamService.save(chiTietSanPham);
             }
-            hoaDon.setGhiChu("Khách từ chối nhận hàng");
-        }else {
-            List<Long> listIdProductIdUsnelected = new ArrayList<>();
-            List<HoaDonChiTiet> listSanPham = hoaDonChiTietService.getListHdctByIdHd(idHD);
-            for (HoaDonChiTiet hdct : listSanPham) {
-                listIdProductIdUsnelected.add(hdct.getChiTietSanPham().getId());
-            }
-            List<Long> selectedProductIds = Arrays.stream(idSPCTLoi.split(","))
-                    .filter(id -> id != null && !id.trim().isEmpty())
-                    .map(Long::parseLong)
-                    .collect(Collectors.toList());
-            List<Integer> listSoLuongHoan = Arrays.stream(soLuongHoan.split(","))
-                    .filter(soLuong -> soLuong != null && !soLuong.trim().isEmpty())
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-
-            System.out.println("list spct id chon: "+ selectedProductIds);
-            if (selectedProductIds.size() > 0){
-                listIdProductIdUsnelected.removeAll(selectedProductIds);
-                System.out.println("list spct id khong chon: "+ listIdProductIdUsnelected);
-                for (HoaDonChiTiet hdct : listSanPham) {
-                    for (int i = 0 ; i < selectedProductIds.size() ; i++){
-                        if (hdct.getChiTietSanPham().getId()==selectedProductIds.get(i)){
-                            System.out.println("id: "+selectedProductIds.get(i));
-                            System.out.println("So luong hoan: "+listSoLuongHoan.get(i));
-                            ChiTietSanPham ctsp = hdct.getChiTietSanPham();
-                            System.out.println("So luong cu: "+ctsp.getSoLuong());
-                            System.out.println("So luong moi: "+(ctsp.getSoLuong()+listSoLuongHoan.get(i)));
-                            ctsp.setSoLuong(ctsp.getSoLuong()+listSoLuongHoan.get(i));
-                            ctsp.setTrangThai(0);
-                            chiTietSanPhamService.save(ctsp);
-                        }
-                    }
-                    for (int i = 0 ; i < listIdProductIdUsnelected.size() ; i++){
-                        if (hdct.getChiTietSanPham().getId()==listIdProductIdUsnelected.get(i)){
-                            System.out.println("id: "+listIdProductIdUsnelected.get(i));
-                            System.out.println("So luong hoan: "+hdct.getSoLuong());
-                            ChiTietSanPham ctsp = hdct.getChiTietSanPham();
-                            System.out.println("So luong cu: "+ctsp.getSoLuong());
-                            System.out.println("So luong moi: "+(ctsp.getSoLuong()+hdct.getSoLuong()));
-                            ctsp.setSoLuong(ctsp.getSoLuong()+hdct.getSoLuong());
-                            ctsp.setTrangThai(0);
-                            chiTietSanPhamService.save(ctsp);
-                        }
-                    }
-                }
-            }else {
-                model.addAttribute("modalGiaoThatBai",true);
-                return "/admin/hoa-don/chi-tiet-hoa-don-online/"+idHD;
-            }
-            hoaDonLog.setGhiChu("Giao hàng Thất bại(Lý do: Sản phẩm có lỗi)");
-            hoaDon.setGhiChu("Sản phẩm có lỗi");
-        }
+            hoaDon.setGhiChu(lyDo);
+//        }else {
+//            List<Long> listIdProductIdUsnelected = new ArrayList<>();
+//            List<HoaDonChiTiet> listSanPham = hoaDonChiTietService.getListHdctByIdHd(idHD);
+//            for (HoaDonChiTiet hdct : listSanPham) {
+//                listIdProductIdUsnelected.add(hdct.getChiTietSanPham().getId());
+//            }
+//            List<Long> selectedProductIds = Arrays.stream(idSPCTLoi.split(","))
+//                    .filter(id -> id != null && !id.trim().isEmpty())
+//                    .map(Long::parseLong)
+//                    .collect(Collectors.toList());
+//            List<Integer> listSoLuongHoan = Arrays.stream(soLuongHoan.split(","))
+//                    .filter(soLuong -> soLuong != null && !soLuong.trim().isEmpty())
+//                    .map(Integer::parseInt)
+//                    .collect(Collectors.toList());
+//
+//            System.out.println("list spct id chon: "+ selectedProductIds);
+//            if (selectedProductIds.size() > 0){
+//                listIdProductIdUsnelected.removeAll(selectedProductIds);
+//                System.out.println("list spct id khong chon: "+ listIdProductIdUsnelected);
+//                for (HoaDonChiTiet hdct : listSanPham) {
+//                    for (int i = 0 ; i < selectedProductIds.size() ; i++){
+//                        if (hdct.getChiTietSanPham().getId()==selectedProductIds.get(i)){
+//                            System.out.println("id: "+selectedProductIds.get(i));
+//                            System.out.println("So luong hoan: "+listSoLuongHoan.get(i));
+//                            ChiTietSanPham ctsp = hdct.getChiTietSanPham();
+//                            System.out.println("So luong cu: "+ctsp.getSoLuong());
+//                            System.out.println("So luong moi: "+(ctsp.getSoLuong()+listSoLuongHoan.get(i)));
+//                            ctsp.setSoLuong(ctsp.getSoLuong()+listSoLuongHoan.get(i));
+//                            ctsp.setTrangThai(0);
+//                            chiTietSanPhamService.save(ctsp);
+//                        }
+//                    }
+//                    for (int i = 0 ; i < listIdProductIdUsnelected.size() ; i++){
+//                        if (hdct.getChiTietSanPham().getId()==listIdProductIdUsnelected.get(i)){
+//                            System.out.println("id: "+listIdProductIdUsnelected.get(i));
+//                            System.out.println("So luong hoan: "+hdct.getSoLuong());
+//                            ChiTietSanPham ctsp = hdct.getChiTietSanPham();
+//                            System.out.println("So luong cu: "+ctsp.getSoLuong());
+//                            System.out.println("So luong moi: "+(ctsp.getSoLuong()+hdct.getSoLuong()));
+//                            ctsp.setSoLuong(ctsp.getSoLuong()+hdct.getSoLuong());
+//                            ctsp.setTrangThai(0);
+//                            chiTietSanPhamService.save(ctsp);
+//                        }
+//                    }
+//                }
+//            }else {
+//                model.addAttribute("modalGiaoThatBai",true);
+//                return "/admin/hoa-don/chi-tiet-hoa-don-online/"+idHD;
+//            }
+//            hoaDonLog.setGhiChu("Giao hàng Thất bại(Lý do: Sản phẩm có lỗi)");
+//            hoaDon.setGhiChu("Sản phẩm có lỗi");
+//        }
         hoaDonLog.setTrangThai(0);
         hoaDon.setTrangThai(-1);
         hoaDonLogService.save(hoaDonLog);
