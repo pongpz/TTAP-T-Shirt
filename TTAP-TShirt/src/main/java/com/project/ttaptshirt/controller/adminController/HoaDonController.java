@@ -178,8 +178,25 @@ public class HoaDonController {
 
             MaGiamGia maGiamGia = hdct.getHoaDon().getMaGiamGia();
             if (maGiamGia != null) {
-                maGiamGia.setSoLuong(maGiamGia.getSoLuong() - 1);
-                maGiamGiaServicelmpl.save(maGiamGia);
+                if (maGiamGia.getSoLuong() > 0) { // Chỉ giảm số lượng nếu còn > 0
+                    maGiamGia.setSoLuong(maGiamGia.getSoLuong() - 1);
+                    maGiamGiaServicelmpl.save(maGiamGia);
+                } else {
+                    // Log lỗi nếu số lượng mã giảm giá đã hết
+                    redirectAttributes.addFlashAttribute("confirmErrorMessage", true);
+
+                    HoaDonLog hoaDonLog = new HoaDonLog();
+                    hoaDonLog.setHoaDon(hdct.getHoaDon());
+                    hoaDonLog.setHanhDong("Xác nhận");
+                    hoaDonLog.setThoiGian(LocalDateTime.now());
+                    hoaDonLog.setNguoiThucHien(user.getUsername());
+                    hoaDonLog.setGhiChu("Xác nhận thất bại: mã giảm giá đã hết số lượng");
+                    hoaDonLog.setTrangThai(1);
+                    hoaDonLogService.save(hoaDonLog);
+
+                    // Dừng xử lý và quay lại trang chi tiết hóa đơn
+                    return "redirect:/admin/hoa-don/chi-tiet-hoa-don-online/" + idHD;
+                }
             }
         }
         HoaDonLog hoaDonLog = new HoaDonLog();
