@@ -50,7 +50,11 @@ public class ThongKeService {
         // Duyệt qua từng hóa đơn để tính tổng thu nhập
         for (HoaDon hoaDon : hoaDons) {
 
-            totalIncome += hoaDon.getTongTien() - hoaDon.getSoTienGiamGia();
+            if (hoaDon.getSoTienGiamGia() == null){
+                totalIncome += hoaDon.getTongTien();
+            }else {
+                totalIncome += hoaDon.getTongTien() - hoaDon.getSoTienGiamGia();
+            }
 //            // Lấy tất cả các chi tiết hóa đơn của mỗi hóa đơn
 //            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
 //
@@ -78,7 +82,11 @@ public class ThongKeService {
 
         // Duyệt qua từng hóa đơn để tính tổng thu nhập
         for (HoaDon hoaDon : hoaDons) {
-            totalIncome += hoaDon.getTongTien() - hoaDon.getSoTienGiamGia();
+            if (hoaDon.getSoTienGiamGia() == null){
+                totalIncome += hoaDon.getTongTien();
+            }else {
+                totalIncome += hoaDon.getTongTien() - hoaDon.getSoTienGiamGia();
+            }
 //            // Lấy tất cả các chi tiết hóa đơn của mỗi hóa đơn
 //            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
 //
@@ -102,7 +110,11 @@ public class ThongKeService {
 
         for (HoaDon hoaDon : hoaDons) {
 
-            totalIncome += hoaDon.getTongTien() - hoaDon.getSoTienGiamGia();
+            if (hoaDon.getSoTienGiamGia() == null){
+                totalIncome += hoaDon.getTongTien();
+            }else {
+                totalIncome += hoaDon.getTongTien() - hoaDon.getSoTienGiamGia();
+            }
 
 //
 //            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
@@ -151,7 +163,12 @@ public class ThongKeService {
                 // Lấy chi tiết hóa đơn
                 List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
 
-                double doanhThu = hoaDon.getTongTien()-hoaDon.getSoTienGiamGia();
+                double doanhThu;
+                if (hoaDon.getSoTienGiamGia() == null){
+                    doanhThu = hoaDon.getTongTien();
+                }else {
+                    doanhThu = hoaDon.getTongTien()-hoaDon.getSoTienGiamGia();
+                }
 
 //                // Tính tổng doanh thu của hóa đơn
 //                double doanhThu = hoaDonChiTiets.stream()
@@ -175,7 +192,12 @@ public class ThongKeService {
                 // Lấy danh sách chi tiết hóa đơn
                 List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
 
-                double doanhThu = hoaDon.getTongTien()-hoaDon.getSoTienGiamGia();
+                double doanhThu;
+                if (hoaDon.getSoTienGiamGia() == null){
+                    doanhThu = hoaDon.getTongTien();
+                }else {
+                    doanhThu = hoaDon.getTongTien()-hoaDon.getSoTienGiamGia();
+                }
 
 //                // Tính doanh thu của từng hóa đơn
 //                double doanhThu = hoaDonChiTiets.stream()
