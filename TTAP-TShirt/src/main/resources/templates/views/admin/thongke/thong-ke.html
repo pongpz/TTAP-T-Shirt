@@ -25,7 +25,11 @@
             <div id="content">
                 <!-- Form chọn ngày -->
                 <form action="#" method="get" class="p-4 shadow-sm" style="background-color: #b2d7ff; border-radius: 15px;" id="filterForm">
-                    <div class="mb-3"><label for="date" class="form-label fw-bold text-primary">Chọn ngày:</label><input type="date" id="date" name="date" th:value="${#dates.format(#dates.create(year, month, day), 'yyyy-MM-dd')}" class="form-control border-primary"></div>
+                    <div class="mb-3">
+                        <h4 class="text-primary mb-3">Thống kê ngày: <span th:text="${#dates.format(#dates.create(year, month, day), 'dd/MM/yyyy')}"></span></h4>
+                        <label for="date" class="form-label fw-bold text-primary">Chọn ngày:</label>
+                        <input type="date" id="date" name="date" th:value="${#dates.format(#dates.create(year, month, day), 'yyyy-MM-dd')}" class="form-control border-primary">
+                    </div>
                     <div class="text-start"><button type="submit" class="btn btn-outline-danger px-4"><i class="fas fa-filter"></i> Lọc thống kê</button></div>
                 </form>
 
@@ -52,13 +56,16 @@
                 <!-- Content Row -->
                     <div class="row">
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-4 col-md-6 mb-4"     >
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Thu nhập (Ngày)</div>
+                                                Thu nhập (Ngày)
+                                                <span th:text="|(${day}/${month}/${year})|"></span>
+                                            </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(tongTienHomNay)}|"></div>
                                         </div>
                                         <div class="col-auto">
@@ -76,7 +83,9 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Thu nhập (Tháng)</div>
+                                                Thu nhập (Tháng)
+                                                <span th:text="|(${month}/${year})|"></span>
+                                            </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(tienTheoThang)}|">vnđ</div>
                                         </div>
                                         <div class="col-auto">
@@ -94,7 +103,9 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Thu nhập (Năm)</div>
+                                                Thu nhập (Năm)
+                                                <span th:text="|(${year})|"></span>
+                                            </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="|${numberUtils.formatCurrency(tienTheoNam)}|"></div>
                                         </div>
                                         <div class="col-auto">

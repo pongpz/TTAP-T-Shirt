@@ -102,10 +102,19 @@ public class ThongKeController {
         model.addAttribute("doanhThuOnline", doanhThuTheoLoaiDon.get("Online"));
         model.addAttribute("doanhThuOffline", doanhThuTheoLoaiDon.get("Offline"));
 
-        LocalDate today = LocalDate.now();
-        model.addAttribute("day", today.getDayOfMonth());
-        model.addAttribute("month", today.getMonthValue());
-        model.addAttribute("year", today.getYear());
+        // Thay thế phần cuối bằng:
+        if (day == null) {
+            // Nếu không có day được truyền vào, lấy ngày hiện tại
+            LocalDate today = LocalDate.now();
+            model.addAttribute("day", today.getDayOfMonth());
+            model.addAttribute("month", today.getMonthValue());
+            model.addAttribute("year", today.getYear());
+        } else {
+            // Nếu có day được truyền vào, sử dụng các giá trị được lọc
+            model.addAttribute("day", day);
+            model.addAttribute("month", month);
+            model.addAttribute("year", year);
+        }
         // Trả về view
         return "admin/thongke/thong-ke";
     }

@@ -180,73 +180,74 @@
                 </div>
                 <div class="modal-body">
                     <form th:action="@{/admin/hoa-don/giao-hang-that-bai/{id}(id=${hoaDon.id})}" method="get" id="formSPLoi">
-                            <span>Lý do: </span>
-                        <select class="form-select mt-1" aria-label="Default select example" name="lyDo" id="selectLydo" onchange="checkLyDo()">
-                            <option value="1">Khách từ chối nhận hàng</option>
-                            <option value="2">Sản phẩm có lỗi</option>
-                        </select>
-                            <div id="listCTSPLoi" style="flex-wrap: wrap; gap: 20px; font-family: Arial, sans-serif;" class="mt-3">
-                                <!-- Danh sách sản phẩm -->
-                                    <h3 style="margin: 0 0 20px; font-size: 18px;">Chọn sản phẩm lỗi</h3>
-                                    <hr>
-                                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                                        <thead>
-                                        <tr style="background-color: #f1f1f1;">
-                                            <th style="padding: 10px; border: 1px solid #ddd;">
-                                                <input type="checkbox" class="form-check-input me-2" id="selectAll"
-                                                       onchange="toggleSelectAll(this), getSelectedData()">
-                                                <span>Tất cả</span>
-                                            </th>
-                                            <th style="padding: 10px; border: 1px solid #ddd;">Ảnh</th>
-                                            <th style="padding: 10px; border: 1px solid #ddd;">Tên SP</th>
-                                            <th style="padding: 10px; border: 1px solid #ddd;">Mã SP</th>
-                                            <th style="padding: 10px; border: 1px solid #ddd;">Kiểu dáng</th>
-                                            <th style="padding: 10px; border: 1px solid #ddd;">Thương hiệu</th>
-                                            <th style="padding: 10px; border: 1px solid #ddd;">Màu Sắc</th>
-                                            <th style="padding: 10px; border: 1px solid #ddd;">Size</th>
-                                            <th style="padding: 10px; border: 1px solid #ddd;">SL mua</th>
-                                            <th style="padding: 10px; border: 1px solid #ddd;">SL lỗi</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="hdct,stat : ${listSPOrder}">
-                                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="checkbox" name="ctspLoiId" class="product-checkbox" onclick="getSelectedData()" th:value="${hdct.chiTietSanPham.id}"></td>
-                                            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-                                                <img th:src="@{${productImages[hdct.chiTietSanPham.sanPham.id]}}"
-                                                     alt="Product Image"
-                                                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;"/>
-                                            </td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.ten}">
-                                            </td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.ma}">
-                                            </td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;"
-                                                th:text="${hdct.chiTietSanPham.sanPham.kieuDang.ten}">
-                                            </td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;"
-                                                th:text="${hdct.chiTietSanPham.sanPham.thuongHieu.ten}">
-                                            </td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.mauSac.ten}">
-                                            </td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.kichCo.ten}">
-                                            </td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.soLuong}" th:id="'soLuongMua' + ${stat.index}" name="soLuongMua"></td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                                <input type="number" min="1" th:max="${hdct.soLuong}"
-                                                       th:id="'soLuongLoi' + ${stat.index}"
-                                                       onchange="checkSoLuong(this),getSelectedData()"
-                                                       style="width: 50px;"
-                                                       value="1"
-                                                name="soLuongLoi"
-                                                >
-                                                <input type="hidden" name="soLuongHoan" th:id="'soLuongHoan' + ${stat.index}">
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <span>Nhập lý do: </span>
+                        <input type="text" name="lyDo" required class="form-control" placeholder="Nhập lý do">
+<!--                        <select class="form-select mt-1" aria-label="Default select example" name="lyDo" id="selectLydo" onchange="checkLyDo()">-->
+<!--                            <option value="1">Khách từ chối nhận hàng</option>-->
+<!--                            <option value="2">Sản phẩm có lỗi</option>-->
+<!--                        </select>-->
+<!--                            <div id="listCTSPLoi" style="flex-wrap: wrap; gap: 20px; font-family: Arial, sans-serif;" class="mt-3">-->
+<!--                                &lt;!&ndash; Danh sách sản phẩm &ndash;&gt;-->
+<!--                                    <h3 style="margin: 0 0 20px; font-size: 18px;">Chọn sản phẩm lỗi</h3>-->
+<!--                                    <hr>-->
+<!--                                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">-->
+<!--                                        <thead>-->
+<!--                                        <tr style="background-color: #f1f1f1;">-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">-->
+<!--                                                <input type="checkbox" class="form-check-input me-2" id="selectAll"-->
+<!--                                                       onchange="toggleSelectAll(this), getSelectedData()">-->
+<!--                                                <span>Tất cả</span>-->
+<!--                                            </th>-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">Ảnh</th>-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">Tên SP</th>-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">Mã SP</th>-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">Kiểu dáng</th>-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">Thương hiệu</th>-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">Màu Sắc</th>-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">Size</th>-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">SL mua</th>-->
+<!--                                            <th style="padding: 10px; border: 1px solid #ddd;">SL lỗi</th>-->
+<!--                                        </tr>-->
+<!--                                        </thead>-->
+<!--                                        <tbody>-->
+<!--                                        <tr th:each="hdct,stat : ${listSPOrder}">-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="checkbox" name="ctspLoiId" class="product-checkbox" onclick="getSelectedData()" th:value="${hdct.chiTietSanPham.id}"></td>-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">-->
+<!--                                                <img th:src="@{${productImages[hdct.chiTietSanPham.sanPham.id]}}"-->
+<!--                                                     alt="Product Image"-->
+<!--                                                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;"/>-->
+<!--                                            </td>-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.ten}">-->
+<!--                                            </td>-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.sanPham.ma}">-->
+<!--                                            </td>-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd;"-->
+<!--                                                th:text="${hdct.chiTietSanPham.sanPham.kieuDang.ten}">-->
+<!--                                            </td>-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd;"-->
+<!--                                                th:text="${hdct.chiTietSanPham.sanPham.thuongHieu.ten}">-->
+<!--                                            </td>-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.mauSac.ten}">-->
+<!--                                            </td>-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.chiTietSanPham.kichCo.ten}">-->
+<!--                                            </td>-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd;" th:text="${hdct.soLuong}" th:id="'soLuongMua' + ${stat.index}" name="soLuongMua"></td>-->
+<!--                                            <td style="padding: 10px; border: 1px solid #ddd;">-->
+<!--                                                <input type="number" min="1" th:max="${hdct.soLuong}"-->
+<!--                                                       th:id="'soLuongLoi' + ${stat.index}"-->
+<!--                                                       onchange="checkSoLuong(this),getSelectedData()"-->
+<!--                                                       style="width: 50px;"-->
+<!--                                                       value="1"-->
+<!--                                                name="soLuongLoi"-->
+<!--                                                >-->
+<!--                                                <input type="hidden" name="soLuongHoan" th:id="'soLuongHoan' + ${stat.index}">-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
+<!--                                        </tbody>-->
+<!--                                    </table>-->
+<!--                                </div>-->
 
-                        <button class="btn btn-primary align-items-center justify-content-center mt-3" onclick="checkSubmit()">Xác nhận</button>
+                        <button class="btn btn-primary align-items-center justify-content-center mt-3" >Xác nhận</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -256,119 +257,119 @@
         </div>
     </div>
 
-    <script>
-        var listCTSPLoi = document.getElementById("listCTSPLoi")
-        function checkLyDo(){
-            var selectLyDo = document.getElementById("selectLydo").value
-            if (selectLyDo == 2){
-                listCTSPLoi.hidden = false
-            }else {
-                listCTSPLoi.hidden = true
-            }
-        }
-        checkLyDo();
+<!--    <script>-->
+<!--        var listCTSPLoi = document.getElementById("listCTSPLoi")-->
+<!--        function checkLyDo(){-->
+<!--            var selectLyDo = document.getElementById("selectLydo").value-->
+<!--            if (selectLyDo == 2){-->
+<!--                listCTSPLoi.hidden = false-->
+<!--            }else {-->
+<!--                listCTSPLoi.hidden = true-->
+<!--            }-->
+<!--        }-->
+<!--        checkLyDo();-->
 
-        function toggleSelectAll(selectAllCheckbox) {
-            var checkboxes = document.querySelectorAll('.product-checkbox');
-            checkboxes.forEach(function (checkbox) {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        }
+<!--        function toggleSelectAll(selectAllCheckbox) {-->
+<!--            var checkboxes = document.querySelectorAll('.product-checkbox');-->
+<!--            checkboxes.forEach(function (checkbox) {-->
+<!--                checkbox.checked = selectAllCheckbox.checked;-->
+<!--            });-->
+<!--        }-->
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var selectAllCheckbox = document.getElementById('selectAll');
-            var productCheckboxes = document.querySelectorAll('.product-checkbox');
+<!--        document.addEventListener('DOMContentLoaded', function() {-->
+<!--            var selectAllCheckbox = document.getElementById('selectAll');-->
+<!--            var productCheckboxes = document.querySelectorAll('.product-checkbox');-->
 
-            productCheckboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    // Kiểm tra xem tất cả các checkbox đã được chọn chưa
-                    var allChecked = Array.from(productCheckboxes).every(cb => cb.checked);
-                    selectAllCheckbox.checked = allChecked;
-                });
-            });
-        });
+<!--            productCheckboxes.forEach(function(checkbox) {-->
+<!--                checkbox.addEventListener('change', function() {-->
+<!--                    // Kiểm tra xem tất cả các checkbox đã được chọn chưa-->
+<!--                    var allChecked = Array.from(productCheckboxes).every(cb => cb.checked);-->
+<!--                    selectAllCheckbox.checked = allChecked;-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
 
-        function checkSoLuong(inputElement) {
-            // Lấy index từ ID của input
-            var index = inputElement.id.replace('soLuongLoi', '');
+<!--        function checkSoLuong(inputElement) {-->
+<!--            // Lấy index từ ID của input-->
+<!--            var index = inputElement.id.replace('soLuongLoi', '');-->
 
-            // Lấy các phần tử tương ứng
-            var soLuongMua = document.getElementById('soLuongMua' + index);
-            var soLuongMuaValue = parseInt(soLuongMua.textContent);
-            var soLuongLoi = parseInt(inputElement.value);
+<!--            // Lấy các phần tử tương ứng-->
+<!--            var soLuongMua = document.getElementById('soLuongMua' + index);-->
+<!--            var soLuongMuaValue = parseInt(soLuongMua.textContent);-->
+<!--            var soLuongLoi = parseInt(inputElement.value);-->
 
-            if (soLuongLoi > soLuongMuaValue || soLuongLoi <= 0) {
-                toastError('Error!', 'Số lượng không hợp lệ!');
-                inputElement.value = '1';
-            }
-        }
+<!--            if (soLuongLoi > soLuongMuaValue || soLuongLoi <= 0) {-->
+<!--                toastError('Error!', 'Số lượng không hợp lệ!');-->
+<!--                inputElement.value = '1';-->
+<!--            }-->
+<!--        }-->
 
-        function getSelectedData() {
-            // Lấy tất cả các checkbox đã được chọn
-            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-            const data = [];
+<!--        function getSelectedData() {-->
+<!--            // Lấy tất cả các checkbox đã được chọn-->
+<!--            const checkboxes = document.querySelectorAll('.product-checkbox:checked');-->
+<!--            const data = [];-->
 
-            // Duyệt qua từng checkbox đã chọn
-            checkboxes.forEach(checkbox => {
-                // Lấy giá trị của checkbox (ID sản phẩm)
-                const productId = checkbox.value;
+<!--            // Duyệt qua từng checkbox đã chọn-->
+<!--            checkboxes.forEach(checkbox => {-->
+<!--                // Lấy giá trị của checkbox (ID sản phẩm)-->
+<!--                const productId = checkbox.value;-->
 
-                if (!productId || productId.trim() === "") {
-                    return; // Bỏ qua vòng lặp hiện tại
-                }
+<!--                if (!productId || productId.trim() === "") {-->
+<!--                    return; // Bỏ qua vòng lặp hiện tại-->
+<!--                }-->
 
-                // Tìm chỉ số (index) của checkbox trong danh sách
-                const rowIndex = Array.from(document.querySelectorAll('.product-checkbox')).indexOf(checkbox);
+<!--                // Tìm chỉ số (index) của checkbox trong danh sách-->
+<!--                const rowIndex = Array.from(document.querySelectorAll('.product-checkbox')).indexOf(checkbox);-->
 
-                // Lấy giá trị từ ô input số lượng lỗi (id theo index)
-                const soLuongLoiInput = document.getElementById(`soLuongLoi${rowIndex}`);
-                const soLuongLoi = soLuongLoiInput ? soLuongLoiInput.value : null;
-                const soLuongMuaInput = document.getElementById(`soLuongMua${rowIndex}`);
-                const soLuongMua = soLuongMuaInput ? soLuongMuaInput.textContent : null;
-                const soLuongHoanInput = document.getElementById(`soLuongHoan${rowIndex}`)
-                const soLuongHoan = soLuongMua - soLuongLoi
-                if (soLuongHoanInput){
-                    soLuongHoanInput.value = soLuongHoan
-                }
-                // Thêm dữ liệu vào mảng
-                data.push({
-                    productId: productId,
-                    soLuongLoi: soLuongLoi,
-                    soLuongMua: soLuongMua,
-                    soLuongHoan: soLuongMua- soLuongLoi,
-                });
-                checkbox.addEventListener('change', function() {
-                    if (checkbox.checked) {
-                        // Nếu checkbox được chọn, thêm required vào ô input
-                        soLuongLoiInput.setAttribute('required', 'required');
-                    } else {
-                        // Nếu checkbox không được chọn, loại bỏ required
-                        soLuongLoiInput.removeAttribute('required');
-                    }
-                });
-            });
+<!--                // Lấy giá trị từ ô input số lượng lỗi (id theo index)-->
+<!--                const soLuongLoiInput = document.getElementById(`soLuongLoi${rowIndex}`);-->
+<!--                const soLuongLoi = soLuongLoiInput ? soLuongLoiInput.value : null;-->
+<!--                const soLuongMuaInput = document.getElementById(`soLuongMua${rowIndex}`);-->
+<!--                const soLuongMua = soLuongMuaInput ? soLuongMuaInput.textContent : null;-->
+<!--                const soLuongHoanInput = document.getElementById(`soLuongHoan${rowIndex}`)-->
+<!--                const soLuongHoan = soLuongMua - soLuongLoi-->
+<!--                if (soLuongHoanInput){-->
+<!--                    soLuongHoanInput.value = soLuongHoan-->
+<!--                }-->
+<!--                // Thêm dữ liệu vào mảng-->
+<!--                data.push({-->
+<!--                    productId: productId,-->
+<!--                    soLuongLoi: soLuongLoi,-->
+<!--                    soLuongMua: soLuongMua,-->
+<!--                    soLuongHoan: soLuongMua- soLuongLoi,-->
+<!--                });-->
+<!--                checkbox.addEventListener('change', function() {-->
+<!--                    if (checkbox.checked) {-->
+<!--                        // Nếu checkbox được chọn, thêm required vào ô input-->
+<!--                        soLuongLoiInput.setAttribute('required', 'required');-->
+<!--                    } else {-->
+<!--                        // Nếu checkbox không được chọn, loại bỏ required-->
+<!--                        soLuongLoiInput.removeAttribute('required');-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
 
-            // Hiển thị hoặc xử lý dữ liệu
-            console.log('Selected Data:', data);
-            return data;
-        }
+<!--            // Hiển thị hoặc xử lý dữ liệu-->
+<!--            console.log('Selected Data:', data);-->
+<!--            return data;-->
+<!--        }-->
 
-        function checkSubmit(){
-            document.getElementById('formSPLoi').addEventListener('submit', function (event) {
-                // Kiểm tra xem có ít nhất 1 checkbox được chọn không
-                const checkboxes = document.querySelectorAll('.product-checkbox');
-                const isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-                var selectLyDo = document.getElementById("selectLydo").value
-                if (!isChecked && selectLyDo == 2) {
-                    // Nếu không có checkbox nào được chọn, ngừng gửi form và hiển thị thông báo
-                    event.preventDefault(); // Ngừng hành động gửi form
-                    toastError('Lỗi !', ' Vui lòng chọn ít nhất 1 sản phẩm lỗi!');
-                }
-            });
+<!--        function checkSubmit(){-->
+<!--            document.getElementById('formSPLoi').addEventListener('submit', function (event) {-->
+<!--                // Kiểm tra xem có ít nhất 1 checkbox được chọn không-->
+<!--                const checkboxes = document.querySelectorAll('.product-checkbox');-->
+<!--                const isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);-->
+<!--                var selectLyDo = document.getElementById("selectLydo").value-->
+<!--                if (!isChecked && selectLyDo == 2) {-->
+<!--                    // Nếu không có checkbox nào được chọn, ngừng gửi form và hiển thị thông báo-->
+<!--                    event.preventDefault(); // Ngừng hành động gửi form-->
+<!--                    toastError('Lỗi !', ' Vui lòng chọn ít nhất 1 sản phẩm lỗi!');-->
+<!--                }-->
+<!--            });-->
 
-        }
+<!--        }-->
 
-    </script>
+<!--    </script>-->
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -549,13 +550,13 @@
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
             <p style="margin: 0; font-size: 14px;">Giảm giá:</p>
             <span style="font-size: 14px;"
-                  th:text="${numberUtils.formatCurrency(hoaDon.soTienGiamGia)!=null?numberUtils.formatCurrency(hoaDon.soTienGiamGia):'Không áp dụng'}"></span>
+                  th:text="${hoaDon.soTienGiamGia!=null?numberUtils.formatCurrency(hoaDon.soTienGiamGia):'Không áp dụng'}"></span>
         </div>
         <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <p style="margin: 0; font-size: 14px;">Phí vận chuyển:</p>
             <span type="text"
                   style="padding: 5px; font-size: 14px; width: 80px; text-align: right; border: 1px solid #ddd; border-radius: 4px;"
-                  th:text="${numberUtils.formatCurrency(hoaDon.tienShip)}"></span>
+                  th:text="${hoaDon.tienShip != null ? numberUtils.formatCurrency(hoaDon.tienShip) : ''}"></span>
         </div>
         <div style="margin-top: 20px; display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
             <p style="margin: 0;">Tổng tiền:</p>

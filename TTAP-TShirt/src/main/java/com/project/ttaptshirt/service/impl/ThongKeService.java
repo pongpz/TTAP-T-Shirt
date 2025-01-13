@@ -49,17 +49,19 @@ public class ThongKeService {
 
         // Duyệt qua từng hóa đơn để tính tổng thu nhập
         for (HoaDon hoaDon : hoaDons) {
-            // Lấy tất cả các chi tiết hóa đơn của mỗi hóa đơn
-            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
 
-            // Tính tổng thu nhập từ các chi tiết hóa đơn
-            for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
-                Float donGia = chiTiet.getDonGia();
-                Integer soLuong = chiTiet.getSoLuong();
-                if (donGia != null && soLuong != null) {
-                    totalIncome += donGia * soLuong;  // Cộng tổng thu nhập
-                }
-            }
+            totalIncome += hoaDon.getTongTien() - hoaDon.getSoTienGiamGia();
+//            // Lấy tất cả các chi tiết hóa đơn của mỗi hóa đơn
+//            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
+//
+//            // Tính tổng thu nhập từ các chi tiết hóa đơn
+//            for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
+//                Float donGia = chiTiet.getDonGia();
+//                Integer soLuong = chiTiet.getSoLuong();
+//                if (donGia != null && soLuong != null) {
+//                    totalIncome += donGia * soLuong;  // Cộng tổng thu nhập
+//                }
+//            }
         }
 
         return totalIncome;
@@ -76,17 +78,18 @@ public class ThongKeService {
 
         // Duyệt qua từng hóa đơn để tính tổng thu nhập
         for (HoaDon hoaDon : hoaDons) {
-            // Lấy tất cả các chi tiết hóa đơn của mỗi hóa đơn
-            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
-
-            // Tính tổng thu nhập từ các chi tiết hóa đơn
-            for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
-                Float donGia = chiTiet.getDonGia();
-                Integer soLuong = chiTiet.getSoLuong();
-                if (donGia != null && soLuong != null) {
-                    totalIncome += donGia * soLuong;  // Cộng tổng thu nhập
-                }
-            }
+            totalIncome += hoaDon.getTongTien() - hoaDon.getSoTienGiamGia();
+//            // Lấy tất cả các chi tiết hóa đơn của mỗi hóa đơn
+//            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
+//
+//            // Tính tổng thu nhập từ các chi tiết hóa đơn
+//            for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
+//                Float donGia = chiTiet.getDonGia();
+//                Integer soLuong = chiTiet.getSoLuong();
+//                if (donGia != null && soLuong != null) {
+//                    totalIncome += donGia * soLuong;  // Cộng tổng thu nhập
+//                }
+//            }
         }
 
         return totalIncome;
@@ -98,15 +101,19 @@ public class ThongKeService {
         double totalIncome = 0.0;
 
         for (HoaDon hoaDon : hoaDons) {
-            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
 
-            for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
-                Float donGia = chiTiet.getDonGia();
-                Integer soLuong = chiTiet.getSoLuong();
-                if (donGia != null && soLuong != null) {
-                    totalIncome += donGia * soLuong;  // Cộng tổng thu nhập
-                }
-            }
+            totalIncome += hoaDon.getTongTien() - hoaDon.getSoTienGiamGia();
+
+//
+//            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
+//
+//            for (HoaDonChiTiet chiTiet : hoaDonChiTiets) {
+//                Float donGia = chiTiet.getDonGia();
+//                Integer soLuong = chiTiet.getSoLuong();
+//                if (donGia != null && soLuong != null) {
+//                    totalIncome += donGia * soLuong;  // Cộng tổng thu nhập
+//                }
+//            }
         }
 
         return totalIncome;
@@ -144,11 +151,13 @@ public class ThongKeService {
                 // Lấy chi tiết hóa đơn
                 List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
 
-                // Tính tổng doanh thu của hóa đơn
-                double doanhThu = hoaDonChiTiets.stream()
-                        .filter(chiTiet -> chiTiet.getDonGia() != null && chiTiet.getSoLuong() != null) // Kiểm tra null
-                        .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
-                        .sum();
+                double doanhThu = hoaDon.getTongTien()-hoaDon.getSoTienGiamGia();
+
+//                // Tính tổng doanh thu của hóa đơn
+//                double doanhThu = hoaDonChiTiets.stream()
+//                        .filter(chiTiet -> chiTiet.getDonGia() != null && chiTiet.getSoLuong() != null) // Kiểm tra null
+//                        .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
+//                        .sum();
 
                 doanhThuTheoNgay.put(selectedDate, doanhThu);
             }
@@ -166,11 +175,13 @@ public class ThongKeService {
                 // Lấy danh sách chi tiết hóa đơn
                 List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon(hoaDon);
 
-                // Tính doanh thu của từng hóa đơn
-                double doanhThu = hoaDonChiTiets.stream()
-                        .filter(chiTiet -> chiTiet.getDonGia() != null && chiTiet.getSoLuong() != null)
-                        .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
-                        .sum();
+                double doanhThu = hoaDon.getTongTien()-hoaDon.getSoTienGiamGia();
+
+//                // Tính doanh thu của từng hóa đơn
+//                double doanhThu = hoaDonChiTiets.stream()
+//                        .filter(chiTiet -> chiTiet.getDonGia() != null && chiTiet.getSoLuong() != null)
+//                        .mapToDouble(chiTiet -> chiTiet.getDonGia() * chiTiet.getSoLuong())
+//                        .sum();
 
                 // Cập nhật tổng doanh thu theo tháng
                 doanhThuTheoThang.put(monthValue, doanhThuTheoThang.getOrDefault(monthValue, 0.0) + doanhThu);

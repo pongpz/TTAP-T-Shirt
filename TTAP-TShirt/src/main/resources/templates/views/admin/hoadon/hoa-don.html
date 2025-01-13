@@ -50,10 +50,13 @@
                     <option value="0" th:selected="${trangThai==0}">Chưa thanh toán</option>
                     <option value="1" th:selected="${trangThai==1}">Đã thanh toán</option>
                     <option value="2" th:selected="${trangThai==2}">Đã hủy</option>
+                    <option value="-1" th:selected="${trangThai==-1}">Giao hàng thất bại</option>
                     <option value="3" th:selected="${trangThai==3}">Chờ xác nhận</option>
-                    <option value="3" th:selected="${trangThai==6}">Đã xác nhận</option>
-                    <option value="3" th:selected="${trangThai==7}">Chờ lấy hàng</option>
-                    <option value="3" th:selected="${trangThai==8}">Đang giao hàng</option>
+                    <option value="6" th:selected="${trangThai==6}">Đã xác nhận</option>
+                    <option value="7" th:selected="${trangThai==7}">Chuẩn bị hàng</option>
+                    <option value="8" th:selected="${trangThai==8}">Chờ vận chuyển</option>
+                    <option value="9" th:selected="${trangThai==9}">Đang giao hàng</option>
+                    <option value="10" th:selected="${trangThai==10}">Đã giao hàng</option>
                 </select>
             </div>
             <div class="mb-3 col-4">
