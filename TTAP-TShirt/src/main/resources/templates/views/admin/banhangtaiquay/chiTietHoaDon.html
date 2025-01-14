@@ -322,7 +322,7 @@
                     <label class="col-9" style="font-size: 1rem; font-weight: 600; "
                            th:text="${hoadon != null && hoadon.khachHang != null ? 'Khách Hàng: ' + hoadon.khachHang.hoTen : 'Khách Hàng: Vãng lai'}">
                     </label>
-                    <button class="col-3 btn btn-sm btn btn-info" style="margin-left: 350px; margin-top: -30px" data-bs-toggle="modal" data-bs-target="#modalAddCustomer">
+                    <button class="col-3 btn btn-sm btn btn-info"  data-bs-toggle="modal" data-bs-target="#modalAddCustomer">
                         Khách hàng
                     </button>
 
@@ -451,7 +451,7 @@
 
                 <hr/>
                 <div class="row">
-                    <label class="col-6" style="font-size: 1rem; font-weight: 600;">Tổng Tiền:</label>
+                    <label class="col-5" style="font-size: 1rem; font-weight: 600;">Tổng Tiền:</label>
                     <label class="col-4" style="font-size: 1rem; font-weight: 600;"
                            th:text="${hoadon != null && hoadon.tongTien != null ? numberUtils.formatCurrency(hoadon.tongTien): 'Chưa có dữ liệu'}">
                     </label>
@@ -460,10 +460,10 @@
 
                 <br/>
                 <div class="row">
-                    <label class="col-6" style="font-size: 1rem; font-weight: 600;">Giảm giá voucher:</label>
+                    <label class="col-5" style="font-size: 1rem; font-weight: 600;">Giảm giá voucher:</label>
                     <label class="col-4" style="font-size: 1rem; font-weight: 600;"
                            th:text="${hoadon.soTienGiamGia!=null?numberUtils.formatCurrency(hoadon.soTienGiamGia) :'chưa có '}"></label>
-                    <button class="col-3 btn btn-sm btn btn-info" style="margin-left: 350px; margin-top: -30px"
+                    <button class="col-3 btn btn-sm btn btn-info"
                             data-bs-toggle="modal" data-bs-target="#modalAddVoucher"
                     >
                         Mã giảm giá
@@ -554,7 +554,7 @@
 
                 <hr/>
                 <div class="row">
-                    <label class="col-6" style="font-size: 1rem; font-weight: 600;">Số tiền thanh toán:</label>
+                    <label class="col-5" style="font-size: 1rem; font-weight: 600;">Số tiền thanh toán:</label>
                     <label class="col-4" style="font-size: 1rem; font-weight: 600;"
 
                            th:text="${hoadon != null && hoadon.tienThu != null ? numberUtils.formatCurrency(hoadon.tienThu) : 'Chưa có dữ liệu'}"
