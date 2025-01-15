@@ -63,7 +63,8 @@ public class GioHangController {
 
     @Autowired
     private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
-
+    @Autowired
+    private DiaChiService diaChiService;
 
 
     // Xem giỏ hàng
@@ -237,7 +238,6 @@ public class GioHangController {
                         item.getGia(), item.getSoLuong()))
                 .collect(Collectors.toList());
     }
-
 
     @PostMapping("/checkout")
     public String checkoutCart(@RequestParam("selectedProductIds") String selectedProductIdsStr,

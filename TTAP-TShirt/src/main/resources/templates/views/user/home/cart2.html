@@ -228,7 +228,7 @@
                                     <label for="voucherSelect" class="form-label">Mã giảm giá</label>
                                     <div class="input-group">
                                         <select id="voucherSelect" class="form-select" onchange="applyVoucher()">
-                                            <option value="">-- Chọn mã giảm giá --</option>
+                                            <option value=''>-- Chọn mã giảm giá --</option>
                                         </select>
                                         <input type="hidden" name="idGiamgia" id="idGiamgia">
                                     </div>
@@ -294,16 +294,10 @@
                                             <span  th:text="${address.soNha} + ', ' + ${address.tenDuong} + ', ' + ${address.tenQuanhuyen} + ', ' + ${address.tenThanhpho}" ></span>
                                         </label>
                                     </div>
-                                    <!-- Icon xóa địa chỉ -->
-                                    <a th:href="@{/TTAP/cart/deleteAddress/{id}(id=${address.id})}" class="text-danger ms-3" onclick="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')" title="Xóa địa chỉ">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-<!--                                    <a th:href="@{/TTAP/user/address/update/{id}(id=${address.id})}" class="text-primary ms-3"-->
-<!--                                       title="Chi tiết địa chỉ">-->
-<!--                                        <i class="fas fa-info-circle"></i>-->
-<!--                                    </a>-->
-
                                 </div>
+                                <a th:href="@{/TTAP/user/detail/viewDiachi}" class="btn btn-link text-decoration-none">
+                                    <i class="bi bi-eye me-1"></i> Chi tiết
+                                </a>
                             </div>
                             <!-- Nút chọn địa chỉ -->
                             <div class="d-flex justify-content-end mt-4">
@@ -503,7 +497,22 @@
         const totalAmount = parseFloat(document.getElementById('totalAmount').getAttribute('data-amount') || 0); // Lấy tổng tiền hiện tại
 
         document.getElementById('idGiamgia').value = voucherId;
+        // Kiểm tra giá trị của voucherId
+        if (!voucherId || voucherId === 'null' || voucherId === '') {
+            // Nếu không có mã giảm giá hợp lệ, reset giá trị giảm giá và tổng tiền
+            const shippingFeeElement = document.getElementById('shippingFee');
+            const shippingFeeText = shippingFeeElement.textContent || shippingFeeElement.innerText; // Lấy nội dung văn bản
+            const shippingFee = parseFloat(shippingFeeText.replace(/[^\d.-]/g, '').trim()) || 0;
 
+            const finalAmount = totalAmount + shippingFee;
+
+            // Cập nhật hiển thị giá trị giảm giá và tổng thanh toán
+            document.getElementById('price-discount').innerText = formatCurrency(0); // Không có giảm giá
+            document.getElementById('total-cart-payment').innerText = formatCurrency(finalAmount); // Cập nhật tổng tiền
+
+            toastInfo('Thông báo', 'Mã giảm giá đã được gỡ bỏ.');
+            return;
+        }
         if (voucherId && totalAmount > 0) {
             // Gửi yêu cầu API
             fetch(`/TTAP/cart/apply-voucher?discount_code=${voucherId}`, {
@@ -545,7 +554,7 @@
 
                     document.getElementById('total-cart-payment').innerText = formatCurrency(finalAmount);
 
-                    alert('Áp dụng mã giảm giá thành công!');
+                    toastSuccess('Thành công','Áp dụng mã giảm giá thành công!')
                 })
                 .catch(error => {
                     console.error('Lỗi khi áp dụng mã giảm giá:', error);
