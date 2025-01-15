@@ -208,35 +208,70 @@ public class HomeCustomerController {
 
 
     @GetMapping("/chinh-sach-van-chuyen")
-    public String chinhSachVanChuyen(){
+    public String chinhSachVanChuyen(Authentication authentication,Model model){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         return "user/chinhsach/chinh-sach-van-chuyen";
     }
 
     @GetMapping("/chinh-sach-bao-mat")
-    public String chinhSachBaoMat(){
+    public String chinhSachBaoMat(Authentication authentication,Model model){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         return "user/chinhsach/chinh-sach-bao-mat";
     }
 
     @GetMapping("/chinh-sach-doi-tra")
-    public String chinhSachDoiTra(){
+    public String chinhSachDoiTra(Authentication authentication,Model model){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         return "user/chinhsach/chinh-sach-doi-tra";
     }
 
     @GetMapping("/chinh-sach-xu-ly-khieu-lai")
-    public String chinhSachXuLyKhieuLai(){
+    public String chinhSachXuLyKhieuLai(Authentication authentication,Model model){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         return "user/chinhsach/chinh-sach-xu-ly-khieu-lai";
     }
 
     @GetMapping("/huong-dan-mua-hang")
-    public String huongDanMuaHang(){
+    public String huongDanMuaHang(Authentication authentication,Model model){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         return "user/chinhsach/huong-dan-mua-hang";
     }
     @GetMapping("/hinh-thuc-thanh-toan")
-    public String hinhThucThanhToan(){
+    public String hinhThucThanhToan(Authentication authentication,Model model){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         return "user/chinhsach/hinh-thuc-thanh-toan";
     }
     @GetMapping("/lien-he")
-    public String lienHe(){
+    public String lienHe(Authentication authentication,Model model){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         return "user/chinhsach/lien-he";
     }
 }
