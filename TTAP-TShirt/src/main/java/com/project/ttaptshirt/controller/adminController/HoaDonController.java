@@ -197,6 +197,7 @@ public class HoaDonController {
                 if (maGiamGia.getSoLuong() > 0) { // Chỉ giảm số lượng nếu còn > 0
                     maGiamGia.setSoLuong(maGiamGia.getSoLuong() - 1);
                     maGiamGiaServicelmpl.save(maGiamGia);
+                    break;
                 } else {
                     // Log lỗi nếu số lượng mã giảm giá đã hết
                     redirectAttributes.addFlashAttribute("confirmErrorMessage", true);
