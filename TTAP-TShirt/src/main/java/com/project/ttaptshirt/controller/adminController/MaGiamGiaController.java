@@ -5,7 +5,9 @@ import com.project.ttaptshirt.dto.CustomerVoucherData;
 import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.KhachHang;
 import com.project.ttaptshirt.entity.MaGiamGia;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.repository.MaGiamGiaRepo;
+import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.KhachHangServiceImpl;
 import com.project.ttaptshirt.service.impl.MaGiamGiaServicelmpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,7 +55,12 @@ public class MaGiamGiaController {
     private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
 
     @GetMapping("/hien-thi")
-    public String hienthi (Model model, @RequestParam(value = "page",defaultValue = "0") Integer page){
+    public String hienthi (Model model, @RequestParam(value = "page",defaultValue = "0") Integer page, Authentication authentication){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         Pageable pageab = PageRequest.of(page, 5);
         Page<MaGiamGia> p = mggr.findAllDESC(pageab);
         if (p.getContent().size() == 0){
@@ -303,7 +311,12 @@ public class MaGiamGiaController {
     }
 
     @GetMapping("/form-add")
-    public String formAdd(MaGiamGia mgg, Model model){
+    public String formAdd(MaGiamGia mgg, Model model,Authentication authentication){
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         model.addAttribute("mgg",mgg);
         return "admin/magiamgia/form-add-voucher";
     }

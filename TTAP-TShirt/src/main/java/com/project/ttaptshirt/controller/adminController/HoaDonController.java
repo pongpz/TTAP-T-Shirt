@@ -64,7 +64,13 @@ public class HoaDonController {
     private MaGiamGiaServicelmpl maGiamGiaServicelmpl;
 
     @GetMapping("/hien-thi")
-    public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page, @RequestParam(required = false, value = "id") Long id) {
+    public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page,
+                          @RequestParam(required = false, value = "id") Long id, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         Pageable pageab = PageRequest.of(page, 5);
         model.addAttribute("listHDCT", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
         model.addAttribute("listSPOrder", hoaDonChiTietRepository.getHoaDonChiTietByHoaDonId(id));
@@ -94,7 +100,12 @@ public class HoaDonController {
 //    }
 
     @GetMapping("/chi-tiet-hoa-don/{idhd}")
-    public String hienThiHDCT(@PathVariable("idhd") Long idhd, Model model) {
+    public String hienThiHDCT(@PathVariable("idhd") Long idhd, Model model, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         HoaDon hoaDon = hoaDonService.findById(idhd);
         model.addAttribute("hoaDon", hoaDon);
         List<HoaDonChiTiet> listSPOrder = hoaDonChiTietService.getListHdctByIdHd(idhd);
@@ -121,7 +132,12 @@ public class HoaDonController {
     }
 
     @GetMapping("/chi-tiet-hoa-don-online/{idhd}")
-    public String hienThiHDCTOnline(@PathVariable("idhd") Long idhd, Model model) {
+    public String hienThiHDCTOnline(@PathVariable("idhd") Long idhd, Model model, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         HoaDon hoaDon = hoaDonService.findById(idhd);
         model.addAttribute("hoaDon", hoaDon);
         List<HoaDonChiTiet> listSPOrder = hoaDonChiTietService.getListHdctByIdHd(idhd);
@@ -345,9 +361,9 @@ public class HoaDonController {
 
     @GetMapping("/giao-hang-that-bai/{idHD}")
     public String giaoHangThatBai(@PathVariable("idHD") Long idHD,
-                                  @RequestParam(value = "ctspLoiId",required = false) String idSPCTLoi,
-                                  @RequestParam(value = "soLuongHoan",required = false) String soLuongHoan,
-                                  @RequestParam(value = "lyDo",required = false) String lyDo,
+                                  @RequestParam(value = "ctspLoiId", required = false) String idSPCTLoi,
+                                  @RequestParam(value = "soLuongHoan", required = false) String soLuongHoan,
+                                  @RequestParam(value = "lyDo", required = false) String lyDo,
                                   RedirectAttributes redirectAttributes, Model model,
                                   Authentication authentication
 //                                  @RequestParam("lyDo") Integer lyDo
@@ -361,15 +377,15 @@ public class HoaDonController {
         hoaDonLog.setThoiGian(LocalDateTime.now());
         hoaDonLog.setNguoiThucHien(user.getUsername());
 //        if (lyDo == 1){
-            hoaDonLog.setGhiChu("Giao hàng thất bại(Lý do: "+lyDo+" )");
-            List<HoaDonChiTiet> listSanPham = hoaDonChiTietService.getListHdctByIdHd(idHD);
-            for (HoaDonChiTiet hdct : listSanPham) {
-                ChiTietSanPham chiTietSanPham = hdct.getChiTietSanPham();
-                chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + hdct.getSoLuong());
-                chiTietSanPham.setTrangThai(0);
-                chiTietSanPhamService.save(chiTietSanPham);
-            }
-            hoaDon.setGhiChu(lyDo);
+        hoaDonLog.setGhiChu("Giao hàng thất bại(Lý do: " + lyDo + " )");
+        List<HoaDonChiTiet> listSanPham = hoaDonChiTietService.getListHdctByIdHd(idHD);
+        for (HoaDonChiTiet hdct : listSanPham) {
+            ChiTietSanPham chiTietSanPham = hdct.getChiTietSanPham();
+            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + hdct.getSoLuong());
+            chiTietSanPham.setTrangThai(0);
+            chiTietSanPhamService.save(chiTietSanPham);
+        }
+        hoaDon.setGhiChu(lyDo);
 //        }else {
 //            List<Long> listIdProductIdUsnelected = new ArrayList<>();
 //            List<HoaDonChiTiet> listSanPham = hoaDonChiTietService.getListHdctByIdHd(idHD);
@@ -442,7 +458,12 @@ public class HoaDonController {
             @RequestParam(value = "ngayThanhToan", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ngayThanhToan,
             @RequestParam(defaultValue = "0") Integer page,
 
-            Model model) {
+            Model model, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         Pageable pageab = PageRequest.of(page, 5);
 //        List<HoaDon> lsSearch = hr.search("", "", "", "", null, null, pageab);
         List<HoaDon> lsSearch = new ArrayList<>();

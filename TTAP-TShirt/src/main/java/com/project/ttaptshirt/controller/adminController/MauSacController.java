@@ -1,8 +1,11 @@
 package com.project.ttaptshirt.controller.adminController;
 
 import com.project.ttaptshirt.entity.MauSac;
+import com.project.ttaptshirt.entity.TaiKhoan;
+import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.MauSacService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +19,12 @@ public class MauSacController {
     MauSacService mauSacService;
 
     @GetMapping("")
-    public String openColorPage(Model model) {
+    public String openColorPage(Model model, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
         model.addAttribute("listMauSac", mauSacService.findAll());
         model.addAttribute("mauSac", new MauSac());
         return "admin/thuoctinhsanpham/mau-sac";

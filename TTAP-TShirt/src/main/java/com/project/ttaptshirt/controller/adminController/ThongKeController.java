@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ttaptshirt.dto.NumberUtils;
 import com.project.ttaptshirt.entity.HoaDon;
 import com.project.ttaptshirt.entity.HoaDonChiTiet;
+import com.project.ttaptshirt.entity.TaiKhoan;
 import com.project.ttaptshirt.repository.HoaDonChiTietRepository;
 import com.project.ttaptshirt.repository.HoaDonRepository;
+import com.project.ttaptshirt.security.CustomUserDetail;
 import com.project.ttaptshirt.service.impl.ThongKeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +43,12 @@ public class ThongKeController {
     public String getThongKe(Model model,
                              @RequestParam(name = "month", defaultValue = "#{T(java.time.LocalDate).now().monthValue}") Integer month,
                              @RequestParam(name = "year", defaultValue = "#{T(java.time.LocalDate).now().year}") Integer year,
-                             @RequestParam(name = "day", required = false) Integer day) {
+                             @RequestParam(name = "day", required = false) Integer day, Authentication authentication) {
+        if (authentication != null) {
+            CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+            TaiKhoan user = customUserDetail.getUser();
+            model.addAttribute("userLogged", user);
+        }
 
         // Tổng thu nhập hôm nay
         double tongTienHomNay = thongKeService.tongTienHomNay(day, month, year);
