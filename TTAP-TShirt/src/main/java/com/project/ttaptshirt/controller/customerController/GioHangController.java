@@ -416,6 +416,10 @@ public class GioHangController {
 //            hoaDonService.huyHoaDonOnline(idHD,user.getKhachHang().getSoDienThoai()+" đã thực hiện hủy hóa đơn !");
             hdlog.setNguoiThucHien(user.getKhachHang() != null ? user.getKhachHang().getSoDienThoai():"");
             HoaDon hd = hoaDonService.getDonHang(idHD);
+            if (hd.getTrangThai()!=3) {
+                redirectAttributes.addFlashAttribute("hoaDonInvalidStatus", true);
+                return "redirect:/TTAP/cart/hoa-don-chi-tiet/hien-thi?id=" + idHD;
+            }
             hd.setTrangThai(2);
             hoaDonService.save(hd);
             hdlog.setHoaDon(hoaDonService.getDonHang(idHD));

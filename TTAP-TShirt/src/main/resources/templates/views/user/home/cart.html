@@ -181,6 +181,15 @@
     }
     /*]]>*/
 </script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var hoaDonInvalidStatus = [[${hoaDonInvalidStatus}]];
+    console.log("checkoutSuccess:", hoaDonInvalidStatus); // Log the value to check
+    if (hoaDonInvalidStatus) {
+        toastError('Thất bại !', 'Hủy hóa đơn không thành công');
+    }
+    /*]]>*/
+</script>
 
 <footer th:replace="~{/fragment/footer-customer :: footer-customer}" class="text-center">
     <p>&copy; 2024 TTAP T-SHIRT. All rights reserved.</p>
